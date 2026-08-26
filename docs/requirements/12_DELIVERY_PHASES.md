@@ -175,7 +175,7 @@ The public-code evidence gate remains Phase 5C. Phase 3A therefore builds a comp
 - [x] CI recomputes 2^6 reachability and rejects missing/duplicate/impossible/order-drift codes;
 - [x] catalog and source schema are both forced to remain `public_use=false` at this development stage.
 
-#### 3A-1 Deterministic editorial engineering — IMPLEMENTED; CI evidence refresh pending
+#### 3A-1 Deterministic editorial engineering — COMPLETE as non-public development engineering
 - [x] 14 provenance-backed Core editorial primitives cover 8 cognitive/governance × 4 action/exploration × 2 relationship modes;
 - [x] all 64 Core Codes materialize deterministic Core Identity, Hidden Strengths and Adversarial/Failure modules (192 type modules);
 - [x] 21 Traits have low/mid/high editorial bands (63 Trait modules);
@@ -185,7 +185,7 @@ The public-code evidence gate remains Phase 5C. Phase 3A therefore builds a comp
 - [x] deterministic Japanese display-name grammar is versioned in `display-name-system.ja.json`;
 - [x] all 64 reachable codes materialize unique draft display names and identity sentences;
 - [x] six-axis display-name provenance and one-axis neighbor differentiation are machine-validated;
-- [ ] latest full CI run proves validators + Golden v0.3 + PostgreSQL + typecheck + build + Chromium E2E together.
+- [x] full CI proves validators + Golden v0.3 + PostgreSQL + typecheck + build + Chromium E2E together. *(Run 177 established the repaired content contract; later sharing runs retain these gates.)*
 
 #### 3A-2 Human editorial approval — PENDING
 - [ ] all 64 draft names reviewed side-by-side for awkwardness, repetition and unintended connotations;
@@ -208,25 +208,56 @@ Current draft display-name rule and review contract are documented in `docs/TYPE
 
 Master `PCS-CONTENT-001..003` remain incomplete until the public promotion gate is satisfied. Building the C01D draft catalog does not claim that 64 types are validated or final.
 
-### 3B Illustration system — PENDING
-- [ ] art direction approved;
-- [ ] type-to-asset mapping;
-- [ ] one curated hero asset per published reachable type;
-- [ ] responsive/OG/portrait crops;
-- [ ] fallback behavior;
-- [ ] result snapshot/share representation references exact curated asset version.
+### 3B Illustration system — ACTIVE
+
+#### 3B-0 Illustration engineering foundation — COMPLETE
+- [x] coherent non-AI runtime art direction specified;
+- [x] stable type-to-asset ID/mapping contract for all 64 development Core Codes;
+- [x] 8 role × 4 action × 2 relationship visual grammar defined without runtime compositing;
+- [x] CI rejects missing/duplicate/mis-mapped illustration slots;
+- [x] runtime image generation remains prohibited.
+
+#### 3B-1 Curated asset production — PENDING
+- [ ] owner-approved art direction after visual review;
+- [ ] one curated hero master per eventual published reachable type;
+- [ ] responsive result crop;
+- [ ] 1200×630 OG crop/placement verification;
+- [ ] portrait share-card crop/placement verification;
+- [ ] accessibility/contrast and longest-name overlay QA;
+- [ ] approved asset versions bound into result/share snapshots.
+
+Current 64 development hero slots remain deliberately `unproduced`; engineering slot completeness is not artwork completion.
 
 Exit: no published result can resolve to missing required copy or visual assets.
 
 ## Phase 4 — Sharing, analytics and operations
 
-### 4A Social sharing — PENDING
-- [ ] explicit share snapshot creation;
-- [ ] opaque public URL;
-- [ ] deterministic OG image;
-- [ ] portrait share card;
-- [ ] Web Share/X/LINE/copy;
-- [ ] revocation/deletion behavior if supported.
+### 4A Social sharing — ACTIVE
+
+#### 4A-1 Sanitized sharing foundation — COMPLETE as development implementation
+- [x] explicit Share action creates a separate sanitized immutable public snapshot;
+- [x] 256-bit opaque public capability token; database stores SHA-256 hash only;
+- [x] public `/s/[token]` result route works without the private assessment cookie;
+- [x] raw answers, Trait Scores/vector, Response Quality, Interaction internals and Extended Code are excluded from the public snapshot;
+- [x] PostgreSQL rejects prohibited public diagnostic/private fields and version/source mismatches;
+- [x] Web Share, X intent, LINE intent and URL copy controls use the exact opaque share URL;
+- [x] private owner can revoke every active public link derived from the result;
+- [x] deleting the private source result automatically revokes attached public shares before source detachment;
+- [x] deterministic development OG card (1200×630) and portrait card (1080×1350) are generated from the sanitized snapshot only;
+- [x] same snapshot/template returns byte-identical card output in Chromium E2E;
+- [x] revoked share pages and image routes fail closed;
+- [x] public page emits dynamic Open Graph/Twitter metadata using the versioned sanitized OG route.
+
+Evidence checkpoint: CI Run 190 proved the image/card and full 147-item browser flow together. Canonical deployment origin is centralized by `PCS_SITE_ORIGIN` / `NEXT_PUBLIC_SITE_ORIGIN`.
+
+#### 4A-2 Production share presentation — PENDING on Phase 3A/3B/5C
+- [ ] approved public type name/identity sentence frozen into the share snapshot;
+- [ ] approved curated illustration asset version frozen into the share snapshot;
+- [ ] production OG/portrait templates visually approved with real hero art;
+- [ ] production site origin configured and deployment-level crawler preview verified;
+- [ ] final cache/revocation behavior verified against deployed CDN/social preview constraints.
+
+The development fallback card proves deterministic/private-safe plumbing; it does not satisfy the final curated-art requirement in **PCS-SOC-001**.
 
 ### 4B Analytics/monitoring — PENDING
 - [ ] event dictionary;
