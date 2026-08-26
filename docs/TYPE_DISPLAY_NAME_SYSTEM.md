@@ -55,9 +55,9 @@ These are editorial labels, not professions, credentials, or ability rankings.
 
 | Code | Draft action | Meaning boundary |
 |---|---|---|
-| `PF` | 熟成 | prepare + deepen familiar territory |
+| `PF` | 深化 | prepare + deepen familiar territory |
 | `PN` | 構想 | prepare + explore novel options |
-| `EF` | 遂行 | execute + deepen familiar territory |
+| `EF` | 実践 | execute + deepen familiar territory |
 | `EN` | 開拓 | execute + explore novel territory |
 
 The action term describes approach tendency only. It does not imply productivity, courage, creativity, or competence beyond measured dimensions.
