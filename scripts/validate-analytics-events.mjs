@@ -27,6 +27,15 @@ for (const event of dictionary.events ?? []) {
   if (!allowedSources.has(event.source)) errors.push(`${event.name}: invalid source`);
   if (!allowedScopes.has(event.session_scope)) errors.push(`${event.name}: invalid session_scope`);
 
+  const propertyKeys = new Set(Object.keys(event.properties ?? {}));
+  if (!Array.isArray(event.required_properties)) {
+    errors.push(`${event.name}: required_properties array is required`);
+  } else {
+    for (const requiredKey of event.required_properties) {
+      if (!propertyKeys.has(requiredKey)) errors.push(`${event.name}: required property ${requiredKey} is not defined`);
+    }
+  }
+
   for (const [key, spec] of Object.entries(event.properties ?? {})) {
     if (forbidden.has(key)) errors.push(`${event.name}: forbidden analytics property ${key}`);
     if (!/^[A-Za-z][A-Za-z0-9]{1,63}$/.test(key)) errors.push(`${event.name}: invalid property key ${key}`);
