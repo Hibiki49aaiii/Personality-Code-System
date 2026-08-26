@@ -1,7 +1,7 @@
 # Personality Code System — Master Requirements & Delivery Checklist
 
 > Status: authoritative development contract
-> Version: 0.6.0
+> Version: 0.7.0
 > Last updated: 2026-08-26
 
 This file is the single top-level source of truth for PCS scope and delivery status. Detailed requirements live under `docs/requirements/`.
@@ -111,12 +111,20 @@ Detailed requirements: [`docs/requirements/04_CODE_AND_RESULT_ENGINE.md`](docs/r
 
 ## 6. Type content and illustrations
 
-- [ ] **PCS-CONTENT-001** Versioned published Core Type catalog exists for every reachable public code.
+- [ ] **PCS-CONTENT-001** Versioned published Core Type catalog exists for every reachable public code. *(Phase 3A draft foundation now enumerates all 64 reachable non-public C01D codes; public schema + authored catalog remain open.)*
 - [ ] **PCS-CONTENT-002** Editorial content modules cover every required result domain.
 - [ ] **PCS-CONTENT-003** Adversarial analysis modules describe failure modes without insults/diagnoses/deterministic certainty.
 - [ ] **PCS-ART-001** Single coherent illustration art direction defined.
 - [ ] **PCS-ART-002** One curated hero illustration per published Core Type.
 - [ ] **PCS-ART-003** Runtime image generation prohibited; result artwork uses curated versioned assets.
+
+Current Phase 3A development artifacts:
+
+- `docs/model/TYPE_CATALOG_SPEC_v0.1-dev.md` — draft catalog/publication/provenance contract;
+- `data/type-catalog/v0.1-dev/reachability.json` — exact 64-code C01D reachability manifest;
+- `scripts/validate-type-catalog.mjs` — 2^6 reachability/symbol/order/neighbor/public-use invariant validator.
+
+These artifacts are deliberately `public_use=false` and do not complete `PCS-CONTENT-001`.
 
 Detailed requirements: [`docs/requirements/05_CONTENT_AND_ILLUSTRATION.md`](docs/requirements/05_CONTENT_AND_ILLUSTRATION.md)
 
@@ -178,7 +186,7 @@ Detailed requirements: [`docs/requirements/09_SOCIAL_SHARING_AND_ANALYTICS.md`](
 
 ## 11. Testing and QA
 
-- [x] **PCS-QA-001** CI performs Item Bank validation, persistence migration validation, real PostgreSQL integration, application/domain tests, TypeScript typecheck, production build, and Chromium browser E2E.
+- [x] **PCS-QA-001** CI performs requirement-ID validation, development type-catalog reachability validation, Item Bank validation, persistence migration validation, real PostgreSQL/application/domain tests, TypeScript typecheck, production build, and Chromium browser E2E.
 - [x] **PCS-QA-002** Unit tests cover the complete current domain pipeline including interactions, content selection/suppression, confidence/version handling and fail-closed result composition.
 - [x] **PCS-QA-003** Fixed structured-result Golden Snapshot verifies deterministic output and input-order invariance.
 - [x] **PCS-QA-004** Browser E2E covers anonymous start → back/edit → 147 answers → result/reload and private-result isolation. *(Optional public share remains Phase 4.)*
@@ -211,7 +219,7 @@ Detailed requirements: [`docs/requirements/11_RELEASE_OPERATIONS.md`](docs/requi
 - [x] Phase 2A — complete deterministic domain result engine + Golden Snapshot.
 - [x] Phase 2B — PostgreSQL/Drizzle persistence + model immutability + anonymous private-result persistence foundation.
 - [x] Phase 2C — real assessment/result UX and server/web wiring, including Chromium 147-answer E2E.
-- [ ] Phase 3A — public Core Type/content catalog.
+- [ ] Phase 3A — public Core Type/content catalog. *(ACTIVE: non-public C01D 64-code reachability/provenance foundation complete; naming/editorial/public promotion remain.)*
 - [ ] Phase 3B — illustrations.
 - [ ] Phase 4A — social sharing/OG.
 - [ ] Phase 4B — analytics/monitoring.
@@ -225,6 +233,7 @@ Detailed exit criteria: [`docs/requirements/12_DELIVERY_PHASES.md`](docs/require
 ## 14. Traceability
 
 - [x] Requirement-to-code/test matrix maintained: [`docs/TRACEABILITY_MATRIX.md`](docs/TRACEABILITY_MATRIX.md).
+- [x] Requirement declaration IDs are machine-checked for unapproved Master shadowing/duplicates by `scripts/validate-requirement-ids.mjs`.
 - [ ] Every checked production implementation requirement has final release-grade evidence. *(Phase-specific conceptual/development completions are labeled as such.)*
 - [ ] Requirement changes/release notes continuously record rationale and affected model/content versions through production lifecycle.
 
