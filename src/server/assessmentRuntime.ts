@@ -9,7 +9,7 @@ import type { AnonymousAssessmentState } from '../infrastructure/persistence/ano
 import { getContentModulesForVersion } from '../infrastructure/persistence/contentRepository';
 import { createPcsDatabaseConnection, type PcsDatabase } from '../infrastructure/persistence/database';
 
-export const DEVELOPMENT_ASSESSMENT_MODEL_VERSION = 'assessment-dev-v0.1';
+export const DEVELOPMENT_ASSESSMENT_MODEL_VERSION = 'assessment-dev-v0.2';
 export const DEVELOPMENT_ASSESSMENT_LOCALE = 'ja-JP';
 export const RESULT_SCHEMA_VERSION = 'structured-result-v0.1-dev';
 
