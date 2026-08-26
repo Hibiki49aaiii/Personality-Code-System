@@ -12,6 +12,25 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: pcs
+          POSTGRES_PASSWORD: pcs
+          POSTGRES_DB: pcs
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U pcs -d pcs"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+
+    env:
+      DATABASE_URL: postgres://pcs:pcs@localhost:5432/pcs
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,6 +48,9 @@ jobs:
 
       - name: Validate persistence schema
         run: npm run validate:persistence
+
+      - name: PostgreSQL persistence integration
+        run: npm run test:persistence:integration
 
       - name: Domain and infrastructure tests
         run: npm run test:domain
