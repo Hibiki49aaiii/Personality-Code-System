@@ -1,6 +1,12 @@
 import { drizzle, type PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
-import * as schema from './schema';
+import * as assessmentSchema from './schema';
+import * as sharingSchema from './sharingSchema';
+
+const schema = {
+  ...assessmentSchema,
+  ...sharingSchema
+};
 
 export type PcsDatabase = PostgresJsDatabase<typeof schema>;
 
