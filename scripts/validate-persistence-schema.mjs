@@ -55,6 +55,7 @@ const requiredFragments = [
   ['result snapshot version guard', /CREATE TRIGGER\s+result_snapshots_version_guard/i],
   ['public share insert/privacy guard', /CREATE TRIGGER\s+public_share_snapshots_insert_guard/i],
   ['public share immutable/revocation guard', /CREATE TRIGGER\s+public_share_snapshots_update_guard/i],
+  ['public share auto-revoke on private deletion', /CREATE TRIGGER\s+result_snapshots_revoke_public_shares_before_delete/i],
   ['public share source lookup index', /CREATE INDEX\s+public_share_snapshots_source_idx/i],
   ['public share source detach on private deletion', /source_result_snapshot_id\s+uuid\s+REFERENCES\s+result_snapshots\(snapshot_id\)\s+ON DELETE SET NULL/i],
   ['public share prohibited diagnostic field guard', /public share snapshot contains a prohibited diagnostic\/private field/i],
