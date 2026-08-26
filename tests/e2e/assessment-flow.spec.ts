@@ -75,6 +75,15 @@ test('anonymous user completes the private result and can explicitly create then
   const shareUrl = await shareLink.getAttribute('href');
   expect(shareUrl).toMatch(/^http:\/\/localhost:3000\/s\/[A-Za-z0-9_-]{43}$/);
 
+  await expect(page.getByRole('button', { name: '端末で共有' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'リンクをコピー' })).toBeVisible();
+  const xShare = page.getByRole('link', { name: 'X', exact: true });
+  const lineShare = page.getByRole('link', { name: 'LINE', exact: true });
+  await expect(xShare).toHaveAttribute('href', /twitter\.com\/intent\/tweet/);
+  await expect(lineShare).toHaveAttribute('href', /social-plugins\.line\.me\/lineit\/share/);
+  expect(await xShare.getAttribute('href')).toContain(encodeURIComponent(shareUrl!));
+  expect(await lineShare.getAttribute('href')).toContain(encodeURIComponent(shareUrl!));
+
   const publicContext = await browser.newContext();
   const publicPage = await publicContext.newPage();
   await publicPage.goto(shareUrl!);
