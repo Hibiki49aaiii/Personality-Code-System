@@ -1,39 +1,28 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { PersistenceError } from '../../../infrastructure/persistence/anonymousAssessmentRepository';
-import { ModelDeliveryError } from '../../../infrastructure/persistence/modelDelivery';
-import { RuntimeModelAssetError } from '../../../application/assessment/runtimeModelAssets';
+import { AssessmentModelRepositoryError } from '../../../infrastructure/persistence/assessmentModelRepository';
+import { ContentRepositoryError } from '../../../infrastructure/persistence/contentRepository';
+import {
+  ASSESSMENT_SESSION_COOKIE,
+  assessmentCookieOptions
+} from '../../../server/assessmentCookie';
 
-export const ASSESSMENT_SESSION_COOKIE = 'pcs_session';
+export { ASSESSMENT_SESSION_COOKIE };
 
 export function getAssessmentToken(request: NextRequest): string | undefined {
   const value = request.cookies.get(ASSESSMENT_SESSION_COOKIE)?.value;
   return value?.trim() || undefined;
 }
 
-export function setAssessmentSessionCookie(
-  response: NextResponse,
-  token: string,
-  expiresAt: Date
-): void {
-  response.cookies.set({
-    name: ASSESSMENT_SESSION_COOKIE,
-    value: token,
-    httpOnly: true,
-    sameSite: 'lax',
-    secure: process.env.NODE_ENV === 'production',
-    path: '/',
-    expires: expiresAt
-  });
+export function setAssessmentSessionCookie(response: NextResponse, token: string): void {
+  response.cookies.set(ASSESSMENT_SESSION_COOKIE, token, assessmentCookieOptions());
 }
 
 export function clearAssessmentSessionCookie(response: NextResponse): void {
   response.cookies.set({
     name: ASSESSMENT_SESSION_COOKIE,
     value: '',
-    httpOnly: true,
-    sameSite: 'lax',
-    secure: process.env.NODE_ENV === 'production',
-    path: '/',
+    ...assessmentCookieOptions(),
     expires: new Date(0),
     maxAge: 0
   });
@@ -60,7 +49,7 @@ export function assessmentApiError(error: unknown): NextResponse {
     return response;
   }
 
-  if (error instanceof ModelDeliveryError || error instanceof RuntimeModelAssetError) {
+  if (error instanceof AssessmentModelRepositoryError || error instanceof ContentRepositoryError) {
     return noStoreJson(
       { error: error.code, message: 'Versioned assessment model is temporarily unavailable.' },
       { status: 503 }
