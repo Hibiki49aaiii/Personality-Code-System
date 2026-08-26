@@ -46,6 +46,9 @@ jobs:
       - name: Validate requirement IDs
         run: npm run validate:requirements
 
+      - name: Validate type catalog reachability
+        run: npm run validate:type-catalog
+
       - name: Validate item bank
         run: npm run validate:item-bank
 
