@@ -1,7 +1,7 @@
 # Personality Code System — Master Requirements & Delivery Checklist
 
 > Status: authoritative development contract
-> Version: 0.4.0
+> Version: 0.5.0
 > Last updated: 2026-08-26
 
 This file is the single top-level source of truth for PCS scope and delivery status. Detailed requirements live under `docs/requirements/`.
@@ -68,7 +68,7 @@ Detailed requirements: [`docs/requirements/02_DIAGNOSTIC_MODEL.md`](docs/require
 
 - [x] **PCS-SCORE-001** 6–8 candidate items authored per retained Trait. *(147 = 21 × 7.)*
 - [x] **PCS-SCORE-002** Complete per-item wording/construct-purity review recorded. *(98 accept-r1 / 39 revise-r2 / 10 hold-for-beta.)*
-- [ ] **PCS-SCORE-003** Every item/scoring key is versioned through a formal production active-model release/freeze lifecycle. *(Revision/model metadata exist; production activation process still pending.)*
+- [ ] **PCS-SCORE-003** Every item/scoring key is versioned through a formal production active-model release/freeze lifecycle. *(Revision/model metadata and DB release records exist; final production activation workflow remains Phase 5C.)*
 - [x] **PCS-SCORE-004** Deterministic normalized Trait scoring implemented. *(Canonical integer `score_bp` 0..10000.)*
 - [x] **PCS-SCORE-005** Deterministic response-quality metadata baseline implemented separately from Trait Scores; it does not label deception.
 - [x] **PCS-SCORE-006** Golden/manual fixtures and input/order invariance tests prove exact current-layer reproducibility.
@@ -88,17 +88,24 @@ Detailed requirements: [`docs/requirements/03_ITEM_BANK_AND_SCORING.md`](docs/re
 
 - [x] **PCS-RESULT-001** Core Code dimensions/rules specified and implemented as a versioned deterministic **experimental engineering schema**. `C01D` remains `public_use=false` pending beta evidence.
 - [x] **PCS-RESULT-002** Extended Code syntax/order/bands/version behavior specified and implemented (`PCSX1`) as an experimental engineering format.
-- [ ] **PCS-RESULT-003** Deterministic content-module selection implemented.
-- [ ] **PCS-RESULT-004** Contradiction-prevention/precedence/suppression implemented and fixture-tested.
-- [ ] **PCS-RESULT-005** Immutable result snapshots persisted with all required model/content/asset versions.
+- [x] **PCS-RESULT-003** Deterministic content-module selection implemented from versioned structured diagnostic output.
+- [x] **PCS-RESULT-004** Contradiction-prevention/precedence/suppression implemented and fixture-tested.
+- [ ] **PCS-RESULT-005** Immutable result snapshots persisted with all required model/content/asset versions. *(Current dev snapshot + PostgreSQL immutability are implemented/tested; curated illustration asset/version linkage remains Phase 3.)*
 
 Current development Core anchors: SYS, VER, AUT, EXE, NOV, RDP. They are direct measured Trait anchors, not claimed latent factors. The 64 theoretical combinations are a compression consequence, not a claim that the measurement model was designed around 64 types.
 
-Artifacts:
+Current result-engine artifacts:
 
 - [`docs/model/CORE_CODE_SPEC_v0.1-dev.md`](docs/model/CORE_CODE_SPEC_v0.1-dev.md);
 - `data/code-schema/v0.1-dev.json`;
-- `src/domain/assessment/personalityCode.ts`.
+- `data/interactions/v0.1.json`;
+- `data/content/dev-v0.1.json`;
+- `src/domain/assessment/personalityCode.ts`;
+- `src/domain/assessment/interactions.ts`;
+- `src/domain/assessment/contentComposer.ts`;
+- `src/domain/assessment/resultEngine.ts`;
+- `src/domain/assessment/resultSnapshot.ts`;
+- `tests/fixtures/golden-result-snapshot-midpoint-v0.1.json`.
 
 Detailed requirements: [`docs/requirements/04_CODE_AND_RESULT_ENGINE.md`](docs/requirements/04_CODE_AND_RESULT_ENGINE.md)
 
@@ -128,21 +135,32 @@ Detailed requirements: [`docs/requirements/06_FRONTEND_RESPONSIVE_UX.md`](docs/r
 
 ## 8. Application architecture and data
 
-- [x] **PCS-ARCH-001** Diagnostic domain logic is framework-independent and separately testable from UI. *(Current scoring/review/code modules compile/test without Next.js/React.)*
-- [ ] **PCS-ARCH-002** Database schema supports anonymous sessions, model versions, items, answers, scores, snapshots, content, and assets.
-- [ ] **PCS-ARCH-003** Raw answers never embedded into public URLs/social cards.
-- [ ] **PCS-ARCH-004** Published model/result snapshots immutable and auditable in persistence.
-- [ ] **PCS-ARCH-005** Database migrations/rollback procedure defined before production persistence.
+- [x] **PCS-ARCH-001** Diagnostic domain logic is framework-independent and separately testable from UI/database.
+- [x] **PCS-ARCH-002** Database schema supports anonymous sessions, model versions, items/revisions, answers, scores, snapshots, content, and asset references.
+- [ ] **PCS-ARCH-003** Raw answers never embedded into public URLs/social cards. *(Raw answers are already separated from private result snapshots; public-share implementation/audit remains Phase 4.)*
+- [x] **PCS-ARCH-004** Published model/content and retained result snapshots are immutable/auditable in persistence. *(PostgreSQL triggers + real integration tests.)*
+- [x] **PCS-ARCH-005** Database migrations/rollback procedure defined before production persistence. *(ADR + ordered committed migrations + validator + PostgreSQL CI; deployment recovery rehearsal remains OPS work.)*
+
+Persistence artifacts:
+
+- `docs/adr/ADR-0001-persistence-postgresql-drizzle.md`;
+- `drizzle/0000_phase2b_persistence.sql`;
+- `drizzle/0001_phase2b_immutability_hardening.sql`;
+- `src/infrastructure/persistence/schema.ts`;
+- `src/infrastructure/persistence/sessionToken.ts`;
+- `src/infrastructure/persistence/database.ts`;
+- `src/infrastructure/persistence/anonymousAssessmentRepository.ts`;
+- `docs/model/PERSISTENCE_RETENTION_BASELINE_v0.1.md`.
 
 Detailed requirements: [`docs/requirements/07_APPLICATION_ARCHITECTURE_AND_DATA.md`](docs/requirements/07_APPLICATION_ARCHITECTURE_AND_DATA.md)
 
 ## 9. Privacy and security
 
-- [ ] **PCS-PRIV-001** Anonymous assessment default in real flow.
+- [ ] **PCS-PRIV-001** Anonymous assessment default in real web flow. *(Server persistence contract exists; Phase 2C UI/HTTP wiring pending.)*
 - [ ] **PCS-PRIV-002** Collect only data required for diagnosis/reliability/operation/consented features.
 - [ ] **PCS-PRIV-003** Raw answers/personality scores excluded from third-party analytics payloads by default.
 - [ ] **PCS-PRIV-004** Public/shareable result persistence requires explicit user action.
-- [ ] **PCS-SEC-001** Secure session tokens, validation, rate limits, security headers, dependency scanning.
+- [ ] **PCS-SEC-001** Secure session tokens, validation, rate limits, security headers, dependency scanning. *(256-bit hash-only session credential and DB validation implemented; remaining web/security controls pending.)*
 - [ ] **PCS-LEGAL-001** Privacy/terms/diagnostic limitations/data deletion-retention explanation before public launch.
 
 Detailed requirements: [`docs/requirements/08_PRIVACY_SECURITY.md`](docs/requirements/08_PRIVACY_SECURITY.md)
@@ -160,10 +178,10 @@ Detailed requirements: [`docs/requirements/09_SOCIAL_SHARING_AND_ANALYTICS.md`](
 
 ## 11. Testing and QA
 
-- [x] **PCS-QA-001** CI performs authored/reviewed Item Bank validation, domain tests, TypeScript typecheck, and production build.
-- [ ] **PCS-QA-002** Unit tests cover the complete domain pipeline including interaction engine, content selection, confidence/version handling. *(Scoring/code layers already covered; composer remains.)*
-- [ ] **PCS-QA-003** Complete structured result Golden snapshots verify deterministic outputs.
-- [ ] **PCS-QA-004** E2E covers anonymous start → answers → result → optional share.
+- [x] **PCS-QA-001** CI performs Item Bank validation, persistence migration validation, real PostgreSQL integration, domain/infrastructure tests, TypeScript typecheck, and production build.
+- [x] **PCS-QA-002** Unit tests cover the complete current domain pipeline including interactions, content selection/suppression, confidence/version handling and fail-closed result composition.
+- [x] **PCS-QA-003** Fixed structured-result Golden Snapshot verifies deterministic output and input-order invariance.
+- [ ] **PCS-QA-004** Browser E2E covers anonymous start → answers → result → optional share.
 - [ ] **PCS-QA-005** Automated accessibility + manual keyboard/mobile checks.
 - [ ] **PCS-QA-006** Visual regression at critical responsive widths.
 - [ ] **PCS-QA-007** Security/privacy checklist before release.
@@ -190,9 +208,9 @@ Detailed requirements: [`docs/requirements/11_RELEASE_OPERATIONS.md`](docs/requi
 - [x] Phase 1B — overlap + interaction conceptual/hypothesis freeze.
 - [x] Phase 1C — 147-item reviewed candidate bank v0.2.
 - [x] Phase 1D — deterministic scoring + experimental Core/Extended Code engineering specification.
-- [ ] Phase 2A — complete domain result engine. *(Scoring/code complete; interaction/composer/result schema pending.)*
-- [ ] Phase 2B — persistence/model versioning.
-- [ ] Phase 2C — real assessment/result UX.
+- [x] Phase 2A — complete deterministic domain result engine + Golden Snapshot.
+- [x] Phase 2B — PostgreSQL/Drizzle persistence + model immutability + anonymous private-result persistence foundation.
+- [ ] Phase 2C — real assessment/result UX and server/web wiring.
 - [ ] Phase 3A — public Core Type/content catalog.
 - [ ] Phase 3B — illustrations.
 - [ ] Phase 4A — social sharing/OG.
