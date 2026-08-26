@@ -5,6 +5,7 @@ import {
   revokePublicSharesForPrivateResult
 } from '../../../infrastructure/persistence/publicShareRepository';
 import { withPcsDatabase } from '../../../server/assessmentRuntime';
+import { getSiteOrigin } from '../../../server/siteOrigin';
 import {
   getAssessmentToken,
   noStoreJson
@@ -40,7 +41,7 @@ export async function POST(request: NextRequest) {
       createPublicShareForPrivateResult(db, { privateToken })
     );
 
-    const shareUrl = new URL(`/s/${created.token}`, request.nextUrl.origin).toString();
+    const shareUrl = new URL(`/s/${created.token}`, getSiteOrigin()).toString();
     return noStoreJson({
       shareUrl,
       coreCode: created.snapshot.coreCode,
