@@ -2,21 +2,65 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getPublicShareByToken } from '../../../infrastructure/persistence/publicShareRepository';
 import { withPcsDatabase } from '../../../server/assessmentRuntime';
+import { getSiteOrigin } from '../../../server/siteOrigin';
 import styles from './share.module.css';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-export const metadata: Metadata = {
-  title: 'PCS Shared Result',
-  description: 'Personality Code System の公開共有結果',
-  robots: {
-    index: false,
-    follow: false,
-    nocache: true
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ token: string }>;
+}): Promise<Metadata> {
+  const { token } = await params;
+
+  let result = null;
+  try {
+    result = await withPcsDatabase((db) => getPublicShareByToken(db, token));
+  } catch (error) {
+    console.error('Failed to build public share metadata', error);
   }
-};
+
+  if (!result) {
+    return {
+      metadataBase: getSiteOrigin(),
+      title: '共有リンクを利用できません | Personality Code System',
+      description: 'このPCS共有リンクは無効化されたか、利用できません。',
+      robots: { index: false, follow: false, nocache: true }
+    };
+  }
+
+  const snapshot = result.snapshot;
+  const displayName = snapshot.presentation.displayName;
+  const title = displayName
+    ? `${displayName} — ${snapshot.coreCode}`
+    : `${snapshot.coreCode} — Personality Code System`;
+  const description = snapshot.presentation.identitySentence
+    ?? `Personality Code System の共有結果: ${snapshot.coreCode}`;
+  const ogPath = `/api/share/og/v0.1/${token}`;
+
+  return {
+    metadataBase: getSiteOrigin(),
+    title,
+    description,
+    robots: { index: false, follow: false, nocache: true },
+    openGraph: {
+      title,
+      description,
+      type: 'website',
+      locale: 'ja_JP',
+      images: [{ url: ogPath, width: 1200, height: 630, alt: `PCS ${snapshot.coreCode}` }]
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [ogPath]
+    }
+  };
+}
 
 export default async function PublicSharePage({
   params
