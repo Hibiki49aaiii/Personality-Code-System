@@ -19,7 +19,8 @@
     "test:seed:dev": "node -e \"require('fs').rmSync('.tmp-tests',{recursive:true,force:true})\" && tsc -p tsconfig.domain-tests.json && node tests/infrastructure/development-seed.integration.mjs && node --test .tmp-tests/tests/infrastructure/assessment-model-repository.integration.test.js .tmp-tests/tests/application/server-assessment-service.integration.test.js",
     "test:e2e": "playwright test",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate"
+    "db:migrate": "drizzle-kit migrate",
+    "validate:analytics": "node scripts/validate-analytics-events.mjs"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",
