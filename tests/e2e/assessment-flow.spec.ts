@@ -92,11 +92,17 @@ test('anonymous user completes the private result and can explicitly create then
   expect(ogResponse.status()).toBe(200);
   expect(ogResponse.headers()['content-type']).toContain('image/png');
   expect(ogResponse.headers()['x-pcs-share-template']).toBe('share-og-v0.1-dev');
+  const repeatedOgResponse = await publicContext.request.get(`/api/share/og/v0.1/${shareToken}`);
+  expect(repeatedOgResponse.status()).toBe(200);
+  expect(Buffer.compare(await ogResponse.body(), await repeatedOgResponse.body())).toBe(0);
 
   const portraitResponse = await publicContext.request.get(`/api/share/card/v0.1/${shareToken}`);
   expect(portraitResponse.status()).toBe(200);
   expect(portraitResponse.headers()['content-type']).toContain('image/png');
   expect(portraitResponse.headers()['x-pcs-share-template']).toBe('share-portrait-v0.1-dev');
+  const repeatedPortraitResponse = await publicContext.request.get(`/api/share/card/v0.1/${shareToken}`);
+  expect(repeatedPortraitResponse.status()).toBe(200);
+  expect(Buffer.compare(await portraitResponse.body(), await repeatedPortraitResponse.body())).toBe(0);
   await expect(page.getByRole('link', { name: '縦型画像' })).toHaveAttribute(
     'href',
     `/api/share/card/v0.1/${shareToken}`
