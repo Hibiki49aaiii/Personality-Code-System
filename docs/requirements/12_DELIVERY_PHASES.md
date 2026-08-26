@@ -162,9 +162,9 @@ This does **not** promote `C01D` or development fallback copy to public/validate
 
 ## Phase 3 — Content identity system
 
-### 3A Core Type/content catalog — ACTIVE; development reachability foundation complete
+### 3A Core Type/content catalog — ACTIVE
 
-The public-code evidence gate remains Phase 5C. Phase 3A therefore proceeds in two layers: build a complete non-public engineering catalog against C01D now, then promote/reconcile it only after a `public_use=true` schema is chosen.
+The public-code evidence gate remains Phase 5C. Phase 3A therefore builds a complete non-public engineering/editorial catalog against C01D now, while keeping human editorial approval and public promotion as explicit later gates.
 
 #### 3A-0 Development catalog foundation — COMPLETE
 - [x] catalog contract separates engineering reachability from public taxonomy claims;
@@ -175,17 +175,32 @@ The public-code evidence gate remains Phase 5C. Phase 3A therefore proceeds in t
 - [x] CI recomputes 2^6 reachability and rejects missing/duplicate/impossible/order-drift codes;
 - [x] catalog and source schema are both forced to remain `public_use=false` at this development stage.
 
-#### 3A-1 Editorial draft catalog — ACTIVE
-- [ ] coherent Japanese naming system approved for the 64 C01D development entries;
-- [ ] all 64 entries receive draft public-type names and identity sentences;
-- [ ] concise overviews authored with claim provenance;
-- [ ] strengths and adversarial/failure-mode content authored from the same measurements;
-- [ ] relationship/love, work, stress and growth profiles authored;
-- [ ] one-axis neighbor differentiation reviewed for every entry;
-- [ ] contradiction/suppression behavior reviewed against 21-Trait/interaction detail output;
-- [ ] Japanese editorial QA.
+#### 3A-1 Deterministic editorial engineering — IMPLEMENTED; CI evidence refresh pending
+- [x] 14 provenance-backed Core editorial primitives cover 8 cognitive/governance × 4 action/exploration × 2 relationship modes;
+- [x] all 64 Core Codes materialize deterministic Core Identity, Hidden Strengths and Adversarial/Failure modules (192 type modules);
+- [x] 21 Traits have low/mid/high editorial bands (63 Trait modules);
+- [x] detailed development content v0.3 covers all 18 result domains for the midpoint Golden case without selected fallbacks;
+- [x] `assessment-dev-v0.1`, `v0.2`, `v0.3` remain separate immutable development releases instead of overwriting historical content;
+- [x] v0.3 Golden Result Snapshot fixture exists and exact-equality test is wired into the domain suite;
+- [x] deterministic Japanese display-name grammar is versioned in `display-name-system.ja.json`;
+- [x] all 64 reachable codes materialize unique draft display names and identity sentences;
+- [x] six-axis display-name provenance and one-axis neighbor differentiation are machine-validated;
+- [ ] latest full CI run proves validators + Golden v0.3 + PostgreSQL + typecheck + build + Chromium E2E together.
 
-#### 3A-2 Public promotion gate — PENDING on Phase 5C
+#### 3A-2 Human editorial approval — PENDING
+- [ ] all 64 draft names reviewed side-by-side for awkwardness, repetition and unintended connotations;
+- [ ] coherent Japanese naming system formally approved for public-facing use;
+- [ ] concise Core overviews human-edited where generated composition reads mechanically;
+- [ ] strengths/adversarial wording reviewed for symmetry and non-abusive directness;
+- [ ] relationship/love, work, stress and growth copy reviewed as a complete user dossier;
+- [ ] one-axis neighbor differentiation human-reviewed for every entry;
+- [ ] all 20 Interaction outcomes reviewed against Trait-band/Core copy for contradictions and suppression gaps;
+- [ ] Japanese proofreading/editorial QA complete;
+- [ ] mobile/result/share-card typography tested with the longest names.
+
+Current draft display-name rule and review contract are documented in `docs/TYPE_DISPLAY_NAME_SYSTEM.md`. A development display name is not a final public type name merely because CI can generate it.
+
+#### 3A-3 Public promotion gate — PENDING on Phase 5C
 - [ ] public code schema frozen for target production model/version (`public_use=true`);
 - [ ] development entries reconciled/migrated to every reachable public code;
 - [ ] all mandatory result domains covered by production editorial content;
