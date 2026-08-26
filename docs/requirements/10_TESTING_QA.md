@@ -2,7 +2,7 @@
 
 ## QA principle
 
-PCS correctness means more than “the page renders.” A release must verify diagnostic determinism, historical reproducibility, responsive usability, accessibility, privacy boundaries, and deployment integrity.
+PCS correctness means more than “the page renders.” A release must verify diagnostic determinism, historical reproducibility, responsive usability, accessibility, privacy boundaries, database integrity, and deployment integrity.
 
 ## Test layers
 
@@ -21,51 +21,88 @@ MUST cover:
 - threshold/tie behavior;
 - interaction activation;
 - content precedence/conflict suppression;
+- structured result composition;
 - result snapshot serialization;
-- version lookup/backward reading.
+- version mismatch/fail-closed behavior.
+
+Current domain suite covers all current Phase 2A engine components. Production public content and future model versions add new fixtures rather than replacing historical ones.
 
 ### 2. Golden diagnostic fixtures
 
-For each published model keep fixed answer fixtures with exact expected:
+For each publishable model keep fixed answer/result fixtures with exact expected:
 
-- raw/normalized scores;
+- normalized scores;
 - confidence fields;
-- Core Type;
+- Core Type/Code;
 - Extended Code;
 - interaction IDs;
-- selected content module IDs/order;
+- selected/suppressed content module IDs/order;
 - serialized snapshot essentials.
 
-Golden tests are release-blocking. A changed expected result requires an intentional model/content version decision, not casual fixture regeneration.
+Current development golden fixture:
+
+- `tests/fixtures/golden-result-snapshot-midpoint-v0.1.json`.
+
+`tests/domain/result-snapshot.test.ts` compares the generated snapshot to this fixed artifact exactly and also verifies answer-order invariance.
+
+Golden tests are release-blocking. A changed expected result requires an intentional model/content/version decision, not casual fixture regeneration.
 
 ### 3. Property/invariant tests
 
-Where feasible verify:
+Current and required invariants include:
 
 - same input/version always equals same output;
-- answer input order does not alter result;
+- answer/score input order does not alter result;
 - invalid option values never produce scores;
 - score remains in valid range;
-- no inactive item affects active model;
-- a public share payload never contains raw answers/session secrets.
+- duplicate/missing/unknown data fails;
+- inactive/off-model item cannot be persisted as an answer;
+- published model/content artifacts cannot mutate;
+- immutable result snapshot cannot update;
+- retention/privacy deletion remains possible;
+- public share payload must never contain raw answers/session secrets when Phase 4 is implemented.
 
-### 4. Integration tests
+### 4. Persistence integration tests
 
-MUST test:
+Current CI starts PostgreSQL 16 and runs the real migration chain.
 
-- start/resume anonymous session;
-- fetch active assessment model;
-- submit/save answer progress;
-- finalize complete session;
-- score and persist snapshot;
-- render historical result version;
-- create explicit share snapshot;
-- retrieve public sanitized share result;
-- failure behavior for unknown/expired/invalid IDs.
+`tests/infrastructure/postgres-integration.mjs` verifies at least:
+
+- ordered migration application;
+- published model row update/delete rejection;
+- published model-item insert/update rejection;
+- published content module/version mutation rejection;
+- immutable Trait/item revision behavior;
+- off-model answer rejection;
+- 1..5 answer database constraint;
+- scoring-version and `score_bp` constraints;
+- snapshot indexed-version/session/model consistency;
+- snapshot update rejection;
+- session completion prerequisites;
+- answer/session freeze after completion;
+- result-snapshot deletion remains available for retention/privacy handling.
+
+`tests/infrastructure/anonymous-assessment-repository.integration.test.ts` additionally verifies the real typed adapter:
+
+- anonymous session creation;
+- browser-facing raw token is not stored;
+- DB stores only SHA-256 token hash;
+- answer persistence;
+- transactional Trait Score + immutable Snapshot + completion;
+- private result retrieval via bearer token;
+- post-completion write rejection.
+
+Remaining Phase 2C/4 integration work:
+
+- HTTP/server-action start/resume endpoints;
+- active model delivery;
+- full 147-answer end-to-end finalization through web handlers;
+- explicit public share snapshot creation/retrieval;
+- unknown/expired/invalid HTTP error behavior.
 
 ### 5. End-to-end tests
 
-Critical user path:
+Critical future user path:
 
 `landing -> start -> answer all -> navigate back/edit -> finish -> result -> optional share`
 
@@ -97,7 +134,7 @@ Critical pages:
 - result hero;
 - long result domain;
 - adversarial section;
-- share card controls/public result.
+- share controls/public result once implemented.
 
 ## Accessibility QA
 
@@ -131,6 +168,8 @@ Release checks:
 - dependency vulnerability scan/review;
 - no AI API key/dependency required.
 
+Current persistence-specific privacy evidence includes hash-only anonymous session credentials and raw-answer separation from result snapshots.
+
 ## Performance QA
 
 Measure at least landing, assessment, and result pages. Investigate regressions in:
@@ -141,22 +180,26 @@ Measure at least landing, assessment, and result pages. Investigate regressions 
 - JS payload;
 - image weight;
 - server response time;
-- database/query latency after persistence is introduced.
+- database/query latency.
 
 ## CI gates
 
-Current minimum CI already includes:
+Current CI performs, in order:
 
-- TypeScript typecheck;
-- Next.js production build.
+1. reviewed Item Bank validation;
+2. persistence migration/static invariant validation;
+3. real PostgreSQL persistence + typed repository integration;
+4. domain/infrastructure unit and golden tests;
+5. TypeScript typecheck;
+6. Next.js production build.
 
-Before MVP feature completion add:
+Later release gates still require:
 
-- unit tests;
-- deterministic golden tests;
-- lint/static checks if adopted;
-- E2E smoke test;
-- dependency/security checks where practical.
+- browser E2E;
+- automated/manual accessibility;
+- visual regression;
+- security/dependency review;
+- performance budgets.
 
 ## Bug severity
 
@@ -165,6 +208,7 @@ Release-blocking examples:
 - same input gives different diagnostic result;
 - wrong type/code due to scoring bug;
 - historical result mutates after content/model update;
+- model/item/content publication can be silently rewritten;
 - answer leak in public/share/analytics path;
 - assessment unusable on supported mobile width;
 - keyboard cannot complete test;
