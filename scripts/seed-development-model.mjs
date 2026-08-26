@@ -105,8 +105,11 @@ try {
             (${item.id}, ${item.revision}, ${item.locale}, ${item.text}, ${item.rationale}, 'reviewed', ${item.introduced})
         `;
       } else {
-        assertSame(`${item.id}/${item.revision} text`, existingRevision[0].text, item.text);
-        assertSame(`${item.id}/${item.revision} rationale`, existingRevision[0].rationale, item.rationale);
+        const stored = existingRevision[0];
+        assertSame(`${item.id}/${item.revision} text`, stored.text, item.text);
+        assertSame(`${item.id}/${item.revision} rationale`, stored.rationale, item.rationale);
+        assertSame(`${item.id}/${item.revision} lifecycle`, stored.lifecycle_status, 'reviewed');
+        assertSame(`${item.id}/${item.revision} introduced version`, stored.introduced_item_bank_version, item.introduced);
       }
     }
 
@@ -125,7 +128,8 @@ try {
 
     for (const module of content.modules) {
       const existingModule = await tx`
-        SELECT module_id FROM content_modules
+        SELECT domain, priority, module_json
+        FROM content_modules
         WHERE content_version = ${CONTENT_VERSION} AND module_id = ${module.id}
       `;
       if (existingModule.length === 0) {
@@ -135,6 +139,11 @@ try {
           VALUES
             (${CONTENT_VERSION}, ${module.id}, ${module.domain}, ${module.priority}, ${tx.json(module)})
         `;
+      } else {
+        const stored = existingModule[0];
+        assertSame(`${module.id} domain`, stored.domain, module.domain);
+        assertSame(`${module.id} priority`, stored.priority, module.priority);
+        assert.deepEqual(stored.module_json, module, `${module.id} module JSON differs from versioned source`);
       }
     }
 
@@ -186,9 +195,11 @@ try {
         const item = reviewed[index];
         assertSame(`mapping ${index + 1} item`, mapping.item_id, item.id);
         assertSame(`mapping ${index + 1} revision`, mapping.item_revision, item.revision);
+        assertSame(`mapping ${index + 1} locale`, mapping.locale, item.locale);
         assertSame(`mapping ${index + 1} Trait`, mapping.trait_id, item.primary_trait);
         assertSame(`mapping ${index + 1} direction`, mapping.direction, item.direction);
         assertSame(`mapping ${index + 1} weight`, mapping.weight_milli, Math.round(item.weight * 1000));
+        assertSame(`mapping ${index + 1} required`, mapping.required, true);
       });
     }
 
@@ -202,7 +213,7 @@ try {
   });
 
   console.log(
-    `Development model seed verified: ${MODEL_VERSION}, ${manifest.expected_total_items} reviewed items, ${CONTENT_VERSION}. No versioned row was overwritten.`
+    `Development model seed verified: ${MODEL_VERSION}, ${manifest.expected_total_items} reviewed items, ${CONTENT_VERSION}. Existing versioned rows are drift-checked and never overwritten.`
   );
 } finally {
   await sql.end({ timeout: 5 });
