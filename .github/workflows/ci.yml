@@ -52,6 +52,9 @@ jobs:
       - name: PostgreSQL persistence integration
         run: npm run test:persistence:integration
 
+      - name: Reviewed development model seed integration
+        run: npm run test:seed:dev
+
       - name: Domain and infrastructure tests
         run: npm run test:domain
 
