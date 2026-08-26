@@ -117,7 +117,7 @@ export function validateProductEvent(input: {
   return {
     dictionaryVersion: dictionary.event_dictionary_version,
     name: definition.name,
-    source: definition.source,
+    source: input.source,
     sessionScope: definition.session_scope,
     properties: canonical
   };
