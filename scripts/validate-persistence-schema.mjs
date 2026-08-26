@@ -55,7 +55,7 @@ const requiredFragments = [
   ['result snapshot version guard', /CREATE TRIGGER\s+result_snapshots_version_guard/i],
   ['public share insert/privacy guard', /CREATE TRIGGER\s+public_share_snapshots_insert_guard/i],
   ['public share immutable/revocation guard', /CREATE TRIGGER\s+public_share_snapshots_update_guard/i],
-  ['public share active-source uniqueness', /CREATE UNIQUE INDEX\s+public_share_snapshots_active_source_uq/i],
+  ['public share source lookup index', /CREATE INDEX\s+public_share_snapshots_source_idx/i],
   ['public share source detach on private deletion', /source_result_snapshot_id\s+uuid\s+REFERENCES\s+result_snapshots\(snapshot_id\)\s+ON DELETE SET NULL/i],
   ['public share prohibited diagnostic field guard', /public share snapshot contains a prohibited diagnostic\/private field/i],
   ['published model immutable update trigger', /CREATE TRIGGER\s+assessment_model_release_immutable_update/i],
@@ -79,6 +79,9 @@ if (/\baccess_token\b(?!_hash)/i.test(sqlText)) {
 }
 if (/\bpublic_token\b(?!_hash)/i.test(sqlText)) {
   errors.push('migration appears to persist a raw public_token column');
+}
+if (/public_share_snapshots_active_source_uq/i.test(sqlText)) {
+  errors.push('public share migration must not force one active link per result when raw public tokens are hash-only');
 }
 
 for (const entry of migrationEntries) {
