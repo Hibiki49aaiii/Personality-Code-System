@@ -22,9 +22,8 @@ CREATE TABLE public_share_snapshots (
 CREATE UNIQUE INDEX public_share_snapshots_token_hash_uq
   ON public_share_snapshots(public_token_hash);
 
-CREATE UNIQUE INDEX public_share_snapshots_active_source_uq
-  ON public_share_snapshots(source_result_snapshot_id)
-  WHERE status = 'active' AND source_result_snapshot_id IS NOT NULL;
+CREATE INDEX public_share_snapshots_source_idx
+  ON public_share_snapshots(source_result_snapshot_id);
 
 CREATE INDEX public_share_snapshots_created_at_idx
   ON public_share_snapshots(created_at);
