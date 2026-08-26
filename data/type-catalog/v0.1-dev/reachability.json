@@ -1,0 +1,19 @@
+{
+  "catalog_version": "type-catalog-v0.1-dev",
+  "code_schema_version": "core-code-v0.1-dev",
+  "schema_token": "C01D",
+  "locale": "ja-JP",
+  "status": "draft-engineering",
+  "public_use": false,
+  "expected_type_count": 64,
+  "core_codes": [
+    "LTGPFB", "LTGPFD", "LTGPNB", "LTGPND", "LTGEFB", "LTGEFD", "LTGENB", "LTGEND",
+    "LTAPFB", "LTAPFD", "LTAPNB", "LTAPND", "LTAEFB", "LTAEFD", "LTAENB", "LTAEND",
+    "LVGPFB", "LVGPFD", "LVGPNB", "LVGPND", "LVGEFB", "LVGEFD", "LVGENB", "LVGEND",
+    "LVAPFB", "LVAPFD", "LVAPNB", "LVAPND", "LVAEFB", "LVAEFD", "LVAENB", "LVAEND",
+    "STGPFB", "STGPFD", "STGPNB", "STGPND", "STGEFB", "STGEFD", "STGENB", "STGEND",
+    "STAPFB", "STAPFD", "STAPNB", "STAPND", "STAEFB", "STAEFD", "STAENB", "STAEND",
+    "SVGPFB", "SVGPFD", "SVGPNB", "SVGPND", "SVGEFB", "SVGEFD", "SVGENB", "SVGEND",
+    "SVAPFB", "SVAPFD", "SVAPNB", "SVAPND", "SVAEFB", "SVAEFD", "SVAENB", "SVAEND"
+  ]
+}
