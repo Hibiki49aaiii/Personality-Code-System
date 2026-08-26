@@ -23,6 +23,7 @@ export interface AssessmentDeliveryItem {
   id: string;
   revision: string;
   text: string;
+  required: boolean;
 }
 
 export interface AssessmentDeliveryModel {
@@ -156,7 +157,8 @@ export async function getAssessmentDeliveryModel(
       position: row.position,
       id: row.itemId,
       revision: row.itemRevision,
-      text: row.text
+      text: row.text,
+      required: row.required
     }))
   };
 }
