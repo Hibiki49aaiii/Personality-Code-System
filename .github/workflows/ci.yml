@@ -11,7 +11,7 @@ permissions:
 jobs:
   validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
 
     services:
       postgres:
@@ -63,3 +63,9 @@ jobs:
 
       - name: Production build
         run: npm run build
+
+      - name: Install Chromium for E2E
+        run: npx playwright install --with-deps chromium
+
+      - name: Browser E2E — 147 items to private result
+        run: npm run test:e2e
