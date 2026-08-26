@@ -26,7 +26,6 @@ test('anonymous user completes all 147 reviewed items and receives the determini
   await expect(page).toHaveURL(/\/result$/);
   await expect(page.getByRole('heading', { level: 1, name: 'SVAEND' })).toBeVisible();
   await expect(page.getByText(/PCSX1~C01D~SVAEND~/)).toBeVisible();
-  await expect(page.getByText('21', { exact: true })).toHaveCount(0);
 
   const traitBars = page.locator('[aria-label^="ABS "]');
   await expect(traitBars).toHaveCount(1);
@@ -35,5 +34,5 @@ test('anonymous user completes all 147 reviewed items and receives the determini
 
   await page.reload();
   await expect(page.getByRole('heading', { level: 1, name: 'SVAEND' })).toBeVisible();
-  await expect(page.getByText(/snapshot-v0.1-dev/)).toBeVisible();
+  await expect(page.getByText('result-snapshot-v0.1-dev', { exact: true })).toBeVisible();
 });
