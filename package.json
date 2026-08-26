@@ -8,7 +8,7 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "validate:item-bank": "node scripts/validate-item-bank.mjs && node scripts/validate-reviewed-item-bank.mjs",
-    "test:domain": "node -e \"require('fs').rmSync('.tmp-tests',{recursive:true,force:true})\" && tsc -p tsconfig.domain-tests.json && node --test .tmp-tests/tests/domain/scoring.test.js .tmp-tests/tests/domain/candidate-bank.test.js .tmp-tests/tests/domain/reviewed-item-bank.test.js"
+    "test:domain": "node -e \"require('fs').rmSync('.tmp-tests',{recursive:true,force:true})\" && tsc -p tsconfig.domain-tests.json && node --test .tmp-tests/tests/domain/scoring.test.js .tmp-tests/tests/domain/candidate-bank.test.js .tmp-tests/tests/domain/reviewed-item-bank.test.js .tmp-tests/tests/domain/personality-code.test.js"
   },
   "dependencies": {
     "next": "^16.3.0",

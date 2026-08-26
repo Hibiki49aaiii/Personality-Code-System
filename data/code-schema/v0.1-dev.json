@@ -1,0 +1,24 @@
+{
+  "code_schema_version": "core-code-v0.1-dev",
+  "schema_token": "C01D",
+  "status": "experimental-engineering",
+  "public_use": false,
+  "source_trait_dictionary": "TRAIT_DICTIONARY_v0.2",
+  "boundary_rule": "score_bp >= threshold_bp selects high symbol; otherwise low symbol",
+  "boundary_margin_bp": 500,
+  "selection_note": "Direct measured traits are used as anchors to avoid inventing unvalidated composite latent factors. This six-axis candidate spans cognitive structure, evidence threshold, self-direction, action initiation, novelty orientation, and relational depth. Beta evidence may replace this schema with a new version.",
+  "axes": [
+    {"position":1,"trait_id":"SYS","threshold_bp":5000,"high_symbol":"S","low_symbol":"L","high_label_ja":"構造志向","low_label_ja":"局所志向"},
+    {"position":2,"trait_id":"VER","threshold_bp":5000,"high_symbol":"V","low_symbol":"T","high_label_ja":"検証重視","low_label_ja":"信頼受容"},
+    {"position":3,"trait_id":"AUT","threshold_bp":5000,"high_symbol":"A","low_symbol":"G","high_label_ja":"自律志向","low_label_ja":"ガイド志向"},
+    {"position":4,"trait_id":"EXE","threshold_bp":5000,"high_symbol":"E","low_symbol":"P","high_label_ja":"早期実行","low_label_ja":"準備優先"},
+    {"position":5,"trait_id":"NOV","threshold_bp":5000,"high_symbol":"N","low_symbol":"F","high_label_ja":"新奇探索","low_label_ja":"既知深化"},
+    {"position":6,"trait_id":"RDP","threshold_bp":5000,"high_symbol":"D","low_symbol":"B","high_label_ja":"深度志向","low_label_ja":"軽量・広がり志向"}
+  ],
+  "extended_format": {
+    "version": "PCSX1",
+    "band_boundaries_bp": [2000,4000,6000,8000],
+    "grammar": "PCSX1~<schema_token>~<core_code>~<TRAIT><band>.<TRAIT><band>...",
+    "trait_order": ["SYS","VER","ADV","ABS","META","EMO","COG","BND","RDP","REC","CON","AUT","EXE","OPT","FIN","NOV","PER","RSK","UNC","STR","CRE"]
+  }
+}
