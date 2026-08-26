@@ -27,6 +27,9 @@ jobs:
       - name: Validate item bank
         run: npm run validate:item-bank
 
+      - name: Domain scoring tests
+        run: npm run test:domain
+
       - name: Typecheck
         run: npm run typecheck
 
