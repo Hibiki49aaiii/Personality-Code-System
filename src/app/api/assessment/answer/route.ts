@@ -1,6 +1,6 @@
 import type { NextRequest } from 'next/server';
 import { savePublicAssessmentAnswer } from '../../../../application/assessment/serverAssessmentService';
-import { getServerPcsDatabase } from '../../../../infrastructure/persistence/serverDatabase';
+import { withPcsDatabase } from '../../../../server/assessmentRuntime';
 import { assessmentApiError, getAssessmentToken, noStoreJson } from '../_shared';
 
 export const runtime = 'nodejs';
@@ -18,11 +18,11 @@ export async function PUT(request: NextRequest) {
       return noStoreJson({ error: 'INVALID_REQUEST', message: '回答データが不正です。' }, { status: 400 });
     }
 
-    await savePublicAssessmentAnswer(getServerPcsDatabase(), {
+    await withPcsDatabase((db) => savePublicAssessmentAnswer(db, {
       token,
       itemId: body.itemId,
       value: body.value as number
-    });
+    }));
     return noStoreJson({ ok: true });
   } catch (error) {
     return assessmentApiError(error);
