@@ -1,0 +1,257 @@
+{
+  "event_dictionary_version": "analytics-events-v0.1-dev",
+  "status": "development",
+  "transport_policy": "first-party-only",
+  "third_party_export_default": false,
+  "forbidden_property_keys": [
+    "answer",
+    "answerValue",
+    "answer_value",
+    "rawAnswer",
+    "rawAnswers",
+    "answers",
+    "traitScores",
+    "traitVector",
+    "scoreBp",
+    "extendedCode",
+    "personalityCode",
+    "responseQuality",
+    "interactionActiveIds",
+    "resultProse",
+    "freeText",
+    "sessionToken",
+    "accessToken",
+    "publicToken",
+    "email",
+    "realName",
+    "preciseLocation"
+  ],
+  "allowed_property_types": [
+    "string",
+    "integer",
+    "boolean",
+    "enum"
+  ],
+  "events": [
+    {
+      "name": "landing_viewed",
+      "source": "client",
+      "session_scope": "none",
+      "properties": {
+        "viewportCategory": {
+          "type": "enum",
+          "values": [
+            "mobile",
+            "tablet",
+            "desktop"
+          ]
+        },
+        "locale": {
+          "type": "string",
+          "max_length": 16
+        }
+      }
+    },
+    {
+      "name": "assessment_started",
+      "source": "server",
+      "session_scope": "required",
+      "properties": {
+        "modelVersion": {
+          "type": "string",
+          "max_length": 64
+        },
+        "locale": {
+          "type": "string",
+          "max_length": 16
+        }
+      }
+    },
+    {
+      "name": "question_viewed",
+      "source": "client",
+      "session_scope": "required",
+      "properties": {
+        "modelVersion": {
+          "type": "string",
+          "max_length": 64
+        },
+        "itemPosition": {
+          "type": "integer",
+          "min": 1,
+          "max": 500
+        }
+      }
+    },
+    {
+      "name": "answer_interaction",
+      "source": "client",
+      "session_scope": "required",
+      "properties": {
+        "modelVersion": {
+          "type": "string",
+          "max_length": 64
+        },
+        "itemPosition": {
+          "type": "integer",
+          "min": 1,
+          "max": 500
+        },
+        "interactionType": {
+          "type": "enum",
+          "values": [
+            "selected",
+            "changed"
+          ]
+        }
+      }
+    },
+    {
+      "name": "assessment_resumed",
+      "source": "server",
+      "session_scope": "required",
+      "properties": {
+        "modelVersion": {
+          "type": "string",
+          "max_length": 64
+        },
+        "answeredCount": {
+          "type": "integer",
+          "min": 0,
+          "max": 500
+        }
+      }
+    },
+    {
+      "name": "assessment_completed",
+      "source": "server",
+      "session_scope": "required",
+      "properties": {
+        "modelVersion": {
+          "type": "string",
+          "max_length": 64
+        },
+        "answeredCount": {
+          "type": "integer",
+          "min": 0,
+          "max": 500
+        }
+      }
+    },
+    {
+      "name": "result_viewed",
+      "source": "server",
+      "session_scope": "required",
+      "properties": {
+        "modelVersion": {
+          "type": "string",
+          "max_length": 64
+        }
+      }
+    },
+    {
+      "name": "share_initiated",
+      "source": "client",
+      "session_scope": "required",
+      "properties": {
+        "modelVersion": {
+          "type": "string",
+          "max_length": 64
+        }
+      }
+    },
+    {
+      "name": "share_method_selected",
+      "source": "client",
+      "session_scope": "required",
+      "properties": {
+        "method": {
+          "type": "enum",
+          "values": [
+            "web-share",
+            "x",
+            "line",
+            "copy",
+            "portrait-card"
+          ]
+        }
+      }
+    },
+    {
+      "name": "share_snapshot_created",
+      "source": "server",
+      "session_scope": "required",
+      "properties": {
+        "shareSchemaVersion": {
+          "type": "string",
+          "max_length": 64
+        }
+      }
+    },
+    {
+      "name": "public_share_viewed",
+      "source": "server",
+      "session_scope": "none",
+      "properties": {
+        "shareSchemaVersion": {
+          "type": "string",
+          "max_length": 64
+        }
+      }
+    },
+    {
+      "name": "client_error",
+      "source": "client",
+      "session_scope": "optional",
+      "properties": {
+        "category": {
+          "type": "string",
+          "max_length": 64
+        },
+        "surface": {
+          "type": "string",
+          "max_length": 64
+        }
+      }
+    },
+    {
+      "name": "server_error",
+      "source": "server",
+      "session_scope": "optional",
+      "properties": {
+        "category": {
+          "type": "string",
+          "max_length": 64
+        },
+        "surface": {
+          "type": "string",
+          "max_length": 64
+        }
+      }
+    },
+    {
+      "name": "performance_measure",
+      "source": "client",
+      "session_scope": "optional",
+      "properties": {
+        "metric": {
+          "type": "enum",
+          "values": [
+            "LCP",
+            "INP",
+            "CLS",
+            "TTFB"
+          ]
+        },
+        "bucket": {
+          "type": "enum",
+          "values": [
+            "good",
+            "needs-improvement",
+            "poor"
+          ]
+        }
+      }
+    }
+  ]
+}
