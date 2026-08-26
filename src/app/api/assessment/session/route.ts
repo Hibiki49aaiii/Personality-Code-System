@@ -1,9 +1,9 @@
 import type { NextRequest } from 'next/server';
-import { getServerPcsDatabase } from '../../../../infrastructure/persistence/serverDatabase';
 import {
   getPublicAssessmentState,
   startOrResumeAnonymousAssessment
 } from '../../../../application/assessment/serverAssessmentService';
+import { withPcsDatabase } from '../../../../server/assessmentRuntime';
 import {
   assessmentApiError,
   getAssessmentToken,
@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const state = await getPublicAssessmentState(getServerPcsDatabase(), token);
+    const state = await withPcsDatabase((db) => getPublicAssessmentState(db, token));
     return noStoreJson(state);
   } catch (error) {
     return assessmentApiError(error);
@@ -30,12 +30,11 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const resumed = await startOrResumeAnonymousAssessment(
-      getServerPcsDatabase(),
-      getAssessmentToken(request)
+    const resumed = await withPcsDatabase((db) =>
+      startOrResumeAnonymousAssessment(db, getAssessmentToken(request))
     );
     const response = noStoreJson(resumed.state, { status: resumed.created ? 201 : 200 });
-    setAssessmentSessionCookie(response, resumed.token, resumed.expiresAt);
+    setAssessmentSessionCookie(response, resumed.token);
     return response;
   } catch (error) {
     return assessmentApiError(error);
