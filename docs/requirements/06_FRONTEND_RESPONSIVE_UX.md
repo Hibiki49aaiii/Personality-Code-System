@@ -1,16 +1,20 @@
 # 06 — Frontend, Responsive UX, Accessibility and Performance Requirements
 
+## Master-ID reservation
+
+`REQUIREMENTS.md` owns the top-level meanings of **PCS-FE-001..005**, **PCS-A11Y-001..002**, and **PCS-PERF-001**. This derivative file MUST NOT redefine them. Detailed responsive clauses use **PCS-FE-010+**.
+
 ## Visual/product direction
 
 PCS MUST look like an authored personality/identity publication rather than a generic AI SaaS product. `docs/DESIGN_SYSTEM.md` provides supporting direction; this file defines release requirements.
 
 ## Responsive architecture
 
-- **PCS-FE-001** Responsive behavior MUST be driven by CSS layout/media/container logic, not user-agent device detection.
-- **PCS-FE-002** Core functionality MUST work from 320 CSS px width upward.
-- **PCS-FE-003** Desktop and mobile may use different arrangements, but must expose equivalent diagnostic choices and information.
-- **PCS-FE-004** No core content may require horizontal scrolling at supported widths.
-- **PCS-FE-005** Breakpoints SHOULD be content-driven; device names are documentation shorthand only.
+- **PCS-FE-010** Responsive behavior MUST be driven by CSS layout/media/container logic, not user-agent device detection.
+- **PCS-FE-011** Core functionality MUST work from 320 CSS px width upward.
+- **PCS-FE-012** Desktop and mobile may use different arrangements, but must expose equivalent diagnostic choices and information.
+- **PCS-FE-013** No core content may require horizontal scrolling at supported widths.
+- **PCS-FE-014** Breakpoints SHOULD be content-driven; device names are documentation shorthand only.
 
 Mandatory verification widths:
 
@@ -20,6 +24,8 @@ Mandatory verification widths:
 - 1024
 - 1280
 - 1440+
+
+The existence of responsive CSS is not sufficient evidence for Master **PCS-FE-005**. The required widths must be explicitly exercised and recorded through visual/functional QA.
 
 ## Landing page
 
@@ -48,6 +54,20 @@ MUST provide:
 
 Desktop MAY use horizontal five-point responses. Narrow mobile SHOULD use full-width vertical rows when needed. The semantic order/value mapping MUST remain identical.
 
+### Current Phase 2C implementation evidence
+
+The real assessment UI now consumes the server-delivered reviewed development model rather than prototype questions. Browser E2E verifies:
+
+- anonymous session start;
+- real 147-item progress;
+- answer save;
+- back navigation and answer edit;
+- completion;
+- result navigation;
+- result persistence after reload.
+
+This satisfies the current implementation scope of Master **PCS-FE-003**, but does not close responsive-width or accessibility release gates.
+
 ## Result page
 
 The result SHOULD read like a personal dossier/editorial profile rather than a metrics dashboard.
@@ -64,6 +84,8 @@ Required hierarchy:
 8. Method/version/limitations access.
 
 Charts must be interpretable and not imply false precision beyond the scoring system.
+
+The current development result page renders deterministic Core/Extended Code, 21 canonical Trait scores, response-quality metadata, 18 structured result domains, immutable version metadata and private-result state. Final public type name/illustration/share controls remain later phases. This is the implementation evidence for Master **PCS-FE-004** at the Phase 2C development level.
 
 ## Accessibility
 
@@ -84,6 +106,8 @@ Release-blocking baseline:
 - errors associated with relevant controls.
 
 Target WCAG level: practical WCAG 2.2 AA conformity for user-facing core flows, with documented exceptions if any.
+
+Current browser E2E uses pointer interaction and is **not** evidence that Master PCS-A11Y-001/002 are complete.
 
 ## Motion
 
