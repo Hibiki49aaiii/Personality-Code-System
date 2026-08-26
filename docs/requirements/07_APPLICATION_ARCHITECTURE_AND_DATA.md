@@ -10,8 +10,10 @@ Current logical layers:
 
 - `src/domain/assessment` — item/model/scoring/code/interaction/result logic; pure and database-independent.
 - `src/infrastructure/persistence` — PostgreSQL/Drizzle schema, connection, anonymous-session credential and persistence adapter.
-- `data/*` — versioned model/rule/content development artifacts.
-- `app` — routes/rendering; real persistence wiring remains Phase 2C.
+- `src/application/assessment` — application orchestration from persisted model/session state into the deterministic domain result.
+- `src/server` — server runtime database lifecycle/model asset assembly.
+- `data/*` — versioned model/rule/content/type-catalog development artifacts.
+- `src/app` — Next.js routes/rendering and the real Phase 2C HTTP/UI boundary.
 
 Dependency direction MUST keep domain logic independent from React components, database adapters and external services.
 
@@ -88,7 +90,20 @@ Production-style credential contract is implemented in `src/infrastructure/persi
 - writable operations require `in_progress` and non-expired session state;
 - completed sessions reject further answer/score/session mutation at DB and adapter layers.
 
-The real HTTP/cookie transport is Phase 2C and MUST use secure server-side handling.
+Phase 2C HTTP transport is now implemented with an HttpOnly, SameSite=Lax cookie; production mode adds `Secure`. The raw bearer token is not placed into route paths, query strings or client storage APIs.
+
+## Phase 2C HTTP/application boundary
+
+Current private assessment routes are intentionally narrow:
+
+- `/api/assessment/session` — start/resume public assessment state;
+- `/api/assessment/answer` — persist one model-bound answer;
+- `/api/assessment/complete` — deterministic finalization/idempotent completion;
+- `/api/assessment/result` — private completed-result retrieval.
+
+`src/application/assessment/serverAssessmentService.ts` orchestrates these routes using the persisted session/model version as source of truth. Client requests do not supply scoring direction, weight, item revision, code-schema version or content version.
+
+Model delivery is server-resolved from persisted release mappings. Unknown/unsupported version assets fail closed rather than silently falling back to another scoring definition.
 
 ## Answer/model integrity
 
@@ -128,6 +143,8 @@ The persistence adapter writes Trait scores + snapshot + session-completion tran
 
 `getPrivateResultByAnonymousToken` resolves a completed private result by hashing the opaque bearer token server-side. It returns the sanitized result snapshot rather than raw answers.
 
+The real result page and `/api/assessment/result` use that private bearer-cookie boundary. Chromium E2E verifies that the same browser can reload the completed result and a fresh browser context without the cookie cannot access it.
+
 This is **not** a public share URL. Public share IDs and share snapshots remain Phase 4 and require explicit user action.
 
 ## Public result links
@@ -151,6 +168,7 @@ Default private results MUST NOT be indexed publicly.
 - Internal row identifiers use UUID where appropriate.
 - Canonical Trait scores use integer basis points.
 - PostgreSQL timestamps are `timestamptz` and application code treats them as instants.
+- Development type-catalog IDs are version/schema-qualified (`C01D-<CORE_CODE>`) and cannot be silently reused by a future public schema.
 
 ## Retention baseline
 
@@ -195,6 +213,8 @@ Client validation is UX only and never a security boundary.
 
 Caching MAY be used for static type/content/result assets, but cache keys MUST include versions where stale content could alter result representation.
 
+Assessment/result API responses containing private state use private/no-store semantics.
+
 ## Error handling
 
 - Scoring/persistence integrity errors fail closed: do not fabricate a result.
@@ -205,7 +225,7 @@ Caching MAY be used for static type/content/result assets, but cache keys MUST i
 ## Current requirement status
 
 - **PCS-ARCH-001 — COMPLETE:** diagnostic domain is framework/database independent and separately tested.
-- **PCS-ARCH-002 — COMPLETE as Phase 2B persistence foundation:** schema supports model versions, anonymous sessions, items/revisions, answers, scores, content/assets and result snapshots.
-- **PCS-ARCH-003 — PARTIAL:** raw answers are separated from snapshots and adapter retrieval, but public URL/social-card implementation/audit is Phase 4.
+- **PCS-ARCH-002 — COMPLETE as Phase 2B/2C persistence foundation:** schema and real application wiring support model versions, anonymous sessions, items/revisions, answers, scores, content/assets and result snapshots.
+- **PCS-ARCH-003 — PARTIAL:** raw answers are separated from URLs/private snapshots/result retrieval, but public URL/social-card implementation/audit is Phase 4.
 - **PCS-ARCH-004 — COMPLETE for current persistence layer:** published model/content and result immutability are enforced by PostgreSQL and integration-tested.
 - **PCS-ARCH-005 — COMPLETE as migration policy/foundation:** ADR, ordered committed migrations, validator, PostgreSQL CI and rollback approach exist; deployment-specific backup/recovery rehearsal remains release-operations work.
