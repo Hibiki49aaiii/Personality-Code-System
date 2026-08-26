@@ -87,36 +87,74 @@ Exit: a complete answer set can be deterministically converted to Trait Scores a
 
 ## Phase 2 — Functional deterministic MVP
 
-### 2A Domain engine — IN PROGRESS
+### 2A Domain engine — COMPLETE as deterministic development pipeline
 - [x] assessment/scoring types and validation;
 - [x] reviewed item-bank materialization;
 - [x] deterministic Trait scoring;
 - [x] response-quality v0.1 baseline;
 - [x] Core/Extended Code generation;
-- [ ] executable interaction engine;
-- [ ] deterministic content-module data model;
-- [ ] content selection/suppression composer;
-- [ ] result structured schema;
-- [ ] integrated golden result snapshots.
+- [x] executable 20-rule interaction engine;
+- [x] deterministic content-module data model;
+- [x] assertion/suppression/priority content composer;
+- [x] 18-domain structured result schema;
+- [x] missing required result domain fails closed;
+- [x] integrated result engine from answers through sections;
+- [x] fixed Golden Result Snapshot fixture and exact-equality regression test;
+- [x] input-order and version-mismatch regression tests.
 
-Exit: one pure domain pipeline can transform versioned answers/model data into a complete structured result independent of Next.js/UI.
+Exit achieved: one pure domain pipeline transforms versioned answers/model data into a complete structured result independent of Next.js/UI and AI services.
 
-### 2B Persistence/model versioning — PENDING
-- [ ] database/ORM ADR;
-- [ ] schema/migrations;
-- [ ] anonymous sessions;
-- [ ] answers;
-- [ ] model version records;
-- [ ] immutable result snapshots;
-- [ ] retention baseline.
+Production editorial copy and public type taxonomy remain Phase 3/5 work.
+
+### 2B Persistence/model versioning — COMPLETE as persistence foundation
+- [x] PostgreSQL + Drizzle ADR;
+- [x] typed relational schema;
+- [x] ordered committed SQL migrations;
+- [x] migration/static invariant validator;
+- [x] PostgreSQL 16 integration service in CI;
+- [x] anonymous 256-bit bearer-session credential with SHA-256 hash-only DB storage;
+- [x] anonymous session persistence adapter;
+- [x] answer upsert persistence;
+- [x] canonical Trait Score persistence;
+- [x] model version records + model-item revision mappings;
+- [x] result snapshot JSONB + indexed exact version metadata;
+- [x] DB-level result snapshot UPDATE rejection;
+- [x] published model row and child-item immutability;
+- [x] immutable Trait/item revisions;
+- [x] published content-version/module immutability;
+- [x] model-bound answer and scoring-version integrity triggers;
+- [x] snapshot session/model/embedded-version coherence trigger;
+- [x] completion guard requiring required answers, scores and snapshot;
+- [x] completed-session mutation freeze;
+- [x] retention/privacy snapshot deletion remains possible;
+- [x] transactional adapter: Trait Scores + Snapshot + completion transition;
+- [x] private completed-result retrieval by opaque bearer token;
+- [x] retention engineering baseline documented;
+- [x] migration + DB invariant + typed repository integration tests pass in CI.
+
+Exit achieved for persistence foundation: the application has a tested server-side persistence contract for anonymous assessments and immutable private results.
+
+Not implied by this completion:
+
+- public share URLs (Phase 4);
+- final legal retention promises (Phase 6 gate);
+- production deployment/database backup rehearsal (release operations);
+- final illustration asset linkage in result snapshots (Phase 3);
+- final public assessment model release workflow (Phase 5C).
 
 ### 2C Real assessment/result UX — PENDING
-- [ ] replace prototype questions with reviewed/active model data;
-- [ ] resume/back/edit behavior;
-- [ ] final submit behavior;
+- [ ] seed/load the reviewed development assessment model through the persistence/model delivery layer;
+- [ ] replace prototype questions with reviewed/active real item data;
+- [ ] start anonymous session through server-only persistence adapter;
+- [ ] store bearer token in secure same-site transport without exposing it in URLs;
+- [ ] answer save/resume/back/edit behavior;
+- [ ] final submit invokes deterministic result engine + persistence transaction;
+- [ ] duplicate-submit/idempotency behavior;
 - [ ] real structured result rendering;
 - [ ] method/version/limitations display;
-- [ ] private-by-default result behavior.
+- [ ] private-by-default result retrieval;
+- [ ] expired/invalid session UX;
+- [ ] browser E2E for start → 147 answers → result.
 
 Exit for Phase 2: anonymous user can complete a real deterministic assessment end-to-end with no AI service.
 
@@ -125,7 +163,7 @@ Exit for Phase 2: anonymous user can complete a real deterministic assessment en
 ### 3A Core Type/content catalog — PENDING
 - [ ] public code schema frozen for target model/version;
 - [ ] all reachable Core Types cataloged;
-- [ ] all mandatory result domains covered;
+- [ ] all mandatory result domains covered by production editorial content;
 - [ ] contradiction/suppression coverage reviewed;
 - [ ] adversarial analysis reviewed;
 - [ ] Japanese editorial QA.
@@ -135,7 +173,8 @@ Exit for Phase 2: anonymous user can complete a real deterministic assessment en
 - [ ] type-to-asset mapping;
 - [ ] one curated hero asset per published reachable type;
 - [ ] responsive/OG/portrait crops;
-- [ ] fallback behavior.
+- [ ] fallback behavior;
+- [ ] result snapshot/share representation references exact curated asset version.
 
 Exit: no published result can resolve to missing required copy or visual assets.
 
@@ -179,6 +218,7 @@ Exit: no published result can resolve to missing required copy or visual assets.
 ### 5C Model/public code v1.0 freeze — PENDING
 - [ ] final active item set;
 - [ ] production scoring/model version;
+- [ ] formal model-release activation/freeze procedure;
 - [ ] public Core Code schema (`public_use=true`) chosen from evidence;
 - [ ] Extended Code compatibility decision;
 - [ ] content compatibility;
@@ -190,7 +230,7 @@ A public code schema may differ from development `C01D`; that change is expected
 
 ## Phase 6 — Public web release — PENDING
 - [ ] all release-operation gates;
-- [ ] domain + E2E + responsive + accessibility + security suites;
+- [ ] domain + persistence + E2E + responsive + accessibility + security suites;
 - [ ] legal/privacy pages match implementation;
 - [ ] rollback/readiness confirmed;
 - [ ] release version/tag;
