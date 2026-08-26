@@ -38,14 +38,22 @@ test('anonymous user edits an answer, completes all 147 reviewed items, and rece
   await expect(page.getByRole('heading', { level: 1, name: 'SVAEND' })).toBeVisible();
   await expect(page.getByText(/PCSX1~C01D~SVAEND~/)).toBeVisible();
 
+  // Phase 3A development editorial catalog is now part of content-dev-v0.2.
+  await expect(page.getByText(/深度・開拓実行型 自律検証設計者/)).toBeVisible();
+  await expect(page.getByText('DEV-TYPE-SVAEND-IDENTITY', { exact: true })).toBeVisible();
+  await expect(page.getByText('DEV-TYPE-SVAEND-STRENGTHS', { exact: true })).toBeVisible();
+  await expect(page.getByText('DEV-TYPE-SVAEND-ADVERSARIAL', { exact: true })).toBeVisible();
+  await expect(page.getByText('content-dev-v0.2', { exact: true })).toBeVisible();
+
   const traitBars = page.locator('[aria-label^="ABS "]');
   await expect(traitBars).toHaveCount(1);
   await expect(traitBars).toHaveAttribute('aria-label', 'ABS 50.00');
-  await expect(page.locator('code')).toHaveCount(18);
+  await expect(page.locator('code')).toHaveCount(19);
 
   await page.reload();
   await expect(page.getByRole('heading', { level: 1, name: 'SVAEND' })).toBeVisible();
   await expect(page.getByText('result-snapshot-v0.1-dev', { exact: true })).toBeVisible();
+  await expect(page.getByText('DEV-TYPE-SVAEND-IDENTITY', { exact: true })).toBeVisible();
 });
 
 test('private result is not retrievable in a fresh browser context without the bearer cookie', async ({ page }) => {
