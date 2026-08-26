@@ -1,9 +1,9 @@
 import {
   renderShareImage,
   unavailableShareImage
-} from '../../../../_image';
-import { getPublicShareByToken } from '../../../../../../../infrastructure/persistence/publicShareRepository';
-import { withPcsDatabase } from '../../../../../../../server/assessmentRuntime';
+} from '../../../_image';
+import { getPublicShareByToken } from '../../../../../../infrastructure/persistence/publicShareRepository';
+import { withPcsDatabase } from '../../../../../../server/assessmentRuntime';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
