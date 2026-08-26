@@ -1,7 +1,7 @@
 # Personality Code System — Master Requirements & Delivery Checklist
 
 > Status: authoritative development contract
-> Version: 0.5.0
+> Version: 0.6.0
 > Last updated: 2026-08-26
 
 This file is the single top-level source of truth for PCS scope and delivery status. Detailed requirements live under `docs/requirements/`.
@@ -35,12 +35,12 @@ Detailed governance: [`docs/requirements/00_GOVERNANCE.md`](docs/requirements/00
 ## 2. Product scope
 
 - [ ] **PCS-PROD-001** Public landing page clearly explains what PCS measures and does not claim.
-- [ ] **PCS-PROD-002** Assessment can start without registration.
-- [ ] **PCS-PROD-003** User can complete a real assessment and receive a real result.
-- [ ] **PCS-PROD-004** Result includes Core Type/Code, Extended Code, Trait summary, confidence metadata, and narrative domains.
-- [ ] **PCS-PROD-005** Result includes strengths and adversarial/failure-mode analysis.
-- [ ] **PCS-PROD-006** Result includes dedicated relationships/love, work, and stress sections.
-- [ ] **PCS-PROD-007** Public saving/sharing occurs only through explicit user action.
+- [x] **PCS-PROD-002** Assessment can start without registration. *(Anonymous HttpOnly bearer-cookie flow implemented and browser-tested.)*
+- [x] **PCS-PROD-003** User can complete a real assessment and receive a real result. *(Reviewed 147-item development model; production calibration remains later.)*
+- [x] **PCS-PROD-004** Result includes Core Type/Code, Extended Code, Trait summary, confidence metadata, and narrative domains. *(Current content is development-versioned, not final editorial copy.)*
+- [ ] **PCS-PROD-005** Result includes strengths and adversarial/failure-mode analysis. *(Domain structure exists; production editorial coverage remains Phase 3.)*
+- [x] **PCS-PROD-006** Result includes dedicated relationships/love, work, and stress sections. *(Structured domains are rendered from versioned modules.)*
+- [ ] **PCS-PROD-007** Public saving/sharing occurs only through explicit user action. *(No public sharing exists yet; Phase 4 will implement and verify this.)*
 - [x] **PCS-PROD-008** Compatibility is excluded from MVP until its own deterministic/versioned specification exists.
 
 Detailed scope: [`docs/requirements/01_PRODUCT_SCOPE.md`](docs/requirements/01_PRODUCT_SCOPE.md)
@@ -96,7 +96,7 @@ Current development Core anchors: SYS, VER, AUT, EXE, NOV, RDP. They are direct 
 
 Current result-engine artifacts:
 
-- [`docs/model/CORE_CODE_SPEC_v0.1-dev.md`](docs/model/CORE_CODE_SPEC_v0.1-dev.md);
+- [`docs/model/CORE_CODE_SPEC_v0.1-dev.md`](docs/model/CORE_CODE_SPEC_v0.1-dev);
 - `data/code-schema/v0.1-dev.json`;
 - `data/interactions/v0.1.json`;
 - `data/content/dev-v0.1.json`;
@@ -124,8 +124,8 @@ Detailed requirements: [`docs/requirements/05_CONTENT_AND_ILLUSTRATION.md`](docs
 
 - [x] **PCS-FE-001** Next.js App Router + React + TypeScript foundation exists.
 - [x] **PCS-FE-002** Initial responsive non-AI visual system exists.
-- [ ] **PCS-FE-003** Assessment UX implemented against reviewed/active real item model.
-- [ ] **PCS-FE-004** Result dossier UX implemented against real structured result schema.
+- [x] **PCS-FE-003** Assessment UX implemented against reviewed/active real item model. *(147 reviewed items, save/resume/back/edit, browser E2E.)*
+- [x] **PCS-FE-004** Result dossier UX implemented against real structured result schema. *(21 Traits + Core/Extended Code + 18 versioned sections + method metadata.)*
 - [ ] **PCS-FE-005** Layouts verified at 320, 375/390, 768, 1024, 1280, 1440+ CSS px.
 - [ ] **PCS-A11Y-001** Keyboard-only assessment completion works.
 - [ ] **PCS-A11Y-002** Semantic labeling, focus, contrast, zoom, motion, and touch-target checks pass.
@@ -137,7 +137,7 @@ Detailed requirements: [`docs/requirements/06_FRONTEND_RESPONSIVE_UX.md`](docs/r
 
 - [x] **PCS-ARCH-001** Diagnostic domain logic is framework-independent and separately testable from UI/database.
 - [x] **PCS-ARCH-002** Database schema supports anonymous sessions, model versions, items/revisions, answers, scores, snapshots, content, and asset references.
-- [ ] **PCS-ARCH-003** Raw answers never embedded into public URLs/social cards. *(Raw answers are already separated from private result snapshots; public-share implementation/audit remains Phase 4.)*
+- [ ] **PCS-ARCH-003** Raw answers never embedded into public URLs/social cards. *(Current private flow keeps raw answers out of URLs/snapshots; public-share implementation/audit remains Phase 4.)*
 - [x] **PCS-ARCH-004** Published model/content and retained result snapshots are immutable/auditable in persistence. *(PostgreSQL triggers + real integration tests.)*
 - [x] **PCS-ARCH-005** Database migrations/rollback procedure defined before production persistence. *(ADR + ordered committed migrations + validator + PostgreSQL CI; deployment recovery rehearsal remains OPS work.)*
 
@@ -156,11 +156,11 @@ Detailed requirements: [`docs/requirements/07_APPLICATION_ARCHITECTURE_AND_DATA.
 
 ## 9. Privacy and security
 
-- [ ] **PCS-PRIV-001** Anonymous assessment default in real web flow. *(Server persistence contract exists; Phase 2C UI/HTTP wiring pending.)*
+- [x] **PCS-PRIV-001** Anonymous assessment default in real web flow. *(No account; opaque 256-bit token stored only as hash server-side; browser carries HttpOnly/SameSite cookie.)*
 - [ ] **PCS-PRIV-002** Collect only data required for diagnosis/reliability/operation/consented features.
 - [ ] **PCS-PRIV-003** Raw answers/personality scores excluded from third-party analytics payloads by default.
 - [ ] **PCS-PRIV-004** Public/shareable result persistence requires explicit user action.
-- [ ] **PCS-SEC-001** Secure session tokens, validation, rate limits, security headers, dependency scanning. *(256-bit hash-only session credential and DB validation implemented; remaining web/security controls pending.)*
+- [ ] **PCS-SEC-001** Secure session tokens, validation, rate limits, security headers, dependency scanning. *(Token/validation/cookie controls exist; rate limiting, full security headers and dependency-security gate remain.)*
 - [ ] **PCS-LEGAL-001** Privacy/terms/diagnostic limitations/data deletion-retention explanation before public launch.
 
 Detailed requirements: [`docs/requirements/08_PRIVACY_SECURITY.md`](docs/requirements/08_PRIVACY_SECURITY.md)
@@ -178,10 +178,10 @@ Detailed requirements: [`docs/requirements/09_SOCIAL_SHARING_AND_ANALYTICS.md`](
 
 ## 11. Testing and QA
 
-- [x] **PCS-QA-001** CI performs Item Bank validation, persistence migration validation, real PostgreSQL integration, domain/infrastructure tests, TypeScript typecheck, and production build.
+- [x] **PCS-QA-001** CI performs Item Bank validation, persistence migration validation, real PostgreSQL integration, application/domain tests, TypeScript typecheck, production build, and Chromium browser E2E.
 - [x] **PCS-QA-002** Unit tests cover the complete current domain pipeline including interactions, content selection/suppression, confidence/version handling and fail-closed result composition.
 - [x] **PCS-QA-003** Fixed structured-result Golden Snapshot verifies deterministic output and input-order invariance.
-- [ ] **PCS-QA-004** Browser E2E covers anonymous start → answers → result → optional share.
+- [x] **PCS-QA-004** Browser E2E covers anonymous start → back/edit → 147 answers → result/reload and private-result isolation. *(Optional public share remains Phase 4.)*
 - [ ] **PCS-QA-005** Automated accessibility + manual keyboard/mobile checks.
 - [ ] **PCS-QA-006** Visual regression at critical responsive widths.
 - [ ] **PCS-QA-007** Security/privacy checklist before release.
@@ -210,7 +210,7 @@ Detailed requirements: [`docs/requirements/11_RELEASE_OPERATIONS.md`](docs/requi
 - [x] Phase 1D — deterministic scoring + experimental Core/Extended Code engineering specification.
 - [x] Phase 2A — complete deterministic domain result engine + Golden Snapshot.
 - [x] Phase 2B — PostgreSQL/Drizzle persistence + model immutability + anonymous private-result persistence foundation.
-- [ ] Phase 2C — real assessment/result UX and server/web wiring.
+- [x] Phase 2C — real assessment/result UX and server/web wiring, including Chromium 147-answer E2E.
 - [ ] Phase 3A — public Core Type/content catalog.
 - [ ] Phase 3B — illustrations.
 - [ ] Phase 4A — social sharing/OG.
