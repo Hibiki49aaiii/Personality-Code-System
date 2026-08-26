@@ -90,6 +90,8 @@ export default function ShareControls({ coreCode }: ShareControlsProps) {
     }
   }
 
+  const shareToken = shareUrl ? shareUrl.split('/').filter(Boolean).at(-1) ?? null : null;
+  const portraitCardHref = shareToken ? `/api/share/card/v0.1/${shareToken}` : null;
   const xHref = shareUrl
     ? `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`
     : '#';
@@ -131,6 +133,9 @@ export default function ShareControls({ coreCode }: ShareControlsProps) {
             <a href={xHref} target="_blank" rel="noreferrer">X</a>
             <a href={lineHref} target="_blank" rel="noreferrer">LINE</a>
             <button type="button" onClick={copyLink}>リンクをコピー</button>
+            {portraitCardHref && (
+              <a href={portraitCardHref} download={`pcs-${coreCode}-portrait.png`}>縦型画像</a>
+            )}
           </div>
           <button
             className={styles.revoke}
