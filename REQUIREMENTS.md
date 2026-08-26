@@ -1,7 +1,7 @@
 # Personality Code System — Master Requirements & Delivery Checklist
 
 > Status: authoritative development contract
-> Version: 0.2.0
+> Version: 0.3.0
 > Last updated: 2026-08-26
 
 This file is the single top-level source of truth for product scope and delivery status. Detailed requirements live under `docs/requirements/` and are referenced from this master file.
@@ -64,12 +64,17 @@ Detailed model requirements: [`docs/requirements/02_DIAGNOSTIC_MODEL.md`](docs/r
 
 ## 4. Question bank and scoring
 
-- [ ] **PCS-SCORE-001** Author 6–8 candidate items per retained trait before pruning.
+- [x] **PCS-SCORE-001** Author 6–8 candidate items per retained trait before pruning. *(147 draft items: 21 traits × 7.)*
 - [ ] **PCS-SCORE-002** Review all items for double-barreling, desirability bias, jargon, ambiguity, and transparent “correct” answers.
-- [ ] **PCS-SCORE-003** Version every assessment item and scoring key.
+- [ ] **PCS-SCORE-003** Version every assessment item and scoring key. *(Item IDs/revisions exist; formal active scoring-model release procedure remains open.)*
 - [ ] **PCS-SCORE-004** Implement deterministic normalized trait scoring.
 - [ ] **PCS-SCORE-005** Implement confidence/response-quality metadata without labeling users deceptive.
 - [ ] **PCS-SCORE-006** Add golden fixtures proving exact reproducibility.
+
+Candidate bank:
+
+- [`data/item-bank/v0.1/manifest.json`](data/item-bank/v0.1/manifest.json)
+- [`docs/model/ITEM_BANK_REVIEW_v0.1.md`](docs/model/ITEM_BANK_REVIEW_v0.1.md)
 
 Detailed scoring: [`docs/requirements/03_ITEM_BANK_AND_SCORING.md`](docs/requirements/03_ITEM_BANK_AND_SCORING.md)
 
@@ -141,7 +146,7 @@ Detailed sharing/analytics: [`docs/requirements/09_SOCIAL_SHARING_AND_ANALYTICS.
 
 ## 11. Testing and QA
 
-- [x] **PCS-QA-001** CI performs TypeScript typecheck and production build.
+- [x] **PCS-QA-001** CI performs item-bank validation, TypeScript typecheck, and production build.
 - [ ] **PCS-QA-002** Unit tests cover scoring, normalization, code generation, content selection, confidence calculation, and version handling.
 - [ ] **PCS-QA-003** Golden result snapshots verify deterministic outputs.
 - [ ] **PCS-QA-004** End-to-end tests cover anonymous start → answer → result → optional share.
@@ -169,7 +174,7 @@ Detailed operations: [`docs/requirements/11_RELEASE_OPERATIONS.md`](docs/require
 - [x] Phase 0C — authoritative requirement system created.
 - [x] Phase 1A — Trait Dictionary v0.2. *(Conceptual/item-authoring freeze.)*
 - [x] Phase 1B — overlap + interaction matrix. *(Conceptual/hypothesis freeze.)*
-- [ ] Phase 1C — candidate item bank.
+- [x] Phase 1C — candidate item bank. *(147 `draft` candidates; full wording review still open under PCS-SCORE-002.)*
 - [ ] Phase 1D — scoring/code specification.
 - [ ] Phase 2A — real deterministic assessment engine.
 - [ ] Phase 2B — persistence/model versioning.

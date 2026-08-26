@@ -1,0 +1,29 @@
+{
+  "item_bank_version": "item-bank-v0.1",
+  "status": "draft",
+  "locale": "ja-JP",
+  "trait_dictionary": "TRAIT_DICTIONARY_v0.2",
+  "expected_trait_count": 21,
+  "expected_items_per_trait": 7,
+  "expected_total_items": 147,
+  "expected_direction_balance_per_trait": {"positive": 4, "reverse": 3},
+  "response_scale": {
+    "version": "likert-5-ja-v0.1",
+    "values": [
+      {"value": 1, "label": "まったく当てはまらない"},
+      {"value": 2, "label": "あまり当てはまらない"},
+      {"value": 3, "label": "どちらともいえない"},
+      {"value": 4, "label": "やや当てはまる"},
+      {"value": 5, "label": "とても当てはまる"}
+    ]
+  },
+  "trait_order": ["SYS","VER","ADV","ABS","META","EMO","COG","BND","RDP","REC","CON","AUT","EXE","OPT","FIN","NOV","PER","RSK","UNC","STR","CRE"],
+  "files": [
+    "cognitive.json",
+    "affect-relational.json",
+    "action-risk.json",
+    "resilience-creativity.json"
+  ],
+  "scoring_note": "Candidate items only. No production scoring model is frozen by this manifest.",
+  "revision_policy": "Semantic wording changes create a new item revision; published historical revisions are never overwritten."
+}
