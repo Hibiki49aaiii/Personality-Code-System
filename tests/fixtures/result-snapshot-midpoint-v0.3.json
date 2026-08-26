@@ -1,0 +1,96 @@
+{
+  "snapshotSchemaVersion": "result-snapshot-v0.1-dev",
+  "versions": {
+    "resultSchemaVersion": "structured-result-v0.1-dev",
+    "assessmentModelVersion": "assessment-dev-v0.3",
+    "itemBankVersion": "item-bank-v0.2",
+    "scoringVersion": "scoring-v0.1-dev",
+    "codeSchemaVersion": "core-code-v0.1-dev",
+    "interactionVersion": "trait-interactions-v0.1",
+    "contentVersion": "content-dev-v0.3"
+  },
+  "locale": "ja-JP",
+  "traitScores": [
+    {"traitId":"ABS","scoreBp":5000},{"traitId":"ADV","scoreBp":5000},{"traitId":"AUT","scoreBp":5000},
+    {"traitId":"BND","scoreBp":5000},{"traitId":"COG","scoreBp":5000},{"traitId":"CON","scoreBp":5000},
+    {"traitId":"CRE","scoreBp":5000},{"traitId":"EMO","scoreBp":5000},{"traitId":"EXE","scoreBp":5000},
+    {"traitId":"FIN","scoreBp":5000},{"traitId":"META","scoreBp":5000},{"traitId":"NOV","scoreBp":5000},
+    {"traitId":"OPT","scoreBp":5000},{"traitId":"PER","scoreBp":5000},{"traitId":"RDP","scoreBp":5000},
+    {"traitId":"REC","scoreBp":5000},{"traitId":"RSK","scoreBp":5000},{"traitId":"STR","scoreBp":5000},
+    {"traitId":"SYS","scoreBp":5000},{"traitId":"UNC","scoreBp":5000},{"traitId":"VER","scoreBp":5000}
+  ],
+  "responseQuality": {
+    "answerCount": 147,
+    "valueCounts": {"1":0,"2":0,"3":147,"4":0,"5":0},
+    "dominantResponseShareBp": 10000,
+    "extremeResponseShareBp": 0,
+    "flags": ["dominant_response_pattern","all_midpoint_responses"]
+  },
+  "personalityCode": {
+    "codeSchemaVersion": "core-code-v0.1-dev",
+    "schemaToken": "C01D",
+    "coreCode": "SVAEND",
+    "dimensions": [
+      {"position":1,"traitId":"SYS","scoreBp":5000,"thresholdBp":5000,"symbol":"S","pole":"high","distanceFromBoundaryBp":0,"nearBoundary":true},
+      {"position":2,"traitId":"VER","scoreBp":5000,"thresholdBp":5000,"symbol":"V","pole":"high","distanceFromBoundaryBp":0,"nearBoundary":true},
+      {"position":3,"traitId":"AUT","scoreBp":5000,"thresholdBp":5000,"symbol":"A","pole":"high","distanceFromBoundaryBp":0,"nearBoundary":true},
+      {"position":4,"traitId":"EXE","scoreBp":5000,"thresholdBp":5000,"symbol":"E","pole":"high","distanceFromBoundaryBp":0,"nearBoundary":true},
+      {"position":5,"traitId":"NOV","scoreBp":5000,"thresholdBp":5000,"symbol":"N","pole":"high","distanceFromBoundaryBp":0,"nearBoundary":true},
+      {"position":6,"traitId":"RDP","scoreBp":5000,"thresholdBp":5000,"symbol":"D","pole":"high","distanceFromBoundaryBp":0,"nearBoundary":true}
+    ],
+    "nearBoundaryCount": 6,
+    "extendedCode": "PCSX1~C01D~SVAEND~SYS3.VER3.ADV3.ABS3.META3.EMO3.COG3.BND3.RDP3.REC3.CON3.AUT3.EXE3.OPT3.FIN3.NOV3.PER3.RSK3.UNC3.STR3.CRE3"
+  },
+  "interactionActiveIds": [],
+  "content": {
+    "selectedIds": [
+      "DEV-LIMIT-001",
+      "DEV-TYPE-SVAEND-ADVERSARIAL","DEV-TYPE-SVAEND-IDENTITY","DEV-TYPE-SVAEND-STRENGTHS",
+      "DEV-TRAIT-ABS-MID","DEV-TRAIT-ADV-MID","DEV-TRAIT-AUT-MID","DEV-TRAIT-BND-MID","DEV-TRAIT-COG-MID",
+      "DEV-TRAIT-CON-MID","DEV-TRAIT-CRE-MID","DEV-TRAIT-EMO-MID","DEV-TRAIT-EXE-MID","DEV-TRAIT-FIN-MID",
+      "DEV-TRAIT-META-MID","DEV-TRAIT-NOV-MID","DEV-TRAIT-OPT-MID","DEV-TRAIT-PER-MID","DEV-TRAIT-RDP-MID",
+      "DEV-TRAIT-REC-MID","DEV-TRAIT-RSK-MID","DEV-TRAIT-STR-MID","DEV-TRAIT-SYS-MID","DEV-TRAIT-UNC-MID","DEV-TRAIT-VER-MID",
+      "DEV-TRAIT-OVERVIEW-VECTOR"
+    ],
+    "suppressed": [
+      {"id":"DEV-FALLBACK-ACTION","domain":"action","reason":"fallback-not-needed","blockingTags":[]},
+      {"id":"DEV-FALLBACK-ADV","domain":"adversarial","reason":"fallback-not-needed","blockingTags":[]},
+      {"id":"DEV-FALLBACK-COMM","domain":"communication","reason":"fallback-not-needed","blockingTags":[]},
+      {"id":"DEV-FALLBACK-CORE","domain":"core-identity","reason":"fallback-not-needed","blockingTags":[]},
+      {"id":"DEV-FALLBACK-CREATE","domain":"creativity","reason":"fallback-not-needed","blockingTags":[]},
+      {"id":"DEV-FALLBACK-DECISION","domain":"decision-making","reason":"fallback-not-needed","blockingTags":[]},
+      {"id":"DEV-FALLBACK-EMO","domain":"emotion","reason":"fallback-not-needed","blockingTags":[]},
+      {"id":"DEV-FALLBACK-GROWTH","domain":"growth","reason":"fallback-not-needed","blockingTags":[]},
+      {"id":"DEV-FALLBACK-HIDDEN","domain":"hidden-strengths","reason":"fallback-not-needed","blockingTags":[]},
+      {"id":"DEV-FALLBACK-LEAD","domain":"leadership-derived","reason":"fallback-not-needed","blockingTags":[]},
+      {"id":"DEV-FALLBACK-LEARN","domain":"learning","reason":"fallback-not-needed","blockingTags":[]},
+      {"id":"DEV-FALLBACK-LOVE","domain":"relationships-love","reason":"fallback-not-needed","blockingTags":[]},
+      {"id":"DEV-FALLBACK-MANUAL","domain":"personal-manual","reason":"fallback-not-needed","blockingTags":[]},
+      {"id":"DEV-FALLBACK-RISK","domain":"risk","reason":"fallback-not-needed","blockingTags":[]},
+      {"id":"DEV-FALLBACK-STRESS","domain":"stress","reason":"fallback-not-needed","blockingTags":[]},
+      {"id":"DEV-FALLBACK-THINK","domain":"thinking","reason":"fallback-not-needed","blockingTags":[]},
+      {"id":"DEV-FALLBACK-TRAITS","domain":"trait-overview","reason":"fallback-not-needed","blockingTags":[]},
+      {"id":"DEV-FALLBACK-WORK","domain":"work","reason":"fallback-not-needed","blockingTags":[]}
+    ]
+  },
+  "sections": [
+    {"domain":"core-identity","moduleIds":["DEV-LIMIT-001","DEV-TYPE-SVAEND-IDENTITY"]},
+    {"domain":"trait-overview","moduleIds":["DEV-TRAIT-OVERVIEW-VECTOR"]},
+    {"domain":"thinking","moduleIds":["DEV-TRAIT-ADV-MID","DEV-TRAIT-SYS-MID"]},
+    {"domain":"emotion","moduleIds":["DEV-TRAIT-COG-MID","DEV-TRAIT-EMO-MID"]},
+    {"domain":"action","moduleIds":["DEV-TRAIT-EXE-MID"]},
+    {"domain":"relationships-love","moduleIds":["DEV-TRAIT-RDP-MID","DEV-TRAIT-REC-MID"]},
+    {"domain":"work","moduleIds":["DEV-TRAIT-OPT-MID","DEV-TRAIT-PER-MID"]},
+    {"domain":"stress","moduleIds":["DEV-TRAIT-STR-MID","DEV-TRAIT-UNC-MID"]},
+    {"domain":"communication","moduleIds":["DEV-TRAIT-BND-MID","DEV-TRAIT-CON-MID"]},
+    {"domain":"decision-making","moduleIds":["DEV-TRAIT-VER-MID"]},
+    {"domain":"learning","moduleIds":["DEV-TRAIT-ABS-MID"]},
+    {"domain":"leadership-derived","moduleIds":["DEV-TRAIT-AUT-MID"]},
+    {"domain":"risk","moduleIds":["DEV-TRAIT-RSK-MID"]},
+    {"domain":"creativity","moduleIds":["DEV-TRAIT-CRE-MID","DEV-TRAIT-NOV-MID"]},
+    {"domain":"hidden-strengths","moduleIds":["DEV-TYPE-SVAEND-STRENGTHS"]},
+    {"domain":"adversarial","moduleIds":["DEV-TYPE-SVAEND-ADVERSARIAL"]},
+    {"domain":"growth","moduleIds":["DEV-TRAIT-META-MID"]},
+    {"domain":"personal-manual","moduleIds":["DEV-TRAIT-FIN-MID"]}
+  ]
+}
