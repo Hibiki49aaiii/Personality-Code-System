@@ -13,6 +13,7 @@ interface EventDefinition {
   name: string;
   source: ProductEventSource;
   session_scope: ProductEventSessionScope;
+  required_properties: string[];
   properties: Record<string, PropertySpec>;
 }
 
@@ -98,6 +99,15 @@ export function validateProductEvent(input: {
   const incoming = input.properties ?? {};
   if (!isPlainObject(incoming)) {
     throw new ProductEventValidationError('INVALID_PROPERTIES', 'Event properties must be a flat object');
+  }
+
+  for (const requiredKey of definition.required_properties) {
+    if (!(requiredKey in incoming)) {
+      throw new ProductEventValidationError(
+        'INVALID_PROPERTIES',
+        `${input.name}: missing required property ${requiredKey}`
+      );
+    }
   }
 
   const canonical: Record<string, string | number | boolean> = {};
