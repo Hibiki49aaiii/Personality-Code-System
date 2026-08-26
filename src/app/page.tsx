@@ -1,0 +1,196 @@
+const traitRows = [
+  ["SYSTEM THINKING", 96],
+  ["VERIFICATION", 98],
+  ["AUTONOMY", 91],
+  ["RELATIONAL DEPTH", 87],
+] as const;
+
+const domains = [
+  ["01", "思考", "情報をどう分解し、何を根拠として判断するか。"],
+  ["02", "感情", "感情をどう認識し、処理し、他者へ伝えるか。"],
+  ["03", "行動", "実行、継続、探索、最適化のバランス。"],
+  ["04", "恋愛", "親密さ、境界、相互性、飽きやすさ、衝突傾向。"],
+  ["05", "仕事", "自律性、設計、委任、リーダーシップ、リスク判断。"],
+  ["06", "ストレス", "不確実性や制御不能な状況への反応。"],
+] as const;
+
+export default function Home() {
+  return (
+    <main>
+      <header className="siteHeader shell">
+        <a className="brand" href="#top" aria-label="Personality Code System home">
+          <span className="brandMark" aria-hidden="true">PC</span>
+          <span className="brandText">Personality Code System</span>
+        </a>
+        <nav className="nav" aria-label="Main navigation">
+          <a href="#method">診断設計</a>
+          <a href="#domains">分析項目</a>
+          <a href="#share">共有</a>
+        </nav>
+        <a className="headerCta" href="/diagnosis">診断を試す</a>
+      </header>
+
+      <section className="hero shell" id="top">
+        <div className="heroCopy">
+          <p className="eyebrow">HIGH-RESOLUTION PERSONALITY ASSESSMENT</p>
+          <h1>あなたを、<br />16種類では終わらせない。</h1>
+          <p className="heroLead">
+            思考、感情、行動、恋愛、仕事、ストレス耐性。複数の特性を連続値で測定し、
+            あなた固有の「性格コード」として可視化します。
+          </p>
+          <div className="heroActions">
+            <a className="primaryButton" href="/diagnosis">診断プロトタイプへ</a>
+            <a className="textLink" href="#method">仕組みを見る <span aria-hidden="true">↘</span></a>
+          </div>
+          <dl className="heroFacts">
+            <div><dt>TYPE</dt><dd>多軸・連続値</dd></div>
+            <div><dt>LOGIC</dt><dd>決定論的採点</dd></div>
+            <div><dt>ACCOUNT</dt><dd>診断時は不要</dd></div>
+          </dl>
+        </div>
+
+        <div className="profileSpecimen" aria-label="Sample personality result">
+          <div className="specimenTopline">
+            <span>SAMPLE PROFILE</span>
+            <span>PCS / 01</span>
+          </div>
+          <div className="specimenCode">AVX—COS</div>
+          <div className="specimenTitle">ADVERSARIAL<br />ARCHITECT</div>
+          <p className="specimenStatement">
+            「人を疑う」のではなく、<br />「信用するために検証する」。
+          </p>
+          <div className="traitList">
+            {traitRows.map(([label, value]) => (
+              <div className="traitRow" key={label}>
+                <div className="traitMeta"><span>{label}</span><strong>{value}</strong></div>
+                <div className="traitTrack" aria-hidden="true"><span style={{ width: `${value}%` }} /></div>
+              </div>
+            ))}
+          </div>
+          <div className="specimenFooter">
+            <span>CORE TYPE</span>
+            <strong>01 / 64</strong>
+          </div>
+        </div>
+      </section>
+
+      <section className="manifesto">
+        <div className="shell manifestoInner">
+          <p className="sectionIndex">00 — PRINCIPLE</p>
+          <p className="manifestoText">
+            性格を「それっぽい文章」に当てはめるのではなく、
+            <strong>測定値 → コード → 解説</strong>の順で組み立てる。
+            AIが毎回違う人格を作る診断にはしません。
+          </p>
+        </div>
+      </section>
+
+      <section className="section shell" id="method">
+        <div className="sectionHeading">
+          <p className="sectionIndex">01 — METHOD</p>
+          <h2>診断は、3層で構成する。</h2>
+        </div>
+        <div className="methodGrid">
+          <article>
+            <span className="methodNumber">A</span>
+            <h3>Trait Vector</h3>
+            <p>複数の心理特性を0–100の連続値で保持。タイプ名より先に、個人差そのものを測ります。</p>
+          </article>
+          <article>
+            <span className="methodNumber">B</span>
+            <h3>Core Type</h3>
+            <p>主要傾向を人間が理解しやすい短いコードへ圧縮。専用名称とイラストを持たせます。</p>
+          </article>
+          <article>
+            <span className="methodNumber">C</span>
+            <h3>Extended Code</h3>
+            <p>同じCore Typeの中にある差を、恋愛・仕事・ストレス・才能などの補助コードで保持します。</p>
+          </article>
+        </div>
+      </section>
+
+      <section className="section shell" id="domains">
+        <div className="sectionHeading splitHeading">
+          <div>
+            <p className="sectionIndex">02 — DOMAINS</p>
+            <h2>一人の中にある、<br />複数の人格傾向を見る。</h2>
+          </div>
+          <p className="sectionDescription">
+            「論理型」「感情型」のような一語ではなく、場面ごとの行動差を別々に評価します。
+          </p>
+        </div>
+        <div className="domainList">
+          {domains.map(([number, title, description]) => (
+            <article className="domainRow" key={number}>
+              <span>{number}</span>
+              <h3>{title}</h3>
+              <p>{description}</p>
+              <span className="domainArrow" aria-hidden="true">↗</span>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="section shell adversarialSection">
+        <div className="adversarialCard">
+          <div>
+            <p className="sectionIndex light">03 — ADVERSARIAL VIEW</p>
+            <h2>長所だけでは、<br />性格は分からない。</h2>
+          </div>
+          <div className="adversarialBody">
+            <p>
+              「検証能力が高い」は、状況によって「信用コストが高い」に変わる。
+              「最適化能力が高い」は、「終わらせられない」に変わる。
+            </p>
+            <p>
+              PCSでは同じ特性を<strong>通常評価と敵対的評価</strong>の両面から解説します。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="section shell" id="share">
+        <div className="sectionHeading splitHeading">
+          <div>
+            <p className="sectionIndex">04 — SHARE</p>
+            <h2>結果は、あなたの<br />「取扱説明書」になる。</h2>
+          </div>
+          <p className="sectionDescription">
+            コード、タイプ名、特徴文、主要スコア、専用イラストを1枚にまとめ、SNSで共有できる設計にします。
+          </p>
+        </div>
+        <div className="sharePreview">
+          <div className="shareCard">
+            <div className="shareCardHeader"><span>PERSONALITY CODE</span><span>PCS</span></div>
+            <strong className="shareCode">AVX—COS</strong>
+            <p>THE ADVERSARIAL ARCHITECT</p>
+            <div className="shareQuote">人を信用しないのではなく、<br />信用するために検証する。</div>
+            <div className="shareStats"><span>THINK 96</span><span>LOVE 88</span><span>WORK 98</span></div>
+          </div>
+          <div className="shareNotes">
+            <p className="noteLabel">SHARE DESIGN</p>
+            <ul>
+              <li>結果URLをそのまま共有</li>
+              <li>X / LINE / Web Share対応</li>
+              <li>OG画像と縦長SNSカードを自動生成</li>
+              <li>タイプ別専用イラストを表示</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="closing">
+        <div className="shell closingInner">
+          <p className="sectionIndex light">PERSONALITY CODE SYSTEM</p>
+          <h2>「何タイプ？」から、<br />「どういう人？」へ。</h2>
+          <a className="inverseButton" href="/diagnosis">診断プロトタイプを開く</a>
+        </div>
+      </section>
+
+      <footer className="footer shell">
+        <span>© Personality Code System</span>
+        <span>MODEL STATUS — FOUNDATION / v0.1</span>
+      </footer>
+    </main>
+  );
+}
