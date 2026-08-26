@@ -1,0 +1,27 @@
+{
+  "item_bank_version": "item-bank-v0.2",
+  "status": "reviewed",
+  "base_version": "item-bank-v0.1",
+  "base_path": "../v0.1",
+  "review_file": "review.json",
+  "locale": "ja-JP",
+  "trait_dictionary": "TRAIT_DICTIONARY_v0.2",
+  "expected_trait_count": 21,
+  "expected_items_per_trait": 7,
+  "expected_total_items": 147,
+  "expected_review_counts": {"accept-r1": 98, "revise-r2": 39, "hold-for-beta": 10},
+  "expected_direction_balance_per_trait": {"positive": 4, "reverse": 3},
+  "response_scale": {
+    "version": "likert-5-ja-v0.1",
+    "values": [
+      {"value": 1, "label": "まったく当てはまらない"},
+      {"value": 2, "label": "あまり当てはまらない"},
+      {"value": 3, "label": "どちらともいえない"},
+      {"value": 4, "label": "やや当てはまる"},
+      {"value": 5, "label": "とても当てはまる"}
+    ]
+  },
+  "trait_order": ["SYS","VER","ADV","ABS","META","EMO","COG","BND","RDP","REC","CON","AUT","EXE","OPT","FIN","NOV","PER","RSK","UNC","STR","CRE"],
+  "review_policy": "Every v0.1 item is covered exactly once by accept-r1, revise-r2, or hold-for-beta. Review changes wording/revision metadata only; primary trait, key direction, and weight remain unchanged.",
+  "materialization": "item-bank-v0.1 snapshot + review.json => item-bank-v0.2 reviewed snapshot"
+}
