@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { getPrivateRenderedAssessmentResult } from "../../application/assessment/serverAssessmentService";
 import { ASSESSMENT_SESSION_COOKIE } from "../../server/assessmentCookie";
 import { withPcsDatabase } from "../../server/assessmentRuntime";
+import ShareControls from "./ShareControls";
 import styles from "./result.module.css";
 
 export const runtime = "nodejs";
@@ -98,6 +99,8 @@ export default async function ResultPage() {
           ))}
         </div>
       </section>
+
+      <ShareControls coreCode={snapshot.personalityCode.coreCode} />
 
       <section className={styles.versionBlock}>
         <h2>Reproducibility record</h2>
