@@ -18,11 +18,9 @@ export async function PUT(request: NextRequest) {
       return noStoreJson({ error: 'INVALID_REQUEST', message: '回答データが不正です。' }, { status: 400 });
     }
 
-    await withPcsDatabase((db) => savePublicAssessmentAnswer(db, {
-      token,
-      itemId: body.itemId,
-      value: body.value as number
-    }));
+    const itemId = body.itemId;
+    const value = body.value as number;
+    await withPcsDatabase((db) => savePublicAssessmentAnswer(db, { token, itemId, value }));
     return noStoreJson({ ok: true });
   } catch (error) {
     return assessmentApiError(error);
