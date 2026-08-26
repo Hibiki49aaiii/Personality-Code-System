@@ -3,14 +3,17 @@ import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import postgres from 'postgres';
+import { materializeDevelopmentContentV02 } from './materialize-content-v0.2.mjs';
 
-const MODEL_VERSION = 'assessment-dev-v0.1';
+const HISTORICAL_MODEL_VERSION = 'assessment-dev-v0.1';
+const CURRENT_MODEL_VERSION = 'assessment-dev-v0.2';
 const DICTIONARY_VERSION = 'trait-dictionary-v0.2';
 const ITEM_BANK_VERSION = 'item-bank-v0.2';
 const SCORING_VERSION = 'scoring-v0.1-dev';
 const CODE_SCHEMA_VERSION = 'core-code-v0.1-dev';
 const INTERACTION_VERSION = 'trait-interactions-v0.1';
-const CONTENT_VERSION = 'content-dev-v0.1';
+const BASE_CONTENT_VERSION = 'content-dev-v0.1';
+const CURRENT_CONTENT_VERSION = 'content-dev-v0.2';
 const LOCALE = 'ja-JP';
 
 const databaseUrl = process.env.DATABASE_URL;
@@ -58,9 +61,27 @@ const sql = postgres(databaseUrl, { max: 1, connect_timeout: 10, idle_timeout: 5
 
 try {
   const { manifest, reviewed } = await loadReviewedItems();
-  const content = await readJson('data/content/dev-v0.1.json');
-  assertSame('content version', content.content_version, CONTENT_VERSION);
-  assertSame('content locale', content.locale, LOCALE);
+  const baseContent = await readJson('data/content/dev-v0.1.json');
+  const contentV02Manifest = await readJson('data/content/dev-v0.2.json');
+  const scaffold = await readJson('data/type-catalog/v0.1-dev/editorial-scaffold.json');
+  const primitives = await readJson('data/type-catalog/v0.1-dev/editorial-primitives.ja.json');
+
+  assertSame('base content version', baseContent.content_version, BASE_CONTENT_VERSION);
+  assertSame('base content locale', baseContent.locale, LOCALE);
+  assertSame('current content version', contentV02Manifest.content_version, CURRENT_CONTENT_VERSION);
+
+  const currentContent = materializeDevelopmentContentV02({
+    manifest: contentV02Manifest,
+    baseContent,
+    scaffold,
+    primitives
+  });
+  assert.equal(currentContent.modules.length, baseContent.modules.length + 64 * 3);
+
+  const releases = [
+    { modelVersion: HISTORICAL_MODEL_VERSION, content: baseContent },
+    { modelVersion: CURRENT_MODEL_VERSION, content: currentContent }
+  ];
 
   const migrationFiles = (await readdir(path.join(process.cwd(), 'drizzle')))
     .filter((file) => /^\d+_.*\.sql$/i.test(file))
@@ -80,14 +101,9 @@ try {
     }
 
     for (const item of reviewed) {
-      const existingItem = await tx`
-        SELECT item_id, primary_trait_id FROM assessment_items WHERE item_id = ${item.id}
-      `;
+      const existingItem = await tx`SELECT item_id, primary_trait_id FROM assessment_items WHERE item_id = ${item.id}`;
       if (existingItem.length === 0) {
-        await tx`
-          INSERT INTO assessment_items (item_id, primary_trait_id)
-          VALUES (${item.id}, ${item.primary_trait})
-        `;
+        await tx`INSERT INTO assessment_items (item_id, primary_trait_id) VALUES (${item.id}, ${item.primary_trait})`;
       } else {
         assertSame(`${item.id} primary Trait`, existingItem[0].primary_trait_id, item.primary_trait);
       }
@@ -113,107 +129,113 @@ try {
       }
     }
 
-    const existingContentVersion = await tx`
-      SELECT locale, status FROM content_versions WHERE content_version = ${CONTENT_VERSION}
-    `;
-    if (existingContentVersion.length === 0) {
-      await tx`
-        INSERT INTO content_versions (content_version, locale, status)
-        VALUES (${CONTENT_VERSION}, ${LOCALE}, 'beta')
+    for (const release of releases) {
+      const content = release.content;
+      const existingContentVersion = await tx`
+        SELECT locale, status FROM content_versions WHERE content_version = ${content.content_version}
       `;
-    } else {
-      assertSame('content version locale', existingContentVersion[0].locale, LOCALE);
-      assert.ok(['beta', 'published'].includes(existingContentVersion[0].status));
-    }
-
-    for (const module of content.modules) {
-      const existingModule = await tx`
-        SELECT domain, priority, module_json
-        FROM content_modules
-        WHERE content_version = ${CONTENT_VERSION} AND module_id = ${module.id}
-      `;
-      if (existingModule.length === 0) {
+      if (existingContentVersion.length === 0) {
         await tx`
-          INSERT INTO content_modules
-            (content_version, module_id, domain, priority, module_json)
-          VALUES
-            (${CONTENT_VERSION}, ${module.id}, ${module.domain}, ${module.priority}, ${tx.json(module)})
+          INSERT INTO content_versions (content_version, locale, status)
+          VALUES (${content.content_version}, ${LOCALE}, 'beta')
         `;
       } else {
-        const stored = existingModule[0];
-        assertSame(`${module.id} domain`, stored.domain, module.domain);
-        assertSame(`${module.id} priority`, stored.priority, module.priority);
-        assert.deepEqual(stored.module_json, module, `${module.id} module JSON differs from versioned source`);
+        assertSame(`${content.content_version} locale`, existingContentVersion[0].locale, LOCALE);
+        assert.ok(['beta', 'published'].includes(existingContentVersion[0].status));
       }
-    }
 
-    const existingModel = await tx`
-      SELECT * FROM assessment_model_releases WHERE model_version = ${MODEL_VERSION}
-    `;
-    if (existingModel.length === 0) {
-      await tx`
-        INSERT INTO assessment_model_releases
-          (model_version, status, locale, trait_dictionary_version, item_bank_version,
-           scoring_version, code_schema_version, interaction_version, content_version)
-        VALUES
-          (${MODEL_VERSION}, 'beta', ${LOCALE}, ${DICTIONARY_VERSION}, ${ITEM_BANK_VERSION},
-           ${SCORING_VERSION}, ${CODE_SCHEMA_VERSION}, ${INTERACTION_VERSION}, ${CONTENT_VERSION})
-      `;
-    } else {
-      const model = existingModel[0];
-      assert.ok(['beta', 'published'].includes(model.status), 'existing development model must be beta or published');
-      assertSame('model locale', model.locale, LOCALE);
-      assertSame('model Trait Dictionary', model.trait_dictionary_version, DICTIONARY_VERSION);
-      assertSame('model Item Bank', model.item_bank_version, ITEM_BANK_VERSION);
-      assertSame('model scoring', model.scoring_version, SCORING_VERSION);
-      assertSame('model code schema', model.code_schema_version, CODE_SCHEMA_VERSION);
-      assertSame('model interaction', model.interaction_version, INTERACTION_VERSION);
-      assertSame('model content', model.content_version, CONTENT_VERSION);
-    }
-
-    const currentMappings = await tx`
-      SELECT position, item_id, item_revision, locale, trait_id, direction, weight_milli, required
-      FROM assessment_model_items
-      WHERE model_version = ${MODEL_VERSION}
-      ORDER BY position
-    `;
-
-    if (currentMappings.length === 0) {
-      for (let index = 0; index < reviewed.length; index += 1) {
-        const item = reviewed[index];
-        await tx`
-          INSERT INTO assessment_model_items
-            (model_version, position, item_id, item_revision, locale, trait_id, direction, weight_milli, required)
-          VALUES
-            (${MODEL_VERSION}, ${index + 1}, ${item.id}, ${item.revision}, ${item.locale},
-             ${item.primary_trait}, ${item.direction}, ${Math.round(item.weight * 1000)}, true)
+      for (const module of content.modules) {
+        const existingModule = await tx`
+          SELECT domain, priority, module_json
+          FROM content_modules
+          WHERE content_version = ${content.content_version} AND module_id = ${module.id}
         `;
+        if (existingModule.length === 0) {
+          await tx`
+            INSERT INTO content_modules
+              (content_version, module_id, domain, priority, module_json)
+            VALUES
+              (${content.content_version}, ${module.id}, ${module.domain}, ${module.priority}, ${tx.json(module)})
+          `;
+        } else {
+          const stored = existingModule[0];
+          assertSame(`${content.content_version}/${module.id} domain`, stored.domain, module.domain);
+          assertSame(`${content.content_version}/${module.id} priority`, stored.priority, module.priority);
+          assert.deepEqual(stored.module_json, module, `${content.content_version}/${module.id} JSON drift`);
+        }
       }
-    } else {
-      assert.equal(currentMappings.length, reviewed.length, 'existing model mapping count mismatch');
-      currentMappings.forEach((mapping, index) => {
-        const item = reviewed[index];
-        assertSame(`mapping ${index + 1} item`, mapping.item_id, item.id);
-        assertSame(`mapping ${index + 1} revision`, mapping.item_revision, item.revision);
-        assertSame(`mapping ${index + 1} locale`, mapping.locale, item.locale);
-        assertSame(`mapping ${index + 1} Trait`, mapping.trait_id, item.primary_trait);
-        assertSame(`mapping ${index + 1} direction`, mapping.direction, item.direction);
-        assertSame(`mapping ${index + 1} weight`, mapping.weight_milli, Math.round(item.weight * 1000));
-        assertSame(`mapping ${index + 1} required`, mapping.required, true);
-      });
+
+      const existingModel = await tx`
+        SELECT * FROM assessment_model_releases WHERE model_version = ${release.modelVersion}
+      `;
+      if (existingModel.length === 0) {
+        await tx`
+          INSERT INTO assessment_model_releases
+            (model_version, status, locale, trait_dictionary_version, item_bank_version,
+             scoring_version, code_schema_version, interaction_version, content_version)
+          VALUES
+            (${release.modelVersion}, 'beta', ${LOCALE}, ${DICTIONARY_VERSION}, ${ITEM_BANK_VERSION},
+             ${SCORING_VERSION}, ${CODE_SCHEMA_VERSION}, ${INTERACTION_VERSION}, ${content.content_version})
+        `;
+      } else {
+        const model = existingModel[0];
+        assert.ok(['beta', 'published'].includes(model.status), 'existing development model must be beta or published');
+        assertSame(`${release.modelVersion} locale`, model.locale, LOCALE);
+        assertSame(`${release.modelVersion} Trait Dictionary`, model.trait_dictionary_version, DICTIONARY_VERSION);
+        assertSame(`${release.modelVersion} Item Bank`, model.item_bank_version, ITEM_BANK_VERSION);
+        assertSame(`${release.modelVersion} scoring`, model.scoring_version, SCORING_VERSION);
+        assertSame(`${release.modelVersion} code schema`, model.code_schema_version, CODE_SCHEMA_VERSION);
+        assertSame(`${release.modelVersion} interaction`, model.interaction_version, INTERACTION_VERSION);
+        assertSame(`${release.modelVersion} content`, model.content_version, content.content_version);
+      }
+
+      const currentMappings = await tx`
+        SELECT position, item_id, item_revision, locale, trait_id, direction, weight_milli, required
+        FROM assessment_model_items
+        WHERE model_version = ${release.modelVersion}
+        ORDER BY position
+      `;
+      if (currentMappings.length === 0) {
+        for (let index = 0; index < reviewed.length; index += 1) {
+          const item = reviewed[index];
+          await tx`
+            INSERT INTO assessment_model_items
+              (model_version, position, item_id, item_revision, locale, trait_id, direction, weight_milli, required)
+            VALUES
+              (${release.modelVersion}, ${index + 1}, ${item.id}, ${item.revision}, ${item.locale},
+               ${item.primary_trait}, ${item.direction}, ${Math.round(item.weight * 1000)}, true)
+          `;
+        }
+      } else {
+        assert.equal(currentMappings.length, reviewed.length, `${release.modelVersion} mapping count mismatch`);
+        currentMappings.forEach((mapping, index) => {
+          const item = reviewed[index];
+          assertSame(`${release.modelVersion} mapping ${index + 1} item`, mapping.item_id, item.id);
+          assertSame(`${release.modelVersion} mapping ${index + 1} revision`, mapping.item_revision, item.revision);
+          assertSame(`${release.modelVersion} mapping ${index + 1} locale`, mapping.locale, item.locale);
+          assertSame(`${release.modelVersion} mapping ${index + 1} Trait`, mapping.trait_id, item.primary_trait);
+          assertSame(`${release.modelVersion} mapping ${index + 1} direction`, mapping.direction, item.direction);
+          assertSame(`${release.modelVersion} mapping ${index + 1} weight`, mapping.weight_milli, Math.round(item.weight * 1000));
+          assertSame(`${release.modelVersion} mapping ${index + 1} required`, mapping.required, true);
+        });
+      }
     }
 
     const [counts] = await tx`
       SELECT
-        (SELECT count(*)::int FROM assessment_model_items WHERE model_version = ${MODEL_VERSION}) AS model_items,
-        (SELECT count(*)::int FROM content_modules WHERE content_version = ${CONTENT_VERSION}) AS content_modules
+        (SELECT count(*)::int FROM assessment_model_items WHERE model_version = ${HISTORICAL_MODEL_VERSION}) AS historical_items,
+        (SELECT count(*)::int FROM assessment_model_items WHERE model_version = ${CURRENT_MODEL_VERSION}) AS current_items,
+        (SELECT count(*)::int FROM content_modules WHERE content_version = ${BASE_CONTENT_VERSION}) AS base_modules,
+        (SELECT count(*)::int FROM content_modules WHERE content_version = ${CURRENT_CONTENT_VERSION}) AS current_modules
     `;
-    assert.equal(counts.model_items, 147);
-    assert.equal(counts.content_modules, content.modules.length);
+    assert.equal(counts.historical_items, 147);
+    assert.equal(counts.current_items, 147);
+    assert.equal(counts.base_modules, baseContent.modules.length);
+    assert.equal(counts.current_modules, currentContent.modules.length);
   });
 
   console.log(
-    `Development model seed verified: ${MODEL_VERSION}, ${manifest.expected_total_items} reviewed items, ${CONTENT_VERSION}. Existing versioned rows are drift-checked and never overwritten.`
+    `Development model seed verified: ${HISTORICAL_MODEL_VERSION}/${BASE_CONTENT_VERSION} retained; ${CURRENT_MODEL_VERSION}/${CURRENT_CONTENT_VERSION} materialized with ${currentContent.modules.length} modules (${64 * 3} Core Type modules).`
   );
 } finally {
   await sql.end({ timeout: 5 });
