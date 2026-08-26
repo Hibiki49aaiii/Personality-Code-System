@@ -55,7 +55,10 @@ export default function ShareControls({ coreCode }: ShareControlsProps) {
   }
 
   async function nativeShare() {
-    if (!shareUrl || !navigator.share) return;
+    if (!shareUrl || typeof navigator === 'undefined' || typeof navigator.share !== 'function') {
+      setMessage('このブラウザは端末共有に対応していません。X・LINE・リンクコピーを利用してください。');
+      return;
+    }
     try {
       await navigator.share({
         title: shareText,
@@ -124,9 +127,7 @@ export default function ShareControls({ coreCode }: ShareControlsProps) {
             {shareUrl}
           </a>
           <div className={styles.actions}>
-            {typeof navigator !== 'undefined' && 'share' in navigator && (
-              <button type="button" onClick={nativeShare}>端末で共有</button>
-            )}
+            <button type="button" onClick={nativeShare}>端末で共有</button>
             <a href={xHref} target="_blank" rel="noreferrer">X</a>
             <a href={lineHref} target="_blank" rel="noreferrer">LINE</a>
             <button type="button" onClick={copyLink}>リンクをコピー</button>
