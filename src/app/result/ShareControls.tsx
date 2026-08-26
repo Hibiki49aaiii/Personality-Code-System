@@ -124,7 +124,7 @@ export default function ShareControls({ coreCode }: ShareControlsProps) {
             {shareUrl}
           </a>
           <div className={styles.actions}>
-            {'share' in navigator && (
+            {typeof navigator !== 'undefined' && 'share' in navigator && (
               <button type="button" onClick={nativeShare}>端末で共有</button>
             )}
             <a href={xHref} target="_blank" rel="noreferrer">X</a>
