@@ -32,12 +32,32 @@ async function applyMigrations() {
 
   assert.deepEqual(files, [
     '0000_phase2b_persistence.sql',
-    '0001_phase2b_immutability_hardening.sql'
+    '0001_phase2b_immutability_hardening.sql',
+    '0002_phase4a_public_share_snapshots.sql'
   ]);
 
   for (const file of files) {
     await sql.file(path.join(dir, file));
   }
+}
+
+function sharePayload() {
+  return {
+    shareSchemaVersion: 'share-snapshot-v0.1-dev',
+    sourceResultSnapshotSchemaVersion: 'result-snapshot-v0.1-dev',
+    versions: {
+      assessmentModelVersion: 'assessment-dev-v0.1',
+      codeSchemaVersion: 'core-code-v0.1-dev',
+      contentVersion: 'content-dev-v0.1'
+    },
+    locale: 'ja-JP',
+    coreCode: 'SVAEND',
+    presentation: {
+      displayName: null,
+      identitySentence: null,
+      illustrationAssetVersion: null
+    }
+  };
 }
 
 function snapshotPayload() {
@@ -272,6 +292,43 @@ try {
     WHERE session_id = ${sessionId}
   `;
 
+  const publicPayload = sharePayload();
+  await expectDbFailure(
+    'public share rejects diagnostic/private fields',
+    () => sql`
+      INSERT INTO public_share_snapshots
+        (public_token_hash, source_result_snapshot_id, share_schema_version,
+         assessment_model_version, code_schema_version, content_version, locale, share_json)
+      VALUES
+        (${'c'.repeat(64)}, ${snapshot.snapshot_id}, 'share-snapshot-v0.1-dev',
+         'assessment-dev-v0.1', 'core-code-v0.1-dev', 'content-dev-v0.1', 'ja-JP',
+         ${sql.json({ ...publicPayload, traitScores: [{ traitId: 'SYS', scoreBp: 5000 }] })})
+    `,
+    /prohibited diagnostic\/private field/i
+  );
+
+  const [publicShare] = await sql`
+    INSERT INTO public_share_snapshots
+      (public_token_hash, source_result_snapshot_id, share_schema_version,
+       assessment_model_version, code_schema_version, content_version, locale, share_json)
+    VALUES
+      (${'d'.repeat(64)}, ${snapshot.snapshot_id}, 'share-snapshot-v0.1-dev',
+       'assessment-dev-v0.1', 'core-code-v0.1-dev', 'content-dev-v0.1', 'ja-JP',
+       ${sql.json(publicPayload)})
+    RETURNING share_snapshot_id
+  `;
+  assert.ok(publicShare?.share_snapshot_id);
+
+  await expectDbFailure(
+    'public share payload immutability',
+    () => sql`
+      UPDATE public_share_snapshots
+      SET share_json = ${sql.json({ ...publicPayload, coreCode: 'OTHER' })}
+      WHERE share_snapshot_id = ${publicShare.share_snapshot_id}
+    `,
+    /payload\/version identity is immutable/i
+  );
+
   await expectDbFailure(
     'answer mutation after completion',
     () => sql`
@@ -310,13 +367,22 @@ try {
   `;
   assert.equal(deleted.length, 1, 'retention/privacy deletion of immutable snapshot must remain possible');
 
+  const [revokedShare] = await sql`
+    SELECT status, revoked_at, source_result_snapshot_id
+    FROM public_share_snapshots
+    WHERE share_snapshot_id = ${publicShare.share_snapshot_id}
+  `;
+  assert.equal(revokedShare?.status, 'revoked');
+  assert.ok(revokedShare?.revoked_at);
+  assert.equal(revokedShare?.source_result_snapshot_id, null);
+
   await expectDbFailure(
     'published model deletion',
     () => sql`DELETE FROM assessment_model_releases WHERE model_version = 'assessment-dev-v0.1'`,
     /published assessment_model_releases are immutable/i
   );
 
-  console.log('PostgreSQL persistence integration passed: migrations, publication immutability, model-bound answers, score constraints, snapshot coherence, completion freeze, and retention deletion verified.');
+  console.log('PostgreSQL persistence integration passed: migrations, publication immutability, model-bound answers, score constraints, snapshot coherence, sanitized public-share DB guards, auto-revocation, completion freeze, and retention deletion verified.');
 } finally {
   await sql.end({ timeout: 5 });
 }
