@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
+import { getSiteOrigin } from "../server/siteOrigin";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: getSiteOrigin(),
   title: {
     default: "Personality Code System",
     template: "%s | Personality Code System",
