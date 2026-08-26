@@ -25,8 +25,18 @@ if (content.modules.length !== expectedCount) {
 }
 
 const ids = new Set(content.modules.map((module) => module.id));
-for (const oldId of v03Manifest.replaced_module_ids) {
-  if (ids.has(oldId)) errors.push(`replaced placeholder ${oldId} still exists in v0.3`);
+for (const replacedId of v03Manifest.replaced_module_ids) {
+  const replacement = content.modules.find((module) => module.id === replacedId);
+  if (!replacement) {
+    errors.push(`missing regenerated replacement ${replacedId}`);
+    continue;
+  }
+  if (replacement.content_version !== v03Manifest.content_version) {
+    errors.push(`${replacedId} was not rebound to ${v03Manifest.content_version}`);
+  }
+  if (replacement.activation.kind !== 'trait_range') {
+    errors.push(`${replacedId} must be regenerated as a Trait-band module, not retained as a placeholder`);
+  }
 }
 
 for (const trait of traitPrimitives.traits) {
