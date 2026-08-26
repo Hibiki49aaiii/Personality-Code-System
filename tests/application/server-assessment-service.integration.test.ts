@@ -12,12 +12,13 @@ import {
 const databaseUrl = process.env.DATABASE_URL;
 assert.ok(databaseUrl, 'DATABASE_URL is required');
 
-test('anonymous reviewed-model flow saves, resumes, completes idempotently, and renders private result', async () => {
+test('anonymous reviewed-model flow saves, resumes, completes idempotently, and renders the Phase 3A private result', async () => {
   const connection = createPcsDatabaseConnection(databaseUrl);
   try {
     const started = await startOrResumeAnonymousAssessment(connection.db);
     assert.equal(started.created, true);
     assert.equal(started.state.status, 'in_progress');
+    assert.equal(started.state.modelVersion, 'assessment-dev-v0.2');
     assert.equal(started.state.items.length, 147);
     assert.equal(started.state.answers.length, 0);
     assert.equal(started.state.responseScale.version, 'likert-5-ja-v0.1');
@@ -44,9 +45,14 @@ test('anonymous reviewed-model flow saves, resumes, completes idempotently, and 
 
     const completed = await completePublicAssessment(connection.db, started.token);
     assert.equal(completed.alreadyCompleted, false);
+    assert.equal(completed.snapshot.versions.assessmentModelVersion, 'assessment-dev-v0.2');
+    assert.equal(completed.snapshot.versions.contentVersion, 'content-dev-v0.2');
     assert.equal(completed.snapshot.traitScores.length, 21);
     assert.equal(completed.snapshot.personalityCode.coreCode, 'SVAEND');
     assert.equal(completed.snapshot.sections.length, 18);
+    assert.ok(completed.snapshot.content.selectedIds.includes('DEV-TYPE-SVAEND-IDENTITY'));
+    assert.ok(completed.snapshot.content.selectedIds.includes('DEV-TYPE-SVAEND-STRENGTHS'));
+    assert.ok(completed.snapshot.content.selectedIds.includes('DEV-TYPE-SVAEND-ADVERSARIAL'));
     for (const trait of completed.snapshot.traitScores) {
       assert.equal(trait.scoreBp, 5000, trait.traitId);
     }
@@ -61,6 +67,9 @@ test('anonymous reviewed-model flow saves, resumes, completes idempotently, and 
     assert.equal(rendered.snapshotId, completed.snapshotId);
     assert.equal(rendered.sections.length, 18);
     assert.ok(rendered.sections.every((section) => section.modules.length >= 1));
+    const core = rendered.sections.find((section) => section.domain === 'core-identity');
+    assert.ok(core?.modules.some((module) => module.id === 'DEV-TYPE-SVAEND-IDENTITY'));
+    assert.ok(core?.modules.some((module) => module.text.includes('深度・開拓実行型 自律検証設計者')));
 
     await assert.rejects(
       () => savePublicAssessmentAnswer(connection.db, {
