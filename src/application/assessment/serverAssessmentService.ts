@@ -1,35 +1,24 @@
-import type { AssessmentAnswer } from '../../domain/assessment/scoring';
-import { buildStructuredAssessmentResult } from '../../domain/assessment/resultEngine';
+import { LIKERT_5_JA_V01 } from '../../domain/assessment/responseScale';
 import type { ResultSnapshotV01 } from '../../domain/assessment/resultSnapshot';
 import type { PcsDatabase } from '../../infrastructure/persistence/database';
 import {
   completeAnonymousAssessment,
   createAnonymousAssessmentSession,
+  getAnonymousAssessmentState,
   getPrivateResultByAnonymousToken,
   PersistenceError
 } from '../../infrastructure/persistence/anonymousAssessmentRepository';
+import { getAssessmentDeliveryModel } from '../../infrastructure/persistence/assessmentModelRepository';
+import { getContentModulesForVersion } from '../../infrastructure/persistence/contentRepository';
+import { saveAnonymousAssessmentAnswerForSessionModel } from '../../infrastructure/persistence/anonymousAssessmentWorkflowRepository';
 import {
-  getAnonymousAssessmentSessionState,
-  getAnonymousAssessmentStoredAnswers,
-  saveAnonymousAssessmentAnswerForSessionModel
-} from '../../infrastructure/persistence/anonymousAssessmentWorkflowRepository';
-import { loadDeliveredAssessmentModel } from '../../infrastructure/persistence/modelDelivery';
-import { resolveRuntimeModelAssets } from './runtimeModelAssets';
+  buildResultForAnonymousState,
+  DEVELOPMENT_ASSESSMENT_LOCALE,
+  DEVELOPMENT_ASSESSMENT_MODEL_VERSION
+} from '../../server/assessmentRuntime';
 
-export const DEVELOPMENT_ASSESSMENT_MODEL_VERSION = 'assessment-dev-v0.1';
-export const DEVELOPMENT_ASSESSMENT_LOCALE = 'ja-JP';
+export { DEVELOPMENT_ASSESSMENT_LOCALE, DEVELOPMENT_ASSESSMENT_MODEL_VERSION };
 export const DEVELOPMENT_SESSION_TTL_MS = 7 * 24 * 60 * 60 * 1000;
-
-export const LIKERT_5_JA_V01 = {
-  version: 'likert-5-ja-v0.1',
-  values: [
-    { value: 1, label: 'まったく当てはまらない' },
-    { value: 2, label: 'あまり当てはまらない' },
-    { value: 3, label: 'どちらともいえない' },
-    { value: 4, label: 'やや当てはまる' },
-    { value: 5, label: 'とても当てはまる' }
-  ]
-} as const;
 
 export interface PublicAssessmentItem {
   id: string;
@@ -82,7 +71,7 @@ export async function startOrResumeAnonymousAssessment(
   }
 
   const created = await createAnonymousAssessmentSession(db, {
-    modelVersion: DEVELOPMENT_ASSESSMENT_MODEL_VERSION,
+    modelVersion: process.env.PCS_ASSESSMENT_MODEL_VERSION ?? DEVELOPMENT_ASSESSMENT_MODEL_VERSION,
     locale: DEVELOPMENT_ASSESSMENT_LOCALE,
     expiresAt: new Date(Date.now() + DEVELOPMENT_SESSION_TTL_MS),
     allowedModelStatuses: ['beta', 'published']
@@ -100,31 +89,30 @@ export async function getPublicAssessmentState(
   db: PcsDatabase,
   token: string
 ): Promise<PublicAssessmentState> {
-  const session = await getAnonymousAssessmentSessionState(db, token);
+  const session = await getAnonymousAssessmentState(db, token);
   if (session.status !== 'in_progress' && session.status !== 'completed') {
     throw new PersistenceError('SESSION_NOT_WRITABLE', `Unsupported session status ${session.status}`);
   }
 
-  const model = await loadDeliveredAssessmentModel(db, {
+  const model = await getAssessmentDeliveryModel(db, {
     modelVersion: session.modelVersion,
     locale: session.locale,
     allowedStatuses: ['draft', 'beta', 'published', 'retired']
   });
-  const answers = await getAnonymousAssessmentStoredAnswers(db, token);
 
   return {
     status: session.status,
     modelVersion: session.modelVersion,
     locale: session.locale,
     expiresAt: session.expiresAt.toISOString(),
-    responseScale: LIKERT_5_JA_V01,
+    responseScale: model.responseScale,
     items: model.items.map((item) => ({
       id: item.id,
       position: item.position,
       text: item.text,
       required: item.required
     })),
-    answers: answers.map((answer) => ({ itemId: answer.itemId, value: answer.value }))
+    answers: session.answers.map((answer) => ({ itemId: answer.itemId, value: answer.value }))
   };
 }
 
@@ -151,35 +139,12 @@ export async function completePublicAssessment(
     };
   }
 
-  const session = await getAnonymousAssessmentSessionState(db, token);
-  if (session.status !== 'in_progress') {
+  const state = await getAnonymousAssessmentState(db, token);
+  if (state.status !== 'in_progress') {
     throw new PersistenceError('SESSION_NOT_WRITABLE', 'Assessment session cannot be completed');
   }
 
-  const model = await loadDeliveredAssessmentModel(db, {
-    modelVersion: session.modelVersion,
-    locale: session.locale,
-    allowedStatuses: ['beta', 'published']
-  });
-  const storedAnswers = await getAnonymousAssessmentStoredAnswers(db, token);
-  const answers: AssessmentAnswer[] = storedAnswers.map((answer) => ({
-    itemId: answer.itemId,
-    value: answer.value as AssessmentAnswer['value']
-  }));
-  const assets = resolveRuntimeModelAssets({
-    codeSchemaVersion: model.versions.codeSchemaVersion,
-    interactionVersion: model.versions.interactionVersion
-  });
-
-  const result = buildStructuredAssessmentResult({
-    versions: model.versions,
-    locale: model.locale,
-    scoringItems: model.scoringItems,
-    answers,
-    codeSchema: assets.codeSchema,
-    interactionRules: assets.interactionRules,
-    contentModules: model.contentModules
-  });
+  const result = await buildResultForAnonymousState(db, state);
 
   try {
     const completed = await completeAnonymousAssessment(db, { token, result });
@@ -189,8 +154,8 @@ export async function completePublicAssessment(
       alreadyCompleted: false
     };
   } catch (error) {
-    // Concurrent duplicate submit: the unique snapshot/session + completed-session guards
-    // allow only one transaction to win. If another request won, return that immutable result.
+    // Concurrent duplicate submit: database uniqueness + completed-session guards allow
+    // one writer. If another request won, return the immutable result it committed.
     const raced = await getPrivateResultByAnonymousToken(db, token);
     if (raced) {
       return {
@@ -211,16 +176,12 @@ export async function getPrivateRenderedAssessmentResult(
   if (!persisted) return null;
 
   const snapshot = persisted.snapshot;
-  const model = await loadDeliveredAssessmentModel(db, {
-    modelVersion: snapshot.versions.assessmentModelVersion,
-    locale: snapshot.locale,
-    allowedStatuses: ['draft', 'beta', 'published', 'retired']
-  });
-  if (model.versions.contentVersion !== snapshot.versions.contentVersion) {
-    throw new Error('Persisted result content version no longer matches its immutable model release');
-  }
-
-  const modules = new Map(model.contentModules.map((module) => [module.id, module] as const));
+  const contentModules = await getContentModulesForVersion(
+    db,
+    snapshot.versions.contentVersion,
+    snapshot.locale
+  );
+  const modules = new Map(contentModules.map((module) => [module.id, module] as const));
   const sections = snapshot.sections.map((section) => ({
     domain: section.domain,
     modules: section.moduleIds.map((moduleId) => {
