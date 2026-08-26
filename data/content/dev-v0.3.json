@@ -1,0 +1,15 @@
+{
+  "content_version": "content-dev-v0.3",
+  "locale": "ja-JP",
+  "status": "development-materialized",
+  "extends_content_version": "content-dev-v0.2",
+  "materializer_version": "content-materializer-v0.3",
+  "trait_primitive_version": "trait-editorial-primitives-ja-v0.1-dev",
+  "replaced_module_ids": [
+    "DEV-TRAIT-RDP-HIGH",
+    "DEV-TRAIT-COG-HIGH",
+    "DEV-TRAIT-OPT-HIGH",
+    "DEV-TRAIT-UNC-HIGH"
+  ],
+  "generated_trait_bands": ["low", "mid", "high"]
+}
