@@ -1,0 +1,10 @@
+{
+  "content_version": "content-dev-v0.2",
+  "locale": "ja-JP",
+  "status": "development-materialized",
+  "extends_content_version": "content-dev-v0.1",
+  "materializer_version": "content-materializer-v0.2",
+  "type_catalog_version": "type-catalog-v0.1-dev",
+  "type_primitive_version": "type-editorial-primitives-ja-v0.1-dev",
+  "generated_domains": ["core-identity", "hidden-strengths", "adversarial"]
+}
