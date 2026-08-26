@@ -7,7 +7,11 @@ A checkbox in `REQUIREMENTS.md` is marked complete only when inspectable specifi
 
 | Requirement | Status | Specification / Evidence | Implementation | Verification |
 | --- | --- | --- | --- | --- |
-| PCS-GOV-001..010 | complete (policy/invariants) | `REQUIREMENTS.md`, `docs/requirements/00_GOVERNANCE.md` | deterministic domain + persistence boundaries now substantially implemented | CI/runtime architecture; no AI runtime dependency |
+| PCS-GOV-001..010 | complete (policy/invariants) | `REQUIREMENTS.md`, `docs/requirements/00_GOVERNANCE.md` | deterministic domain/persistence/web boundaries; runtime AI prohibited | requirement-ID validator + CI/runtime architecture |
+| PCS-PROD-002 | complete (development flow) | `01_PRODUCT_SCOPE.md` | anonymous session/cookie flow | Chromium E2E starts assessment without account |
+| PCS-PROD-003 | complete (development flow) | reviewed 147-item model + Phase 2C exit | diagnosis UI/server/application/persistence | 147-answer Chromium E2E to result |
+| PCS-PROD-004 | complete (development result) | structured-result/domain contract | Core/Extended Code + 21 Traits + metadata + 18 sections | application integration + Chromium result assertions |
+| PCS-PROD-006 | complete (development result) | required 18 result domains | relationships/love, work, stress included in deterministic sections | result-engine fail-closed domain tests + application flow |
 | PCS-DIAG-001 | complete (conceptual) | `docs/model/TRAIT_DICTIONARY_v0.2.md` | n/a | 21 retained Traits each define poles, boundaries, anchors, overlaps/domains |
 | PCS-DIAG-002 | complete (conceptual) | `docs/model/TRAIT_OVERLAP_MATRIX_v0.2.md` | n/a | full retained-pair review; LDR/DEL/TRN removed from direct scoring |
 | PCS-DIAG-003 | complete | Trait Dictionary presentation domains | `resultEngine.ts` required domain model | domains are views, not presumed independent latent factors |
@@ -24,16 +28,37 @@ A checkbox in `REQUIREMENTS.md` is marked complete only when inspectable specifi
 | PCS-RESULT-003 | complete (development engine) | `04_CODE_AND_RESULT_ENGINE.md`, versioned content/rule data | `interactions.ts`, `contentComposer.ts`, `resultEngine.ts` | interaction + composer + result-engine tests |
 | PCS-RESULT-004 | complete (development engine) | precedence/assertion/suppression contract | `contentComposer.ts` | disciplined-optimizer, deep-non-fused, inactive-generic and fallback contradiction fixtures |
 | PCS-RESULT-005 | partial | snapshot requirements + retention/immutability contract | `resultSnapshot.ts`, PostgreSQL `result_snapshots` + triggers | fixed Golden Snapshot + PostgreSQL update/version-coherence tests; illustration asset version still pending |
+| PCS-CONTENT-001 | pending public gate / active draft foundation | `TYPE_CATALOG_SPEC_v0.1-dev.md`, `reachability.json` | 64-code C01D development reachability manifest | `validate-type-catalog.mjs`; public schema and authored catalog still pending |
+| PCS-CONTENT-002 | partial development engine only | required 18 domains + dev modules | development modules resolve all domains | production editorial coverage remains Phase 3A |
+| PCS-CONTENT-003 | pending production editorial QA | adversarial rules in `04_CODE_AND_RESULT_ENGINE.md`, `05_CONTENT_AND_ILLUSTRATION.md` | dev adversarial/fallback modules | production authored adversarial catalog remains open |
+| PCS-FE-003 | complete (Phase 2C development UX) | `06_FRONTEND_RESPONSIVE_UX.md` | real 147-item assessment UI | Chromium start/save/back/edit/complete flow |
+| PCS-FE-004 | complete (Phase 2C development UX) | structured result hierarchy | real private result page | Chromium Core/Extended/Traits/18-section/reload assertions |
+| PCS-FE-005 | pending | required width matrix | responsive CSS exists | explicit 320/375-390/768/1024/1280/1440+ verification not yet complete |
+| PCS-A11Y-001..002 | pending | `06_FRONTEND_RESPONSIVE_UX.md`, `10_TESTING_QA.md` | semantic controls exist but no completion claim | keyboard/manual/automated a11y gate open |
 | PCS-ARCH-001 | complete | `07_APPLICATION_ARCHITECTURE_AND_DATA.md` | `src/domain/assessment/*` isolated from React/DB | compile/tests independent of UI/database |
-| PCS-ARCH-002 | complete (Phase 2B foundation) | ADR-0001 + schema contract | `schema.ts`, migration chain | static migration validator + real PostgreSQL 16 integration |
-| PCS-ARCH-003 | partial | raw-answer separation/public-share requirement | private snapshot/retrieval excludes raw answers | public URL/OG/share payload audit remains Phase 4 |
+| PCS-ARCH-002 | complete (Phase 2B/2C foundation) | ADR-0001 + schema/application contract | schema, adapters, real server/application wiring | static migration validator + PostgreSQL 16 + application integration |
+| PCS-ARCH-003 | partial | raw-answer separation/public-share requirement | private flow excludes raw answers from URL/snapshot/result API | public URL/OG/share payload audit remains Phase 4 |
 | PCS-ARCH-004 | complete (current persistence) | immutability contract | SQL triggers protect published model/items/content/revisions/snapshots | `postgres-integration.mjs` exercises actual rejection behavior |
 | PCS-ARCH-005 | complete (foundation) | ADR-0001 migration/rollback policy | ordered committed SQL migrations | migration validator + PostgreSQL application in CI; deployment backup rehearsal is OPS |
-| PCS-QA-001 | complete | `10_TESTING_QA.md` | `.github/workflows/ci.yml` | Item Bank → migration validation → PostgreSQL integration → domain tests → typecheck → build |
+| PCS-PRIV-001 | complete (anonymous private flow) | `08_PRIVACY_SECURITY.md` | opaque token + hash-only DB + HttpOnly/SameSite cookie | repository tests + fresh-browser private-result isolation |
+| PCS-PRIV-002..004 | pending/partial | data minimization/share policy | no public share/third-party analytics path yet | release privacy audit remains open |
+| PCS-SEC-001 | partial | security baseline | strong token, server validation, private cookie, DB guards | rate limit/security headers/dependency-security gate remain open |
+| PCS-QA-001 | complete (current CI) | `10_TESTING_QA.md` | `.github/workflows/ci.yml` | requirements → type catalog → Item Bank → PostgreSQL → app/domain → typecheck/build → Chromium E2E |
 | PCS-QA-002 | complete (current domain pipeline) | result/scoring/code requirements | full current domain engine | scoring/code/interaction/composer/result/snapshot suites |
 | PCS-QA-003 | complete (development fixture) | Golden snapshot rule | `golden-result-snapshot-midpoint-v0.1.json` | exact equality + answer-order invariance tests |
+| PCS-QA-004 | complete for private Phase 2C journey | E2E path contract | Playwright Chromium flow | start → back/edit → 147 answers → result → reload + cookie isolation; public share later |
+| PCS-QA-005..007 | pending | a11y/visual/security requirements | partial foundations only | later release gates |
 
-## Phase 2 persistence evidence
+## Requirement governance evidence
+
+- `scripts/validate-requirement-ids.mjs` parses authoritative requirement declarations.
+- Master IDs may be repeated only through a deliberately small explicit alias allowlist where the derivative meaning is intentionally shared.
+- Unapproved Master shadowing, duplicate detailed IDs, or duplicate declarations within one file fail CI.
+- Detailed documents use reserved `010+`/`020+` ranges when they add narrower clauses rather than redefining Master IDs.
+
+This directly enforces the Master rule that requirement IDs are never reused for different meanings.
+
+## Phase 2 persistence/application evidence
 
 ### Architecture/data
 
@@ -42,6 +67,9 @@ A checkbox in `REQUIREMENTS.md` is marked complete only when inspectable specifi
 - `src/infrastructure/persistence/database.ts`
 - `src/infrastructure/persistence/sessionToken.ts`
 - `src/infrastructure/persistence/anonymousAssessmentRepository.ts`
+- `src/infrastructure/persistence/assessmentModelRepository.ts`
+- `src/application/assessment/serverAssessmentService.ts`
+- `src/server/assessmentRuntime.ts`
 - `drizzle/0000_phase2b_persistence.sql`
 - `drizzle/0001_phase2b_immutability_hardening.sql`
 - `docs/model/PERSISTENCE_RETENTION_BASELINE_v0.1.md`
@@ -50,18 +78,35 @@ A checkbox in `REQUIREMENTS.md` is marked complete only when inspectable specifi
 
 - `scripts/validate-persistence-schema.mjs` validates the ordered migration contract and required guards.
 - `tests/infrastructure/postgres-integration.mjs` applies migrations to a real PostgreSQL 16 database and proves DB invariants.
-- `tests/infrastructure/anonymous-assessment-repository.integration.test.ts` proves the typed adapter issues a hash-only anonymous session, persists an answer, transactionally finalizes scores/snapshot/completion, retrieves the private result, and rejects post-completion writes.
-- Current CI provisions PostgreSQL 16 for every push/PR before domain/type/build gates.
+- `tests/infrastructure/anonymous-assessment-repository.integration.test.ts` proves hash-only anonymous credentials, answer persistence, atomic scores/snapshot/completion, private result lookup and post-completion freeze.
+- `tests/application/server-assessment-service.integration.test.ts` executes the full 147-answer application flow against the seeded reviewed model.
+- `tests/e2e/assessment-flow.spec.ts` proves the real Chromium web flow, back/edit behavior, deterministic result rendering/reload and private-result isolation.
+
+## Phase 3A development catalog evidence
+
+- `docs/model/TYPE_CATALOG_SPEC_v0.1-dev.md` defines the non-public catalog contract, claim provenance and adjacent-type differentiation rule.
+- `data/type-catalog/v0.1-dev/reachability.json` explicitly freezes all 64 legal C01D combinations.
+- `scripts/validate-type-catalog.mjs` derives the legal set from `data/code-schema/v0.1-dev.json`, checks exact 2^6 reachability/order, validates symbols and proves every code's six one-axis neighbors remain inside the catalog.
+- Both source schema and draft catalog are required to stay `public_use=false` in this development validator.
+
+This is engineering completeness evidence only. It does not complete the published Core Type catalog or validate a 64-type psychological taxonomy.
 
 ## Current CI evidence
 
-Recent successful checkpoints include:
+Current CI gates include:
 
-- reviewed Item Bank v0.2: complete 147-item disposition/validator suite;
-- Core/Extended Code: deterministic C01D/PCSX1 suite;
-- Phase 2A: interaction/composer/structured-result + fixed Golden Snapshot suite;
-- Phase 2B hardening: real PostgreSQL migration/invariant integration;
-- Phase 2B adapter: anonymous persistence repository integration plus full regression/type/build pipeline.
+1. requirement-ID integrity;
+2. development type-catalog reachability;
+3. reviewed Item Bank v0.2 validation;
+4. persistence migration/static invariants;
+5. real PostgreSQL persistence integration;
+6. reviewed model seed + application integration;
+7. domain/infrastructure + Golden Snapshot tests;
+8. TypeScript typecheck;
+9. production build;
+10. Chromium 147-item private assessment E2E.
+
+The known successful Phase 2C browser checkpoint is CI Run `32960309207`. New validators are release-blocking on every subsequent push/PR.
 
 CI success verifies software/data-contract invariants only. It is not evidence of psychological construct validity.
 
@@ -72,7 +117,8 @@ CI success verifies software/data-contract invariants only. It is not evidence o
 - **complete (candidate authoring):** candidate artifact exists and is machine checked.
 - **complete (editorial review):** every item has an explicit recorded wording/construct-purity disposition; beta evidence still pending.
 - **complete (development engine/spec):** deterministic engineering contract/implementation exists but may be intentionally non-public/experimental.
-- **complete (Phase 2B foundation):** persistence architecture/adapter/invariants are implemented and integration-tested; deployment/public-share/legal concerns remain their later gates.
+- **complete (Phase 2B/2C foundation):** persistence/application invariants and real private web flow are implemented and tested; public-share/legal/release concerns remain later gates.
+- **active draft foundation:** engineering reachability/schema contract exists while authored/public promotion remains incomplete.
 - **complete:** requirement itself is fulfilled.
 - **active invariant:** continuously enforced rule.
 - **partial:** some clauses satisfied; checkbox remains open.
