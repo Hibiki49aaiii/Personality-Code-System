@@ -60,6 +60,7 @@ function fixture(overrides?: { highTraits?: string[] }) {
 
 test('real reviewed 147-item midpoint fixture builds a complete deterministic structured result', () => {
   const result = buildStructuredAssessmentResult(fixture());
+  console.log(`PCS_GOLDEN_JSON=${JSON.stringify(result)}`);
   assert.equal(result.scoring.traitScores.length, 21);
   for (const trait of result.scoring.traitScores) assert.equal(trait.scoreBp, 5000, trait.traitId);
   assert.equal(result.personalityCode.coreCode, 'SVAEND');
