@@ -1,8 +1,8 @@
 # Personality Code System — Master Requirements & Delivery Checklist
 
 > Status: authoritative development contract
-> Version: 0.7.0
-> Last updated: 2026-08-26
+> Version: 0.8.0
+> Last updated: 2026-08-27
 
 This file is the single top-level source of truth for PCS scope and delivery status. Detailed requirements live under `docs/requirements/`.
 
@@ -38,9 +38,9 @@ Detailed governance: [`docs/requirements/00_GOVERNANCE.md`](docs/requirements/00
 - [x] **PCS-PROD-002** Assessment can start without registration. *(Anonymous HttpOnly bearer-cookie flow implemented and browser-tested.)*
 - [x] **PCS-PROD-003** User can complete a real assessment and receive a real result. *(Reviewed 147-item development model; production calibration remains later.)*
 - [x] **PCS-PROD-004** Result includes Core Type/Code, Extended Code, Trait summary, confidence metadata, and narrative domains. *(Current content is development-versioned, not final editorial copy.)*
-- [ ] **PCS-PROD-005** Result includes strengths and adversarial/failure-mode analysis. *(Domain structure exists; production editorial coverage remains Phase 3.)*
+- [x] **PCS-PROD-005** Result includes strengths and adversarial/failure-mode analysis. *(Current deterministic development content provides both; human production editorial approval remains Phase 3.)*
 - [x] **PCS-PROD-006** Result includes dedicated relationships/love, work, and stress sections. *(Structured domains are rendered from versioned modules.)*
-- [ ] **PCS-PROD-007** Public saving/sharing occurs only through explicit user action. *(No public sharing exists yet; Phase 4 will implement and verify this.)*
+- [x] **PCS-PROD-007** Public saving/sharing occurs only through explicit user action. *(Private completion remains non-public; POST `/api/share` creates a separate sanitized public snapshot only after the user invokes Share.)*
 - [x] **PCS-PROD-008** Compatibility is excluded from MVP until its own deterministic/versioned specification exists.
 
 Detailed scope: [`docs/requirements/01_PRODUCT_SCOPE.md`](docs/requirements/01_PRODUCT_SCOPE.md)
@@ -114,7 +114,7 @@ Detailed requirements: [`docs/requirements/04_CODE_AND_RESULT_ENGINE.md`](docs/r
 - [ ] **PCS-CONTENT-001** Versioned published Core Type catalog exists for every reachable public code. *(Phase 3A draft foundation now enumerates all 64 reachable non-public C01D codes; public schema + authored catalog remain open.)*
 - [ ] **PCS-CONTENT-002** Editorial content modules cover every required result domain.
 - [ ] **PCS-CONTENT-003** Adversarial analysis modules describe failure modes without insults/diagnoses/deterministic certainty.
-- [ ] **PCS-ART-001** Single coherent illustration art direction defined.
+- [x] **PCS-ART-001** Single coherent illustration art direction defined. *(64-slot non-AI runtime art system and validator exist; actual hero assets remain unproduced.)*
 - [ ] **PCS-ART-002** One curated hero illustration per published Core Type.
 - [ ] **PCS-ART-003** Runtime image generation prohibited; result artwork uses curated versioned assets.
 
@@ -145,7 +145,7 @@ Detailed requirements: [`docs/requirements/06_FRONTEND_RESPONSIVE_UX.md`](docs/r
 
 - [x] **PCS-ARCH-001** Diagnostic domain logic is framework-independent and separately testable from UI/database.
 - [x] **PCS-ARCH-002** Database schema supports anonymous sessions, model versions, items/revisions, answers, scores, snapshots, content, and asset references.
-- [ ] **PCS-ARCH-003** Raw answers never embedded into public URLs/social cards. *(Current private flow keeps raw answers out of URLs/snapshots; public-share implementation/audit remains Phase 4.)*
+- [x] **PCS-ARCH-003** Raw answers never embedded into public URLs/social cards. *(Public share uses a separate sanitized snapshot; DB guards reject answers, Trait Scores, Response Quality, Extended/private result structures, and raw public capability tokens are hash-only in storage.)*
 - [x] **PCS-ARCH-004** Published model/content and retained result snapshots are immutable/auditable in persistence. *(PostgreSQL triggers + real integration tests.)*
 - [x] **PCS-ARCH-005** Database migrations/rollback procedure defined before production persistence. *(ADR + ordered committed migrations + validator + PostgreSQL CI; deployment recovery rehearsal remains OPS work.)*
 
@@ -154,10 +154,14 @@ Persistence artifacts:
 - `docs/adr/ADR-0001-persistence-postgresql-drizzle.md`;
 - `drizzle/0000_phase2b_persistence.sql`;
 - `drizzle/0001_phase2b_immutability_hardening.sql`;
+- `drizzle/0002_phase4a_public_share_snapshots.sql`;
 - `src/infrastructure/persistence/schema.ts`;
+- `src/infrastructure/persistence/sharingSchema.ts`;
 - `src/infrastructure/persistence/sessionToken.ts`;
 - `src/infrastructure/persistence/database.ts`;
 - `src/infrastructure/persistence/anonymousAssessmentRepository.ts`;
+- `src/infrastructure/persistence/publicShareToken.ts`;
+- `src/infrastructure/persistence/publicShareRepository.ts`;
 - `docs/model/PERSISTENCE_RETENTION_BASELINE_v0.1.md`.
 
 Detailed requirements: [`docs/requirements/07_APPLICATION_ARCHITECTURE_AND_DATA.md`](docs/requirements/07_APPLICATION_ARCHITECTURE_AND_DATA.md)
@@ -167,7 +171,7 @@ Detailed requirements: [`docs/requirements/07_APPLICATION_ARCHITECTURE_AND_DATA.
 - [x] **PCS-PRIV-001** Anonymous assessment default in real web flow. *(No account; opaque 256-bit token stored only as hash server-side; browser carries HttpOnly/SameSite cookie.)*
 - [ ] **PCS-PRIV-002** Collect only data required for diagnosis/reliability/operation/consented features.
 - [ ] **PCS-PRIV-003** Raw answers/personality scores excluded from third-party analytics payloads by default.
-- [ ] **PCS-PRIV-004** Public/shareable result persistence requires explicit user action.
+- [x] **PCS-PRIV-004** Public/shareable result persistence requires explicit user action. *(Separate opt-in Share API/UI; assessment completion itself creates no public snapshot.)*
 - [ ] **PCS-SEC-001** Secure session tokens, validation, rate limits, security headers, dependency scanning. *(Token/validation/cookie controls exist; rate limiting, full security headers and dependency-security gate remain.)*
 - [ ] **PCS-LEGAL-001** Privacy/terms/diagnostic limitations/data deletion-retention explanation before public launch.
 
@@ -176,8 +180,8 @@ Detailed requirements: [`docs/requirements/08_PRIVACY_SECURITY.md`](docs/require
 ## 10. Social sharing and analytics
 
 - [ ] **PCS-SOC-001** Shareable result image generated deterministically from stored result + curated artwork.
-- [ ] **PCS-SOC-002** Web Share API, X intent, LINE intent, URL copy where applicable.
-- [ ] **PCS-SOC-003** Correct Open Graph metadata/card for shareable result pages.
+- [x] **PCS-SOC-002** Web Share API, X intent, LINE intent, URL copy where applicable. *(Implemented on the private result page and browser-tested against the generated opaque share URL.)*
+- [x] **PCS-SOC-003** Correct Open Graph metadata/card for shareable result pages. *(Development fallback OG card is deterministic, versioned, sanitized and linked through dynamic share-page metadata; final curated illustration treatment remains PCS-SOC-001/Phase 3B.)*
 - [ ] **PCS-ANA-001** Funnel analytics tracks start/progression/completion/result/share without exporting raw answers.
 - [ ] **PCS-ANA-002** Observed type distributions labeled by model/sample/time/scope.
 - [ ] **PCS-ANA-003** Privacy-preserving calibration-data export path exists.
@@ -189,7 +193,7 @@ Detailed requirements: [`docs/requirements/09_SOCIAL_SHARING_AND_ANALYTICS.md`](
 - [x] **PCS-QA-001** CI performs requirement-ID validation, development type-catalog reachability validation, Item Bank validation, persistence migration validation, real PostgreSQL/application/domain tests, TypeScript typecheck, production build, and Chromium browser E2E.
 - [x] **PCS-QA-002** Unit tests cover the complete current domain pipeline including interactions, content selection/suppression, confidence/version handling and fail-closed result composition.
 - [x] **PCS-QA-003** Fixed structured-result Golden Snapshot verifies deterministic output and input-order invariance.
-- [x] **PCS-QA-004** Browser E2E covers anonymous start → back/edit → 147 answers → result/reload and private-result isolation. *(Optional public share remains Phase 4.)*
+- [x] **PCS-QA-004** Browser E2E covers anonymous start → back/edit → 147 answers → private result/reload → explicit public share → cookie-free public view → deterministic OG/portrait cards → revocation and public-link invalidation.
 - [ ] **PCS-QA-005** Automated accessibility + manual keyboard/mobile checks.
 - [ ] **PCS-QA-006** Visual regression at critical responsive widths.
 - [ ] **PCS-QA-007** Security/privacy checklist before release.
@@ -221,7 +225,7 @@ Detailed requirements: [`docs/requirements/11_RELEASE_OPERATIONS.md`](docs/requi
 - [x] Phase 2C — real assessment/result UX and server/web wiring, including Chromium 147-answer E2E.
 - [ ] Phase 3A — public Core Type/content catalog. *(ACTIVE: non-public C01D 64-code reachability/provenance foundation complete; naming/editorial/public promotion remain.)*
 - [ ] Phase 3B — illustrations.
-- [ ] Phase 4A — social sharing/OG.
+- [ ] Phase 4A — social sharing/OG. *(4A-1 sanitized sharing foundation complete; final curated-art/public-name presentation remains pending.)*
 - [ ] Phase 4B — analytics/monitoring.
 - [ ] Phase 5A — closed beta/calibration collection.
 - [ ] Phase 5B — statistical review/pruning/retest.
