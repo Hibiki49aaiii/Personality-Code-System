@@ -1,90 +1,17 @@
-import { and, asc, eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import type { PcsDatabase } from './database';
-import { hashAnonymousSessionToken } from './sessionToken';
+import { assessmentModelItems } from './schema';
 import {
-  anonymousSessions,
-  assessmentAnswers,
-  assessmentModelItems
-} from './schema';
-import {
+  getAnonymousAssessmentState,
   PersistenceError,
   saveAnonymousAssessmentAnswer
 } from './anonymousAssessmentRepository';
-
-export interface AnonymousAssessmentSessionState {
-  sessionId: string;
-  modelVersion: string;
-  locale: string;
-  status: string;
-  expiresAt: Date;
-  completedAt: Date | null;
-}
-
-export interface AnonymousAssessmentStoredAnswer {
-  itemId: string;
-  value: number;
-  updatedAt: Date;
-}
-
-export async function getAnonymousAssessmentSessionState(
-  db: PcsDatabase,
-  token: string
-): Promise<AnonymousAssessmentSessionState> {
-  const tokenHash = hashAnonymousSessionToken(token);
-  const [session] = await db
-    .select({
-      sessionId: anonymousSessions.sessionId,
-      modelVersion: anonymousSessions.modelVersion,
-      locale: anonymousSessions.locale,
-      status: anonymousSessions.status,
-      expiresAt: anonymousSessions.expiresAt,
-      completedAt: anonymousSessions.completedAt
-    })
-    .from(anonymousSessions)
-    .where(eq(anonymousSessions.accessTokenHash, tokenHash))
-    .limit(1);
-
-  if (!session) {
-    throw new PersistenceError('SESSION_NOT_FOUND', 'Anonymous assessment session was not found');
-  }
-
-  if (session.status === 'in_progress' && session.expiresAt.getTime() <= Date.now()) {
-    await db
-      .update(anonymousSessions)
-      .set({ status: 'expired', updatedAt: new Date() })
-      .where(
-        and(
-          eq(anonymousSessions.sessionId, session.sessionId),
-          eq(anonymousSessions.status, 'in_progress')
-        )
-      );
-    throw new PersistenceError('SESSION_EXPIRED', 'Anonymous assessment session has expired');
-  }
-
-  return session;
-}
-
-export async function getAnonymousAssessmentStoredAnswers(
-  db: PcsDatabase,
-  token: string
-): Promise<AnonymousAssessmentStoredAnswer[]> {
-  const session = await getAnonymousAssessmentSessionState(db, token);
-  return db
-    .select({
-      itemId: assessmentAnswers.itemId,
-      value: assessmentAnswers.value,
-      updatedAt: assessmentAnswers.updatedAt
-    })
-    .from(assessmentAnswers)
-    .where(eq(assessmentAnswers.sessionId, session.sessionId))
-    .orderBy(asc(assessmentAnswers.itemId));
-}
 
 export async function saveAnonymousAssessmentAnswerForSessionModel(
   db: PcsDatabase,
   input: { token: string; itemId: string; value: number }
 ): Promise<void> {
-  const session = await getAnonymousAssessmentSessionState(db, input.token);
+  const session = await getAnonymousAssessmentState(db, input.token);
   if (session.status !== 'in_progress') {
     throw new PersistenceError('SESSION_NOT_WRITABLE', 'Anonymous assessment session is no longer writable');
   }
