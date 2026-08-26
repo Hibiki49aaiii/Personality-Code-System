@@ -1,9 +1,24 @@
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 
-const sqlPath = path.join(process.cwd(), 'drizzle', '0000_phase2b_persistence.sql');
-const sqlText = await readFile(sqlPath, 'utf8');
+const migrationDir = path.join(process.cwd(), 'drizzle');
+const migrationFiles = (await readdir(migrationDir))
+  .filter((file) => /^\d+_.*\.sql$/i.test(file))
+  .sort();
+
+if (migrationFiles.length === 0) {
+  console.error('Persistence migration validation failed: no SQL migrations found.');
+  process.exit(1);
+}
+
+const migrationEntries = await Promise.all(
+  migrationFiles.map(async (file) => ({
+    file,
+    text: await readFile(path.join(migrationDir, file), 'utf8')
+  }))
+);
+const sqlText = migrationEntries.map((entry) => entry.text).join('\n\n');
 const errors = [];
 
 const requiredTables = [
@@ -33,9 +48,17 @@ const requiredFragments = [
   ['answer range check', /value\s+BETWEEN\s+1\s+AND\s+5/i],
   ['trait basis-point check', /score_bp\s+BETWEEN\s+0\s+AND\s+10000/i],
   ['result snapshot JSONB', /snapshot_json\s+jsonb\s+NOT NULL/i],
-  ['result snapshot immutable trigger', /CREATE TRIGGER\s+result_snapshots_immutable_update/i],
+  ['result snapshot immutable update trigger', /CREATE TRIGGER\s+result_snapshots_immutable_update/i],
+  ['result snapshot version guard', /CREATE TRIGGER\s+result_snapshots_version_guard/i],
   ['published model immutable update trigger', /CREATE TRIGGER\s+assessment_model_release_immutable_update/i],
   ['published model immutable delete trigger', /CREATE TRIGGER\s+assessment_model_release_immutable_delete/i],
+  ['published model item guard', /CREATE TRIGGER\s+assessment_model_items_published_guard/i],
+  ['published content module guard', /CREATE TRIGGER\s+content_modules_published_guard/i],
+  ['item revision immutability', /CREATE TRIGGER\s+assessment_item_revisions_immutable/i],
+  ['trait revision immutability', /CREATE TRIGGER\s+trait_definition_revisions_immutable/i],
+  ['answer session/model guard', /CREATE TRIGGER\s+assessment_answers_session_model_guard/i],
+  ['trait-score session/model guard', /CREATE TRIGGER\s+assessment_trait_scores_session_model_guard/i],
+  ['session completion guard', /CREATE TRIGGER\s+anonymous_sessions_completion_guard/i],
   ['restrict model references', /assessment_model_releases\(model_version\)\s+ON DELETE RESTRICT/i]
 ];
 
@@ -47,10 +70,18 @@ if (/\baccess_token\b(?!_hash)/i.test(sqlText)) {
   errors.push('migration appears to persist a raw access_token column');
 }
 
+for (const entry of migrationEntries) {
+  if (!/^BEGIN;[\s\S]*COMMIT;\s*$/i.test(entry.text.trim())) {
+    errors.push(`${entry.file} must be an explicit BEGIN/COMMIT migration`);
+  }
+}
+
 if (errors.length) {
   console.error(`Persistence migration validation failed with ${errors.length} error(s):`);
   for (const error of errors) console.error(`- ${error}`);
   process.exit(1);
 }
 
-console.log(`Persistence migration validation passed: ${requiredTables.length} required tables and immutability/token constraints present.`);
+console.log(
+  `Persistence migration validation passed: ${migrationFiles.length} migration(s), ${requiredTables.length} tables, and published/session/snapshot invariants present.`
+);
