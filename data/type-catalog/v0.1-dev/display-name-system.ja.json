@@ -1,0 +1,93 @@
+{
+  "display_name_system_version": "type-display-name-system-ja-v0.1-dev",
+  "catalog_version": "type-catalog-v0.1-dev",
+  "code_schema_version": "core-code-v0.1-dev",
+  "locale": "ja-JP",
+  "status": "draft-editorial",
+  "public_use": false,
+  "contract": {
+    "display_name_pattern": "{action}の{role}〈{relationship}〉",
+    "purpose": "SNSと結果画面で識別しやすい短縮表示名。Core Codeに含まれない心理主張を追加しない。",
+    "maximum_display_name_characters": 18,
+    "all_names_must_be_unique": true,
+    "all_names_must_be_reversible_to_core_components": true,
+    "marketing_codenames_allowed": false,
+    "forbidden_claim_terms": ["天才", "最強", "希少", "選ばれた", "成功者", "高知能", "異常"]
+  },
+  "cognitive_roles": {
+    "LTG": {
+      "label_ja": "調律師",
+      "identity_clause_ja": "共有された現実を整え",
+      "provenance": ["core-axis:1:L", "core-axis:2:T", "core-axis:3:G"]
+    },
+    "LTA": {
+      "label_ja": "実務家",
+      "identity_clause_ja": "具体的な現実を自分の裁量で動かし",
+      "provenance": ["core-axis:1:L", "core-axis:2:T", "core-axis:3:A"]
+    },
+    "LVG": {
+      "label_ja": "監査士",
+      "identity_clause_ja": "事実を一つずつ確かめながら運用し",
+      "provenance": ["core-axis:1:L", "core-axis:2:V", "core-axis:3:G"]
+    },
+    "LVA": {
+      "label_ja": "独立検証者",
+      "identity_clause_ja": "具体的な事実を自分で確かめ",
+      "provenance": ["core-axis:1:L", "core-axis:2:V", "core-axis:3:A"]
+    },
+    "STG": {
+      "label_ja": "編成家",
+      "identity_clause_ja": "全体構造を周囲と共有できる形へ整え",
+      "provenance": ["core-axis:1:S", "core-axis:2:T", "core-axis:3:G"]
+    },
+    "STA": {
+      "label_ja": "構築家",
+      "identity_clause_ja": "全体構造を自分の裁量で組み",
+      "provenance": ["core-axis:1:S", "core-axis:2:T", "core-axis:3:A"]
+    },
+    "SVG": {
+      "label_ja": "検証設計家",
+      "identity_clause_ja": "構造と根拠を照合しながら設計し",
+      "provenance": ["core-axis:1:S", "core-axis:2:V", "core-axis:3:G"]
+    },
+    "SVA": {
+      "label_ja": "探究設計家",
+      "identity_clause_ja": "構造と根拠を自分で組み直し",
+      "provenance": ["core-axis:1:S", "core-axis:2:V", "core-axis:3:A"]
+    }
+  },
+  "action_modes": {
+    "PF": {
+      "label_ja": "熟成",
+      "identity_clause_ja": "準備を固めて既知の領域を深める",
+      "provenance": ["core-axis:4:P", "core-axis:5:F"]
+    },
+    "PN": {
+      "label_ja": "構想",
+      "identity_clause_ja": "未知の選択肢を広げてから動き方を定める",
+      "provenance": ["core-axis:4:P", "core-axis:5:N"]
+    },
+    "EF": {
+      "label_ja": "遂行",
+      "identity_clause_ja": "早めに着手して把握した領域を深める",
+      "provenance": ["core-axis:4:E", "core-axis:5:F"]
+    },
+    "EN": {
+      "label_ja": "開拓",
+      "identity_clause_ja": "未知へ動きながら次の選択肢を増やす",
+      "provenance": ["core-axis:4:E", "core-axis:5:N"]
+    }
+  },
+  "relationship_modes": {
+    "B": {
+      "label_ja": "広縁",
+      "identity_clause_ja": "関係への投資を一つへ集中させず、広い接点を保ちやすい",
+      "provenance": ["core-axis:6:B"]
+    },
+    "D": {
+      "label_ja": "深縁",
+      "identity_clause_ja": "少数の重要な関係へ投資を集め、深い共有文脈を育てやすい",
+      "provenance": ["core-axis:6:D"]
+    }
+  }
+}
