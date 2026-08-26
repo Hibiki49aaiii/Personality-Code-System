@@ -142,21 +142,23 @@ Not implied by this completion:
 - final illustration asset linkage in result snapshots (Phase 3);
 - final public assessment model release workflow (Phase 5C).
 
-### 2C Real assessment/result UX — PENDING
-- [ ] seed/load the reviewed development assessment model through the persistence/model delivery layer;
-- [ ] replace prototype questions with reviewed/active real item data;
-- [ ] start anonymous session through server-only persistence adapter;
-- [ ] store bearer token in secure same-site transport without exposing it in URLs;
-- [ ] answer save/resume/back/edit behavior;
-- [ ] final submit invokes deterministic result engine + persistence transaction;
-- [ ] duplicate-submit/idempotency behavior;
-- [ ] real structured result rendering;
-- [ ] method/version/limitations display;
-- [ ] private-by-default result retrieval;
-- [ ] expired/invalid session UX;
-- [ ] browser E2E for start → 147 answers → result.
+### 2C Real assessment/result UX — COMPLETE as development-model web flow
+- [x] seed/load the reviewed development assessment model through the persistence/model delivery layer;
+- [x] replace prototype questions with reviewed real item data;
+- [x] start anonymous session through server-only persistence adapter;
+- [x] store bearer token in HttpOnly/SameSite cookie transport without exposing it in URLs;
+- [x] answer save/resume/back/edit behavior;
+- [x] final submit invokes deterministic result engine + persistence transaction;
+- [x] duplicate-submit/idempotency behavior;
+- [x] real structured result rendering from immutable snapshot + exact content version;
+- [x] method/version/limitations display;
+- [x] private-by-default result retrieval;
+- [x] expired/invalid session baseline UX: assessment replaces missing/expired sessions, private result fails closed without bearer cookie;
+- [x] Chromium browser E2E for start → back/edit → 147 answers → result → reload/private-isolation.
 
-Exit for Phase 2: anonymous user can complete a real deterministic assessment end-to-end with no AI service.
+Exit achieved for Phase 2: an anonymous user can complete the reviewed development assessment end-to-end in the real web application with PostgreSQL persistence and no AI service. CI Run `32960309207` proves Item Bank/persistence/application/domain/type/build/Chromium E2E gates together.
+
+This does **not** promote `C01D` or development fallback copy to public/validated status. Production content/taxonomy, responsive-width certification, accessibility, security hardening, and public sharing remain later phases.
 
 ## Phase 3 — Content identity system
 
