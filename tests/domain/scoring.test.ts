@@ -18,7 +18,7 @@ const items: ScoringItem[] = [
 ];
 
 function answers(values: number[]): AssessmentAnswer[] {
-  return items.map((item, index) => ({
+  return items.slice(0, values.length).map((item, index) => ({
     itemId: item.id,
     value: values[index] as AssessmentAnswer['value']
   }));
