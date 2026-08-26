@@ -12,8 +12,10 @@
   },
   "include": [
     "src/domain/assessment/**/*.ts",
+    "src/application/assessment/**/*.ts",
     "src/infrastructure/persistence/**/*.ts",
     "tests/domain/**/*.ts",
+    "tests/application/**/*.ts",
     "tests/infrastructure/**/*.ts"
   ],
   "exclude": ["node_modules", ".next", ".tmp-tests"]
