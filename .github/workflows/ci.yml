@@ -58,6 +58,9 @@ jobs:
       - name: Validate item bank
         run: npm run validate:item-bank
 
+      - name: Validate analytics event privacy contract
+        run: npm run validate:analytics
+
       - name: Validate persistence schema
         run: npm run validate:persistence
 
