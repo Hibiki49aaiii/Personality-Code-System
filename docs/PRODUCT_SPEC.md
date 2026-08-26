@@ -1,10 +1,12 @@
-# Product Specification — Foundation v0.1
+# Product Specification — Foundation v0.2
+
+> Requirement authority: `REQUIREMENTS.md` and `docs/requirements/` take precedence over this supporting product specification.
 
 ## 1. Goal
 
 Create a public web personality assessment that is substantially more granular than 16-type systems while remaining understandable, reproducible, and shareable.
 
-The product must not depend on free-form AI interpretation for its core result. The diagnostic engine, score calculation, code generation, and result modules are versioned deterministic assets.
+The product does not depend on AI/LLM/generative interpretation for user-facing diagnosis or results. The diagnostic engine, score calculation, code generation, result-module selection, result wording assets, and result artwork are versioned deterministic assets.
 
 ## 2. Core product promise
 
@@ -44,7 +46,7 @@ These names are candidates until psychometric validation is complete.
 
 ### Layer B — Core Type
 
-A compact code intended for identity and sharing. The initial target is approximately 64 core types, but the count must be derived from a coherent set of interpretable dimensions rather than chosen only for marketing.
+A compact code intended for identity and sharing. The initial exploration targets a manageable catalog (approximately 64 may be evaluated), but the final count must be derived from a coherent set of interpretable dimensions rather than chosen only for marketing.
 
 Each Core Type eventually owns:
 
@@ -68,28 +70,28 @@ Secondary traits and interaction modifiers that distinguish people who share the
 
 ### Initial item bank target
 
-- 80–120 authored items
-- approximately 4–6 items per candidate trait
+- 6–8 candidate items per retained trait before pruning
+- reviewed active bank derived from calibration, not a fixed marketing question count
 - reversed / counter-keyed items where appropriate
-- consistency items
-- no transparent "good answer" wording
+- consistency items/signals where methodologically useful
+- no transparent “good answer” wording
 
 ### Answer format
 
 Default prototype: 5-point agreement scale.
 
-Alternative response formats may be tested later if they improve discrimination without hurting completion rate.
+Alternative response formats may be tested later if they improve discrimination without hurting completion rate. A format/scoring-semantic change requires version review.
 
 ### Reliability metadata
 
-Results should eventually include a Profile Confidence score based on:
+Results should eventually include a Profile Confidence score based on versioned rules such as:
 
 - within-trait consistency
 - contradiction rate
 - reverse-item consistency
 - response timing anomalies
 - straight-line answering
-- missing / skipped items
+- missing / invalid items
 
 Do not present this as a lie detector. It is a measurement-confidence indicator only.
 
@@ -97,7 +99,7 @@ Do not present this as a lie detector. It is a measurement-confidence indicator 
 
 ### MVP
 
-Versioned weighted scoring with normalized 0–100 trait values.
+Versioned deterministic weighted scoring with normalized 0–100 trait values.
 
 ### Calibration stage
 
@@ -107,24 +109,26 @@ Evaluate:
 - McDonald's omega / internal consistency
 - test-retest stability
 - exploratory factor analysis
-- confirmatory factor analysis
+- confirmatory factor analysis when sample size supports it
 - redundant trait correlations
 - differential item functioning / measurement invariance where sample size permits
 
-IRT can be considered once the data volume and item bank justify it.
+IRT can be considered once the data volume and item bank justify it and only through an explicitly versioned model change.
 
 ## 6. Result content engine
 
-Content must be modular and deterministic.
+Content is modular, authored, versioned, and deterministic.
 
-Example:
+Example module identities:
 
 - `verification.high`
 - `verification.low`
 - `adversarial.high`
 - `interaction.verification_high__adversarial_high`
 
-The result composer selects modules based on scored traits and interactions. AI may later be used only to improve surface wording when the underlying claims and selected modules are fixed.
+The result composer selects modules based on scored traits and interactions using versioned precedence/conflict rules.
+
+**Production rule:** no AI/LLM/generative model may write, rewrite, personalize, select, or alter user-facing result content at runtime. Development tools may assist drafting only when the final approved text is reviewed and committed as an ordinary versioned content asset.
 
 ## 7. Main result sections
 
@@ -145,13 +149,14 @@ The result composer selects modules based on scored traits and interactions. AI 
 - Hidden strengths
 - Adversarial analysis
 - Growth constraints
-- Compatibility (later phase)
+- Personal manual
+- Compatibility (later phase only after deterministic specification)
 
 ## 8. Social sharing
 
 Initial support:
 
-- shareable result URL
+- explicit creation of shareable result URL/snapshot
 - Web Share API
 - X share intent
 - LINE share intent
@@ -159,20 +164,22 @@ Initial support:
 - Open Graph image
 - portrait share image
 
-A result card should contain:
+A result card may contain:
 
 - Personality Code
 - type name
 - identity sentence
 - selected headline traits
-- dedicated illustration
+- dedicated curated illustration
 - service mark
+
+It must not contain raw answers or private session identifiers.
 
 ## 9. Data model — preliminary
 
 Future entities:
 
-- users
+- users (optional account layer)
 - anonymous_sessions
 - assessment_models
 - assessment_items
@@ -181,21 +188,21 @@ Future entities:
 - answers
 - trait_definitions
 - trait_scores
-- core_types
-- personality_profiles
-- content_modules
-- result_snapshots
-- illustrations
-- share_assets
+- code_schemas/core_types
+- personality_profiles/result_snapshots
+- content_modules/content_versions
+- illustrations/share_assets
 
-Every stored result must record the assessment model version used to create it.
+Every stored result must record the exact assessment/code/content/asset versions needed for historical interpretation.
 
 ## 10. Privacy principles
 
 - Account not required to take the assessment.
 - Do not collect unnecessary sensitive personal information.
-- Provide explicit controls before saving a profile.
+- Provide explicit controls before creating a public/shareable profile.
 - Separate anonymous diagnostic events from account identity where practical.
+- Raw answers are not embedded in public URLs/social metadata.
+- Raw answers/full diagnostic profiles are not exported to ordinary third-party analytics by default.
 - Publish a clear explanation of what is stored and why.
 
 ## 11. Product phases
@@ -207,11 +214,12 @@ Every stored result must record the assessment model version used to create it.
 - responsive public shell
 - assessment UI prototype
 - diagnostic specification
+- authoritative requirements/checklist
 
 ### Phase 1 — Measurement model
 
 - formal trait dictionary
-- trait interaction matrix
+- trait overlap/interaction matrix
 - question bank
 - scoring specification
 - code-generation specification
@@ -222,7 +230,7 @@ Every stored result must record the assessment model version used to create it.
 - deterministic score engine
 - result page
 - anonymous session persistence
-- model versioning
+- model/content versioning
 
 ### Phase 3 — Content + illustration
 
@@ -230,35 +238,40 @@ Every stored result must record the assessment model version used to create it.
 - adversarial analysis modules
 - relationship modules
 - work/stress modules
-- dedicated illustration system
+- curated dedicated illustration system
 
 ### Phase 4 — Sharing + launch analytics
 
-- share images
+- share snapshots/images
 - social sharing
-- funnel analytics
+- privacy-reviewed funnel analytics
 - completion / drop-off measurement
+- monitoring
 
 ### Phase 5 — Calibration
 
 - reliability analysis
 - item pruning
-- weight revisions
+- weight revisions through explicit new versions
 - factor structure validation
 - assessment model v1.0 freeze
 
 ## 12. Launch quality gates
 
-Do not call the product "validated" until data supports that claim.
+Do not call the product “validated” until data supports that claim.
 
-Before a broad public launch, require at minimum:
+Before broad public launch, require at minimum:
 
-- stable scoring implementation
-- repeatable model version
+- stable deterministic scoring implementation
+- repeatable/frozen model version
+- historical result snapshot reproducibility
 - no broken mobile layouts at 320px+
 - keyboard-accessible assessment flow
-- acceptable Core Web Vitals
-- automated typechecking/build checks
-- result snapshot reproducibility
-- privacy / terms pages
-- basic analytics and error monitoring
+- acceptable Core Web Vitals/performance review
+- automated typechecking/build/test checks
+- privacy / terms / limitations pages
+- privacy-reviewed analytics and error monitoring
+- production backup/rollback readiness
+- no production AI runtime dependency
+
+See `REQUIREMENTS.md` and `docs/requirements/11_RELEASE_OPERATIONS.md` for the authoritative launch checklist.

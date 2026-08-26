@@ -1,4 +1,6 @@
-# Design System — Foundation v0.1
+# Design System — Foundation v0.2
+
+> Requirement authority: `REQUIREMENTS.md` and `docs/requirements/` take precedence over this supporting design document.
 
 ## 1. Visual direction
 
@@ -27,9 +29,10 @@ Avoid by default:
 - generic SaaS dashboard grids
 - random animated particles
 - overuse of blurred gradients
-- copy such as "AI-powered insights" as the primary value proposition
+- generic AI orb/avatar imagery
+- copy such as “AI-powered insights” as the primary value proposition
 
-AI can exist behind the product later, but the interface should not visually depend on it.
+**Runtime AI is not part of the PCS product architecture.** Development tools may assist implementation or drafting, but the shipped diagnostic/result experience is deterministic and does not depend on generative services.
 
 ## 3. Current visual tokens
 
@@ -77,7 +80,7 @@ Mobile:
 - preserve hierarchy, not the desktop geometry
 - answer controls become full-width rows when five-column scales are too narrow
 - avoid horizontal scrolling for core content
-- all critical actions reachable with one thumb
+- all critical actions reachable comfortably by touch
 
 ## 6. Responsive requirements
 
@@ -90,7 +93,7 @@ Target behavior must be tested at minimum around:
 - 1280px desktop
 - 1440px+ wide desktop
 
-Use content-driven breakpoints rather than device-name assumptions.
+Use content-driven CSS breakpoints/container behavior rather than user-agent/device-name assumptions. The same diagnostic answer must map to the same semantic value regardless of layout.
 
 ## 7. Assessment interaction
 
@@ -104,8 +107,9 @@ Required:
 - selected state that is not color-only
 - keyboard focus state
 - back navigation
-- disabled next state before answering
+- disabled/safe next state before valid answering as applicable
 - no timed pressure by default
+- answer restoration when navigating back
 
 On desktop a horizontal Likert scale is acceptable. On narrow mobile the same answers should become vertically stacked rows.
 
@@ -117,14 +121,15 @@ Recommended rhythm:
 
 1. Core code + name + illustration
 2. identity sentence
-3. key trait measurements
+3. measurement/confidence overview
 4. narrative domains
 5. adversarial analysis
-6. relationship / work detail
+6. relationship / work / stress detail
 7. personal manual
-8. share card
+8. share controls
+9. method/version/limitations access
 
-Charts should be simple and interpretable. Avoid novelty visualizations that obscure the underlying score.
+Charts should be simple and interpretable. Avoid novelty visualizations that obscure the underlying score or imply unsupported precision.
 
 ## 9. Illustration system
 
@@ -132,12 +137,12 @@ Illustrations are a primary brand asset, not decoration.
 
 Initial plan:
 
-- one hero illustration per Core Type
+- one curated hero illustration per published Core Type
 - consistent art direction across all types
-- controlled visual modifiers for selected secondary traits if feasible
-- characters should be recognizable at social-card size
+- controlled deterministic visual modifiers only if later justified
+- characters recognizable at social-card size
 
-Do not generate each result from an unconstrained prompt at runtime. Artwork must be curated, versioned, and reproducible.
+Do not generate each result from an unconstrained prompt at runtime. Artwork must be reviewed, curated, versioned, and reproducible.
 
 ## 10. Accessibility
 
@@ -145,12 +150,15 @@ Baseline requirements:
 
 - semantic HTML
 - visible focus indicators
-- sufficient text contrast
+- sufficient text/UI contrast
 - touch targets sized for mobile
 - reduced-motion support
 - no information conveyed by color alone
 - form controls readable by assistive technology
-- content remains usable at text zoom
+- content remains usable at browser text zoom
+- keyboard-only assessment completion
+
+Target practical WCAG 2.2 AA for the core flow; release exceptions must be documented.
 
 ## 11. Motion
 
@@ -158,24 +166,34 @@ Motion should be rare and functional:
 
 - question progress
 - restrained page/section transitions
-- result reveal if it does not delay access
+- optional result reveal that never delays access
 
 Respect `prefers-reduced-motion`.
 
+Avoid continuous ambient effects that make the product resemble an AI demo.
+
 ## 12. Voice
 
-Copy should be specific, calm, and evidence-oriented.
+Copy should be specific, calm, evidence-oriented, and conditional where appropriate.
 
 Avoid:
 
 - mystical certainty
 - exaggerated praise
 - pseudo-scientific claims
-- "we know you better than you know yourself"
+- “we know you better than you know yourself”
+- superiority/rarity bait unsupported by observed data
 - robotic AI disclaimers in every section
 
 Prefer:
 
-- observed tendency
+- observed/measured tendency
 - conditional phrasing
-- clear distinction between measurement, interpretation, and population estimate
+- distinction between measurement, interpretation, and observed sample statistics
+- direct but non-abusive adversarial analysis
+
+## 13. Detailed authority
+
+For release-blocking responsive/accessibility/performance requirements, refer to `docs/requirements/06_FRONTEND_RESPONSIVE_UX.md`.
+
+For illustration/content production constraints, refer to `docs/requirements/05_CONTENT_AND_ILLUSTRATION.md`.
