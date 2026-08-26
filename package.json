@@ -13,6 +13,7 @@
     "test:persistence:integration": "node -e \"require('fs').rmSync('.tmp-tests',{recursive:true,force:true})\" && tsc -p tsconfig.domain-tests.json && node tests/infrastructure/postgres-integration.mjs && node --test .tmp-tests/tests/infrastructure/anonymous-assessment-repository.integration.test.js",
     "seed:dev": "node scripts/seed-development-model.mjs",
     "test:seed:dev": "node -e \"require('fs').rmSync('.tmp-tests',{recursive:true,force:true})\" && tsc -p tsconfig.domain-tests.json && node tests/infrastructure/development-seed.integration.mjs && node --test .tmp-tests/tests/infrastructure/assessment-model-repository.integration.test.js .tmp-tests/tests/application/server-assessment-service.integration.test.js",
+    "test:e2e": "playwright test",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate"
   },
@@ -24,6 +25,7 @@
     "react-dom": "^19.2.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.55.0",
     "@types/node": "^24.3.0",
     "@types/react": "^19.1.12",
     "@types/react-dom": "^19.1.9",
