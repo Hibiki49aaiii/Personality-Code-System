@@ -162,13 +162,36 @@ This does **not** promote `C01D` or development fallback copy to public/validate
 
 ## Phase 3 — Content identity system
 
-### 3A Core Type/content catalog — PENDING
-- [ ] public code schema frozen for target model/version;
-- [ ] all reachable Core Types cataloged;
-- [ ] all mandatory result domains covered by production editorial content;
-- [ ] contradiction/suppression coverage reviewed;
-- [ ] adversarial analysis reviewed;
+### 3A Core Type/content catalog — ACTIVE; development reachability foundation complete
+
+The public-code evidence gate remains Phase 5C. Phase 3A therefore proceeds in two layers: build a complete non-public engineering catalog against C01D now, then promote/reconcile it only after a `public_use=true` schema is chosen.
+
+#### 3A-0 Development catalog foundation — COMPLETE
+- [x] catalog contract separates engineering reachability from public taxonomy claims;
+- [x] all 64 reachable C01D Core Codes explicitly frozen in `data/type-catalog/v0.1-dev/reachability.json`;
+- [x] stable development type-ID rule `C01D-<CORE_CODE>` documented;
+- [x] one-axis neighbor/differentiation rule specified;
+- [x] claim-provenance contract specified;
+- [x] CI recomputes 2^6 reachability and rejects missing/duplicate/impossible/order-drift codes;
+- [x] catalog and source schema are both forced to remain `public_use=false` at this development stage.
+
+#### 3A-1 Editorial draft catalog — ACTIVE
+- [ ] coherent Japanese naming system approved for the 64 C01D development entries;
+- [ ] all 64 entries receive draft public-type names and identity sentences;
+- [ ] concise overviews authored with claim provenance;
+- [ ] strengths and adversarial/failure-mode content authored from the same measurements;
+- [ ] relationship/love, work, stress and growth profiles authored;
+- [ ] one-axis neighbor differentiation reviewed for every entry;
+- [ ] contradiction/suppression behavior reviewed against 21-Trait/interaction detail output;
 - [ ] Japanese editorial QA.
+
+#### 3A-2 Public promotion gate — PENDING on Phase 5C
+- [ ] public code schema frozen for target production model/version (`public_use=true`);
+- [ ] development entries reconciled/migrated to every reachable public code;
+- [ ] all mandatory result domains covered by production editorial content;
+- [ ] published catalog/version metadata frozen.
+
+Master `PCS-CONTENT-001..003` remain incomplete until the public promotion gate is satisfied. Building the C01D draft catalog does not claim that 64 types are validated or final.
 
 ### 3B Illustration system — PENDING
 - [ ] art direction approved;
