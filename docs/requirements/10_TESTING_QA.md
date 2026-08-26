@@ -2,7 +2,7 @@
 
 ## QA principle
 
-PCS correctness means more than “the page renders.” A release must verify diagnostic determinism, historical reproducibility, responsive usability, accessibility, privacy boundaries, database integrity, and deployment integrity.
+PCS correctness means more than “the page renders.” A release must verify diagnostic determinism, historical reproducibility, responsive usability, accessibility, privacy boundaries, database integrity, content/catalog integrity, and deployment integrity.
 
 ## Test layers
 
@@ -60,9 +60,11 @@ Current and required invariants include:
 - published model/content artifacts cannot mutate;
 - immutable result snapshot cannot update;
 - retention/privacy deletion remains possible;
+- authoritative requirement IDs cannot be silently shadowed by derivative documents;
+- development type-catalog reachability exactly matches the versioned Core Code schema;
 - public share payload must never contain raw answers/session secrets when Phase 4 is implemented.
 
-### 4. Persistence integration tests
+### 4. Persistence and application integration tests
 
 Current CI starts PostgreSQL 16 and runs the real migration chain.
 
@@ -92,29 +94,64 @@ Current CI starts PostgreSQL 16 and runs the real migration chain.
 - private result retrieval via bearer token;
 - post-completion write rejection.
 
-Remaining Phase 2C/4 integration work:
+`tests/application/server-assessment-service.integration.test.ts` verifies the complete reviewed development model application flow through PostgreSQL:
 
-- HTTP/server-action start/resume endpoints;
-- active model delivery;
-- full 147-answer end-to-end finalization through web handlers;
+- 147-item model delivery;
+- answer save/resume;
+- deterministic finalization;
+- 21 Trait scores;
+- Core/Extended Code;
+- 18 result sections;
+- idempotent duplicate completion;
+- post-completion answer mutation rejection.
+
+Remaining integration work is now primarily Phase 4/6:
+
 - explicit public share snapshot creation/retrieval;
-- unknown/expired/invalid HTTP error behavior.
+- share revocation/deletion behavior if supported;
+- rate limiting/security headers/dependency-security gates;
+- deployment-specific backup/restore and production environment checks.
 
 ### 5. End-to-end tests
 
-Critical future user path:
+Current Chromium E2E covers:
 
-`landing -> start -> answer all -> navigate back/edit -> finish -> result -> optional share`
+`diagnosis -> anonymous start -> answer -> back/edit -> all 147 answers -> finish -> private result -> reload`
 
-Also test:
+It also verifies a fresh browser context without the bearer cookie cannot access the completed private result.
 
-- reload/resume;
-- accidental double click/submit;
-- mobile layout path;
-- keyboard-only path;
-- public shared-result visit;
-- private/nonexistent result access;
-- error recovery.
+Still required in later QA layers:
+
+- keyboard-only completion;
+- responsive/mobile path coverage at mandatory widths;
+- accidental rapid/double-interaction hardening beyond server idempotency;
+- public shared-result visit once Phase 4 exists;
+- richer expired/error recovery UX;
+- accessibility automation/manual verification.
+
+### 6. Requirement and catalog integrity validators
+
+`scripts/validate-requirement-ids.mjs` validates requirement declaration integrity across `REQUIREMENTS.md` and `docs/requirements/*.md`.
+
+It rejects:
+
+- duplicate declarations in one document;
+- unapproved derivative shadowing of Master IDs;
+- duplicate detailed IDs across derivative documents;
+- accidental expansion of the small explicit Master/detail alias allowlist.
+
+`scripts/validate-type-catalog.mjs` recomputes all legal combinations from `data/code-schema/v0.1-dev.json` and verifies `data/type-catalog/v0.1-dev/reachability.json`.
+
+It rejects:
+
+- schema/token mismatch;
+- public promotion of the development catalog;
+- wrong 2^N count;
+- missing/duplicate/impossible Core Codes;
+- canonical enumeration order drift;
+- invalid one-axis-neighbor closure.
+
+These validators prove engineering consistency only. They do not validate psychological constructs or editorial claims.
 
 ## Responsive visual QA
 
@@ -168,7 +205,7 @@ Release checks:
 - dependency vulnerability scan/review;
 - no AI API key/dependency required.
 
-Current persistence-specific privacy evidence includes hash-only anonymous session credentials and raw-answer separation from result snapshots.
+Current privacy evidence includes hash-only anonymous session credentials, HttpOnly/SameSite bearer-cookie transport, raw-answer separation from result snapshots/URLs, server-side model-bound writes and browser private-result isolation.
 
 ## Performance QA
 
@@ -186,20 +223,24 @@ Measure at least landing, assessment, and result pages. Investigate regressions 
 
 Current CI performs, in order:
 
-1. reviewed Item Bank validation;
-2. persistence migration/static invariant validation;
-3. real PostgreSQL persistence + typed repository integration;
-4. domain/infrastructure unit and golden tests;
-5. TypeScript typecheck;
-6. Next.js production build.
+1. authoritative requirement-ID validation;
+2. development Core Type catalog reachability validation;
+3. reviewed Item Bank validation;
+4. persistence migration/static invariant validation;
+5. real PostgreSQL persistence integration;
+6. reviewed development-model seed + application integration;
+7. domain/infrastructure unit and Golden Snapshot tests;
+8. TypeScript typecheck;
+9. Next.js production build;
+10. Chromium browser E2E for the 147-item private assessment journey.
 
 Later release gates still require:
 
-- browser E2E;
 - automated/manual accessibility;
-- visual regression;
-- security/dependency review;
-- performance budgets.
+- responsive visual regression;
+- security/dependency review and abuse controls;
+- performance budgets;
+- Phase 4 public-share E2E.
 
 ## Bug severity
 
@@ -209,6 +250,8 @@ Release-blocking examples:
 - wrong type/code due to scoring bug;
 - historical result mutates after content/model update;
 - model/item/content publication can be silently rewritten;
+- requirement IDs silently change meaning;
+- catalog omits a reachable public type;
 - answer leak in public/share/analytics path;
 - assessment unusable on supported mobile width;
 - keyboard cannot complete test;
