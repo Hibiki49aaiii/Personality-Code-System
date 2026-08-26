@@ -27,7 +27,10 @@ jobs:
       - name: Validate item bank
         run: npm run validate:item-bank
 
-      - name: Domain scoring tests
+      - name: Validate persistence schema
+        run: npm run validate:persistence
+
+      - name: Domain and infrastructure tests
         run: npm run test:domain
 
       - name: Typecheck
