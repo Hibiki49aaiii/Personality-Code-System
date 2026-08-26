@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-test('anonymous user edits an answer, completes all 147 reviewed items, and receives the detailed deterministic private result', async ({ page }) => {
+test('anonymous user completes the private result and can explicitly create then revoke a sanitized public share', async ({ page, browser }) => {
   await page.goto('/diagnosis');
 
   await expect(page.getByText('REVIEWED DEVELOPMENT ASSESSMENT')).toBeVisible();
@@ -66,6 +66,32 @@ test('anonymous user edits an answer, completes all 147 reviewed items, and rece
   await expect(page.getByRole('heading', { level: 1, name: 'SVAEND' })).toBeVisible();
   await expect(page.getByText('result-snapshot-v0.1-dev', { exact: true })).toBeVisible();
   await expect(page.getByText('DEV-TRAIT-SYS-MID', { exact: true })).toBeVisible();
+
+  await page.getByRole('button', { name: '公開共有リンクを作成' }).click();
+  await expect(page.getByText(/公開用の共有リンクを作成しました/)).toBeVisible();
+
+  const shareLink = page.locator('a[href*="/s/"]').first();
+  await expect(shareLink).toBeVisible();
+  const shareUrl = await shareLink.getAttribute('href');
+  expect(shareUrl).toMatch(/^http:\/\/localhost:3000\/s\/[A-Za-z0-9_-]{43}$/);
+
+  const publicContext = await browser.newContext();
+  const publicPage = await publicContext.newPage();
+  await publicPage.goto(shareUrl!);
+  await expect(publicPage.getByText('PUBLIC SHARE · SANITIZED')).toBeVisible();
+  await expect(publicPage.getByRole('heading', { level: 1, name: 'SVAEND' })).toBeVisible();
+  await expect(publicPage.getByText('share-snapshot-v0.1-dev', { exact: true })).toBeVisible();
+  await expect(publicPage.getByText(/PCSX1/)).toHaveCount(0);
+  await expect(publicPage.getByText('Trait Vector', { exact: true })).toHaveCount(0);
+  await expect(publicPage.getByText(/all_midpoint_responses/)).toHaveCount(0);
+  await expect(publicPage.getByText(/DEV-TRAIT-/)).toHaveCount(0);
+
+  await page.getByRole('button', { name: 'この結果の公開リンクをすべて無効化' }).click();
+  await expect(page.getByText(/1件の公開共有リンクを無効化しました/)).toBeVisible();
+
+  await publicPage.reload();
+  await expect(publicPage.getByRole('heading', { level: 1, name: 'この共有リンクは利用できません' })).toBeVisible();
+  await publicContext.close();
 });
 
 test('private result is not retrievable in a fresh browser context without the bearer cookie', async ({ page }) => {
