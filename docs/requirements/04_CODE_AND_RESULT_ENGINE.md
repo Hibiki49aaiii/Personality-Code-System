@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Defines how deterministic Trait Scores become a memorable Personality Code and later a contradiction-safe detailed result without free-form AI interpretation.
+Defines how deterministic Trait Scores become a memorable Personality Code and a contradiction-safe detailed result without free-form AI interpretation.
 
 ## Authoritative top-level requirement IDs
 
@@ -115,23 +115,29 @@ Result composition consumes only versioned structured output such as:
 
 Raw free-text user interpretation is not a required input.
 
-Every result block MUST originate from a versioned content module/template. Suggested module metadata:
+Every result block originates from a versioned content module with deterministic metadata including:
 
 - module ID;
-- locale;
-- domain;
+- locale/domain;
 - activation rule;
 - priority;
 - assertion tags;
 - suppression/conflict tags;
-- evidence/status metadata;
 - content version.
 
-**Current status:** specification exists; runtime content-module selection is not yet implemented.
+Current implementation:
+
+- `src/domain/assessment/interactions.ts` — executes the 20 versioned interaction hypotheses as structured comparisons, never `eval`;
+- `src/domain/assessment/contentComposer.ts` — priority/tag-driven deterministic selection and suppression;
+- `src/domain/assessment/resultEngine.ts` — composes scoring, code, interactions, content and required sections into one structured result;
+- `data/interactions/v0.1.json` and `data/content/dev-v0.1.json` — machine-readable development rule/content data;
+- `tests/domain/interactions.test.ts`, `content-composer.test.ts`, `result-engine.test.ts` — rule boundary, order invariance, suppression, fallback and full-pipeline fixtures.
+
+**Current status: COMPLETE for the development deterministic engine.** Editorial production content remains Phase 3.
 
 ## Contradiction prevention — PCS-RESULT-004
 
-Current rule precedence:
+Current precedence:
 
 1. explicit safety/limitation copy;
 2. approved multi-Trait interaction module;
@@ -140,17 +146,22 @@ Current rule precedence:
 5. single-Trait general module;
 6. neutral/fallback module.
 
-A higher-priority module may suppress a lower-priority claim only through explicit rule/claim metadata.
+A higher-priority module may suppress a lower-priority claim only through explicit assertion/suppression tags. Same-priority ordering is deterministic by module ID.
 
-Example: high OPT generic copy must not say a person cannot stop when the high-OPT + high-FIN `Disciplined Optimizer` interaction is active.
+Examples covered by fixtures include:
 
-Interaction hypotheses/thresholds are versioned in `docs/model/TRAIT_INTERACTIONS_v0.1.md`.
+- high OPT generic cannot-stop wording is suppressed by high OPT + high FIN `Disciplined Optimizer`;
+- high RDP dependency-style generic wording is suppressed by high RDP + high BND `Deep but Non-Fused Bonding`;
+- generic Trait modules remain when the relevant interaction is inactive;
+- fallback content is selected only when a domain has no non-fallback selection.
 
-**Current status:** contradiction rules are specified; enforcement/content composer is not yet implemented.
+Interaction hypotheses/thresholds remain experimental and versioned in `docs/model/TRAIT_INTERACTIONS_v0.1.md`.
+
+**Current status: COMPLETE for deterministic enforcement and development fixtures.** Psychological truth of interaction hypotheses remains a Phase 5 validation question.
 
 ## Required result domains
 
-The result schema must support:
+The result schema supports:
 
 - core identity;
 - Trait overview;
@@ -171,6 +182,8 @@ The result schema must support:
 - growth guidance;
 - personal manual summary.
 
+`resultEngine.ts` requires all 18 domains to resolve to at least one selected module; missing required domains fail closed.
+
 Presentation domains are views over measured Traits/interactions, not automatically separate latent factors.
 
 ## Adversarial analysis rules
@@ -183,6 +196,8 @@ Adversarial analysis MUST:
 - use the same structured measurements as the normal profile;
 - never invent unrelated weaknesses for entertainment.
 
+Production editorial modules implementing this requirement remain Phase 3A work.
+
 ## Result snapshots — PCS-RESULT-005
 
 A finalized result snapshot must retain enough metadata to reproduce what the user saw:
@@ -192,20 +207,27 @@ A finalized result snapshot must retain enough metadata to reproduce what the us
 - code-schema version;
 - interaction-rule version;
 - content version;
-- illustration asset/version reference;
+- illustration asset/version reference once the illustration system exists;
 - canonical structured Trait Scores;
 - Core/Extended Code;
 - selected module IDs/order/suppression result;
 - displayed response-quality interpretation where applicable.
 
-Historical snapshots MUST NOT silently change when current scoring, code, copy, or artwork changes.
+Current development implementation:
 
-**Current status:** snapshot requirements are specified; persistence implementation is pending Phase 2B/2C.
+- `src/domain/assessment/resultSnapshot.ts` creates `result-snapshot-v0.1-dev` without duplicating raw answers or prose;
+- `tests/fixtures/golden-result-snapshot-midpoint-v0.1.json` freezes a known structured snapshot;
+- `tests/domain/result-snapshot.test.ts` verifies exact snapshot equality and input-order invariance;
+- PostgreSQL `result_snapshots` stores the snapshot as JSONB plus indexed version columns;
+- SQL triggers reject snapshot `UPDATE` and reject inserted snapshots whose indexed model/version/locale metadata conflicts with the owning session/model or embedded JSON metadata;
+- persistence tests verify retention/privacy `DELETE` remains possible while mutation is not.
+
+The current snapshot intentionally has no illustration asset reference because the curated illustration system does not yet exist. Therefore the top-level production requirement remains **partial**, not falsely complete.
 
 ## Current requirement status
 
 - **PCS-RESULT-001 — COMPLETE as experimental engineering specification:** C01D is deterministic, documented, implemented, tested, and explicitly non-public.
 - **PCS-RESULT-002 — COMPLETE as experimental engineering specification:** PCSX1 syntax/bands/order/version behavior are deterministic, documented, implemented, and tested.
-- **PCS-RESULT-003 — PENDING IMPLEMENTATION:** content module model/composer required.
-- **PCS-RESULT-004 — PENDING IMPLEMENTATION:** precedence exists in specification but must be enforced/tested by the composer.
-- **PCS-RESULT-005 — PENDING IMPLEMENTATION:** immutable persistence/result snapshot schema required.
+- **PCS-RESULT-003 — COMPLETE as development deterministic engine:** structured module selection is implemented/tested; production editorial catalog remains Phase 3.
+- **PCS-RESULT-004 — COMPLETE as development deterministic engine:** precedence/suppression is enforced and contradiction fixtures pass.
+- **PCS-RESULT-005 — PARTIAL:** deterministic immutable development snapshot + PostgreSQL persistence exists and is integration-tested; curated illustration asset/version linkage remains Phase 3 before production completion.
