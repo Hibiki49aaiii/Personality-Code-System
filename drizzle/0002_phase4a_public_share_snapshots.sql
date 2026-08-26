@@ -168,4 +168,22 @@ BEFORE UPDATE ON public_share_snapshots
 FOR EACH ROW
 EXECUTE FUNCTION pcs_public_share_snapshot_update_guard();
 
+CREATE OR REPLACE FUNCTION pcs_revoke_public_shares_before_result_delete()
+RETURNS trigger
+LANGUAGE plpgsql
+AS $$
+BEGIN
+  UPDATE public_share_snapshots
+  SET status = 'revoked', revoked_at = COALESCE(revoked_at, now())
+  WHERE source_result_snapshot_id = OLD.snapshot_id
+    AND status = 'active';
+  RETURN OLD;
+END;
+$$;
+
+CREATE TRIGGER result_snapshots_revoke_public_shares_before_delete
+BEFORE DELETE ON result_snapshots
+FOR EACH ROW
+EXECUTE FUNCTION pcs_revoke_public_shares_before_result_delete();
+
 COMMIT;
