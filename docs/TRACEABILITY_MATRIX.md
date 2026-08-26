@@ -1,7 +1,7 @@
 # Requirements Traceability Matrix
 
 > Status: active from Phase 1 onward
-> Last updated: 2026-08-26
+> Last updated: 2026-08-27
 
 A checkbox in `REQUIREMENTS.md` is marked complete only when inspectable specification/implementation/verification evidence exists. `complete` never implies psychometric validation unless the requirement explicitly concerns validation evidence.
 
@@ -11,6 +11,8 @@ A checkbox in `REQUIREMENTS.md` is marked complete only when inspectable specifi
 | PCS-PROD-002 | complete (development flow) | `01_PRODUCT_SCOPE.md` | anonymous session/cookie flow | Chromium E2E starts assessment without account |
 | PCS-PROD-003 | complete (development flow) | reviewed 147-item model + Phase 2C exit | diagnosis UI/server/application/persistence | 147-answer Chromium E2E to result |
 | PCS-PROD-004 | complete (development result) | structured-result/domain contract | Core/Extended Code + 21 Traits + metadata + 18 sections | application integration + Chromium result assertions |
+| PCS-PROD-005 | complete (development result) | type/Trait editorial v0.3 | deterministic hidden-strengths + adversarial domains | content validator, Golden v0.3, application/browser assertions; production human QA still open |
+| PCS-PROD-007 | complete (explicit export) | social-share requirements | private result `ShareControls` → POST `/api/share` → separate sanitized snapshot | Chromium proves completion alone stays private and explicit Share creates public URL |
 | PCS-PROD-006 | complete (development result) | required 18 result domains | relationships/love, work, stress included in deterministic sections | result-engine fail-closed domain tests + application flow |
 | PCS-DIAG-001 | complete (conceptual) | `docs/model/TRAIT_DICTIONARY_v0.2.md` | n/a | 21 retained Traits each define poles, boundaries, anchors, overlaps/domains |
 | PCS-DIAG-002 | complete (conceptual) | `docs/model/TRAIT_OVERLAP_MATRIX_v0.2.md` | n/a | full retained-pair review; LDR/DEL/TRN removed from direct scoring |
@@ -37,16 +39,19 @@ A checkbox in `REQUIREMENTS.md` is marked complete only when inspectable specifi
 | PCS-A11Y-001..002 | pending | `06_FRONTEND_RESPONSIVE_UX.md`, `10_TESTING_QA.md` | semantic controls exist but no completion claim | keyboard/manual/automated a11y gate open |
 | PCS-ARCH-001 | complete | `07_APPLICATION_ARCHITECTURE_AND_DATA.md` | `src/domain/assessment/*` isolated from React/DB | compile/tests independent of UI/database |
 | PCS-ARCH-002 | complete (Phase 2B/2C foundation) | ADR-0001 + schema/application contract | schema, adapters, real server/application wiring | static migration validator + PostgreSQL 16 + application integration |
-| PCS-ARCH-003 | partial | raw-answer separation/public-share requirement | private flow excludes raw answers from URL/snapshot/result API | public URL/OG/share payload audit remains Phase 4 |
+| PCS-ARCH-003 | complete | raw-answer/public-export separation contract | `shareSnapshot.ts`, hash-only public token/repository, DB insert guard, versioned public image routes | domain + PostgreSQL + repository + Chromium public/private boundary tests |
 | PCS-ARCH-004 | complete (current persistence) | immutability contract | SQL triggers protect published model/items/content/revisions/snapshots | `postgres-integration.mjs` exercises actual rejection behavior |
 | PCS-ARCH-005 | complete (foundation) | ADR-0001 migration/rollback policy | ordered committed SQL migrations | migration validator + PostgreSQL application in CI; deployment backup rehearsal is OPS |
 | PCS-PRIV-001 | complete (anonymous private flow) | `08_PRIVACY_SECURITY.md` | opaque token + hash-only DB + HttpOnly/SameSite cookie | repository tests + fresh-browser private-result isolation |
-| PCS-PRIV-002..004 | pending/partial | data minimization/share policy | no public share/third-party analytics path yet | release privacy audit remains open |
+| PCS-PRIV-002..003 | pending/partial | data minimization/analytics policy | no third-party analytics path yet | release privacy/network audit remains open |
+| PCS-PRIV-004 | complete (development share flow) | opt-in public-share policy | POST `/api/share` requires private bearer cookie and explicit UI action | Chromium explicit-share flow + separate public snapshot persistence |
 | PCS-SEC-001 | partial | security baseline | strong token, server validation, private cookie, DB guards | rate limit/security headers/dependency-security gate remain open |
 | PCS-QA-001 | complete (current CI) | `10_TESTING_QA.md` | `.github/workflows/ci.yml` | requirements → type catalog → Item Bank → PostgreSQL → app/domain → typecheck/build → Chromium E2E |
 | PCS-QA-002 | complete (current domain pipeline) | result/scoring/code requirements | full current domain engine | scoring/code/interaction/composer/result/snapshot suites |
 | PCS-QA-003 | complete (development fixture) | Golden snapshot rule | `golden-result-snapshot-midpoint-v0.1.json` | exact equality + answer-order invariance tests |
-| PCS-QA-004 | complete for private Phase 2C journey | E2E path contract | Playwright Chromium flow | start → back/edit → 147 answers → result → reload + cookie isolation; public share later |
+| PCS-SOC-002 | complete (development implementation) | `09_SOCIAL_SHARING_AND_ANALYTICS.md` | Web Share, X intent, LINE intent, URL copy on private result | Chromium assertions against exact opaque share URL |
+| PCS-SOC-003 | complete (development fallback) | versioned sanitized OG contract | dynamic share metadata + `/api/share/og/v0.1/[token]` | Run 190: image/png, template header, byte determinism, revoked 404 |
+| PCS-QA-004 | complete through Phase 4A-1 journey | E2E path contract | Playwright Chromium flow | start → back/edit → 147 answers → private result → explicit public share → cookie-free view/cards → revoke/404 |
 | PCS-QA-005..007 | pending | a11y/visual/security requirements | partial foundations only | later release gates |
 
 ## Requirement governance evidence
@@ -72,6 +77,10 @@ This directly enforces the Master rule that requirement IDs are never reused for
 - `src/server/assessmentRuntime.ts`
 - `drizzle/0000_phase2b_persistence.sql`
 - `drizzle/0001_phase2b_immutability_hardening.sql`
+- `drizzle/0002_phase4a_public_share_snapshots.sql`
+- `src/infrastructure/persistence/sharingSchema.ts`
+- `src/infrastructure/persistence/publicShareToken.ts`
+- `src/infrastructure/persistence/publicShareRepository.ts`
 - `docs/model/PERSISTENCE_RETENTION_BASELINE_v0.1.md`
 
 ### Verification
@@ -80,7 +89,7 @@ This directly enforces the Master rule that requirement IDs are never reused for
 - `tests/infrastructure/postgres-integration.mjs` applies migrations to a real PostgreSQL 16 database and proves DB invariants.
 - `tests/infrastructure/anonymous-assessment-repository.integration.test.ts` proves hash-only anonymous credentials, answer persistence, atomic scores/snapshot/completion, private result lookup and post-completion freeze.
 - `tests/application/server-assessment-service.integration.test.ts` executes the full 147-answer application flow against the seeded reviewed model.
-- `tests/e2e/assessment-flow.spec.ts` proves the real Chromium web flow, back/edit behavior, deterministic result rendering/reload and private-result isolation.
+- `tests/e2e/assessment-flow.spec.ts` proves the real Chromium web flow, back/edit behavior, deterministic result rendering/reload, private-result isolation, explicit sanitized public sharing, social controls, deterministic OG/portrait images and revocation.
 
 ## Phase 3A development catalog evidence
 
@@ -90,6 +99,18 @@ This directly enforces the Master rule that requirement IDs are never reused for
 - Both source schema and draft catalog are required to stay `public_use=false` in this development validator.
 
 This is engineering completeness evidence only. It does not complete the published Core Type catalog or validate a 64-type psychological taxonomy.
+
+## Phase 4A sanitized sharing evidence
+
+- Sanitized schema: `src/domain/sharing/shareSnapshot.ts`
+- Public capability: `src/infrastructure/persistence/publicShareToken.ts` (256-bit token / SHA-256 DB hash)
+- Lifecycle repository: `src/infrastructure/persistence/publicShareRepository.ts`
+- DB table/guards: `src/infrastructure/persistence/sharingSchema.ts`, `drizzle/0002_phase4a_public_share_snapshots.sql`
+- Explicit owner API/UI: `src/app/api/share/route.ts`, `src/app/result/ShareControls.tsx`
+- Public route: `src/app/s/[token]/page.tsx`
+- Versioned deterministic cards: `src/app/api/share/_image.tsx`, OG/portrait v0.1 routes
+- Browser proof: CI Run `33020306036` (Run 190) covers share controls, cookie-free public view, PNG/card byte determinism, dynamic OG metadata and revoke→404 behavior.
+- Production caveat: display-name/identity/illustration fields remain nullable until Phase 3A/3B/5C approval; PCS-SOC-001 remains open.
 
 ## Current CI evidence
 
@@ -104,9 +125,9 @@ Current CI gates include:
 7. domain/infrastructure + Golden Snapshot tests;
 8. TypeScript typecheck;
 9. production build;
-10. Chromium 147-item private assessment E2E.
+10. Chromium 147-item private assessment + explicit sanitized public-share/card/revocation E2E.
 
-The known successful Phase 2C browser checkpoint is CI Run `32960309207`. New validators are release-blocking on every subsequent push/PR.
+The historical Phase 2C browser checkpoint is CI Run `32960309207`. Phase 4A sanitized sharing/card checkpoint is CI Run `33020306036` (Run 190). New validators remain release-blocking on every subsequent push/PR.
 
 CI success verifies software/data-contract invariants only. It is not evidence of psychological construct validity.
 
