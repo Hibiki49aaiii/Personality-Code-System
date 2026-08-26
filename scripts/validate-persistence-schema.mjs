@@ -34,7 +34,8 @@ const requiredTables = [
   'anonymous_sessions',
   'assessment_answers',
   'assessment_trait_scores',
-  'result_snapshots'
+  'result_snapshots',
+  'public_share_snapshots'
 ];
 
 for (const table of requiredTables) {
@@ -45,11 +46,18 @@ for (const table of requiredTables) {
 
 const requiredFragments = [
   ['hashed bearer token column', /access_token_hash\s+char\(64\)/i],
+  ['hashed public share token column', /public_token_hash\s+char\(64\)/i],
   ['answer range check', /value\s+BETWEEN\s+1\s+AND\s+5/i],
   ['trait basis-point check', /score_bp\s+BETWEEN\s+0\s+AND\s+10000/i],
   ['result snapshot JSONB', /snapshot_json\s+jsonb\s+NOT NULL/i],
+  ['public share JSONB', /share_json\s+jsonb\s+NOT NULL/i],
   ['result snapshot immutable update trigger', /CREATE TRIGGER\s+result_snapshots_immutable_update/i],
   ['result snapshot version guard', /CREATE TRIGGER\s+result_snapshots_version_guard/i],
+  ['public share insert/privacy guard', /CREATE TRIGGER\s+public_share_snapshots_insert_guard/i],
+  ['public share immutable/revocation guard', /CREATE TRIGGER\s+public_share_snapshots_update_guard/i],
+  ['public share active-source uniqueness', /CREATE UNIQUE INDEX\s+public_share_snapshots_active_source_uq/i],
+  ['public share source detach on private deletion', /source_result_snapshot_id\s+uuid\s+REFERENCES\s+result_snapshots\(snapshot_id\)\s+ON DELETE SET NULL/i],
+  ['public share prohibited diagnostic field guard', /public share snapshot contains a prohibited diagnostic\/private field/i],
   ['published model immutable update trigger', /CREATE TRIGGER\s+assessment_model_release_immutable_update/i],
   ['published model immutable delete trigger', /CREATE TRIGGER\s+assessment_model_release_immutable_delete/i],
   ['published model item guard', /CREATE TRIGGER\s+assessment_model_items_published_guard/i],
@@ -69,6 +77,9 @@ for (const [label, pattern] of requiredFragments) {
 if (/\baccess_token\b(?!_hash)/i.test(sqlText)) {
   errors.push('migration appears to persist a raw access_token column');
 }
+if (/\bpublic_token\b(?!_hash)/i.test(sqlText)) {
+  errors.push('migration appears to persist a raw public_token column');
+}
 
 for (const entry of migrationEntries) {
   if (!/^BEGIN;[\s\S]*COMMIT;\s*$/i.test(entry.text.trim())) {
@@ -83,5 +94,5 @@ if (errors.length) {
 }
 
 console.log(
-  `Persistence migration validation passed: ${migrationFiles.length} migration(s), ${requiredTables.length} tables, and published/session/snapshot invariants present.`
+  `Persistence migration validation passed: ${migrationFiles.length} migration(s), ${requiredTables.length} tables, private-result/public-share privacy guards, and published/session/snapshot invariants present.`
 );
