@@ -1,4 +1,4 @@
-import { and, eq } from 'drizzle-orm';
+import { and, asc, eq } from 'drizzle-orm';
 import type { StructuredAssessmentResult } from '../../domain/assessment/resultEngine';
 import { createResultSnapshot, type ResultSnapshotV01 } from '../../domain/assessment/resultSnapshot';
 import { createAnonymousSessionCredential, hashAnonymousSessionToken } from './sessionToken';
@@ -38,10 +38,22 @@ export interface CreatedAnonymousSession {
   expiresAt: Date;
 }
 
-async function requireWritableSession(
-  db: PcsDatabase,
-  token: string
-): Promise<{ sessionId: string; modelVersion: string; locale: string; expiresAt: Date }> {
+export interface AnonymousAssessmentState {
+  sessionId: string;
+  modelVersion: string;
+  locale: string;
+  status: 'in_progress' | 'completed' | 'expired';
+  expiresAt: Date;
+  completedAt: Date | null;
+  answers: Array<{
+    itemId: string;
+    itemRevision: string;
+    locale: string;
+    value: number;
+  }>;
+}
+
+async function findSessionByToken(db: PcsDatabase, token: string) {
   const tokenHash = hashAnonymousSessionToken(token);
   const [session] = await db
     .select({
@@ -49,11 +61,20 @@ async function requireWritableSession(
       modelVersion: anonymousSessions.modelVersion,
       locale: anonymousSessions.locale,
       status: anonymousSessions.status,
-      expiresAt: anonymousSessions.expiresAt
+      expiresAt: anonymousSessions.expiresAt,
+      completedAt: anonymousSessions.completedAt
     })
     .from(anonymousSessions)
     .where(eq(anonymousSessions.accessTokenHash, tokenHash))
     .limit(1);
+  return session ?? null;
+}
+
+async function requireWritableSession(
+  db: PcsDatabase,
+  token: string
+): Promise<{ sessionId: string; modelVersion: string; locale: string; expiresAt: Date }> {
+  const session = await findSessionByToken(db, token);
 
   if (!session) {
     throw new PersistenceError('SESSION_NOT_FOUND', 'Anonymous assessment session was not found');
@@ -112,6 +133,42 @@ export async function createAnonymousAssessmentSession(
     sessionId: session.sessionId,
     token: credential.token,
     expiresAt: session.expiresAt
+  };
+}
+
+export async function getAnonymousAssessmentState(
+  db: PcsDatabase,
+  token: string
+): Promise<AnonymousAssessmentState> {
+  const session = await findSessionByToken(db, token);
+  if (!session) {
+    throw new PersistenceError('SESSION_NOT_FOUND', 'Anonymous assessment session was not found');
+  }
+  if (session.status === 'in_progress' && session.expiresAt.getTime() <= Date.now()) {
+    throw new PersistenceError('SESSION_EXPIRED', 'Anonymous assessment session has expired');
+  }
+
+  const answers = session.status === 'in_progress'
+    ? await db
+        .select({
+          itemId: assessmentAnswers.itemId,
+          itemRevision: assessmentAnswers.itemRevision,
+          locale: assessmentAnswers.locale,
+          value: assessmentAnswers.value
+        })
+        .from(assessmentAnswers)
+        .where(eq(assessmentAnswers.sessionId, session.sessionId))
+        .orderBy(asc(assessmentAnswers.itemId))
+    : [];
+
+  return {
+    sessionId: session.sessionId,
+    modelVersion: session.modelVersion,
+    locale: session.locale,
+    status: session.status as AnonymousAssessmentState['status'],
+    expiresAt: session.expiresAt,
+    completedAt: session.completedAt,
+    answers
   };
 }
 
