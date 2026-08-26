@@ -1,6 +1,6 @@
 import type { NextRequest } from 'next/server';
 import { getPrivateRenderedAssessmentResult } from '../../../../application/assessment/serverAssessmentService';
-import { getServerPcsDatabase } from '../../../../infrastructure/persistence/serverDatabase';
+import { withPcsDatabase } from '../../../../server/assessmentRuntime';
 import { assessmentApiError, getAssessmentToken, noStoreJson } from '../_shared';
 
 export const runtime = 'nodejs';
@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const result = await getPrivateRenderedAssessmentResult(getServerPcsDatabase(), token);
+    const result = await withPcsDatabase((db) => getPrivateRenderedAssessmentResult(db, token));
     if (!result) {
       return noStoreJson({ error: 'RESULT_NOT_FOUND', message: '確定済みの診断結果がありません。' }, { status: 404 });
     }
