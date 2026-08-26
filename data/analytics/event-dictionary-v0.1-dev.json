@@ -50,7 +50,8 @@
           "type": "string",
           "max_length": 16
         }
-      }
+      },
+      "required_properties": []
     },
     {
       "name": "assessment_started",
@@ -65,7 +66,11 @@
           "type": "string",
           "max_length": 16
         }
-      }
+      },
+      "required_properties": [
+        "modelVersion",
+        "locale"
+      ]
     },
     {
       "name": "question_viewed",
@@ -81,7 +86,11 @@
           "min": 1,
           "max": 500
         }
-      }
+      },
+      "required_properties": [
+        "modelVersion",
+        "itemPosition"
+      ]
     },
     {
       "name": "answer_interaction",
@@ -104,7 +113,12 @@
             "changed"
           ]
         }
-      }
+      },
+      "required_properties": [
+        "modelVersion",
+        "itemPosition",
+        "interactionType"
+      ]
     },
     {
       "name": "assessment_resumed",
@@ -120,7 +134,11 @@
           "min": 0,
           "max": 500
         }
-      }
+      },
+      "required_properties": [
+        "modelVersion",
+        "answeredCount"
+      ]
     },
     {
       "name": "assessment_completed",
@@ -136,7 +154,11 @@
           "min": 0,
           "max": 500
         }
-      }
+      },
+      "required_properties": [
+        "modelVersion",
+        "answeredCount"
+      ]
     },
     {
       "name": "result_viewed",
@@ -147,7 +169,10 @@
           "type": "string",
           "max_length": 64
         }
-      }
+      },
+      "required_properties": [
+        "modelVersion"
+      ]
     },
     {
       "name": "share_initiated",
@@ -158,7 +183,10 @@
           "type": "string",
           "max_length": 64
         }
-      }
+      },
+      "required_properties": [
+        "modelVersion"
+      ]
     },
     {
       "name": "share_method_selected",
@@ -175,7 +203,10 @@
             "portrait-card"
           ]
         }
-      }
+      },
+      "required_properties": [
+        "method"
+      ]
     },
     {
       "name": "share_snapshot_created",
@@ -186,7 +217,10 @@
           "type": "string",
           "max_length": 64
         }
-      }
+      },
+      "required_properties": [
+        "shareSchemaVersion"
+      ]
     },
     {
       "name": "public_share_viewed",
@@ -197,7 +231,10 @@
           "type": "string",
           "max_length": 64
         }
-      }
+      },
+      "required_properties": [
+        "shareSchemaVersion"
+      ]
     },
     {
       "name": "client_error",
@@ -212,7 +249,11 @@
           "type": "string",
           "max_length": 64
         }
-      }
+      },
+      "required_properties": [
+        "category",
+        "surface"
+      ]
     },
     {
       "name": "server_error",
@@ -227,7 +268,11 @@
           "type": "string",
           "max_length": 64
         }
-      }
+      },
+      "required_properties": [
+        "category",
+        "surface"
+      ]
     },
     {
       "name": "performance_measure",
@@ -251,7 +296,11 @@
             "poor"
           ]
         }
-      }
+      },
+      "required_properties": [
+        "metric",
+        "bucket"
+      ]
     }
   ]
 }
