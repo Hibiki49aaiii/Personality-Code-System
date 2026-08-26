@@ -1,7 +1,7 @@
 # Personality Code System — Master Requirements & Delivery Checklist
 
 > Status: authoritative development contract
-> Version: 0.1.0
+> Version: 0.2.0
 > Last updated: 2026-08-26
 
 This file is the single top-level source of truth for product scope and delivery status. Detailed requirements live under `docs/requirements/` and are referenced from this master file.
@@ -12,7 +12,7 @@ When documents conflict, use this order:
 
 1. `REQUIREMENTS.md` — product invariants, scope, delivery gates.
 2. `docs/requirements/*.md` — authoritative domain requirements.
-3. `docs/PRODUCT_SPEC.md`, `docs/DESIGN_SYSTEM.md`, `docs/DIAGNOSTIC_MODEL.md` — design/research working documents.
+3. `docs/PRODUCT_SPEC.md`, `docs/DESIGN_SYSTEM.md`, `docs/DIAGNOSTIC_MODEL.md` and versioned model artifacts — design/research specifications subject to the authoritative requirements above.
 4. Implementation notes, issues, comments, prototypes.
 
 A lower-priority document MUST NOT silently override a higher-priority one. Any intentional requirement change must update the master checklist and every affected derivative requirement file in the same change set.
@@ -47,13 +47,20 @@ Detailed scope: [`docs/requirements/01_PRODUCT_SCOPE.md`](docs/requirements/01_P
 
 ## 3. Diagnostic model
 
-- [ ] **PCS-DIAG-001** Freeze Trait Dictionary v0.2 with definitions, opposites, inclusion/exclusion boundaries, and behavioral anchors.
-- [ ] **PCS-DIAG-002** Complete trait overlap matrix and remove/merge unjustifiably redundant traits.
-- [ ] **PCS-DIAG-003** Define result presentation domains separately from latent/measured traits.
-- [ ] **PCS-DIAG-004** Define versioned trait interaction rules.
-- [ ] **PCS-DIAG-005** Define required psychometric evidence before any construct is described as validated.
+- [x] **PCS-DIAG-001** Freeze Trait Dictionary v0.2 with definitions, opposites, inclusion/exclusion boundaries, and behavioral anchors. *(Conceptual/item-authoring freeze; not empirical validation.)*
+- [x] **PCS-DIAG-002** Complete trait overlap matrix and remove/merge unjustifiably redundant traits. *(Conceptual review complete; empirical discriminant review remains required.)*
+- [x] **PCS-DIAG-003** Define result presentation domains separately from latent/measured traits.
+- [x] **PCS-DIAG-004** Define versioned trait interaction rules. *(Current rules are hypotheses.)*
+- [x] **PCS-DIAG-005** Define required psychometric evidence before any construct is described as validated.
 
-Detailed model: [`docs/requirements/02_DIAGNOSTIC_MODEL.md`](docs/requirements/02_DIAGNOSTIC_MODEL.md)
+Model artifacts:
+
+- [`docs/model/TRAIT_DICTIONARY_v0.2.md`](docs/model/TRAIT_DICTIONARY_v0.2.md)
+- [`docs/model/TRAIT_OVERLAP_MATRIX_v0.2.md`](docs/model/TRAIT_OVERLAP_MATRIX_v0.2.md)
+- [`docs/model/TRAIT_INTERACTIONS_v0.1.md`](docs/model/TRAIT_INTERACTIONS_v0.1.md)
+- [`docs/model/VALIDATION_GATES_v0.1.md`](docs/model/VALIDATION_GATES_v0.1.md)
+
+Detailed model requirements: [`docs/requirements/02_DIAGNOSTIC_MODEL.md`](docs/requirements/02_DIAGNOSTIC_MODEL.md)
 
 ## 4. Question bank and scoring
 
@@ -160,8 +167,8 @@ Detailed operations: [`docs/requirements/11_RELEASE_OPERATIONS.md`](docs/require
 - [x] Phase 0A — repository/application foundation.
 - [x] Phase 0B — initial non-AI visual direction and responsive prototype.
 - [x] Phase 0C — authoritative requirement system created.
-- [ ] Phase 1A — Trait Dictionary v0.2.
-- [ ] Phase 1B — overlap + interaction matrix.
+- [x] Phase 1A — Trait Dictionary v0.2. *(Conceptual/item-authoring freeze.)*
+- [x] Phase 1B — overlap + interaction matrix. *(Conceptual/hypothesis freeze.)*
 - [ ] Phase 1C — candidate item bank.
 - [ ] Phase 1D — scoring/code specification.
 - [ ] Phase 2A — real deterministic assessment engine.
@@ -182,7 +189,7 @@ Detailed phase exit criteria: [`docs/requirements/12_DELIVERY_PHASES.md`](docs/r
 
 Every production-impacting requirement should ultimately map to implementation and verification evidence.
 
-- [ ] Requirement-to-code/test traceability table maintained from Phase 1 onward.
+- [x] Requirement-to-code/test traceability table established and maintained from Phase 1 onward: [`docs/TRACEABILITY_MATRIX.md`](docs/TRACEABILITY_MATRIX.md).
 - [ ] Each checked implementation requirement has verifiable evidence (test, file, screenshot, report, or release artifact).
 - [ ] Requirement changes are recorded with rationale and affected model/content versions.
 

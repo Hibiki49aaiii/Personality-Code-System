@@ -1,115 +1,79 @@
-# Diagnostic Model — Working Draft v0.1
+# Diagnostic Model — Working Draft v0.2
 
-> Status: exploratory. Trait names and boundaries are not yet validated and must not be presented as scientifically established constructs.
+> Status: experimental conceptual model; not scientifically validated
+> Date: 2026-08-26
 
-## Design rule
+This document is the short model overview. Authoritative details live in the model artifacts below.
 
-A trait is only worth keeping as an independent PCS dimension if it is:
+## Authoritative model artifacts
 
-1. conceptually distinguishable,
-2. measurable with multiple non-trivial items,
-3. useful for explaining behavior,
-4. not almost completely redundant with another dimension,
-5. stable enough to reproduce across retests.
+- [`model/TRAIT_DICTIONARY_v0.2.md`](model/TRAIT_DICTIONARY_v0.2.md) — retained constructs, definitions, boundaries, behavioral anchors.
+- [`model/TRAIT_OVERLAP_MATRIX_v0.2.md`](model/TRAIT_OVERLAP_MATRIX_v0.2.md) — complete conceptual pairwise overlap review.
+- [`model/TRAIT_INTERACTIONS_v0.1.md`](model/TRAIT_INTERACTIONS_v0.1.md) — deterministic interaction hypotheses and contradiction-suppression rules.
+- [`model/VALIDATION_GATES_v0.1.md`](model/VALIDATION_GATES_v0.1.md) — evidence stages required before validation claims.
 
-## Candidate trait set
+## v0.2 direct-measurement candidate set
 
-| ID | Working name | High-score tendency | Failure mode when extreme |
-| --- | --- | --- | --- |
-| SYS | Systems Thinking | Models relationships, dependencies, causes | Over-structuring human or simple problems |
-| VER | Verification | Seeks evidence before commitment | High trust cost, over-checking |
-| ADV | Adversarial Cognition | Looks for failure, exploitation, contradiction | Suspicion, interpersonal auditing |
-| ABS | Abstraction | Compresses cases into general models | Losing situational detail |
-| EMO | Emotional Access | Identifies and experiences primary emotion | Affective overload if poorly regulated |
-| COG | Cognitive Processing | Converts emotion into language/analysis | Intellectualizing instead of feeling |
-| BND | Boundary | Protects autonomy and role boundaries | Experiencing expectations as intrusion |
-| RDP | Relational Depth | Invests deeply in selected relationships | Overinvestment in few people |
-| REC | Reciprocity | Tracks mutual contribution and selection | Transactional interpretation of affection |
-| CON | Consistency Need | Values congruence between words/actions | Low tolerance for normal human inconsistency |
-| AUT | Autonomy | Prefers self-directed decisions | Resistance to necessary coordination |
-| EXE | Execution | Moves from analysis to action | Premature action under weak models |
-| OPT | Optimization | Searches for better processes | Endless improvement loops |
-| FIN | Finish Discipline | Stops, ships, closes loops | Rigidity if too high; unfinished work if too low |
-| NOV | Novelty Seeking | Drawn to unknown / changing domains | Project proliferation |
-| PER | Persistence | Maintains effort after novelty fades | Sunk-cost persistence |
-| DEL | Delegation | Transfers ownership with appropriate controls | Abdication if too high; bottleneck if too low |
-| LDR | Leadership Structure | Defines ownership, standards, decisions | Excessive control / competence expectations |
-| RSK | Risk Calibration | Takes risk relative to expected value | Overconfidence in understood risk |
-| UNC | Uncertainty Tolerance | Functions without full information | Paralysis / irritation when low |
-| STR | Stress Recovery | Returns to baseline after pressure | Masking accumulation if apparently high |
-| CRE | Recombinative Creativity | Connects concepts across domains | Novelty without completion |
-| META | Meta-cognition | Observes own reasoning and bias | Analysis of self replacing behavior change |
-| TRN | Cross-domain Transfer | Applies structures learned elsewhere | False analogy across domains |
+21 constructs are retained for candidate item authoring:
 
-## Domain mapping — provisional
+`SYS VER ADV ABS META EMO COG BND RDP REC CON AUT EXE OPT FIN NOV PER RSK UNC STR CRE`
 
-### Thinking
-SYS, VER, ADV, ABS, META, TRN
+They are hypotheses until empirical calibration supports them.
 
-### Emotion
-EMO, COG, BND, UNC
+## Removed from direct measurement
 
-### Action
-EXE, OPT, FIN, NOV, PER
+The following v0.1 candidates are no longer direct numeric traits:
 
-### Relationships / love
-BND, RDP, REC, CON, NOV, EMO
+- `LDR` Leadership Structure — derived/presentation profile because it mixes multiple base tendencies and role context.
+- `DEL` Delegation — derived work-behavior hypothesis because role authority/team/task context materially determine behavior.
+- `TRN` Cross-domain Transfer — derived hidden-strength profile because of overlap with ABS/CRE/SYS and likely performance/knowledge dependence.
 
-### Work
-SYS, AUT, EXE, OPT, DEL, LDR, RSK, TRN
+Removing a direct trait is not loss of result detail: these patterns can still be explained through versioned interactions without double-scoring the same underlying tendencies.
 
-### Stress
-UNC, STR, BND, META, CON
+## Model architecture
 
-Traits can contribute to multiple result domains. Domains are presentation views, not necessarily independent latent factors.
+### Layer A — measured Trait Vector
 
-## Interaction candidates
+Continuous scores from versioned assessment items. Only retained direct traits receive standalone numeric scores.
 
-PCS should explain important interactions instead of interpreting every score independently.
+### Layer B — interactions and derived profiles
 
-Examples:
+Versioned deterministic rules interpret combinations when they add meaning beyond isolated scores. Derived profiles do not automatically receive numeric scores.
 
-- VER high + ADV high → evidence-seeking with threat / contradiction scanning
-- VER high + ADV low → accuracy-seeking without strong threat orientation
-- AUT high + DEL low → self-reliant execution that may become a bottleneck
-- OPT high + FIN low → strong improvement loop with weak stopping condition
-- RDP high + BND high → deep attachment without desire for relational fusion
-- REC high + CON high → strong sensitivity to asymmetry and behavioral contradiction
-- NOV high + PER low → rapid exploration, declining interest after model acquisition
-- META high + EMO low → sophisticated self-explanation with possible affective distance
+### Layer C — Core Type / Extended Code
 
-These interactions require empirical testing; they are hypotheses, not finalized rules.
+The human-readable identity system is built later from interpretable measured structure. The number of Core Types must not be chosen first and then forced onto the data.
 
-## Item-writing rules
+### Layer D — presentation domains
 
-- One behavioral proposition per item.
-- Avoid jargon and type labels.
-- Avoid obviously desirable moral framing.
-- Prefer specific tendencies over absolute identity statements.
-- Avoid unnecessary scenario specificity that makes the item irrelevant to large groups.
-- Mix direct and counter-keyed wording carefully; do not create confusing negatives only to manufacture reverse items.
-- Do not ask two constructs in one sentence.
-- Items should be understandable without specialist knowledge.
+Thinking, Emotion, Action, Relationships/Love, Work, Stress, Communication, Decision Making, Learning, Leadership, Risk, Creativity, Hidden Strengths, Adversarial Analysis, Growth.
+
+Domains are narrative views that compose multiple measured traits and interactions. They are not assumed to be independent psychological factors.
+
+## Key anti-contradiction examples
+
+- High `OPT` does not imply weak finishing when `FIN` is also high.
+- High `RDP` does not imply dependency when `BND` is high.
+- High `COG` does not imply emotional distance when `EMO` is high.
+- High `UNC` does not imply risk-seeking when `RSK` is low.
+- High `VER` does not imply suspiciousness when `ADV` is low.
+
+The result engine must apply interaction precedence instead of simply concatenating every high/low trait paragraph.
+
+## Item-bank next step
+
+For every retained trait:
+
+1. author 6–8 candidate items;
+2. include discriminant items for high-overlap neighbors;
+3. review desirability, ambiguity, double-barreling, context dependence, and transparent scoring;
+4. assign exactly one primary scoring trait per item;
+5. version the candidate bank before implementation.
 
 ## Population percentage
 
-Do not infer population rarity from theoretical trait combinations.
+No theoretical rarity percentage is allowed. Before real data exist, rarity is unavailable. After data collection, any displayed distribution is scoped to valid PCS assessment samples and must state model/sample/time/language scope.
 
-Before sufficient real data exists, label rarity as unavailable or beta-sample distribution only.
+## Scientific-claim rule
 
-After launch, report clearly scoped statistics, for example:
-
-- `% of valid PCS v1.0 assessments in the last 12 months`
-- sample size
-- geographic/language scope where relevant
-
-Do not claim a global population percentage from website users alone.
-
-## Next modeling tasks
-
-1. Reduce the candidate set to a coherent v0.2 trait dictionary.
-2. Write behavioral anchors for scores 10 / 30 / 50 / 70 / 90.
-3. Build a trait-overlap matrix.
-4. Write 6–8 candidate items per trait before pruning.
-5. Have items reviewed for ambiguity and desirability bias.
-6. Implement scoring only after the item bank is versioned.
+PCS can be a useful deterministic personality model before it is scientifically validated, but it must label that state accurately. See `model/VALIDATION_GATES_v0.1.md`.
