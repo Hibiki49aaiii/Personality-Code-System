@@ -1,69 +1,79 @@
 # 03 — Item Bank and Scoring Requirements
 
-## Current candidate bank
+## Purpose
 
-Authoritative candidate-bank artifacts:
+Defines the versioned question bank, response scale, deterministic Trait Vector scoring, and response-quality metadata independently from UI and result prose.
 
-- `data/item-bank/v0.1/manifest.json`
-- `data/item-bank/v0.1/cognitive.json`
-- `data/item-bank/v0.1/affect-relational.json`
-- `data/item-bank/v0.1/action-risk.json`
-- `data/item-bank/v0.1/resilience-creativity.json`
-- `docs/model/ITEM_BANK_REVIEW_v0.1.md`
-- `scripts/validate-item-bank.mjs`
+## Current reviewed candidate bank
 
-Current inventory: 21 retained traits × 7 items = 147 Japanese (`ja-JP`) draft candidate items, with 4 positive-keyed and 3 reverse-keyed items per trait.
+Authoritative artifacts:
 
-## Item bank
+- `data/item-bank/v0.1/*` — immutable authored draft snapshot;
+- `data/item-bank/v0.2/manifest.json` — reviewed-bank manifest;
+- `data/item-bank/v0.2/review.json` — complete per-item disposition/revision ledger;
+- `docs/model/ITEM_BANK_REVIEW_v0.1.md` — authoring record;
+- `docs/model/ITEM_BANK_REVIEW_v0.2.md` — complete wording/construct-purity review;
+- `scripts/validate-item-bank.mjs`;
+- `scripts/validate-reviewed-item-bank.mjs`.
 
-Each retained trait SHOULD begin with 6–8 candidate items before empirical pruning. Final item count may vary by trait based on reliability and discrimination.
+Inventory remains 21 retained traits × 7 items = 147 Japanese (`ja-JP`) candidate items with 4 positive-keyed and 3 reverse-keyed items per trait.
 
-Every item record MUST contain:
+The reviewed v0.2 materialization contains:
+
+- 98 `accept-r1`;
+- 39 `revise-r2`;
+- 10 `hold-for-beta`;
+- 0 rejected items.
+
+`reviewed` means the dedicated editorial/construct-purity pass is complete. It does **not** mean statistically calibrated, validated, or production-active.
+
+## Item record contract
+
+Every candidate/active item MUST retain:
 
 - immutable item ID;
-- revision/version ID;
-- text by locale;
-- keyed trait(s); normally one primary construct;
+- semantic revision ID;
+- locale text;
+- one primary scoring Trait unless a future model explicitly defines otherwise;
 - key direction;
-- scoring weight if not 1.0;
-- lifecycle status (`draft`, `reviewed`, `beta`, `active`, `retired`);
+- scoring weight;
+- lifecycle (`draft`, `reviewed`, `beta`, `active`, `retired`);
 - rationale/notes;
 - discriminant-neighbor metadata where relevant;
-- created/retired model versions.
+- introducing/model version metadata.
 
-The candidate bank satisfies this record shape. All current items remain `draft` until the dedicated review disposition pass is complete.
+Semantic wording changes create a new revision. Historical wording is never overwritten.
 
-## Item writing constraints
+## Item-writing constraints
 
 Items MUST:
 
 - express one behavioral proposition;
 - avoid specialist jargon;
-- avoid moral superiority/desirability framing;
+- avoid moral-superiority/desirability framing;
 - avoid obvious type names/codes;
-- avoid double-barreled claims;
-- avoid absolutes unless deliberately measuring extremity;
+- avoid unnecessary double-barreling;
+- avoid absolutes unless intentionally measuring extremity;
 - be understandable in isolation;
-- avoid unnecessary demographic/cultural specificity.
+- avoid unnecessary demographic/cultural specificity;
+- provide a plausible non-pathological interpretation for either pole.
 
-Counter-keyed items MAY be used, but confusing negation solely for reverse scoring is prohibited.
+Counter-keyed items MAY be used, but confusing negation solely to manufacture reverse scoring is prohibited.
 
 ## High-overlap discriminant controls
 
-For conceptual high-overlap pairs, the candidate bank MUST contain explicit discriminant coverage on both sides:
+Explicit two-sided discriminant coverage is required for the conceptual high-overlap pairs:
 
-- VER ↔ ADV
-- EMO ↔ COG
-- OPT ↔ FIN
-- RSK ↔ UNC
+- VER ↔ ADV;
+- EMO ↔ COG;
+- OPT ↔ FIN;
+- RSK ↔ UNC.
 
-CI currently requires at least two items on each side explicitly tagged against the neighboring high-overlap trait.
+Tagged coverage is a design safeguard, not proof of discriminant validity. Beta data must still evaluate cross-trait behavior.
 
 ## Response scale
 
-Initial standard: five-point agreement scale, versioned in the item-bank manifest.
-
-Current `likert-5-ja-v0.1` mapping:
+Current version: `likert-5-ja-v0.1`.
 
 1. まったく当てはまらない
 2. あまり当てはまらない
@@ -71,105 +81,111 @@ Current `likert-5-ja-v0.1` mapping:
 4. やや当てはまる
 5. とても当てはまる
 
-The displayed labels and numeric mapping MUST be versioned. UI order must remain semantically stable across desktop/mobile.
-
-Assessment results MUST NOT depend on screen width, interaction method, or answer-option DOM order.
+Mapping and displayed labels are versioned. Assessment output MUST NOT depend on screen width, DOM order, pointer/keyboard input, or responsive layout.
 
 ## Completion policy
 
-For initial v1 scoring:
+For the current development scoring contract:
 
-- active required items must be answered before final scoring;
-- navigation back/edit is allowed before final submission;
-- if optional/skip behavior is later introduced, missing-data rules require a new scoring specification/version;
-- abandoned sessions must never be converted into complete results.
+- every active required item must be answered before final scoring;
+- back/edit may occur before final submission;
+- missing required answers are hard errors;
+- abandoned sessions never become complete results;
+- introducing skip/optional behavior requires an explicit new missing-data/scoring rule version.
 
 ## Deterministic scoring
 
-The scoring engine MUST be pure with respect to:
+Authoritative specification/implementation:
 
-`assessment model + active item revisions + answer set -> raw scores -> normalized trait scores -> quality metadata`
+- `docs/model/SCORING_SPEC_v0.1.md`;
+- `src/domain/assessment/scoring.ts`;
+- `src/domain/assessment/itemBank.ts`.
 
-No random number, current time, user identity, IP, browser, or external service may affect the score.
+Pure transformation:
 
-## Normalization
+`scoring model + scoring items + complete answer set -> Trait Scores + response-quality metadata`
 
-For every trait, the specification MUST define:
+No randomness, current time, user identity, IP address, browser, screen width, or external service may affect scoring.
 
-- contributing items;
-- key directions;
-- weights;
-- theoretical raw minimum/maximum;
-- normalization formula to 0–100;
-- rounding rule;
-- minimum valid response condition.
+### Keying
 
-Rounding MUST occur at defined output boundaries; intermediate calculations SHOULD preserve precision.
+Five-point response maps to construct-direction points 0..4:
 
-## Confidence / response-quality metadata
+- positive item: `response - 1`;
+- reverse item: `5 - response`.
 
-Potential signals:
+### Canonical normalization
 
-- within-construct inconsistency;
-- paired/counter-keyed inconsistency;
-- straight-line responding;
-- implausibly fast timing patterns;
-- missing/invalid responses;
-- completion interruptions if methodologically useful.
+Weights are represented as positive integer `weightMilli` units (`1000 = 1.0` in the current model).
 
-Rules:
+Per Trait:
 
-- MUST be deterministic/versioned.
-- MUST NOT label a user as lying/deceptive.
-- MUST NOT secretly alter trait scores unless the scoring specification explicitly defines such behavior.
-- SHOULD normally be reported separately as measurement confidence/response quality.
+`score_bp = round_half_up(sum(keyed_points × weightMilli) × 10000 / sum(4 × weightMilli))`
 
-## Candidate-bank CI validation
+`score_bp` integer 0..10000 is canonical. UI 0..100 is a presentation derived by explicit deterministic rounding.
 
-`npm run validate:item-bank` MUST fail on at least:
+## Response-quality metadata
 
-- invalid JSON;
-- duplicate item IDs;
-- duplicate item text;
-- missing required item metadata;
-- unknown trait IDs/discriminant targets;
-- incorrect total item count;
-- incorrect per-trait item count;
-- incorrect positive/reverse direction balance;
-- insufficient tagged discriminant items for high-overlap pairs.
+Current v0.1 implementation is deliberately modest and separate from Trait Scores:
 
-This validator protects the authoring contract; it does not validate psychological quality.
+- answer count;
+- response-value counts;
+- dominant-response share;
+- extreme-response share;
+- `dominant_response_pattern`;
+- `all_midpoint_responses`.
 
-## Scoring tests
+These signals MUST NOT alter Trait Scores in v0.1 and MUST NOT be described as detecting lies, dishonesty, manipulation, or diagnosis validity.
 
-Before an assessment model is publishable:
+Future timing, paired-consistency, reverse-item, or interruption signals require separately versioned definitions.
 
-- exact fixtures for all-min/all-mid/all-max answer sets;
-- mixed-answer fixtures with manually verified expected scores;
-- counter-keyed item fixtures;
-- invalid/missing input rejection tests;
-- ordering invariance tests;
-- repeated execution equality tests;
-- serialization/deserialization equality tests;
-- previous model fixture regression tests.
+## Validation and tests
+
+`npm run validate:item-bank` MUST validate both the immutable v0.1 authoring snapshot and the reviewed v0.2 layer.
+
+Current machine checks include:
+
+- JSON/required metadata;
+- duplicate IDs/text;
+- known Trait/discriminant IDs;
+- 147 total / 21 Traits / 7 per Trait;
+- 4 positive + 3 reverse per Trait;
+- high-overlap tagged coverage;
+- v0.2 one-and-only-one review disposition for all 147 items;
+- exact disposition counts;
+- review-layer preservation of ID, primary Trait, direction, and weight.
+
+Domain tests include:
+
+- theoretical keyed minimum = 0;
+- all midpoint = 5000 bp;
+- keyed maximum = 10000 bp;
+- reverse-key fixtures;
+- manually calculated mixed fixture;
+- answer/item ordering invariance;
+- invalid/missing/duplicate/unknown input rejection;
+- reviewed-bank scoring invariance at midpoint/endpoints.
 
 ## Versioning
 
-Changing any of the following requires a new assessment/scoring model version unless proven output-equivalent:
+Changing any of the following normally requires a new assessment/scoring-model version unless output equivalence is explicitly proven and documented:
 
 - active item membership;
-- item wording when semantic meaning changes;
+- semantic item wording/revision;
 - key direction;
 - weights;
-- normalization;
-- required completion rules;
-- confidence algorithm if displayed interpretation changes.
+- normalization/rounding;
+- response scale mapping;
+- required-completion/missing-data policy;
+- displayed response-quality interpretation.
 
-Old model fixtures MUST remain runnable so historical result snapshots can be reproduced/audited.
+Old model fixtures remain executable/readable for historical audit.
 
-## Current requirement status
+## Requirement status
 
-- `PCS-SCORE-001` — complete: 7 candidate items for every retained trait.
-- `PCS-SCORE-002` — pending: separate full wording/disposition review is required; items remain `draft`.
-- `PCS-SCORE-003` — partial: IDs/revisions are present; release lifecycle/formal active-model version procedure remains to be finalized.
-- `PCS-SCORE-004..006` — pending until scoring specification/engine phase.
+- **PCS-SCORE-001 — COMPLETE:** 7 candidates exist for every retained Trait.
+- **PCS-SCORE-002 — COMPLETE:** all 147 items have recorded v0.2 dispositions; 39 semantic revisions and 10 beta-watch items are explicitly documented.
+- **PCS-SCORE-003 — PARTIAL:** item revisions and scoring contract are versioned, but a formal production `active` assessment-model release/freeze procedure remains required before public launch.
+- **PCS-SCORE-004 — COMPLETE (development engine):** deterministic 0..10000 normalized Trait scoring implemented and tested.
+- **PCS-SCORE-005 — COMPLETE (v0.1 baseline):** deterministic response-quality metadata implemented separately from scores; richer confidence evidence remains future-version work.
+- **PCS-SCORE-006 — COMPLETE (current layer):** golden fixtures and invalid-input/order invariance tests exist and run in CI.
