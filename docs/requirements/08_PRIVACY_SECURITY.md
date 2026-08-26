@@ -1,16 +1,38 @@
 # 08 — Privacy and Security Requirements
 
+## Master-ID reservation
+
+`REQUIREMENTS.md` owns the top-level meanings of **PCS-PRIV-001..004**, **PCS-SEC-001**, and **PCS-LEGAL-001**. This derivative file MUST NOT redefine them. Detailed data-minimization clauses use **PCS-PRIV-010+**.
+
 ## Privacy principle
 
 PCS handles potentially intimate personality-response data. Collect less, separate identity from answers where possible, make sharing explicit, and avoid exporting diagnostic data to unrelated third parties.
 
 ## Data minimization
 
-- **PCS-PRIV-001** Account is not required to take the assessment.
-- **PCS-PRIV-002** Do not request real name, address, phone, employer, precise location, health history, political/religious identity, sexual data, or other sensitive demographics unless a later feature has a documented legitimate need and explicit consent.
-- **PCS-PRIV-003** Demographic calibration questions, if later added, must be optional and separately explained.
-- **PCS-PRIV-004** Diagnostic answers/scores MUST NOT be placed into ordinary third-party product analytics event properties.
-- **PCS-PRIV-005** Public sharing is opt-in; completing the test alone does not make a profile public.
+- **PCS-PRIV-010** Account is not required to take the assessment.
+- **PCS-PRIV-011** Do not request real name, address, phone, employer, precise location, health history, political/religious identity, sexual data, or other sensitive demographics unless a later feature has a documented legitimate need and explicit consent.
+- **PCS-PRIV-012** Demographic calibration questions, if later added, must be optional and separately explained.
+- **PCS-PRIV-013** Diagnostic answers/scores MUST NOT be placed into ordinary third-party product analytics event properties.
+- **PCS-PRIV-014** Public sharing is opt-in; completing the test alone does not make a profile public.
+
+## Current Phase 2C private-flow controls
+
+The implemented anonymous assessment flow currently provides:
+
+- no account requirement;
+- 256-bit opaque bearer token generation;
+- SHA-256 hash-only token storage in PostgreSQL;
+- HttpOnly, SameSite=Lax browser cookie transport;
+- `Secure` cookie behavior in production mode;
+- no session token or raw answers in URLs;
+- server-side item/value validation;
+- session-model-bound answer persistence;
+- immutable private result snapshots;
+- private result retrieval only through the anonymous bearer cookie;
+- a browser E2E assertion that a fresh browser context without the cookie cannot access the completed result.
+
+These controls are sufficient evidence for Master **PCS-PRIV-001** at the current anonymous-flow level. They do **not** complete the full Master **PCS-SEC-001** requirement because rate limiting, complete security headers, dependency-security automation and release security review remain open.
 
 ## Data classification
 
@@ -38,6 +60,8 @@ Before production launch define:
 - calibration datasets.
 
 Retention periods MUST be documented to users where legally/ethically relevant and implementable in deletion tooling.
+
+Current pre-legal engineering defaults are documented in `docs/model/PERSISTENCE_RETENTION_BASELINE_v0.1.md`; they are not final public legal promises.
 
 ## User controls
 
@@ -94,6 +118,8 @@ First-party statistical/calibration storage is separate from third-party analyti
 - Private internal IDs SHOULD not be exposed unless harmless and intentionally stable.
 - Search-engine indexing policy must be explicit; default should be `noindex` for non-public/private result routes.
 
+No public share endpoint exists in Phase 2C. Phase 4 must implement the public snapshot as a separate explicit export rather than reusing the private bearer token.
+
 ## Threat cases to test
 
 - modifying item IDs/answer values;
@@ -106,6 +132,8 @@ First-party statistical/calibration storage is separate from third-party analyti
 - excessive assessment/session creation;
 - unauthorized deletion/update;
 - accidental exposure through logs/analytics/OG generation.
+
+Current automated coverage includes off-model item rejection, invalid value rejection, completed-session mutation rejection, duplicate finalization/idempotency behavior, hash-only session credentials and private-result browser isolation. Remaining threat cases stay release-blocking where applicable.
 
 ## Legal/consent pages before launch
 
