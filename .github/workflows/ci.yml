@@ -46,8 +46,11 @@ jobs:
       - name: Validate requirement IDs
         run: npm run validate:requirements
 
-      - name: Validate type catalog reachability
+      - name: Validate type catalog reachability and display names
         run: npm run validate:type-catalog
+
+      - name: Validate illustration slot contract
+        run: npm run validate:illustration
 
       - name: Validate Phase 3A content materialization
         run: npm run validate:content
