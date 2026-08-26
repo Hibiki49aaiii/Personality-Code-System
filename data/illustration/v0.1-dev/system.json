@@ -1,0 +1,43 @@
+{
+  "illustration_system_version": "illustration-system-v0.1-dev",
+  "catalog_version": "type-catalog-v0.1-dev",
+  "code_schema_version": "core-code-v0.1-dev",
+  "locale": "ja-JP",
+  "status": "slot-mapping-only",
+  "public_use": false,
+  "runtime_generation": false,
+  "asset_id_pattern": "ILL-C01D-{CORE_CODE}-HERO-v01",
+  "required_variants": ["result-portrait", "og-landscape", "share-portrait"],
+  "role_motifs": {
+    "LTG": {"label_ja":"調律師","motifs":["calibration-dial","aligned-markers","balanced-small-objects"]},
+    "LTA": {"label_ja":"実務家","motifs":["compact-toolkit","work-surface","practical-assembly"]},
+    "LVG": {"label_ja":"監査士","motifs":["inspection-lens","check-marks","measured-samples"]},
+    "LVA": {"label_ja":"独立検証者","motifs":["portable-lens","compass","independent-evidence-marks"]},
+    "STG": {"label_ja":"編成家","motifs":["modular-tiles","threads","shared-structure-board"]},
+    "STA": {"label_ja":"構築家","motifs":["scaffold","blocks","construction-grid"]},
+    "SVG": {"label_ja":"検証設計家","motifs":["measurement-grid","aligned-blueprint","comparison-overlay"]},
+    "SVA": {"label_ja":"探究設計家","motifs":["blueprint","compass","branching-rebuilt-model"]}
+  },
+  "action_compositions": {
+    "PF": {"label_ja":"深化・準備","cues":["stable-posture","focused-work-area","layered-refinement"]},
+    "PN": {"label_ja":"構想","cues":["branching-options","sketch-cards","multiple-paths"]},
+    "EF": {"label_ja":"実践","cues":["active-hands","single-path-in-progress","hands-on-motion"]},
+    "EN": {"label_ja":"開拓","cues":["forward-motion","threshold","expanding-path"]}
+  },
+  "relationship_compositions": {
+    "B": {"label_ja":"広縁","cues":["distributed-light-connections","multiple-anchor-points"]},
+    "D": {"label_ja":"深縁","cues":["few-strong-connections","shared-detail-anchor"]}
+  },
+  "prohibited_tropes": [
+    "neon-ai-glow",
+    "glassmorphism-inside-art",
+    "humanoid-robot",
+    "glowing-neural-head",
+    "floating-source-code",
+    "galaxy-brain",
+    "random-magic-sparkles",
+    "glossy-3d-avatar",
+    "photorealistic-synthetic-portrait",
+    "prestige-hierarchy-by-type"
+  ]
+}
