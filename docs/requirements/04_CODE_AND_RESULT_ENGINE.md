@@ -226,8 +226,10 @@ The current snapshot intentionally has no illustration asset reference because t
 
 ## Current requirement status
 
-- **PCS-RESULT-001 — COMPLETE as experimental engineering specification:** C01D is deterministic, documented, implemented, tested, and explicitly non-public.
-- **PCS-RESULT-002 — COMPLETE as experimental engineering specification:** PCSX1 syntax/bands/order/version behavior are deterministic, documented, implemented, and tested.
-- **PCS-RESULT-003 — COMPLETE as development deterministic engine:** structured module selection is implemented/tested; production editorial catalog remains Phase 3.
-- **PCS-RESULT-004 — COMPLETE as development deterministic engine:** precedence/suppression is enforced and contradiction fixtures pass.
-- **PCS-RESULT-005 — PARTIAL:** deterministic immutable development snapshot + PostgreSQL persistence exists and is integration-tested; curated illustration asset/version linkage remains Phase 3 before production completion.
+| Requirement | Current status |
+| --- | --- |
+| PCS-RESULT-001 | COMPLETE as experimental engineering specification — C01D is deterministic, documented, implemented, tested, and explicitly non-public. |
+| PCS-RESULT-002 | COMPLETE as experimental engineering specification — PCSX1 syntax/bands/order/version behavior are deterministic, documented, implemented, and tested. |
+| PCS-RESULT-003 | COMPLETE as development deterministic engine — structured module selection is implemented/tested; production editorial catalog remains Phase 3. |
+| PCS-RESULT-004 | COMPLETE as development deterministic engine — precedence/suppression is enforced and contradiction fixtures pass. |
+| PCS-RESULT-005 | PARTIAL — deterministic immutable development snapshot + PostgreSQL persistence exists and is integration-tested; curated illustration asset/version linkage remains Phase 3 before production completion. |
