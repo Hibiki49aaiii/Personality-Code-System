@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import { createAnonymousAssessmentSession } from '../../src/infrastructure/persistence/anonymousAssessmentRepository';
 import { productEvents } from '../../src/infrastructure/persistence/analyticsSchema';
 import {
@@ -78,10 +78,9 @@ test('first-party analytics binds required events to the authenticated session a
     assert.equal(stored[0]?.eventName, 'question_viewed');
     assert.equal('answerValue' in (stored[0]?.properties ?? {}), false);
 
+    // Session deletion represents user-data deletion/retention cleanup; linked analytics must disappear too.
     await connection.db.execute(
-      // Session deletion represents user-data deletion/retention cleanup; linked analytics must disappear too.
-      // Drizzle sql template is avoided here so this test stays focused on FK behavior.
-      { sql: 'DELETE FROM anonymous_sessions WHERE session_id = $1', params: [session.sessionId] } as never
+      sql`DELETE FROM anonymous_sessions WHERE session_id = ${session.sessionId}`
     );
 
     const afterDelete = await connection.db
