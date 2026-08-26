@@ -58,7 +58,7 @@
   },
   "action_modes": {
     "PF": {
-      "label_ja": "熟成",
+      "label_ja": "深化",
       "identity_clause_ja": "準備を固めて既知の領域を深める",
       "provenance": ["core-axis:4:P", "core-axis:5:F"]
     },
@@ -68,7 +68,7 @@
       "provenance": ["core-axis:4:P", "core-axis:5:N"]
     },
     "EF": {
-      "label_ja": "遂行",
+      "label_ja": "実践",
       "identity_clause_ja": "早めに着手して把握した領域を深める",
       "provenance": ["core-axis:4:E", "core-axis:5:F"]
     },
