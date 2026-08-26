@@ -4,14 +4,31 @@
 
 Defines how PCS requirements are changed, interpreted, and verified. This file prevents requirement drift between diagnostic research, implementation, content, and release work.
 
+## Master-ID reservation
+
+`REQUIREMENTS.md` owns the top-level **PCS-GOV-001..010** meanings. This derivative file MUST NOT redefine those IDs. Detailed governance clauses therefore use the **PCS-GOV-020+** range.
+
 ## Authoritative rules
 
-- **PCS-GOV-001** `REQUIREMENTS.md` is the top-level contract.
-- **PCS-GOV-002** Domain requirement files under `docs/requirements/` are authoritative only within their stated domain and cannot override master invariants.
-- **PCS-GOV-003** `PRODUCT_SPEC`, `DESIGN_SYSTEM`, and `DIAGNOSTIC_MODEL` are supporting design/research documents. If they conflict with requirements, requirements win.
-- **PCS-GOV-004** A requirement ID is never reused for a different meaning. Removed requirements remain documented as superseded/deprecated.
-- **PCS-GOV-005** Any change affecting diagnosis output must identify whether it changes assessment model version, content version, code schema version, or only UI.
-- **PCS-GOV-006** Completed checkboxes require evidence. “Looks done” is not completion evidence.
+- **PCS-GOV-020** `REQUIREMENTS.md` is the top-level contract.
+- **PCS-GOV-021** Domain requirement files under `docs/requirements/` are authoritative only within their stated domain and cannot override master invariants.
+- **PCS-GOV-022** `PRODUCT_SPEC`, `DESIGN_SYSTEM`, and `DIAGNOSTIC_MODEL` are supporting design/research documents. If they conflict with requirements, requirements win.
+- **PCS-GOV-023** A requirement ID is never reused for a different meaning. Removed requirements remain documented as superseded/deprecated.
+- **PCS-GOV-024** Any change affecting diagnosis output must identify whether it changes assessment model version, content version, code schema version, or only UI.
+- **PCS-GOV-025** Completed checkboxes require evidence. “Looks done” is not completion evidence.
+
+## Requirement-ID integrity
+
+Requirement declarations in `REQUIREMENTS.md` and `docs/requirements/*.md` are machine-checked by `scripts/validate-requirement-ids.mjs`.
+
+The validator MUST fail when:
+
+- the same declaration ID appears twice in one document;
+- an unapproved detailed requirement shadows a Master ID;
+- the same detailed ID is declared by multiple derivative documents;
+- an ID does not use the canonical three-digit suffix.
+
+Only explicitly allowlisted Master/detail aliases whose meaning is intentionally shared may repeat. The allowlist is code-reviewed and intentionally small.
 
 ## Runtime AI prohibition
 
