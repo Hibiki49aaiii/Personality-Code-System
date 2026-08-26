@@ -7,32 +7,61 @@ A checkbox in `REQUIREMENTS.md` is marked complete only when inspectable specifi
 
 | Requirement | Status | Specification / Evidence | Implementation | Verification |
 | --- | --- | --- | --- | --- |
-| PCS-GOV-001..010 | complete (policy) | `REQUIREMENTS.md`, `docs/requirements/00_GOVERNANCE.md` | runtime controls progressively implemented | document precedence + CI/runtime architecture |
+| PCS-GOV-001..010 | complete (policy/invariants) | `REQUIREMENTS.md`, `docs/requirements/00_GOVERNANCE.md` | deterministic domain + persistence boundaries now substantially implemented | CI/runtime architecture; no AI runtime dependency |
 | PCS-DIAG-001 | complete (conceptual) | `docs/model/TRAIT_DICTIONARY_v0.2.md` | n/a | 21 retained Traits each define poles, boundaries, anchors, overlaps/domains |
 | PCS-DIAG-002 | complete (conceptual) | `docs/model/TRAIT_OVERLAP_MATRIX_v0.2.md` | n/a | full retained-pair review; LDR/DEL/TRN removed from direct scoring |
-| PCS-DIAG-003 | complete | Trait Dictionary §presentation domains | result composer pending | domains explicitly views, not presumed independent latent factors |
-| PCS-DIAG-004 | complete (hypothesis spec) | `docs/model/TRAIT_INTERACTIONS_v0.1.md` | executable interaction engine pending | 20 versioned deterministic conditions + precedence/suppression metadata |
-| PCS-DIAG-005 | complete (policy) | `docs/model/VALIDATION_GATES_v0.1.md` | n/a | experimental/beta/stable/validated gates and prohibited claims defined |
-| PCS-SCORE-001 | complete (candidate authoring) | `data/item-bank/v0.1/*`, `ITEM_BANK_REVIEW_v0.1.md` | machine-readable bank | `validate-item-bank.mjs`: 147 / 21 / 7 each / 4+3 direction |
-| PCS-SCORE-002 | complete (editorial review) | `data/item-bank/v0.2/review.json`, `ITEM_BANK_REVIEW_v0.2.md` | `reviewedItemBank.ts` materialization | v0.2 validator + reviewed-bank tests: 98 accept / 39 r2 / 10 beta-hold; one disposition each; scoring keys invariant |
-| PCS-SCORE-003 | partial | versioned v0.1/v0.2 manifests/revisions + scoring spec | active production model-release procedure pending | metadata/ledger validated in CI |
-| PCS-SCORE-004 | complete (development engine) | `SCORING_SPEC_v0.1.md` | `src/domain/assessment/scoring.ts`, `itemBank.ts` | scoring/candidate/reviewed-bank domain tests; exact integer bp normalization |
-| PCS-SCORE-005 | complete (v0.1 baseline) | `SCORING_SPEC_v0.1.md` §response quality | `computeResponseQuality` in `scoring.ts` | midpoint/dominant response-quality fixtures; metadata does not alter Trait Score |
-| PCS-SCORE-006 | complete (current layer) | scoring golden-fixture requirements | `tests/domain/scoring.test.ts`, `candidate-bank.test.ts`, `reviewed-item-bank.test.ts` | min/mid/max, reverse keys, manual mixed, order invariance, invalid input, reviewed-bank endpoints |
-| PCS-RESULT-001 | complete (experimental engineering spec) | `CORE_CODE_SPEC_v0.1-dev.md`, `data/code-schema/v0.1-dev.json` | `personalityCode.ts` | `personality-code.test.ts`; C01D explicitly `public_use=false` |
-| PCS-RESULT-002 | complete (experimental engineering spec) | `CORE_CODE_SPEC_v0.1-dev.md` Extended Code section | `generatePersonalityCode`, `traitBandFromScoreBp` | exact band boundaries, canonical Trait order, input-order invariance, missing/duplicate rejection |
-| PCS-RESULT-003 | pending | `docs/requirements/04_CODE_AND_RESULT_ENGINE.md` | content module/composer pending | pending |
-| PCS-RESULT-004 | pending implementation | interaction/precedence specs | suppression composer pending | contradiction fixture suite pending |
-| PCS-RESULT-005 | pending implementation | snapshot requirements | persistence pending Phase 2B | snapshot reproducibility tests pending |
-| PCS-ARCH-001 | complete (domain isolation) | `docs/requirements/07_APPLICATION_ARCHITECTURE_AND_DATA.md` | `src/domain/assessment/*` contains no Next.js/React dependency | compiled/tested by `test:domain` independent of UI |
-| PCS-QA-001 | complete | CI workflow | GitHub Actions | current pipeline: author/review validators → domain tests → typecheck → production build |
+| PCS-DIAG-003 | complete | Trait Dictionary presentation domains | `resultEngine.ts` required domain model | domains are views, not presumed independent latent factors |
+| PCS-DIAG-004 | complete (hypothesis spec) | `TRAIT_INTERACTIONS_v0.1.md`, `data/interactions/v0.1.json` | `interactions.ts` | 20 deterministic conditions; boundary/order tests |
+| PCS-DIAG-005 | complete (policy) | `VALIDATION_GATES_v0.1.md` | n/a | experimental/beta/stable/validated gates and prohibited claims defined |
+| PCS-SCORE-001 | complete (candidate authoring) | `data/item-bank/v0.1/*` | machine-readable bank | `validate-item-bank.mjs`: 147 / 21 / 7 each / 4+3 direction |
+| PCS-SCORE-002 | complete (editorial review) | `data/item-bank/v0.2/review.json`, `ITEM_BANK_REVIEW_v0.2.md` | `reviewedItemBank.ts` | v0.2 validator + tests: 98 accept / 39 r2 / 10 beta-hold; scoring keys invariant |
+| PCS-SCORE-003 | partial | item/revision metadata + `assessment_model_releases` DB contract | production activation workflow remains Phase 5C | DB publication immutability tested; final active-release procedure open |
+| PCS-SCORE-004 | complete (development engine) | `SCORING_SPEC_v0.1.md` | `scoring.ts`, `itemBank.ts` | scoring/candidate/reviewed-bank tests; exact integer bp normalization |
+| PCS-SCORE-005 | complete (v0.1 baseline) | `SCORING_SPEC_v0.1.md` | `computeResponseQuality` | deterministic quality fixtures; metadata does not alter Trait Score |
+| PCS-SCORE-006 | complete | Golden/manual scoring requirements | scoring/candidate/reviewed tests | min/mid/max, reverse keys, manual mixed, order invariance, invalid input |
+| PCS-RESULT-001 | complete (experimental engineering spec) | `CORE_CODE_SPEC_v0.1-dev.md`, `data/code-schema/v0.1-dev.json` | `personalityCode.ts` | `personality-code.test.ts`; C01D `public_use=false` |
+| PCS-RESULT-002 | complete (experimental engineering spec) | Core/Extended Code spec | `generatePersonalityCode`, `traitBandFromScoreBp` | exact boundaries/order/input invariance/missing+duplicate rejection |
+| PCS-RESULT-003 | complete (development engine) | `04_CODE_AND_RESULT_ENGINE.md`, versioned content/rule data | `interactions.ts`, `contentComposer.ts`, `resultEngine.ts` | interaction + composer + result-engine tests |
+| PCS-RESULT-004 | complete (development engine) | precedence/assertion/suppression contract | `contentComposer.ts` | disciplined-optimizer, deep-non-fused, inactive-generic and fallback contradiction fixtures |
+| PCS-RESULT-005 | partial | snapshot requirements + retention/immutability contract | `resultSnapshot.ts`, PostgreSQL `result_snapshots` + triggers | fixed Golden Snapshot + PostgreSQL update/version-coherence tests; illustration asset version still pending |
+| PCS-ARCH-001 | complete | `07_APPLICATION_ARCHITECTURE_AND_DATA.md` | `src/domain/assessment/*` isolated from React/DB | compile/tests independent of UI/database |
+| PCS-ARCH-002 | complete (Phase 2B foundation) | ADR-0001 + schema contract | `schema.ts`, migration chain | static migration validator + real PostgreSQL 16 integration |
+| PCS-ARCH-003 | partial | raw-answer separation/public-share requirement | private snapshot/retrieval excludes raw answers | public URL/OG/share payload audit remains Phase 4 |
+| PCS-ARCH-004 | complete (current persistence) | immutability contract | SQL triggers protect published model/items/content/revisions/snapshots | `postgres-integration.mjs` exercises actual rejection behavior |
+| PCS-ARCH-005 | complete (foundation) | ADR-0001 migration/rollback policy | ordered committed SQL migrations | migration validator + PostgreSQL application in CI; deployment backup rehearsal is OPS |
+| PCS-QA-001 | complete | `10_TESTING_QA.md` | `.github/workflows/ci.yml` | Item Bank → migration validation → PostgreSQL integration → domain tests → typecheck → build |
+| PCS-QA-002 | complete (current domain pipeline) | result/scoring/code requirements | full current domain engine | scoring/code/interaction/composer/result/snapshot suites |
+| PCS-QA-003 | complete (development fixture) | Golden snapshot rule | `golden-result-snapshot-midpoint-v0.1.json` | exact equality + answer-order invariance tests |
+
+## Phase 2 persistence evidence
+
+### Architecture/data
+
+- `docs/adr/ADR-0001-persistence-postgresql-drizzle.md`
+- `src/infrastructure/persistence/schema.ts`
+- `src/infrastructure/persistence/database.ts`
+- `src/infrastructure/persistence/sessionToken.ts`
+- `src/infrastructure/persistence/anonymousAssessmentRepository.ts`
+- `drizzle/0000_phase2b_persistence.sql`
+- `drizzle/0001_phase2b_immutability_hardening.sql`
+- `docs/model/PERSISTENCE_RETENTION_BASELINE_v0.1.md`
+
+### Verification
+
+- `scripts/validate-persistence-schema.mjs` validates the ordered migration contract and required guards.
+- `tests/infrastructure/postgres-integration.mjs` applies migrations to a real PostgreSQL 16 database and proves DB invariants.
+- `tests/infrastructure/anonymous-assessment-repository.integration.test.ts` proves the typed adapter issues a hash-only anonymous session, persists an answer, transactionally finalizes scores/snapshot/completion, retrieves the private result, and rejects post-completion writes.
+- Current CI provisions PostgreSQL 16 for every push/PR before domain/type/build gates.
 
 ## Current CI evidence
 
-Recent successful checkpoints:
+Recent successful checkpoints include:
 
-- reviewed Item Bank v0.2 commit `447dad4e25514b281dca8e4f46dd499fea82f8e8`: validators, domain tests, typecheck, production build all passed;
-- Core/Extended Code commit `6065b3984f892789cb8b01708192d777892e1b23`: validators, expanded domain tests, typecheck, production build all passed.
+- reviewed Item Bank v0.2: complete 147-item disposition/validator suite;
+- Core/Extended Code: deterministic C01D/PCSX1 suite;
+- Phase 2A: interaction/composer/structured-result + fixed Golden Snapshot suite;
+- Phase 2B hardening: real PostgreSQL migration/invariant integration;
+- Phase 2B adapter: anonymous persistence repository integration plus full regression/type/build pipeline.
 
 CI success verifies software/data-contract invariants only. It is not evidence of psychological construct validity.
 
@@ -43,6 +72,7 @@ CI success verifies software/data-contract invariants only. It is not evidence o
 - **complete (candidate authoring):** candidate artifact exists and is machine checked.
 - **complete (editorial review):** every item has an explicit recorded wording/construct-purity disposition; beta evidence still pending.
 - **complete (development engine/spec):** deterministic engineering contract/implementation exists but may be intentionally non-public/experimental.
+- **complete (Phase 2B foundation):** persistence architecture/adapter/invariants are implemented and integration-tested; deployment/public-share/legal concerns remain their later gates.
 - **complete:** requirement itself is fulfilled.
 - **active invariant:** continuously enforced rule.
 - **partial:** some clauses satisfied; checkbox remains open.
