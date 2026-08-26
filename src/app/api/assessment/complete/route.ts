@@ -1,6 +1,6 @@
 import type { NextRequest } from 'next/server';
 import { completePublicAssessment } from '../../../../application/assessment/serverAssessmentService';
-import { getServerPcsDatabase } from '../../../../infrastructure/persistence/serverDatabase';
+import { withPcsDatabase } from '../../../../server/assessmentRuntime';
 import { assessmentApiError, getAssessmentToken, noStoreJson } from '../_shared';
 
 export const runtime = 'nodejs';
@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const completed = await completePublicAssessment(getServerPcsDatabase(), token);
+    const completed = await withPcsDatabase((db) => completePublicAssessment(db, token));
     return noStoreJson({
       ok: true,
       snapshotId: completed.snapshotId,
