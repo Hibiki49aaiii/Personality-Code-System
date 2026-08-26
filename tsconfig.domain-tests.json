@@ -8,15 +8,22 @@
     "target": "ES2022",
     "outDir": ".tmp-tests",
     "rootDir": ".",
-    "types": ["node"]
+    "types": [
+      "node"
+    ]
   },
   "include": [
     "src/domain/assessment/**/*.ts",
+    "src/domain/analytics/**/*.ts",
     "src/application/assessment/**/*.ts",
     "src/infrastructure/persistence/**/*.ts",
     "tests/domain/**/*.ts",
     "tests/application/**/*.ts",
     "tests/infrastructure/**/*.ts"
   ],
-  "exclude": ["node_modules", ".next", ".tmp-tests"]
+  "exclude": [
+    "node_modules",
+    ".next",
+    ".tmp-tests"
+  ]
 }
