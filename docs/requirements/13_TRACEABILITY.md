@@ -130,10 +130,15 @@ Before checking a milestone complete:
 | PCS-RESULT-001..005 | verified as development result engine | Core/Extended Code, Interaction, Composer, Snapshot | domain tests + frozen snapshots | result/content | public taxonomy not implied |
 | Phase 2B persistence foundation | verified | Drizzle/PostgreSQL repositories and migrations | PostgreSQL integration suite | persistence | private result/version immutability |
 | Phase 2C real development assessment | verified | assessment API/UI/private result | Chromium 147-item E2E | app/model | historical successful Phase 2 CI evidence retained |
-| Phase 3A Core editorial materialization | implemented-unverified on latest HEAD | `data/type-catalog/v0.1-dev/*`, content v0.2/v0.3 materializers | `validate:type-catalog`, `validate:content`, v0.2/v0.3 Golden snapshot tests | content | latest full Phase 3 CI run must complete before status becomes verified |
-| Phase 3A draft display-name system | implemented-unverified on latest HEAD | `display-name-system.ja.json`, `materialize-type-display-names.mjs` | `validate-type-display-names.mjs`, `docs/reviews/TYPE_NAMES_v0.1-dev.md` | content/name | 64 names are machine-valid but owner editorial approval is pending |
+| Phase 3A Core editorial materialization | verified as non-public development engineering | `data/type-catalog/v0.1-dev/*`, content v0.2/v0.3 materializers | CI Run 177+, `validate:type-catalog`, `validate:content`, v0.2/v0.3 Golden snapshot tests | content | human editorial/public schema approval still pending |
+| Phase 3A draft display-name system | verified mechanically / human approval pending | `display-name-system.ja.json`, `materialize-type-display-names.mjs` | CI type-display-name validator + `docs/reviews/TYPE_NAMES_v0.1-dev.md` | content/name | 64 names are traceable/unique; public wording remains pending |
 | PCS-CONTENT-010..015 | in-progress | versioned Core/Trait editorial primitives | content validators + review ledger | content | human Japanese/Interaction review still required |
 | PCS-ART-010..015 | in-progress foundation only | `docs/ILLUSTRATION_SYSTEM.md`, `data/illustration/v0.1-dev/system.json` | `validate-illustration-slots.mjs` | asset | 64 slots exist; actual hero artwork remains `unproduced` |
+| PCS-PROD-007 / PCS-PRIV-004 | verified | explicit `/api/share` export from private result | Chromium E2E: no public result before action; share created only by button/API | app/privacy | completion remains private |
+| PCS-ARCH-003 | verified | `shareSnapshot.ts`, `publicShareRepository.ts`, PostgreSQL share insert guard | domain/repository/PostgreSQL tests + cookie-free public E2E | persistence/privacy | public snapshot excludes raw answers/Trait vector/private result internals |
+| PCS-SOC-002 | verified development implementation | `ShareControls.tsx`, `/api/share` | Chromium X/LINE/Web Share/copy assertions | app/share | no social OAuth |
+| PCS-SOC-003 | verified development fallback | `/s/[token]` metadata + versioned `/api/share/og/v0.1/[token]` | CI Run 190, image/status/metadata E2E | app/share-template | final curated artwork remains PCS-SOC-001 |
+| Phase 4A-1 sanitized sharing | verified | share schema/token/repository/API/public page/card routes | CI Run 190 + PostgreSQL + browser E2E | persistence/app/share | 4A-2 final public-name/art presentation pending |
 
 ## Phase 3 evidence map
 
@@ -167,7 +172,36 @@ Before checking a milestone complete:
 - Slot validator: `scripts/validate-illustration-slots.mjs`
 - Current status: all 64 C01D hero slots deliberately `unproduced`; no production image is implied by the mapping itself.
 
+## Phase 4A sanitized sharing evidence
+
+- Public share contract: `src/domain/sharing/shareSnapshot.ts`
+- Hash-only public capability: `src/infrastructure/persistence/publicShareToken.ts`
+- Public share repository/lifecycle: `src/infrastructure/persistence/publicShareRepository.ts`
+- Typed share table: `src/infrastructure/persistence/sharingSchema.ts`
+- DB migration/privacy guards: `drizzle/0002_phase4a_public_share_snapshots.sql`
+- Explicit mutation API: `src/app/api/share/route.ts`
+- Private owner controls: `src/app/result/ShareControls.tsx`
+- Cookie-free public route: `src/app/s/[token]/page.tsx`
+- Deterministic image renderer: `src/app/api/share/_image.tsx`
+- Versioned OG route: `src/app/api/share/og/v0.1/[token]/route.tsx`
+- Versioned portrait route: `src/app/api/share/card/v0.1/[token]/route.tsx`
+- Domain/token/repository tests: `tests/domain/share-snapshot.test.ts`, `tests/infrastructure/public-share-token.test.ts`, `tests/infrastructure/public-share-repository.integration.test.ts`
+- DB adversarial checks: `tests/infrastructure/postgres-integration.mjs`
+- End-to-end public/private boundary and card determinism: `tests/e2e/assessment-flow.spec.ts`
+- Successful evidence checkpoint: GitHub Actions CI Run `33020306036` / Run 190.
+
+The public share is a deliberate sanitized export. It is not a different view over the private snapshot and cannot retrieve raw answers, the Trait vector, Extended Code, Response Quality or private bearer credentials.
+
 ## Material change records
+
+### 2026-08-27 — Sanitized public share foundation
+- IDs: PCS-PROD-007, PCS-ARCH-003, PCS-PRIV-004, PCS-SOC-002, PCS-SOC-003
+- Change: add an explicit private-to-public export boundary with hash-only public capability tokens, immutable sanitized snapshots, cookie-free public pages, X/LINE/Web Share/copy controls, deterministic versioned OG/portrait cards and revocation.
+- Reason: support SNS sharing without exposing the 147 answers, Trait vector, Extended Code or private session credential.
+- Versions: `share-snapshot-v0.1-dev`, `share-og-v0.1-dev`, `share-portrait-v0.1-dev`; assessment/scoring/code semantics unchanged.
+- Evidence: PostgreSQL share guards, repository/domain tests and CI Run 190 Chromium flow including byte-identical repeated card renders and revoked-route 404s.
+- Remaining: production type names, curated hero assets and deployed crawler/CDN QA remain Phase 3A/3B/4A-2.
+
 
 ### 2026-08-27 — Versioned Phase 3 editorial generations
 - IDs: PCS-CONTENT-001..003, PCS-CONTENT-010..015
