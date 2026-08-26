@@ -106,6 +106,14 @@ test('anonymous user completes the private result and can explicitly create then
   await publicPage.goto(shareUrl!);
   await expect(publicPage.getByText('PUBLIC SHARE · SANITIZED')).toBeVisible();
   await expect(publicPage.getByRole('heading', { level: 1, name: 'SVAEND' })).toBeVisible();
+  await expect(publicPage.locator('meta[property="og:image"]')).toHaveAttribute(
+    'content',
+    `http://localhost:3000/api/share/og/v0.1/${shareToken}`
+  );
+  await expect(publicPage.locator('meta[name="twitter:card"]')).toHaveAttribute(
+    'content',
+    'summary_large_image'
+  );
   await expect(publicPage.getByText('share-snapshot-v0.1-dev', { exact: true })).toBeVisible();
   await expect(publicPage.getByText(/PCSX1/)).toHaveCount(0);
   await expect(publicPage.getByText('Trait Vector', { exact: true })).toHaveCount(0);
