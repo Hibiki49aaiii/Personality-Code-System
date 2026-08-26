@@ -84,7 +84,24 @@ test('anonymous user completes the private result and can explicitly create then
   expect(await xShare.getAttribute('href')).toContain(encodeURIComponent(shareUrl!));
   expect(await lineShare.getAttribute('href')).toContain(encodeURIComponent(shareUrl!));
 
+  const shareToken = new URL(shareUrl!).pathname.split('/').filter(Boolean).at(-1);
+  expect(shareToken).toMatch(/^[A-Za-z0-9_-]{43}$/);
+
   const publicContext = await browser.newContext();
+  const ogResponse = await publicContext.request.get(`/api/share/og/v0.1/${shareToken}`);
+  expect(ogResponse.status()).toBe(200);
+  expect(ogResponse.headers()['content-type']).toContain('image/png');
+  expect(ogResponse.headers()['x-pcs-share-template']).toBe('share-og-v0.1-dev');
+
+  const portraitResponse = await publicContext.request.get(`/api/share/card/v0.1/${shareToken}`);
+  expect(portraitResponse.status()).toBe(200);
+  expect(portraitResponse.headers()['content-type']).toContain('image/png');
+  expect(portraitResponse.headers()['x-pcs-share-template']).toBe('share-portrait-v0.1-dev');
+  await expect(page.getByRole('link', { name: '縦型画像' })).toHaveAttribute(
+    'href',
+    `/api/share/card/v0.1/${shareToken}`
+  );
+
   const publicPage = await publicContext.newPage();
   await publicPage.goto(shareUrl!);
   await expect(publicPage.getByText('PUBLIC SHARE · SANITIZED')).toBeVisible();
@@ -100,6 +117,12 @@ test('anonymous user completes the private result and can explicitly create then
 
   await publicPage.reload();
   await expect(publicPage.getByRole('heading', { level: 1, name: 'この共有リンクは利用できません' })).toBeVisible();
+
+  const revokedOg = await publicContext.request.get(`/api/share/og/v0.1/${shareToken}`);
+  expect(revokedOg.status()).toBe(404);
+  const revokedPortrait = await publicContext.request.get(`/api/share/card/v0.1/${shareToken}`);
+  expect(revokedPortrait.status()).toBe(404);
+
   await publicContext.close();
 });
 
