@@ -1,90 +1,107 @@
 # 12 — Delivery Phases and Exit Criteria
 
-This file turns the product requirements into an execution order. A later phase may be prototyped early, but its production implementation must not force unresolved earlier-layer decisions.
+This file turns PCS requirements into execution order. A later layer may be prototyped early, but unresolved earlier-layer assumptions MUST NOT be disguised as completed/validated product behavior.
 
 ## Phase 0 — Foundation
 
 ### 0A Repository/application foundation — COMPLETE
-
-- [x] Repository created.
-- [x] Next.js/React/TypeScript scaffold exists.
-- [x] Typecheck + production-build CI exists.
+- [x] Repository/application scaffold.
+- [x] Next.js/React/TypeScript foundation.
+- [x] CI with validation/tests/typecheck/production build.
 
 ### 0B Visual/responsive direction — COMPLETE as foundation
+- [x] Non-AI visual language documented.
+- [x] Responsive assessment UI prototype.
+- [x] PC/mobile intent documented.
 
-- [x] Initial non-AI visual language documented.
-- [x] Responsive assessment UI prototype exists.
-- [x] PC/mobile design intent documented.
+### 0C Requirement governance — COMPLETE
+- [x] Master requirements/checklist.
+- [x] Derivative requirements.
+- [x] Runtime AI prohibition.
+- [x] Requirement precedence.
+- [x] Traceability process.
 
-### 0C Requirement governance — COMPLETE after this requirements commit
+## Phase 1 — Measurement and code specification
 
-Exit criteria:
+### 1A Trait Dictionary v0.2 — COMPLETE as conceptual/item-authoring freeze
+- [x] Audit original 24 candidates.
+- [x] Retain 21 direct measured Traits; LDR/DEL/TRN moved to derived profiles.
+- [x] Inclusion/exclusion boundaries.
+- [x] 10/30/50/70/90 behavioral anchors.
+- [x] Presentation domains separated from measured Traits.
+- [x] Candidate Trait IDs frozen for item-writing round.
 
-- [x] master requirements/checklist;
-- [x] derivative domain requirements;
-- [x] runtime AI prohibition explicit;
-- [x] requirement precedence defined;
-- [x] traceability process defined.
+This is not empirical validation.
 
-## Phase 1 — Measurement specification
+### 1B Overlap and interaction matrix — COMPLETE as conceptual/hypothesis freeze
+- [x] Full pairwise conceptual overlap matrix.
+- [x] High-risk redundant pairs reviewed.
+- [x] 20 high-value interaction hypotheses specified.
+- [x] Deterministic placeholder thresholds/precedence/suppression implications documented.
 
-### 1A Trait Dictionary v0.2
+Empirical discriminant validity remains Phase 5 work.
 
-- [ ] audit 24 working candidates;
-- [ ] define inclusion/exclusion boundaries;
-- [ ] write 10/30/50/70/90 behavioral anchors;
-- [ ] classify presentation domains;
-- [ ] merge/remove unjustifiable overlap;
-- [ ] freeze retained candidate IDs for item-writing round.
+### 1C Candidate item bank — COMPLETE as reviewed candidate bank
 
-Exit: every retained trait meets `02_DIAGNOSTIC_MODEL.md` admission criteria.
+#### 1C-1 Candidate authoring — COMPLETE
+- [x] 7 items × 21 Traits = 147.
+- [x] 4 positive + 3 reverse per Trait.
+- [x] Immutable IDs/revision metadata.
+- [x] Machine validation.
 
-### 1B Overlap and interaction matrix
+#### 1C-2 Complete wording/construct-purity review — COMPLETE
+- [x] Every item receives one disposition.
+- [x] 98 `accept-r1`.
+- [x] 39 `revise-r2`.
+- [x] 10 `hold-for-beta` with explicit risk reasons.
+- [x] Social-desirability, ambiguity, double-barrel, context, reverse-item and neighbor-contamination pass recorded.
+- [x] Review layer preserves ID/primary Trait/direction/weight/order.
+- [x] Reviewed-bank CI/materialization tests pass.
 
-- [ ] pairwise conceptual overlap matrix;
-- [ ] high-risk redundant pairs reviewed;
-- [ ] initial high-value interaction candidates specified;
-- [ ] interaction precedence/conflict implications documented.
+Exit status: suitable for engineering integration and closed-beta candidate use; not statistically calibrated.
 
-Exit: no known unexplained duplicate construct remains.
+### 1D Scoring and code specification — COMPLETE as experimental engineering contract
 
-### 1C Candidate item bank
+#### 1D-1 Trait scoring — COMPLETE
+- [x] Five-point answer mapping versioned.
+- [x] Positive/reverse keyed formulas.
+- [x] Integer weights/canonical 0..10000 `score_bp` normalization.
+- [x] Explicit half-up rounding.
+- [x] Missing/invalid/duplicate input rules.
+- [x] Response-quality v0.1 baseline separated from Trait Scores.
+- [x] Golden/manual fixtures and ordering invariance tests.
 
-- [ ] 6–8 items per retained trait;
-- [ ] independent wording review;
-- [ ] desirability/ambiguity review;
-- [ ] counter-keyed items reviewed for clarity;
-- [ ] item IDs/revisions created;
-- [ ] bank frozen as beta candidate set.
+#### 1D-2 Core/Extended Code — COMPLETE as non-public development schema
+- [x] Direct measured Core anchor dimensions specified in `core-code-v0.1-dev` (`C01D`).
+- [x] Symbol semantics/order/threshold/tie behavior versioned.
+- [x] Near-boundary metadata rule.
+- [x] `PCSX1` Extended Code grammar/order/bands specified.
+- [x] Deterministic code engine/tests.
+- [x] Schema explicitly `public_use=false` until beta evidence reviews the public taxonomy.
 
-### 1D Scoring and code specification
+#### 1D-3 Interaction thresholds — COMPLETE as hypotheses
+- [x] Current interaction ranges/conditions are deterministic/versioned placeholders.
+- [x] Changing thresholds/conditions creates a new interaction-rule version.
 
-- [ ] answer scale mapping frozen;
-- [ ] scoring formula per trait;
-- [ ] normalization/rounding;
-- [ ] confidence rules;
-- [ ] Core Code dimensions/rules;
-- [ ] Extended Code schema;
-- [ ] interaction thresholds;
-- [ ] golden examples manually calculated.
-
-Exit: complete answer set can be transformed to an expected result manually from the written specification without interpretation.
+Exit: a complete answer set can be deterministically converted to Trait Scores and a development Core/Extended Code without interpretation or AI. Public taxonomy freeze remains Phase 5C.
 
 ## Phase 2 — Functional deterministic MVP
 
-### 2A Domain engine
+### 2A Domain engine — IN PROGRESS
+- [x] assessment/scoring types and validation;
+- [x] reviewed item-bank materialization;
+- [x] deterministic Trait scoring;
+- [x] response-quality v0.1 baseline;
+- [x] Core/Extended Code generation;
+- [ ] executable interaction engine;
+- [ ] deterministic content-module data model;
+- [ ] content selection/suppression composer;
+- [ ] result structured schema;
+- [ ] integrated golden result snapshots.
 
-- [ ] assessment model types;
-- [ ] validation;
-- [ ] scoring;
-- [ ] confidence;
-- [ ] code generation;
-- [ ] interaction engine;
-- [ ] content selection skeleton;
-- [ ] golden/unit tests.
+Exit: one pure domain pipeline can transform versioned answers/model data into a complete structured result independent of Next.js/UI.
 
-### 2B Persistence/model versioning
-
+### 2B Persistence/model versioning — PENDING
 - [ ] database/ORM ADR;
 - [ ] schema/migrations;
 - [ ] anonymous sessions;
@@ -93,102 +110,95 @@ Exit: complete answer set can be transformed to an expected result manually from
 - [ ] immutable result snapshots;
 - [ ] retention baseline.
 
-### 2C Real assessment/result UX
-
-- [ ] replace prototype questions with active model data;
+### 2C Real assessment/result UX — PENDING
+- [ ] replace prototype questions with reviewed/active model data;
 - [ ] resume/back/edit behavior;
-- [ ] finalize flow;
-- [ ] real result schema rendering;
+- [ ] final submit behavior;
+- [ ] real structured result rendering;
 - [ ] method/version/limitations display;
 - [ ] private-by-default result behavior.
 
-Exit: anonymous user can complete a real deterministic assessment end-to-end with no AI service.
+Exit for Phase 2: anonymous user can complete a real deterministic assessment end-to-end with no AI service.
 
 ## Phase 3 — Content identity system
 
-### 3A Core Type/content catalog
-
-- [ ] all reachable Core Types defined;
-- [ ] all mandatory result modules covered;
-- [ ] contradiction review;
-- [ ] adversarial analysis review;
+### 3A Core Type/content catalog — PENDING
+- [ ] public code schema frozen for target model/version;
+- [ ] all reachable Core Types cataloged;
+- [ ] all mandatory result domains covered;
+- [ ] contradiction/suppression coverage reviewed;
+- [ ] adversarial analysis reviewed;
 - [ ] Japanese editorial QA.
 
-### 3B Illustration system
-
+### 3B Illustration system — PENDING
 - [ ] art direction approved;
 - [ ] type-to-asset mapping;
-- [ ] one approved hero asset per reachable type;
-- [ ] responsive/OG/portrait crops tested;
+- [ ] one curated hero asset per published reachable type;
+- [ ] responsive/OG/portrait crops;
 - [ ] fallback behavior.
 
-Exit: no result can resolve to missing copy or missing required visual asset.
+Exit: no published result can resolve to missing required copy or visual assets.
 
-## Phase 4 — Sharing, analytics and operationalization
+## Phase 4 — Sharing, analytics and operations
 
-### 4A Social sharing
-
+### 4A Social sharing — PENDING
 - [ ] explicit share snapshot creation;
 - [ ] opaque public URL;
-- [ ] OG image;
-- [ ] portrait card;
+- [ ] deterministic OG image;
+- [ ] portrait share card;
 - [ ] Web Share/X/LINE/copy;
 - [ ] revocation/deletion behavior if supported.
 
-### 4B Analytics/monitoring
-
+### 4B Analytics/monitoring — PENDING
 - [ ] event dictionary;
 - [ ] privacy-reviewed instrumentation;
-- [ ] error monitoring;
-- [ ] performance monitoring;
+- [ ] error/performance monitoring;
 - [ ] calibration data pipeline;
-- [ ] no raw-answer third-party leakage audit.
+- [ ] raw-answer third-party leakage audit.
 
 ## Phase 5 — Closed beta and calibration
 
-### 5A Closed beta
+### 5A Closed beta — PENDING
+- [ ] varied beta sample;
+- [ ] completion/drop-off measurement;
+- [ ] privacy/consent basis for calibration evidence;
+- [ ] retest subset;
+- [ ] ambiguity feedback.
 
-- [ ] recruit sufficiently varied beta users;
-- [ ] track completion/drop-off;
-- [ ] collect reliability/calibration evidence under documented consent/privacy basis;
-- [ ] run retest subset;
-- [ ] capture qualitative ambiguity feedback without allowing anecdotes alone to redefine scoring.
-
-### 5B Statistical review
-
+### 5B Statistical review — PENDING
 - [ ] item distributions;
 - [ ] item-total relationships;
 - [ ] omega/internal consistency;
-- [ ] retest stability;
+- [ ] test-retest stability;
 - [ ] factor analyses as sample permits;
-- [ ] redundant trait review;
-- [ ] item pruning/rewording decisions;
-- [ ] bias/invariance/DIF review as sample permits.
+- [ ] Trait redundancy/discriminant review;
+- [ ] hold-for-beta item decisions;
+- [ ] item pruning/rewording;
+- [ ] bias/invariance/DIF as sample permits.
 
-### 5C Model v1.0 freeze
-
+### 5C Model/public code v1.0 freeze — PENDING
 - [ ] final active item set;
-- [ ] scoring version;
-- [ ] code schema;
+- [ ] production scoring/model version;
+- [ ] public Core Code schema (`public_use=true`) chosen from evidence;
+- [ ] Extended Code compatibility decision;
 - [ ] content compatibility;
-- [ ] all golden fixtures regenerated intentionally and reviewed;
+- [ ] golden fixtures regenerated/reviewed;
 - [ ] evidence/status claims reviewed;
-- [ ] model release notes.
+- [ ] release notes.
 
-## Phase 6 — Public web release
+A public code schema may differ from development `C01D`; that change is expected to be versioned rather than hidden.
 
-- [ ] all `11_RELEASE_OPERATIONS.md` public launch gates pass;
-- [ ] domain + E2E + responsive + accessibility + security suites pass;
+## Phase 6 — Public web release — PENDING
+- [ ] all release-operation gates;
+- [ ] domain + E2E + responsive + accessibility + security suites;
 - [ ] legal/privacy pages match implementation;
-- [ ] production rollback/readiness confirmed;
-- [ ] release version/tag created;
+- [ ] rollback/readiness confirmed;
+- [ ] release version/tag;
 - [ ] public launch.
 
 ## Post-launch
-
-- [ ] monitor errors/performance;
-- [ ] monitor item/drop-off quality;
-- [ ] publish scoped sample distribution only after sufficient valid data;
-- [ ] keep old models readable/reproducible;
-- [ ] changes to scoring create explicit model versions;
-- [ ] evaluate compatibility feature only after deterministic specification is ready.
+- [ ] monitor errors/performance/item drop-off;
+- [ ] publish only scoped observed sample distributions after sufficient valid data;
+- [ ] keep old models/codes readable and reproducible;
+- [ ] scoring/code changes create explicit versions;
+- [ ] compatibility feature only after deterministic specification is ready.
