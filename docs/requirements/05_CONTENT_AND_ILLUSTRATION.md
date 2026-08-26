@@ -1,5 +1,9 @@
 # 05 — Type Content and Illustration Requirements
 
+## Master-ID reservation
+
+`REQUIREMENTS.md` owns the top-level meanings of **PCS-CONTENT-001..003** and **PCS-ART-001..003**. This derivative file MUST NOT redefine them. Detailed editorial clauses use **PCS-CONTENT-010+** and detailed asset-production clauses use **PCS-ART-010+**.
+
 ## Content system
 
 PCS content is an authored product asset, not runtime generative output.
@@ -19,14 +23,28 @@ Every published Core Type MUST have a versioned catalog entry containing:
 - illustration reference;
 - content version/status.
 
+A development catalog MAY exist before a schema is approved for public use, but it must remain explicitly `draft`/`public_use=false` and MUST NOT be presented as the final public taxonomy.
+
 ## Editorial requirements
 
-- **PCS-CONTENT-001** Copy MUST match the diagnostic claims allowed by the measured traits/interactions.
-- **PCS-CONTENT-002** Copy MUST not imply clinical diagnosis.
-- **PCS-CONTENT-003** Copy MUST avoid universal statements where the underlying measurement is continuous/probabilistic.
-- **PCS-CONTENT-004** Positive and adversarial interpretations MUST be derived from the same model rather than unrelated flattering/negative stereotypes.
-- **PCS-CONTENT-005** Similar types SHOULD be explicitly differentiated so users can understand why their code differs.
-- **PCS-CONTENT-006** Public-facing Japanese terminology MUST remain consistent across questions, results, help pages, and social cards.
+- **PCS-CONTENT-010** Copy MUST match the diagnostic claims allowed by the measured traits/interactions.
+- **PCS-CONTENT-011** Copy MUST not imply clinical diagnosis.
+- **PCS-CONTENT-012** Copy MUST avoid universal statements where the underlying measurement is continuous/probabilistic.
+- **PCS-CONTENT-013** Positive and adversarial interpretations MUST be derived from the same model rather than unrelated flattering/negative stereotypes.
+- **PCS-CONTENT-014** Similar types SHOULD be explicitly differentiated so users can understand why their code differs.
+- **PCS-CONTENT-015** Public-facing Japanese terminology MUST remain consistent across questions, results, help pages, and social cards.
+
+### Claim provenance
+
+Each authored type claim SHOULD be traceable to one or more of:
+
+- Core anchor trait/pole;
+- non-Core Trait band;
+- approved interaction rule;
+- response-quality/measurement limitation rule;
+- neutral product guidance.
+
+A type-level sentence that cannot be traced to structured diagnostic evidence is editorially unsupported and cannot be promoted to published content.
 
 ## Localization
 
@@ -64,12 +82,12 @@ The visual family SHOULD feel authored and collectible, not like unrelated promp
 
 ## Asset production
 
-- **PCS-ART-001** One approved hero illustration per published Core Type.
-- **PCS-ART-002** Source/master asset retained outside runtime optimization pipeline where practical.
-- **PCS-ART-003** Web-optimized variants generated deterministically from approved masters.
-- **PCS-ART-004** Asset filenames/IDs use stable type/asset version references.
-- **PCS-ART-005** Runtime generation is prohibited.
-- **PCS-ART-006** If generative tools are used during development, outputs must be human-reviewed, licensed/usable, curated, committed/versioned like any normal design asset, and no model/API is needed by production.
+- **PCS-ART-010** One approved hero illustration per published Core Type.
+- **PCS-ART-011** Source/master asset retained outside runtime optimization pipeline where practical.
+- **PCS-ART-012** Web-optimized variants generated deterministically from approved masters.
+- **PCS-ART-013** Asset filenames/IDs use stable type/asset version references.
+- **PCS-ART-014** Runtime generation is prohibited.
+- **PCS-ART-015** If generative tools are used during development, outputs must be human-reviewed, licensed/usable, curated, committed/versioned like any normal design asset, and no model/API is needed by production.
 
 ## Secondary trait modifiers
 
@@ -91,6 +109,12 @@ Each hero asset MUST have a defined crop/placement strategy for:
 - result hero area.
 
 Text MUST not be baked into the master character illustration if it prevents localization/accessibility.
+
+## Current Phase 3A engineering gate
+
+The current development Core schema `core-code-v0.1-dev` / `C01D` is explicitly `public_use=false`. Phase 3A may therefore build and validate a complete **draft engineering catalog** for every reachable C01D code, including one-axis neighbors and claim-provenance anchors, while public names/final prose remain unapproved.
+
+Promotion of any entry to `published` requires a later `public_use=true` schema decision plus final editorial and illustration QA. This prevents Phase 3 work from silently pre-empting the Phase 5C public-code evidence gate.
 
 ## Content QA
 
