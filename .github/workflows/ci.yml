@@ -49,6 +49,9 @@ jobs:
       - name: Validate type catalog reachability
         run: npm run validate:type-catalog
 
+      - name: Validate Phase 3A content materialization
+        run: npm run validate:content
+
       - name: Validate item bank
         run: npm run validate:item-bank
 
