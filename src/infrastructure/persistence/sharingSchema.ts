@@ -40,9 +40,7 @@ export const publicShareSnapshots = pgTable(
   },
   (table) => [
     uniqueIndex('public_share_snapshots_token_hash_uq').on(table.publicTokenHash),
-    uniqueIndex('public_share_snapshots_active_source_uq')
-      .on(table.sourceResultSnapshotId)
-      .where(sql`${table.status} = 'active' and ${table.sourceResultSnapshotId} is not null`),
+    index('public_share_snapshots_source_idx').on(table.sourceResultSnapshotId),
     index('public_share_snapshots_created_at_idx').on(table.createdAt),
     index('public_share_snapshots_expiry_idx').on(table.expiresAt),
     check('public_share_snapshot_status_chk', sql`${table.status} in ('active','revoked','expired')`),
