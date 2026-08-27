@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createPcsDatabaseConnection } from '../../src/infrastructure/persistence/database';
 import { PersistenceError } from '../../src/infrastructure/persistence/anonymousAssessmentRepository';
+import { getObservedTypeDistribution } from '../../src/infrastructure/persistence/typeDistributionRepository';
 import {
   completePublicAssessment,
   getPrivateRenderedAssessmentResult,
@@ -53,6 +54,22 @@ test('anonymous reviewed-model flow renders detailed deterministic v0.3 content 
     assert.equal(duplicate.alreadyCompleted, true);
     assert.equal(duplicate.snapshotId, completed.snapshotId);
     assert.deepEqual(duplicate.snapshot, completed.snapshot);
+
+    const distribution = await getObservedTypeDistribution(connection.db, {
+      assessmentModelVersion: 'assessment-dev-v0.3',
+      locale: 'ja-JP',
+      startInclusive: new Date(Date.now() - 60 * 60 * 1000),
+      endExclusive: new Date(Date.now() + 60 * 60 * 1000)
+    });
+    assert.equal(distribution.scope.assessmentModelVersion, 'assessment-dev-v0.3');
+    assert.equal(distribution.scope.codeSchemaVersion, 'core-code-v0.1-dev');
+    assert.equal(distribution.scope.locale, 'ja-JP');
+    assert.equal(distribution.scope.eligibilityRule, 'all-completed-snapshots');
+    assert.equal(distribution.populationClaimAllowed, false);
+    assert.ok(distribution.sampleSize >= 1);
+    const svaendObserved = distribution.entries.find((entry) => entry.coreCode === 'SVAEND');
+    assert.ok(svaendObserved);
+    assert.ok(svaendObserved.count >= 1);
 
     const rendered = await getPrivateRenderedAssessmentResult(connection.db, started.token);
     assert.ok(rendered);
