@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { sendClientProductEvent } from "../_analytics/client";
 import styles from "./diagnosis.module.css";
 
 type AssessmentItem = {
@@ -76,6 +77,14 @@ export default function DiagnosisPage() {
     };
   }, [router]);
 
+  useEffect(() => {
+    const currentItem = assessment?.items[index];
+    if (!assessment || assessment.status !== "in_progress" || !currentItem) return;
+    void sendClientProductEvent("question_viewed", {
+      itemPosition: currentItem.position
+    });
+  }, [assessment, index]);
+
   const answeredCount = useMemo(() => Object.keys(answers).length, [answers]);
 
   if (!assessment) {
@@ -118,6 +127,10 @@ export default function DiagnosisPage() {
         body: JSON.stringify({ itemId: item.id, value })
       });
       await readJson<{ ok: true }>(response);
+      void sendClientProductEvent("answer_interaction", {
+        itemPosition: item.position,
+        interactionType: previous === undefined ? "selected" : "changed"
+      });
     } catch (saveError) {
       setAnswers((current) => {
         const next = { ...current };
