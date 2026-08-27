@@ -94,12 +94,21 @@ try {
   `;
   assert.equal(restoredTriggers.trigger_count,sourceTriggers.trigger_count,'non-internal trigger count must survive logical restore');
 
+  const [publishedRelease] = await restored`
+    SELECT model_version
+    FROM assessment_model_releases
+    WHERE status='published'
+    ORDER BY published_at NULLS LAST, created_at
+    LIMIT 1
+  `;
+  assert.ok(publishedRelease?.model_version,'restored DB must contain a published model release');
+
   await expectDbFailure(
     'published assessment_model_releases are immutable after restore',
     ()=>restored`
       UPDATE assessment_model_releases
       SET locale='en-US'
-      WHERE model_version='assessment-dev-v0.1'
+      WHERE model_version=${publishedRelease.model_version}
     `,
     /published assessment_model_releases are immutable/i
   );
