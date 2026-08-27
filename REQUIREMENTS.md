@@ -111,9 +111,9 @@ Detailed requirements: [`docs/requirements/04_CODE_AND_RESULT_ENGINE.md`](docs/r
 
 ## 6. Type content and illustrations
 
-- [ ] **PCS-CONTENT-001** Versioned published Core Type catalog exists for every reachable public code. *(Phase 3A draft foundation now enumerates all 64 reachable non-public C01D codes; public schema + authored catalog remain open.)*
-- [ ] **PCS-CONTENT-002** Editorial content modules cover every required result domain.
-- [ ] **PCS-CONTENT-003** Adversarial analysis modules describe failure modes without insults/diagnoses/deterministic certainty.
+- [ ] **PCS-CONTENT-001** Versioned published Core Type catalog exists for every reachable public code. *(All 64 reachable C01D draft entries are now complete and an explicit per-type human editorial review/publication gate tracks approval. C01D and the catalog remain `public_use=false`; final public schema + approved catalog remain open.)*
+- [ ] **PCS-CONTENT-002** Editorial content modules cover every required result domain. *(Development v0.3 resolves all 18 required result domains without selected fallback-only modules; final Japanese human editorial approval is tracked per type and remains pending.)*
+- [ ] **PCS-CONTENT-003** Adversarial analysis modules describe failure modes without insults/diagnoses/deterministic certainty. *(All 64 development type entries contain limitation/provenance-checked adversarial copy and prohibited-language validation; final human adversarial-tone approval remains pending.)*
 - [x] **PCS-ART-001** Single coherent illustration art direction defined. *(64-slot non-AI runtime art system and validator exist; actual hero assets remain unproduced.)*
 - [ ] **PCS-ART-002** One curated hero illustration per published Core Type.
 - [ ] **PCS-ART-003** Runtime image generation prohibited; result artwork uses curated versioned assets.
@@ -223,7 +223,7 @@ Detailed requirements: [`docs/requirements/11_RELEASE_OPERATIONS.md`](docs/requi
 - [x] Phase 2A — complete deterministic domain result engine + Golden Snapshot.
 - [x] Phase 2B — PostgreSQL/Drizzle persistence + model immutability + anonymous private-result persistence foundation.
 - [x] Phase 2C — real assessment/result UX and server/web wiring, including Chromium 147-answer E2E.
-- [ ] Phase 3A — public Core Type/content catalog. *(ACTIVE: non-public C01D 64-code reachability/provenance foundation complete; naming/editorial/public promotion remain.)*
+- [ ] Phase 3A — public Core Type/content catalog. *(ACTIVE: all 64 non-public C01D draft entries, provenance/neighbor checks, and human editorial approval ledger are complete as engineering foundations; actual review approvals + public schema/catalog promotion remain.)*
 - [ ] Phase 3B — illustrations.
 - [ ] Phase 4A — social sharing/OG. *(4A-1 sanitized sharing foundation complete; final curated-art/public-name presentation remains pending.)*
 - [ ] Phase 4B — analytics/monitoring. *(ACTIVE: privacy-bounded funnel telemetry, scoped observed-distribution, versioned 30/90-day retention cleanup, fixed-category client error telemetry, bucket-only Web Vitals and DB readiness health foundation are verified; production scheduling/environment separation/alerting and consented calibration export remain.)*
