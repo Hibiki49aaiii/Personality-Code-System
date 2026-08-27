@@ -1,0 +1,136 @@
+.page {
+  width: min(100% - 32px, 920px);
+  margin: 0 auto;
+  padding: 28px 0 96px;
+  color: var(--ink);
+}
+
+.header {
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  border-bottom: 1px solid var(--line);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+}
+
+.brand {
+  color: inherit;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 18px;
+}
+
+.status {
+  color: var(--muted);
+  text-align: right;
+}
+
+.hero {
+  padding: clamp(56px, 8vw, 96px) 0 52px;
+  border-bottom: 1px solid var(--line);
+}
+
+.eyebrow {
+  margin: 0 0 18px;
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(44px, 8vw, 84px);
+  line-height: 0.95;
+  letter-spacing: -0.055em;
+}
+
+.lead {
+  max-width: 720px;
+  margin: 28px 0 0;
+  font-size: 17px;
+  line-height: 1.9;
+}
+
+.notice {
+  margin-top: 28px;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  background: var(--paper-strong, #fffaf2);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.sections {
+  counter-reset: section;
+}
+
+.section {
+  display: grid;
+  grid-template-columns: minmax(140px, 0.35fr) minmax(0, 1fr);
+  gap: 28px;
+  padding: 38px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.section h2 {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.body {
+  min-width: 0;
+}
+
+.body p {
+  margin: 0 0 14px;
+  line-height: 1.9;
+}
+
+.body ul {
+  margin: 0;
+  padding-left: 1.25em;
+  line-height: 1.9;
+}
+
+.body li + li {
+  margin-top: 7px;
+}
+
+.footer {
+  padding-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.footer a {
+  color: inherit;
+}
+
+@media (max-width: 640px) {
+  .page {
+    width: min(100% - 28px, 920px);
+    padding-top: 12px;
+  }
+
+  .header {
+    align-items: flex-start;
+    padding: 18px 0;
+  }
+
+  .section {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 30px 0;
+  }
+
+  .footer {
+    flex-direction: column;
+  }
+}
