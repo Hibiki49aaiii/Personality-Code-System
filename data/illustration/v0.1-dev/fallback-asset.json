@@ -1,0 +1,20 @@
+{
+  "asset_version": "ILL-PCS-FALLBACK-HERO-v01",
+  "asset_key": "PCS-FALLBACK-HERO",
+  "status": "approved-development-fallback",
+  "curated": true,
+  "type_specific": false,
+  "locale_independent": true,
+  "public_use": false,
+  "runtime_generation": false,
+  "source_ref": "src/components/illustration/CuratedFallbackArtwork.tsx",
+  "source_provenance": "repository-authored-vector",
+  "required_usages": [
+    "private-result",
+    "public-share-page",
+    "share-og",
+    "share-portrait"
+  ],
+  "purpose": "Versioned curated fallback artwork while type-specific C01D hero assets remain unproduced.",
+  "replacement_rule": "A future type-specific asset must use a distinct versioned asset ID and be frozen into each new result/share snapshot; historical fallback references are never rewritten."
+}
