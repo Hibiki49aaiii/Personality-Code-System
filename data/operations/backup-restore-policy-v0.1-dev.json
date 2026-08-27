@@ -1,0 +1,36 @@
+{
+  "backup_restore_policy_version": "backup-restore-policy-v0.1-dev",
+  "status": "repository-logical-restore-tested-production-provider-pending",
+  "engineering_backup_retention_days": 35,
+  "production_backup_encryption_required": true,
+  "production_backup_access_least_privilege_required": true,
+  "restore_quarantine_required": true,
+  "public_traffic_during_restore_allowed": false,
+  "logical_ci_rehearsal": {
+    "enabled": true,
+    "format": "pg_dump-custom",
+    "owner_acl_restore": false,
+    "compare_all_application_table_row_counts": true,
+    "compare_non_internal_trigger_count": true,
+    "verify_published_model_immutability_after_restore": true,
+    "backup_artifact_uploaded": false
+  },
+  "privacy_restore_boundary": {
+    "older_backup_may_contain_later_deleted_data": true,
+    "deletion_journal_replay_required_before_public_traffic": true,
+    "independently_durable_deletion_journal_implemented": false,
+    "restored_retention_cleanup_required": true,
+    "public_share_resurrection_must_be_prevented": true,
+    "production_restore_privacy_safe": false
+  },
+  "production_restore_evidence_complete": false,
+  "external_evidence_required": [
+    "provider-backup-encryption-and-retention-configuration",
+    "provider-backup-access-control",
+    "production-equivalent-restore-rehearsal",
+    "independently-durable-deletion-journal-or-equivalent",
+    "deletion-replay-proof-before-public-traffic",
+    "post-restore-retention-cleanup-proof",
+    "restored-public-share-non-resurrection-proof"
+  ]
+}
