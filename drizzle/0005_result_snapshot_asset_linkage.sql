@@ -5,12 +5,17 @@ RETURNS trigger
 LANGUAGE plpgsql
 AS $$
 DECLARE
-  asset_version text;
+  snapshot_asset_version text;
 BEGIN
   IF NEW.snapshot_schema_version = 'result-snapshot-v0.2-dev' THEN
-    asset_version := NEW.snapshot_json #>> '{assets,illustrationAssetVersion}';
-    IF asset_version IS NULL OR length(asset_version) = 0 THEN
+    snapshot_asset_version := NEW.snapshot_json #>> '{assets,illustrationAssetVersion}';
+    IF snapshot_asset_version IS NULL OR length(snapshot_asset_version) = 0 THEN
       RAISE EXCEPTION 'result-snapshot-v0.2-dev requires illustration asset version';
+    END IF;
+    IF NOT EXISTS (
+      SELECT 1 FROM illustration_assets WHERE illustration_assets.asset_version = snapshot_asset_version
+    ) THEN
+      RAISE EXCEPTION 'result snapshot references unknown illustration asset version';
     END IF;
   END IF;
   RETURN NEW;
