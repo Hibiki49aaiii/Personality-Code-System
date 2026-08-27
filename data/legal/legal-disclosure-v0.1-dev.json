@@ -36,6 +36,19 @@
     "actual-production-contact-route",
     "consent-cookie-behavior",
     "calibration-consent-if-enabled",
-    "final-retention-policy"
-  ]
+    "final-retention-policy",
+    "production-retention-scheduler",
+    "deleted-data-backup-restore-behavior"
+  ],
+  "anonymous_diagnostic_self_deletion_available": true,
+  "anonymous_diagnostic_self_deletion_authentication": "private-session-bearer-cookie",
+  "anonymous_diagnostic_self_deletion_scope": [
+    "anonymous-session",
+    "answers",
+    "trait-scores",
+    "private-result-snapshot",
+    "session-bound-product-events",
+    "derived-public-share-snapshots"
+  ],
+  "anonymous_diagnostic_self_deletion_clears_cookie": true
 }
