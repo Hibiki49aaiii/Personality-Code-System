@@ -15,7 +15,8 @@
     "DATABASE_URL",
     "PCS_RATE_LIMIT_SECRET",
     "PCS_SITE_ORIGIN",
-    "PCS_ASSESSMENT_MODEL_VERSION"
+    "PCS_ASSESSMENT_MODEL_VERSION",
+    "PCS_DEPLOYMENT_ENV"
   ],
   "forbidden_runtime_credentials": [
     "OPENAI_API_KEY",
