@@ -43,7 +43,9 @@
     "validate:a11y-release": "node scripts/validate-manual-accessibility-release.mjs",
     "generate:type-editorial-review-worklist": "node scripts/materialize-type-editorial-review-worklist.mjs",
     "validate:observability": "node scripts/validate-observability-contract.mjs",
-    "validate:model-activation": "node scripts/validate-production-model-activation.mjs"
+    "validate:model-activation": "node scripts/validate-production-model-activation.mjs",
+    "cleanup:diagnostic": "node scripts/cleanup-diagnostic-retention.mjs",
+    "test:diagnostic-retention:integration": "node tests/infrastructure/diagnostic-retention.integration.mjs"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",
