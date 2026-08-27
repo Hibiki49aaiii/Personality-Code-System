@@ -259,12 +259,41 @@ Evidence checkpoint: CI Run 190 proved the image/card and full 147-item browser 
 
 The development fallback card proves deterministic/private-safe plumbing; it does not satisfy the final curated-art requirement in **PCS-SOC-001**.
 
-### 4B Analytics/monitoring — PENDING
-- [ ] event dictionary;
-- [ ] privacy-reviewed instrumentation;
-- [ ] error/performance monitoring;
-- [ ] calibration data pipeline;
-- [ ] raw-answer third-party leakage audit.
+### 4B Analytics/monitoring — ACTIVE
+
+#### 4B-1 First-party funnel telemetry — COMPLETE as development implementation
+- [x] versioned first-party event dictionary;
+- [x] first-party browser analytics endpoint with allowlisted bounded properties;
+- [x] start/resume/question/answer-interaction/completion/result/share/public-share funnel instrumentation;
+- [x] answer interaction records only item position + selected/changed state, never answer value;
+- [x] session model/locale metadata is derived/verified server-side rather than trusted from the browser;
+- [x] TypeScript validator and PostgreSQL constraint independently reject prohibited diagnostic/private analytics fields;
+- [x] session-bound analytics cascade-delete with the anonymous session;
+- [x] browser E2E inspects real analytics network payloads and persisted DB rows;
+- [x] third-party export remains disabled by default.
+
+Evidence: CI Run 238 (`33036549731`) passes the full 147-item Chromium flow with network/DB telemetry assertions. Privacy/retention baseline: `docs/model/ANALYTICS_PRIVACY_BASELINE_v0.1.md`.
+
+#### 4B-2 Observed distribution foundation — COMPLETE as non-public aggregation engineering
+- [x] exact model/code/locale/time-scoped distribution domain;
+- [x] immutable result-snapshot aggregation repository;
+- [x] integer basis-point shares + explicit sample size/eligibility rule;
+- [x] machine-readable `populationClaimAllowed=false`;
+- [x] domain + real-DB application integration coverage.
+
+Evidence: CI Run 240 (`33036572687`). Specification: `docs/model/OBSERVED_TYPE_DISTRIBUTION_SPEC_v0.1.md`.
+
+Public display remains pending production model freeze, valid-assessment exclusion/minimum-sample policy and privacy/statistical review; therefore Master `PCS-ANA-002` remains open.
+
+#### 4B-3 Operations/calibration — PENDING
+- [ ] production analytics retention cleanup enforcement;
+- [ ] development/preview/production analytics separation;
+- [ ] bounded error/performance monitoring wiring and operational dashboards;
+- [ ] legal/consent behavior aligned with analytics implementation;
+- [ ] consented privacy-preserving calibration data pipeline/export;
+- [ ] deployed third-party/network leakage audit.
+
+Calibration export is intentionally not implemented before consent/governance prerequisites; see `docs/model/CALIBRATION_EXPORT_SPEC_v0.1.md`.
 
 ## Phase 5 — Closed beta and calibration
 
