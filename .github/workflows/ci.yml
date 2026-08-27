@@ -57,6 +57,9 @@ jobs:
       - name: Validate requirement IDs
         run: npm run validate:requirements
 
+      - name: Validate material requirement change ledger
+        run: npm run validate:change-ledger
+
       - name: Validate landing claim boundaries
         run: npm run validate:landing-claims
 
