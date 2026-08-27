@@ -1,0 +1,143 @@
+{
+  "change_ledger_version": "requirement-change-ledger-v0.1-dev",
+  "current_master_requirements_version": "0.11.7",
+  "status": "active-governance-process",
+  "entries": [
+    {
+      "change_id": "2026-08-28-runtime-launch-fail-closed",
+      "date": "2026-08-28",
+      "requirements_version_after": "0.11.7",
+      "affected_requirement_ids": [
+        "PCS-SCORE-003",
+        "PCS-OPS-001",
+        "PCS-OPS-005",
+        "PCS-OPS-006"
+      ],
+      "change": "Bind production assessment starts and crawler indexing to explicit deployment/model/public-launch gates; preview remains usable for beta verification.",
+      "rationale": "Prevent an ordinary deployment or model environment-variable change from silently making the beta C01D model public.",
+      "impacted_files": [
+        "src/domain/release/deploymentGate.ts",
+        "src/server/deploymentGate.ts",
+        "src/app/robots.ts",
+        "src/app/layout.tsx",
+        "data/operations/environment-contract-v0.1-dev.json"
+      ],
+      "assessment_model_impact": "none-current-beta-manifest-remains-assessment-dev-v0.3",
+      "code_schema_impact": "none-C01D-remains-public_use_false",
+      "content_impact": "none",
+      "data_migration_impact": "none",
+      "compatibility_impact": "preview-beta-flow-preserved-production-starts-fail-closed",
+      "evidence": [
+        "deployment-gate domain tests",
+        "launch-gate browser E2E",
+        "CI Run 540 success",
+        "Container Package Run 9 success"
+      ]
+    },
+    {
+      "change_id": "2026-08-28-proxy-and-db-least-privilege",
+      "date": "2026-08-28",
+      "requirements_version_after": "0.11.7",
+      "affected_requirement_ids": [
+        "PCS-QA-007",
+        "PCS-OPS-001",
+        "PCS-OPS-002"
+      ],
+      "change": "Make production client-IP header selection explicit/fail-closed and define/test a per-table restricted PostgreSQL runtime role.",
+      "rationale": "Reduce trusted-proxy spoofing assumptions and prove runtime database DML does not require schema/admin privileges.",
+      "impacted_files": [
+        "src/domain/security/clientAddress.ts",
+        "src/server/rateLimit.ts",
+        "data/security/database-role-policy-v0.1-dev.json",
+        "tests/infrastructure/database-least-privilege.integration.mjs"
+      ],
+      "assessment_model_impact": "none",
+      "code_schema_impact": "none",
+      "content_impact": "none",
+      "data_migration_impact": "none",
+      "compatibility_impact": "production-requires-explicit-PCS_CLIENT_IP_HEADER",
+      "evidence": [
+        "client-address domain tests",
+        "restricted PostgreSQL runtime-role integration",
+        "CI Run 574 success"
+      ]
+    },
+    {
+      "change_id": "2026-08-28-privacy-aware-backup-restore",
+      "date": "2026-08-28",
+      "requirements_version_after": "0.11.7",
+      "affected_requirement_ids": [
+        "PCS-LEGAL-001",
+        "PCS-QA-007"
+      ],
+      "change": "Add isolated logical backup/restore rehearsal and explicitly model restoration of later-deleted diagnostic/share data as a production privacy blocker.",
+      "rationale": "A technically successful restore is insufficient if it resurrects data deleted after the backup timestamp.",
+      "impacted_files": [
+        "data/operations/backup-restore-policy-v0.1-dev.json",
+        "tests/infrastructure/backup-restore-rehearsal.integration.mjs",
+        "docs/operations/BACKUP_RESTORE_RUNBOOK_v0.1.md"
+      ],
+      "assessment_model_impact": "none",
+      "code_schema_impact": "none",
+      "content_impact": "none",
+      "data_migration_impact": "none",
+      "compatibility_impact": "production-restore-requires-quarantine-and-future-deletion-replay",
+      "evidence": [
+        "backup/restore policy validator",
+        "logical PostgreSQL restore rehearsal",
+        "temporary dumps never uploaded"
+      ]
+    },
+    {
+      "change_id": "2026-08-28-fixed-schema-runtime-logging",
+      "date": "2026-08-28",
+      "requirements_version_after": "0.11.7",
+      "affected_requirement_ids": [
+        "PCS-OPS-003",
+        "PCS-QA-007"
+      ],
+      "change": "Replace runtime exception-object console logging with a fixed event/surface/category server-fault schema and prohibit direct runtime console.error bypasses.",
+      "rationale": "Operational logs must not accidentally serialize bearer capabilities, answers, result payloads, request data, stack traces or free-form exception content.",
+      "impacted_files": [
+        "src/server/privacySafeLog.ts",
+        "data/security/runtime-log-policy-v0.1-dev.json",
+        "scripts/validate-runtime-log-privacy.mjs"
+      ],
+      "assessment_model_impact": "none",
+      "code_schema_impact": "none",
+      "content_impact": "none",
+      "data_migration_impact": "none",
+      "compatibility_impact": "none-client-visible-API-shapes-unchanged",
+      "evidence": [
+        "runtime source static log validator",
+        "fixed-schema server fault logging"
+      ]
+    },
+    {
+      "change_id": "2026-08-28-diagnostic-retention-execution",
+      "date": "2026-08-28",
+      "requirements_version_after": "0.11.7",
+      "affected_requirement_ids": [
+        "PCS-LEGAL-001",
+        "PCS-QA-007"
+      ],
+      "change": "Make 30/90/180-day diagnostic retention engineering windows executable with dry-run-first cleanup, explicit execute acknowledgement and PostgreSQL guards/integration.",
+      "rationale": "Retention promises need inspectable deletion mechanics rather than documentation-only intent.",
+      "impacted_files": [
+        "data/privacy/diagnostic-retention-v0.1-dev.json",
+        "scripts/cleanup-diagnostic-retention.mjs",
+        "drizzle/0007_diagnostic_retention_answer_guard.sql"
+      ],
+      "assessment_model_impact": "none",
+      "code_schema_impact": "none",
+      "content_impact": "none",
+      "data_migration_impact": "0007-diagnostic-retention-answer-guard",
+      "compatibility_impact": "completed-raw-answers-retention-deletable-after-90-days",
+      "evidence": [
+        "diagnostic retention validator",
+        "PostgreSQL diagnostic retention integration",
+        "CI cleanup dry-run"
+      ]
+    }
+  ]
+}
