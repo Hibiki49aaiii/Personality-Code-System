@@ -118,7 +118,7 @@ Changes that alter diagnostic claims SHOULD create a new content version. Cosmet
 
 ## Rollback
 
-The repository-level procedure is now documented in `docs/operations/ROLLBACK_RUNBOOK_v0.1.md` and machine-checked for all required rollback domains. Deployment-provider commands, restore rehearsal evidence and responsible contacts remain environment-specific release evidence.
+The repository-level procedure is now documented in `docs/operations/ROLLBACK_RUNBOOK_v0.1.md` and machine-checked for all required rollback domains. CI Run 383 passed this contract, completing Master **PCS-OPS-004** as a documented rollback requirement. Deployment-provider commands, restore rehearsal evidence and responsible contacts remain environment-specific release evidence under the remaining operations/launch gates.
 
 Production rollback procedure MUST address separately:
 

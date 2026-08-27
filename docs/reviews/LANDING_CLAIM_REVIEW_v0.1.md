@@ -1,6 +1,6 @@
 # Landing Claim Review v0.1
 
-> Status: implementation review; Master PCS-PROD-001 remains open until CI + refreshed visual baseline are green.
+> Status: complete implementation review; Master PCS-PROD-001 closed after refreshed visual baseline + full green CI.
 > Date: 2026-08-27
 > Scope: `src/app/page.tsx`
 
@@ -42,3 +42,10 @@ Close Master `PCS-PROD-001` only after:
 1. the updated landing builds and passes responsive/accessibility E2E;
 2. the intentional landing screenshots are refreshed through the controlled Visual Baseline workflow;
 3. normal CI is green against the refreshed baselines.
+
+
+## Completion evidence
+
+- Visual Baseline Run 8 refreshed and committed the intentional landing screenshots.
+- CI Run 379 passed the claim validator, full validators/integration/build/security/performance chain present at that HEAD, and Chromium E2E.
+- Master `PCS-PROD-001` is therefore complete for the current landing implementation. Future public-model/editorial changes must preserve the same claim boundaries.

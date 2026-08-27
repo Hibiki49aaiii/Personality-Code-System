@@ -1,7 +1,7 @@
 # Personality Code System — Master Requirements & Delivery Checklist
 
 > Status: authoritative development contract
-> Version: 0.11.2
+> Version: 0.11.3
 > Last updated: 2026-08-27
 
 This file is the single top-level source of truth for PCS scope and delivery status. Detailed requirements live under `docs/requirements/`.
@@ -34,7 +34,7 @@ Detailed governance: [`docs/requirements/00_GOVERNANCE.md`](docs/requirements/00
 
 ## 2. Product scope
 
-- [ ] **PCS-PROD-001** Public landing page clearly explains what PCS measures and does not claim.
+- [x] **PCS-PROD-001** Public landing page clearly explains what PCS measures and does not claim. *(Landing copy now states continuous multi-Trait measurement, explicit non-clinical and development/not-validated boundaries, removes obsolete/finalized-64-type presentation, and CI blocks unsupported scientific/accuracy/population claims. Updated visual baselines are committed; CI Run 379 passed the full application after the claim-review fixes.)*
 - [x] **PCS-PROD-002** Assessment can start without registration. *(Anonymous HttpOnly bearer-cookie flow implemented and browser-tested.)*
 - [x] **PCS-PROD-003** User can complete a real assessment and receive a real result. *(Reviewed 147-item development model; production calibration remains later.)*
 - [x] **PCS-PROD-004** Result includes Core Type/Code, Extended Code, Trait summary, confidence metadata, and narrative domains. *(Current content is development-versioned, not final editorial copy.)*
@@ -205,7 +205,7 @@ Detailed requirements: [`docs/requirements/10_TESTING_QA.md`](docs/requirements/
 - [ ] **PCS-OPS-001** Separate development/preview/production environments.
 - [ ] **PCS-OPS-002** Secrets never committed; production has no AI API key requirement.
 - [ ] **PCS-OPS-003** Error monitoring/health checks. *(Development foundation now includes fixed-category first-party client error telemetry, bucket-only Web Vitals, and a minimal DB readiness endpoint verified in Chromium/API CI; production external monitoring, server/API rate visibility and alerting remain.)*
-- [ ] **PCS-OPS-004** Documented production rollback.
+- [x] **PCS-OPS-004** Documented production rollback. *(Repository-level runbook covers application, database forward-fix, assessment model, content, illustration assets, share-card template, post-rollback verification and affected-result handling; release-operations validator passed in CI Run 383. Deployment-provider commands/restore rehearsal remain OPS-001/002/006 adjacent evidence rather than part of this documentation requirement.)*
 - [ ] **PCS-OPS-005** Assessment/model release requires explicit version freeze/migration review.
 - [ ] **PCS-OPS-006** Public launch gate complete before announcing v1.0.
 
