@@ -1,6 +1,6 @@
 # Visual Regression QA v0.1
 
-> Status: baseline-generation workflow active; QA-006 closes only after committed baselines pass the normal CI comparison job.
+> Status: verified for current development application; committed baselines pass normal CI comparison mode.
 > Date: 2026-08-27
 
 ## Purpose
@@ -110,12 +110,15 @@ Current v0.1 does not yet prove:
 
 Those require later release QA or new baseline versions.
 
-## Completion rule
+## Completion evidence
 
-Master `PCS-QA-006` may be checked only when:
+Master `PCS-QA-006` is verified for the current development application:
 
-- the 16 baseline PNGs are committed;
-- normal CI compares against them without `--update-snapshots`;
-- the comparison run passes;
-- the requirement/traceability record cites that run.
+- 16 baseline PNGs are committed under `tests/e2e/visual-regression.spec.ts-snapshots/`;
+- `package-lock.json` is committed so CI/browser dependencies resolve reproducibly;
+- normal CI sets `PCS_VISUAL_REGRESSION=1` and compares without `--update-snapshots`;
+- CI Run 343 (`33047133202`) and Run 344 (`33047140525`) passed the committed visual comparison suite;
+- dedicated Visual Baseline Run 7 reproduced the same baselines from `npm ci` without requiring a new baseline commit.
+
+Future intentional visual changes must follow the baseline-change rule above.
 
