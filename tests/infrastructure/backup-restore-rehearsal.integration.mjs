@@ -95,20 +95,20 @@ try {
   assert.equal(restoredTriggers.trigger_count,sourceTriggers.trigger_count,'non-internal trigger count must survive logical restore');
 
   const [revision] = await restored`
-    SELECT trait_id, dictionary_version, locale
-    FROM trait_definition_revisions
-    ORDER BY trait_id, dictionary_version, locale
+    SELECT item_id, revision, locale
+    FROM assessment_item_revisions
+    ORDER BY item_id, revision, locale
     LIMIT 1
   `;
-  assert.ok(revision?.trait_id,'restored DB must contain an immutable Trait revision fixture');
+  assert.ok(revision?.item_id,'restored DB must contain an immutable assessment-item revision fixture');
 
   await expectDbFailure(
     'versioned revision rows are immutable after restore',
     ()=>restored`
-      UPDATE trait_definition_revisions
-      SET display_name = display_name || ' forbidden'
-      WHERE trait_id=${revision.trait_id}
-        AND dictionary_version=${revision.dictionary_version}
+      UPDATE assessment_item_revisions
+      SET text = text || ' forbidden'
+      WHERE item_id=${revision.item_id}
+        AND revision=${revision.revision}
         AND locale=${revision.locale}
     `,
     /versioned revision rows are immutable/i
