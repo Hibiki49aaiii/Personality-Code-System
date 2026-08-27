@@ -35,15 +35,17 @@ A checkbox in `REQUIREMENTS.md` is marked complete only when inspectable specifi
 | PCS-CONTENT-003 | pending production editorial QA | adversarial rules in `04_CODE_AND_RESULT_ENGINE.md`, `05_CONTENT_AND_ILLUSTRATION.md` | dev adversarial/fallback modules | production authored adversarial catalog remains open |
 | PCS-FE-003 | complete (Phase 2C development UX) | `06_FRONTEND_RESPONSIVE_UX.md` | real 147-item assessment UI | Chromium start/save/back/edit/complete flow |
 | PCS-FE-004 | complete (Phase 2C development UX) | structured result hierarchy | real private result page | Chromium Core/Extended/Traits/18-section/reload assertions |
-| PCS-FE-005 | pending | required width matrix | responsive CSS exists | explicit 320/375-390/768/1024/1280/1440+ verification not yet complete |
-| PCS-A11Y-001..002 | pending | `06_FRONTEND_RESPONSIVE_UX.md`, `10_TESTING_QA.md` | semantic controls exist but no completion claim | keyboard/manual/automated a11y gate open |
+| PCS-FE-005 | complete (current application responsive QA) | required width matrix + `RESPONSIVE_ACCESSIBILITY_QA_v0.1.md` | functional landing/assessment/result width checks + horizontal-overflow assertions | CI Run 329 (`33044207630`): 320/390/768/1024/1280/1440 | screenshot-diff visual regression remains PCS-QA-006 |
+| PCS-A11Y-001 | complete (keyboard core flow) | `06_FRONTEND_RESPONSIVE_UX.md`, responsive/accessibility QA record | actual Tab/Shift+Tab/Space/Enter focus traversal through 147 answers + finalization | CI Run 329 (`33044207630`) | no pointer/touch activation used by the completion test |
+| PCS-A11Y-002 | partial | semantic progress/radiogroup/error/meter + accessible palette + focus/reduced-motion/touch checks | axe WCAG A/AA, 44px target, touch/mobile, focus/motion assertions | CI Run 329 (`33044207630`) | real screen-reader/assistive-tech and text-zoom/final production review remain |
 | PCS-ARCH-001 | complete | `07_APPLICATION_ARCHITECTURE_AND_DATA.md` | `src/domain/assessment/*` isolated from React/DB | compile/tests independent of UI/database |
 | PCS-ARCH-002 | complete (Phase 2B/2C foundation) | ADR-0001 + schema/application contract | schema, adapters, real server/application wiring | static migration validator + PostgreSQL 16 + application integration |
 | PCS-ARCH-003 | complete | raw-answer/public-export separation contract | `shareSnapshot.ts`, hash-only public token/repository, DB insert guard, versioned public image routes | domain + PostgreSQL + repository + Chromium public/private boundary tests |
 | PCS-ARCH-004 | complete (current persistence) | immutability contract | SQL triggers protect published model/items/content/revisions/snapshots | `postgres-integration.mjs` exercises actual rejection behavior |
 | PCS-ARCH-005 | complete (foundation) | ADR-0001 migration/rollback policy | ordered committed SQL migrations | migration validator + PostgreSQL application in CI; deployment backup rehearsal is OPS |
 | PCS-PRIV-001 | complete (anonymous private flow) | `08_PRIVACY_SECURITY.md` | opaque token + hash-only DB + HttpOnly/SameSite cookie | repository tests + fresh-browser private-result isolation |
-| PCS-PRIV-002..003 | pending/partial | data minimization/analytics policy | no third-party analytics path yet | release privacy/network audit remains open |
+| PCS-PRIV-002 | partial | data-minimization/retention/privacy requirements | anonymous/private-first architecture + bounded analytics | release legal/data-minimization audit remains open | optional/future collection must remain separately justified |
+| PCS-PRIV-003 | complete (development implementation) | first-party-only analytics privacy contract | allowlisted network/DB event payloads; third-party export disabled; raw answer/Trait vector bans | CI Run 238 + Run 273 | deployed provider/log audit remains release QA |
 | PCS-PRIV-004 | complete (development share flow) | opt-in public-share policy | POST `/api/share` requires private bearer cookie and explicit UI action | Chromium explicit-share flow + separate public snapshot persistence |
 | PCS-SEC-001 | complete (development implementation) | `08_PRIVACY_SECURITY.md`, `rate-limits-v0.1-dev`, security-header baseline | opaque/hash-only capabilities, server validation, HMAC DB-backed rate limits, privacy-safe 429s, CSP/HSTS/frame/nosniff/referrer/permissions headers, production dependency audit | CI Run 304 (`33038326772`) rate-limit/security E2E + Run 307 security validator/audit + Run 309 latest full HEAD | deployment TLS/trusted proxy/DB least privilege/final QA remain OPS/QA gates |
 | PCS-QA-001 | complete (current CI) | `10_TESTING_QA.md` | `.github/workflows/ci.yml` | requirements → type/content/item/analytics/security/persistence validators → production dependency audit → PostgreSQL/app/domain → retention dry-run → typecheck/build → Chromium E2E |
@@ -57,7 +59,9 @@ A checkbox in `REQUIREMENTS.md` is marked complete only when inspectable specifi
 | Phase 4B-3 retention/observability foundation | complete (development implementation) | versioned retention policy + cleanup repository/CLI + fixed error telemetry + bucketed Web Vitals + `/api/health` | Runs 269/270/272/273 | production scheduler, external monitoring/alerting and environment separation remain |
 | PCS-OPS-003 | partial | client error/performance telemetry + DB readiness endpoint | Runs 269/272/273 | independently durable production monitoring and alerting remain open |
 | PCS-QA-004 | complete through Phase 4A-1 journey | E2E path contract | Playwright Chromium flow | start → back/edit → 147 answers → private result → explicit public share → cookie-free view/cards → revoke/404 |
-| PCS-QA-005..007 | pending | a11y/visual/security requirements | partial foundations only | later release gates |
+| PCS-QA-005 | partial | automated axe + keyboard/touch/mobile evidence | `responsive-accessibility.spec.ts`, QA evidence record | Run 329 green | human assistive-tech/text-zoom/manual release review remains |
+| PCS-QA-006 | pending | responsive visual-regression requirement | functional width matrix exists | no committed screenshot-diff baseline yet | keep open |
+| PCS-QA-007 | pending | release security/privacy checklist | substantial security/privacy automation exists | SEC-001/analytics/security CI evidence | deployed release review remains |
 
 ## Requirement governance evidence
 
@@ -116,6 +120,20 @@ This is engineering completeness evidence only. It does not complete the publish
 - Versioned deterministic cards: `src/app/api/share/_image.tsx`, OG/portrait v0.1 routes
 - Browser proof: CI Run `33020306036` (Run 190) covers share controls, cookie-free public view, PNG/card byte determinism, dynamic OG metadata and revoke→404 behavior.
 - Production caveat: display-name/identity/illustration fields remain nullable until Phase 3A/3B/5C approval; PCS-SOC-001 remains open.
+
+## Responsive and accessibility evidence
+
+- Functional width matrix: 320×844, 390×844, 768×1024, 1024×768, 1280×800, 1440×900.
+- Test: `tests/e2e/responsive-accessibility.spec.ts`.
+- Evidence record: `docs/reviews/RESPONSIVE_ACCESSIBILITY_QA_v0.1.md`.
+- Landing/assessment and completed private result are exercised without document-level horizontal overflow at all mandatory widths.
+- The assessment is completed through all 147 questions using actual keyboard focus traversal with `Tab`, `Shift+Tab`, `Space`, and `Enter`.
+- Touch-enabled 390px mobile interaction is exercised.
+- Accessibility semantics include progressbar/radiogroup/error relationships and result Trait meters.
+- `@axe-core/playwright` WCAG A/AA scans are release-blocking in current E2E; detected contrast defects were fixed rather than excluded.
+- Focus-visible, reduced-motion and practical assessment target-size assertions are included.
+- Successful checkpoint: CI Run 329 (`33044207630`).
+- Remaining: real assistive-technology/text-zoom manual review and screenshot-diff visual regression.
 
 ## Security baseline evidence
 
