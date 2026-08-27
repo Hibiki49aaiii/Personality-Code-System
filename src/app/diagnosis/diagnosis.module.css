@@ -16,8 +16,8 @@
 }
 
 .brand {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   display: grid;
   place-items: center;
   border: 1px solid #171713;
@@ -132,7 +132,7 @@
   cursor: pointer;
 }
 
-.backButton { padding: 12px 0; background: transparent; color: #69675f; }
+.backButton { min-height: 44px; padding: 12px 0; background: transparent; color: #69675f; }
 .backButton:disabled { opacity: 0.28; cursor: default; }
 
 .nextButton {
