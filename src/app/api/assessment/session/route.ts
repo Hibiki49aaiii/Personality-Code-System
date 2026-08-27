@@ -4,6 +4,7 @@ import {
   startOrResumeAnonymousAssessment
 } from '../../../../application/assessment/serverAssessmentService';
 import { withPcsDatabase } from '../../../../server/assessmentRuntime';
+import { recordServerProductEventBestEffort } from '../../../../server/productAnalytics';
 import {
   assessmentApiError,
   getAssessmentToken,
@@ -21,7 +22,17 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const state = await withPcsDatabase((db) => getPublicAssessmentState(db, token));
+    const state = await withPcsDatabase(async (db) => {
+      const loaded = await getPublicAssessmentState(db, token);
+      if (loaded.status === 'in_progress') {
+        await recordServerProductEventBestEffort(db, {
+          name: 'assessment_resumed',
+          privateToken: token,
+          properties: { answeredCount: loaded.answers.length }
+        });
+      }
+      return loaded;
+    });
     return noStoreJson(state);
   } catch (error) {
     return assessmentApiError(error);
@@ -30,9 +41,22 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const resumed = await withPcsDatabase((db) =>
-      startOrResumeAnonymousAssessment(db, getAssessmentToken(request))
-    );
+    const resumed = await withPcsDatabase(async (db) => {
+      const outcome = await startOrResumeAnonymousAssessment(db, getAssessmentToken(request));
+      await recordServerProductEventBestEffort(db, outcome.created
+        ? {
+            name: 'assessment_started',
+            privateToken: outcome.token,
+            properties: {}
+          }
+        : {
+            name: 'assessment_resumed',
+            privateToken: outcome.token,
+            properties: { answeredCount: outcome.state.answers.length }
+          }
+      );
+      return outcome;
+    });
     const response = noStoreJson(resumed.state, { status: resumed.created ? 201 : 200 });
     setAssessmentSessionCookie(response, resumed.token);
     return response;
