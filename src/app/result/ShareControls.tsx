@@ -48,6 +48,7 @@ export default function ShareControls({ coreCode }: ShareControlsProps) {
 
   async function copyLink() {
     if (!shareUrl) return;
+    void sendClientProductEvent('share_method_selected', { method: 'copy' });
     try {
       await navigator.clipboard.writeText(shareUrl);
       setMessage('共有リンクをコピーしました。');
@@ -61,6 +62,7 @@ export default function ShareControls({ coreCode }: ShareControlsProps) {
       setMessage('このブラウザは端末共有に対応していません。X・LINE・リンクコピーを利用してください。');
       return;
     }
+    void sendClientProductEvent('share_method_selected', { method: 'web-share' });
     try {
       await navigator.share({
         title: shareText,
