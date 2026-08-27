@@ -170,7 +170,13 @@ Avoid by default:
 
 ## Performance budgets
 
-Before launch establish measured budgets. Initial requirements:
+A versioned development budget now exists at `data/performance/budgets-v0.1-dev.json`, with the supporting contract in `docs/model/PERFORMANCE_BUDGET_SPEC_v0.1.md`.
+
+After every production build, `scripts/audit-performance-build.mjs` enforces explicit limits for total/largest client JavaScript, total/largest CSS, total/largest `.next/static` output, and browser source-map absence. The audit emits the measured byte totals into CI so budget movement is inspectable.
+
+This closes the previously undefined **artifact-budget** portion only. Master **PCS-PERF-001** remains open because artifact size is not evidence that real users meet Core Web Vitals.
+
+Additional requirements remain:
 
 - avoid shipping unnecessary client-side JavaScript for static result/content sections;
 - images use responsive dimensions/formats;
@@ -187,7 +193,9 @@ Public launch requires acceptable field/lab performance with priority on:
 - INP;
 - CLS.
 
-Exact thresholds should align with contemporary Core Web Vitals guidance and be recorded in release QA rather than hardcoded forever in this document.
+The current versioned target, reviewed against web.dev guidance on 2026-08-27, is the 75th percentile with “good” thresholds of LCP ≤ 2500 ms, INP ≤ 200 ms and CLS ≤ 0.1. The machine-readable budget also records the corresponding poor thresholds.
+
+These values are versioned rather than treated as timeless constants. Release QA must re-check contemporary guidance and create a new budget version if thresholds/measurement semantics change. Build-artifact CI does not close the Core Web Vitals evidence gate.
 
 ## Frontend test evidence
 

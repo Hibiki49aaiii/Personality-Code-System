@@ -103,6 +103,9 @@ jobs:
       - name: Audit production client artifact leakage
         run: npm run audit:production-build
 
+      - name: Audit production performance budgets
+        run: npm run audit:performance-build
+
       - name: Install Chromium for E2E
         run: npx playwright install --with-deps chromium
 

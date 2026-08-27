@@ -1,0 +1,35 @@
+{
+  "budget_version": "performance-budget-v0.1-dev",
+  "status": "development-release-gate",
+  "reviewed_at": "2026-08-27",
+  "public_use": false,
+  "field_core_web_vitals": {
+    "aggregation_percentile": 75,
+    "good_thresholds": {
+      "LCP_ms": 2500,
+      "INP_ms": 200,
+      "CLS": 0.1
+    },
+    "poor_thresholds": {
+      "LCP_ms": 4000,
+      "INP_ms": 500,
+      "CLS": 0.25
+    },
+    "source": "https://web.dev/articles/defining-core-web-vitals-thresholds",
+    "note": "Field/lab evidence is required before PCS-PERF-001 can close. Artifact budgets alone are not Core Web Vitals proof."
+  },
+  "production_build_artifacts": {
+    "client_static_js_total_bytes_max": 2500000,
+    "client_static_js_single_file_bytes_max": 750000,
+    "client_static_css_total_bytes_max": 500000,
+    "client_static_css_single_file_bytes_max": 250000,
+    "client_static_all_files_total_bytes_max": 8000000,
+    "client_static_single_file_bytes_max": 2500000
+  },
+  "policy": {
+    "browser_source_maps_allowed": false,
+    "third_party_runtime_scripts_default": "prohibited-unless-reviewed",
+    "runtime_ai_dependencies_allowed": false,
+    "budget_increase_requires_versioned_review": true
+  }
+}
