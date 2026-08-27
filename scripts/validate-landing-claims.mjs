@@ -28,7 +28,7 @@ for (const [pattern, label] of forbiddenPatterns) {
   if (pattern.test(source)) errors.push(`landing page contains prohibited/obsolete claim presentation: ${label}`);
 }
 
-if (!source.includes('診断を試す') || !source.includes('複数の特性を連続値')) {
+if (!source.includes('診断を試す') || !source.includes('傾向を連続値で測定')) {
   errors.push('landing page must explain assessment purpose and provide a diagnosis entry point');
 }
 
