@@ -180,3 +180,31 @@ test('landing and first assessment screen pass automated WCAG A/AA checks', asyn
   await expect(page.getByText('QUESTION 001')).toBeVisible();
   await expectNoA11yViolations(page);
 });
+
+
+test('touch-enabled mobile context can answer and advance without layout overflow', async ({ browser }) => {
+  const context = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    isMobile: true,
+    hasTouch: true
+  });
+  const page = await context.newPage();
+
+  try {
+    await page.goto('/diagnosis');
+    await expect(page.getByText('QUESTION 001')).toBeVisible();
+    await expectNoHorizontalOverflow(page);
+
+    const midpoint = page.getByRole('radio', { name: 'どちらともいえない' });
+    await midpoint.tap();
+    await expect(midpoint).toBeChecked();
+
+    const next = page.getByRole('button', { name: '次へ →' });
+    await expect(next).toBeEnabled();
+    await next.tap();
+    await expect(page.getByText('QUESTION 002')).toBeVisible();
+    await expectNoHorizontalOverflow(page);
+  } finally {
+    await context.close();
+  }
+});
