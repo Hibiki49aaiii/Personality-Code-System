@@ -66,6 +66,10 @@ export default function DiagnosisPage() {
         setIndex(firstUnanswered >= 0 ? firstUnanswered : Math.max(0, state.items.length - 1));
       } catch (bootError) {
         if (!cancelled) {
+          void sendClientProductEvent('client_error', {
+            category: 'request-failure',
+            surface: 'assessment'
+          });
           setError(bootError instanceof Error ? bootError.message : "診断を開始できませんでした。");
         }
       }
@@ -138,6 +142,10 @@ export default function DiagnosisPage() {
         else next[item.id] = previous;
         return next;
       });
+      void sendClientProductEvent('client_error', {
+        category: 'request-failure',
+        surface: 'assessment'
+      });
       setError(saveError instanceof Error ? saveError.message : "回答を保存できませんでした。");
     } finally {
       setSaving(false);
@@ -153,6 +161,10 @@ export default function DiagnosisPage() {
       await readJson<{ ok: true }>(response);
       router.push("/result");
     } catch (submitError) {
+      void sendClientProductEvent('client_error', {
+        category: 'request-failure',
+        surface: 'assessment'
+      });
       setError(submitError instanceof Error ? submitError.message : "診断結果を確定できませんでした。");
       setSubmitting(false);
     }
