@@ -204,3 +204,12 @@ Use distinct concepts:
 - asset/template version.
 
 Do not overload a single “v1” string to mean all of them internally.
+
+
+### Backup/restore privacy gate
+
+Repository recovery mechanics now include `backup-restore-policy-v0.1-dev`, `BACKUP_RESTORE_RUNBOOK_v0.1.md` and a real isolated PostgreSQL logical restore rehearsal in CI.
+
+The rehearsal proves application tables, row counts, non-internal triggers and published-model immutability survive a custom-format dump/restore. The temporary dump is never uploaded.
+
+This does **not** close production backup/restore. An older backup can contain diagnostic data/public-share capabilities deleted after the backup timestamp. Public traffic after a real restore is therefore blocked until an independently durable deletion journal or equivalent is replayed, retention cleanup is run, and deleted/revoked public shares are proven not to resurrect.
