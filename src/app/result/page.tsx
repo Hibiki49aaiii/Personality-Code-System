@@ -89,8 +89,16 @@ export default async function ResultPage() {
           {snapshot.traitScores.map((trait) => (
             <article className={styles.traitCard} key={trait.traitId}>
               <div><strong>{trait.traitId}</strong><span>{(trait.scoreBp / 100).toFixed(2)}</span></div>
-              <div className={styles.traitTrack} aria-label={`${trait.traitId} ${(trait.scoreBp / 100).toFixed(2)}`}>
-                <span style={{ width: `${trait.scoreBp / 100}%` }} />
+              <div
+                className={styles.traitTrack}
+                role="meter"
+                aria-label={`${trait.traitId} Trait score`}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={trait.scoreBp / 100}
+                aria-valuetext={`${(trait.scoreBp / 100).toFixed(2)} / 100`}
+              >
+                <span aria-hidden="true" style={{ width: `${trait.scoreBp / 100}%` }} />
               </div>
             </article>
           ))}
