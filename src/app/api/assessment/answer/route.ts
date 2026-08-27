@@ -1,6 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { savePublicAssessmentAnswer } from '../../../../application/assessment/serverAssessmentService';
 import { withPcsDatabase } from '../../../../server/assessmentRuntime';
+import { applyRateLimit } from '../../../../server/rateLimit';
 import { assessmentApiError, getAssessmentToken, noStoreJson } from '../_shared';
 
 export const runtime = 'nodejs';
@@ -20,7 +21,10 @@ export async function PUT(request: NextRequest) {
 
     const itemId = body.itemId;
     const value = body.value as number;
-    await withPcsDatabase((db) => savePublicAssessmentAnswer(db, { token, itemId, value }));
+    await withPcsDatabase(async (db) => {
+      await applyRateLimit(db, request, 'assessment-answer', token);
+      await savePublicAssessmentAnswer(db, { token, itemId, value });
+    });
     return noStoreJson({ ok: true });
   } catch (error) {
     return assessmentApiError(error);
