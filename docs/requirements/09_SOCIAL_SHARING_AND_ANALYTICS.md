@@ -92,6 +92,46 @@ The display-name and illustration fields remain null until their exact approved 
 
 CI Run 190 proves the 147-item flow, explicit share creation, cookie-free public view, X/LINE/copy controls, deterministic byte-identical OG/portrait images, and revocation/404 behavior together. Final curated illustration integration remains Phase 3B/4A-2.
 
+## Current Phase 4B development implementation
+
+The current product-analytics path is first-party only and versioned by `analytics-events-v0.1-dev`:
+
+- browser events POST only to PCS `/api/analytics`; no third-party analytics SDK/export is enabled by default;
+- client requests cannot choose `source`; the API fixes browser events to `client`;
+- session-bound `modelVersion` and locale are derived/validated from the HttpOnly anonymous assessment session;
+- server events cover assessment start/resume/completion, result view, share-snapshot creation and public-share view;
+- client events cover landing view, question position, answer interaction state, share initiation and share method;
+- `answer_interaction` records only item position plus `selected|changed`, never answer value;
+- the event dictionary, TypeScript validator and PostgreSQL CHECK constraint independently prohibit raw answers, Trait vectors/scores, Extended Code, Response Quality, Interaction internals, free text and capability tokens;
+- product analytics is best-effort and cannot make the assessment/share flow fail;
+- session-bound product events cascade-delete with the owning anonymous session;
+- public-share-view events are intentionally unlinked from the private diagnostic session.
+
+CI Run `33036549731` (Run 238) verifies the complete browser funnel and inspects both the actual `/api/analytics` network payloads and persisted `product_events` rows. The browser never sends an answer value or client-supplied model version for answer/question telemetry.
+
+Retention/privacy operating targets are documented in `docs/model/ANALYTICS_PRIVACY_BASELINE_v0.1.md`. Production cleanup enforcement, deployment-environment separation and legal/consent review remain release gates.
+
+### Observed type-distribution foundation
+
+PCS now has a non-public aggregation foundation defined by `observed-type-distribution-v0.1-dev`.
+
+It:
+
+- reads immutable completed `result_snapshots`, not product analytics events;
+- requires exact assessment-model version, code-schema version, locale and time range;
+- exposes the denominator/sample size and eligibility rule;
+- uses integer basis-point shares;
+- sets `populationClaimAllowed=false`;
+- never derives rarity from 64 theoretical combinations or Trait-probability multiplication.
+
+The domain/repository implementation is covered by CI Run `33036572687` (Run 240). Public display remains blocked until the production code model, valid-assessment exclusion rule, minimum-sample/privacy threshold and final wording policy are approved.
+
+Specification: `docs/model/OBSERVED_TYPE_DISTRIBUTION_SPEC_v0.1.md`.
+
+### Calibration export gate
+
+Calibration is still deliberately separate from ordinary analytics. `docs/model/CALIBRATION_EXPORT_SPEC_v0.1.md` defines the future consent/governance prerequisites. No raw-answer calibration export endpoint/job is shipped before those prerequisites exist.
+
 ## Analytics events
 
 Initial first-party/product events:
@@ -155,10 +195,10 @@ Prohibited:
 
 ## Analytics acceptance checklist
 
-- [ ] event dictionary documented;
-- [ ] no raw answers visible in third-party analytics network payloads;
+- [x] event dictionary documented;
+- [x] no raw answers visible in analytics network payloads; third-party export is disabled by default and first-party browser payloads are E2E-audited;
 - [ ] consent behavior matches legal/privacy implementation;
 - [ ] staging/test traffic separable from production;
-- [ ] model version attached to assessment funnel/calibration events where needed;
-- [ ] retention settings documented;
+- [x] model version attached server-side to session-bound assessment funnel events where defined; calibration remains a separate blocked path;
+- [x] retention targets documented; production cleanup enforcement remains an operations/release gate;
 - [x] share funnel test passes without social login. *(Development share flow is browser-tested; final curated-art card remains separate.)*
