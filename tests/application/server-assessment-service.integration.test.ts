@@ -38,6 +38,9 @@ test('anonymous reviewed-model flow renders detailed deterministic v0.3 content 
     assert.equal(completed.alreadyCompleted, false);
     assert.equal(completed.snapshot.versions.assessmentModelVersion, 'assessment-dev-v0.3');
     assert.equal(completed.snapshot.versions.contentVersion, 'content-dev-v0.3');
+    assert.equal(completed.snapshot.snapshotSchemaVersion, 'result-snapshot-v0.2-dev');
+    assert.ok('assets' in completed.snapshot);
+    if ('assets' in completed.snapshot) assert.equal(completed.snapshot.assets.illustrationAssetVersion, 'ILL-PCS-FALLBACK-HERO-v01');
     assert.equal(completed.snapshot.traitScores.length, 21);
     assert.equal(completed.snapshot.personalityCode.coreCode, 'SVAEND');
     assert.equal(completed.snapshot.sections.length, 18);
