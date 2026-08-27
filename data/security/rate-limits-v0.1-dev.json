@@ -1,0 +1,32 @@
+{
+  "rate_limit_policy_version": "rate-limits-v0.1-dev",
+  "status": "development",
+  "principal_storage": "hmac-sha256",
+  "scopes": {
+    "assessment-session-create": {
+      "window_seconds": 600,
+      "max_requests": 20,
+      "principal": "ip"
+    },
+    "assessment-answer": {
+      "window_seconds": 600,
+      "max_requests": 300,
+      "principal": "session"
+    },
+    "assessment-complete": {
+      "window_seconds": 600,
+      "max_requests": 10,
+      "principal": "session"
+    },
+    "share-mutation": {
+      "window_seconds": 600,
+      "max_requests": 30,
+      "principal": "session"
+    },
+    "analytics": {
+      "window_seconds": 300,
+      "max_requests": 1200,
+      "principal": "session-or-ip"
+    }
+  }
+}
