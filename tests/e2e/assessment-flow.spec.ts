@@ -262,3 +262,58 @@ test('landing page emits only the minimal first-party landing analytics payload'
   expect(observedPayload.properties).not.toHaveProperty('answerValue');
   expect(observedPayload.properties).not.toHaveProperty('sessionToken');
 });
+
+
+test('assessment request failure emits only fixed error telemetry', async ({ page }) => {
+  await page.goto('/diagnosis');
+  await expect(page.getByText('QUESTION 001')).toBeVisible();
+
+  await page.route('**/api/assessment/answer', async (route) => {
+    await route.fulfill({
+      status: 500,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        error: 'TEST_FAILURE',
+        message: 'simulated failure with details that must not enter analytics'
+      })
+    });
+  });
+
+  const errorAnalyticsPromise = page.waitForResponse((response) => {
+    if (!response.url().endsWith('/api/analytics')) return false;
+    try {
+      const payload = JSON.parse(response.request().postData() ?? '{}') as {
+        name?: string;
+        properties?: { category?: string; surface?: string };
+      };
+      return (
+        payload.name === 'client_error' &&
+        payload.properties?.category === 'request-failure' &&
+        payload.properties?.surface === 'assessment'
+      );
+    } catch {
+      return false;
+    }
+  });
+
+  await page.getByRole('radio', { name: 'どちらともいえない' }).click();
+  await expect(page.getByRole('alert')).toContainText('simulated failure');
+
+  const analyticsResponse = await errorAnalyticsPromise;
+  expect(analyticsResponse.status()).toBe(202);
+
+  const payload = JSON.parse(
+    analyticsResponse.request().postData() ?? '{}'
+  ) as { name?: string; properties?: Record<string, unknown> };
+
+  expect(payload).toEqual({
+    name: 'client_error',
+    properties: {
+      category: 'request-failure',
+      surface: 'assessment'
+    }
+  });
+  expect(JSON.stringify(payload)).not.toContain('simulated failure');
+  expect(payload.properties).not.toHaveProperty('message');
+  expect(payload.properties).not.toHaveProperty('stack');
+});
