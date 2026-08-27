@@ -105,29 +105,41 @@ Current CI starts PostgreSQL 16 and runs the real migration chain.
 - idempotent duplicate completion;
 - post-completion answer mutation rejection.
 
-Remaining integration work is now primarily Phase 4/6:
+Remaining integration work is now primarily production/release-specific:
 
-- explicit public share snapshot creation/retrieval;
-- share revocation/deletion behavior if supported;
-- rate limiting/security headers/dependency-security gates;
-- deployment-specific backup/restore and production environment checks.
+- deployment-specific backup/restore rehearsal;
+- development/preview/production environment separation;
+- deployed monitoring/alerting;
+- production trusted-proxy/TLS/least-privilege/secret-store evidence;
+- consented calibration/export paths after governance approval.
 
 ### 5. End-to-end tests
 
 Current Chromium E2E covers:
 
-`diagnosis -> anonymous start -> answer -> back/edit -> all 147 answers -> finish -> private result -> reload`
+`landing -> diagnosis -> anonymous start -> answer -> back/edit -> all 147 answers -> finish -> private result/reload -> explicit public share -> cookie-free public view/cards -> revoke`
 
-It also verifies a fresh browser context without the bearer cookie cannot access the completed private result.
+Additional current E2E coverage includes:
+
+- fresh-browser private-result isolation;
+- actual `Tab` / `Shift+Tab` / `Space` / `Enter` traversal through all 147 questions and finalization;
+- mandatory 320/390/768/1024/1280/1440 width checks with document-level overflow assertions;
+- touch-enabled 390px mobile selection/advance;
+- semantic progress/radiogroup/result-meter assertions;
+- focus-visible and reduced-motion behavior;
+- automated axe WCAG A/AA scans on the tested core pages;
+- privacy-safe analytics/error/performance contracts;
+- security headers;
+- privacy-safe rate limiting;
+- health/readiness response.
 
 Still required in later QA layers:
 
-- keyboard-only completion;
-- responsive/mobile path coverage at mandatory widths;
-- accidental rapid/double-interaction hardening beyond server idempotency;
-- public shared-result visit once Phase 4 exists;
+- screenshot-diff visual regression baselines;
+- real screen-reader / assistive-technology walkthrough;
+- browser text zoom/text scaling review;
 - richer expired/error recovery UX;
-- accessibility automation/manual verification.
+- final production-content/illustration accessibility review.
 
 ### 6. Requirement and catalog integrity validators
 
@@ -155,27 +167,36 @@ These validators prove engineering consistency only. They do not validate psycho
 
 ## Responsive visual QA
 
-Automated screenshots/visual regression SHOULD cover at least:
+Functional responsive verification is now automated at:
 
-- 320x representative mobile height;
-- 375/390 mobile;
-- 768 tablet;
-- 1024 landscape/small desktop;
-- 1280 desktop;
-- 1440+ wide desktop.
+- 320 × 844;
+- 390 × 844;
+- 768 × 1024;
+- 1024 × 768;
+- 1280 × 800;
+- 1440 × 900.
 
-Critical pages:
+Run 329 (`33044207630`) verifies landing/assessment functionality and no document-level horizontal overflow at every mandatory width, then verifies the completed private result across the same width matrix. This is the current evidence for Master `PCS-FE-005`.
 
-- landing;
-- assessment first/mid/final question;
-- result hero;
-- long result domain;
-- adversarial section;
-- share controls/public result once implemented.
+Screenshot-diff visual regression is intentionally a separate gate. Master `PCS-QA-006` remains open until committed visual baselines/diffs cover the critical landing, assessment, result, adversarial/share/public-result states.
 
 ## Accessibility QA
 
 Automated scans are necessary but insufficient.
+
+Current automated evidence (Run 329 / `33044207630`):
+
+- actual keyboard focus traversal completes all 147 questions and finalization without mouse/touch;
+- focus-visible is machine checked;
+- progress/radiogroup/error/result-meter semantics are asserted;
+- selected state is not color-only;
+- reduced-motion behavior is asserted;
+- 44px practical assessment targets are asserted;
+- touch-enabled mobile assessment interaction is exercised;
+- axe WCAG A/AA-tagged scans pass on tested landing, assessment and completed private-result states;
+- contrast defects originally detected by axe were fixed in the application palette, not excluded from the scan.
+
+This completes Master `PCS-A11Y-001`. Master `PCS-A11Y-002` and `PCS-QA-005` remain open for human assistive-technology/zoom/final release review.
 
 Manual release checklist:
 
@@ -223,24 +244,27 @@ Measure at least landing, assessment, and result pages. Investigate regressions 
 
 Current CI performs, in order:
 
-1. authoritative requirement-ID validation;
-2. development Core Type catalog reachability validation;
-3. reviewed Item Bank validation;
-4. persistence migration/static invariant validation;
-5. real PostgreSQL persistence integration;
-6. reviewed development-model seed + application integration;
-7. domain/infrastructure unit and Golden Snapshot tests;
-8. TypeScript typecheck;
-9. Next.js production build;
-10. Chromium browser E2E for the 147-item private assessment journey.
+1. production dependency vulnerability audit;
+2. authoritative requirement-ID validation;
+3. development Core Type/display-name/content/illustration integrity validation;
+4. reviewed Item Bank validation;
+5. analytics privacy/retention-policy validation;
+6. security-header/rate-limit policy validation;
+7. persistence migration/static invariant validation;
+8. real PostgreSQL persistence and application integration, including rate-limit/retention behavior;
+9. analytics/rate-limit retention dry-run;
+10. domain/infrastructure unit and Golden Snapshot tests;
+11. TypeScript typecheck;
+12. Next.js production build;
+13. Chromium E2E covering the full assessment/share journey plus responsive, keyboard, touch, axe, security and telemetry contracts.
 
 Later release gates still require:
 
-- automated/manual accessibility;
-- responsive visual regression;
-- security/dependency review and abuse controls;
-- performance budgets;
-- Phase 4 public-share E2E.
+- human assistive-technology/text-zoom accessibility review;
+- screenshot-diff visual regression;
+- final release security/privacy checklist;
+- performance budgets/lab evidence;
+- deployed environment/operations QA.
 
 ## Bug severity
 
