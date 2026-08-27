@@ -76,21 +76,21 @@ The current implementation separates private diagnostic persistence from public 
 - POST `/api/share` requires the existing private HttpOnly assessment cookie and performs the explicit export action;
 - a fresh 256-bit base64url public capability token is returned to the browser while only its SHA-256 hash is stored;
 - each public link owns an immutable `share-snapshot-v0.1-dev` sanitized JSON payload;
-- the public payload currently contains only Core Code, locale and exact assessment/code/content versions plus nullable presentation fields;
+- the public payload contains Core Code, locale, exact assessment/code/content versions and sanitized presentation fields; new shares freeze the exact source illustration asset version while public name/identity remain nullable until public taxonomy approval;
 - raw answers, Trait Scores/vector, Response Quality, Interaction internals, Extended Code, private session IDs/tokens and private section/module structures are excluded;
 - PostgreSQL independently rejects prohibited fields and source/version mismatches;
 - GET `/s/[token]` reads only the public sanitized snapshot and needs no private cookie;
 - X, LINE, Web Share and copy controls all use the opaque public URL;
 - the private result owner can revoke all active public links derived from that result;
 - private-source deletion automatically revokes attached public links before detaching the source FK;
-- deterministic development fallback cards exist at versioned OG (1200×630) and portrait (1080×1350) routes;
+- deterministic development cards exist at versioned OG (1200×630) and portrait (1080×1350) routes and render the exact curated asset version stored in the sanitized share snapshot;
 - the public page emits dynamic Open Graph/Twitter metadata referencing the sanitized versioned OG route;
 - image generation is deterministic template rendering with `next/og`, not AI/model generation;
 - public pages use `noindex` by default.
 
-The display-name and illustration fields remain null until their exact approved versions can be frozen into the share snapshot. This intentionally prevents a historical share from resolving a mutable “latest” name or artwork.
+The display-name/identity fields remain nullable while C01D public taxonomy copy is unapproved. Illustration is no longer nullable for new completion/share flows: `ILL-PCS-FALLBACK-HERO-v01` is frozen first into `result-snapshot-v0.2-dev`, propagated into the sanitized share snapshot, and enforced by PostgreSQL so a share cannot substitute different artwork.
 
-CI Run 190 proves the 147-item flow, explicit share creation, cookie-free public view, X/LINE/copy controls, deterministic byte-identical OG/portrait images, and revocation/404 behavior together. Final curated illustration integration remains Phase 3B/4A-2.
+CI Run 190 is the historical sanitized-share baseline. Visual Baseline Run 9 freezes the curated-artwork result/public-share presentation, and full CI Run 432 proves the current 147-item flow, source/share asset lineage, explicit share creation, cookie-free public view, X/LINE/copy controls, byte-identical OG/portrait images, artwork-version headers and revocation/404 behavior. Type-specific hero production remains Phase 3B / PCS-ART-002.
 
 ## Current Phase 4B development implementation
 
