@@ -72,6 +72,7 @@ jobs:
             echo "Visual baselines already match the repository."
           else
             git commit -m "test: freeze visual regression baselines"
+            git reset --hard HEAD
             git pull --rebase origin main
             git push origin HEAD:main
           fi
