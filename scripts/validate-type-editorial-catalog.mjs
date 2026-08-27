@@ -43,7 +43,8 @@ for (const entry of catalog.entries) {
 
   for (const field of requiredTextFields) {
     assert.equal(typeof entry[field], 'string', `${entry.core_code}: ${field} must be text`);
-    assert.ok(entry[field].trim().length >= 20, `${entry.core_code}: ${field} too short`);
+    const minimumLength = field === 'public_name_draft_ja' ? 6 : 20;
+    assert.ok(entry[field].trim().length >= minimumLength, `${entry.core_code}: ${field} too short`);
     for (const pattern of prohibitedPatterns) {
       assert.ok(!pattern.test(entry[field]), `${entry.core_code}: ${field} contains prohibited pattern ${pattern}`);
     }
