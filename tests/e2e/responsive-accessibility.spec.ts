@@ -111,7 +111,13 @@ test('focus indicators and reduced-motion behavior are present in the production
 
   const progress = page.locator('[class*="progressTrack"] span');
   const progressStyle = await progress.evaluate((element) => getComputedStyle(element).transitionDuration);
-  expect(progressStyle === '0s' || progressStyle === '0.01ms').toBe(true);
+  const transitionMs = progressStyle
+    .split(',')
+    .map((value) => value.trim())
+    .map((value) => value.endsWith('ms')
+      ? Number.parseFloat(value)
+      : Number.parseFloat(value) * 1000);
+  expect(transitionMs.every((value) => Number.isFinite(value) && value <= 0.1)).toBe(true);
 });
 
 
