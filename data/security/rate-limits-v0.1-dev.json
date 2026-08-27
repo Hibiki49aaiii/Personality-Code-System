@@ -27,6 +27,11 @@
       "window_seconds": 300,
       "max_requests": 1200,
       "principal": "session-or-ip"
+    },
+    "data-deletion": {
+      "window_seconds": 600,
+      "max_requests": 5,
+      "principal": "session"
     }
   }
 }
