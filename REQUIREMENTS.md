@@ -1,7 +1,7 @@
 # Personality Code System — Master Requirements & Delivery Checklist
 
 > Status: authoritative development contract
-> Version: 0.10.0
+> Version: 0.11.0
 > Last updated: 2026-08-27
 
 This file is the single top-level source of truth for PCS scope and delivery status. Detailed requirements live under `docs/requirements/`.
@@ -134,9 +134,9 @@ Detailed requirements: [`docs/requirements/05_CONTENT_AND_ILLUSTRATION.md`](docs
 - [x] **PCS-FE-002** Initial responsive non-AI visual system exists.
 - [x] **PCS-FE-003** Assessment UX implemented against reviewed/active real item model. *(147 reviewed items, save/resume/back/edit, browser E2E.)*
 - [x] **PCS-FE-004** Result dossier UX implemented against real structured result schema. *(21 Traits + Core/Extended Code + 18 versioned sections + method metadata.)*
-- [ ] **PCS-FE-005** Layouts verified at 320, 375/390, 768, 1024, 1280, 1440+ CSS px.
-- [ ] **PCS-A11Y-001** Keyboard-only assessment completion works.
-- [ ] **PCS-A11Y-002** Semantic labeling, focus, contrast, zoom, motion, and touch-target checks pass.
+- [x] **PCS-FE-005** Layouts verified at 320, 375/390, 768, 1024, 1280, 1440+ CSS px. *(Chromium functional QA covers 320/390/768/1024/1280/1440 widths for landing/assessment and the completed private result, with document-level horizontal-overflow assertions; CI Run 329 / `33044207630`.)*
+- [x] **PCS-A11Y-001** Keyboard-only assessment completion works. *(Chromium completes all 147 questions and finalization using actual `Tab` / `Shift+Tab` / `Space` / `Enter` traversal only; CI Run 329 / `33044207630`.)*
+- [ ] **PCS-A11Y-002** Semantic labeling, focus, contrast, zoom, motion, and touch-target checks pass. *(Automated foundation now passes semantic progress/radiogroup/meter checks, focus-visible, WCAG A/AA axe scans, reduced-motion behavior, mobile touch interaction and 44px target assertions in Run 329; real assistive-technology walkthrough and browser text zoom/scaling remain release gates.)*
 - [ ] **PCS-PERF-001** Public pages meet defined performance budgets/acceptable Core Web Vitals.
 
 Detailed requirements: [`docs/requirements/06_FRONTEND_RESPONSIVE_UX.md`](docs/requirements/06_FRONTEND_RESPONSIVE_UX.md)
@@ -190,11 +190,11 @@ Detailed requirements: [`docs/requirements/09_SOCIAL_SHARING_AND_ANALYTICS.md`](
 
 ## 11. Testing and QA
 
-- [x] **PCS-QA-001** CI performs requirement-ID validation, development type-catalog reachability validation, Item Bank validation, analytics/privacy/retention validation, security baseline validation, production dependency audit, persistence migration validation, real PostgreSQL/application/domain tests, retention cleanup dry-run, TypeScript typecheck, production build, and Chromium browser E2E.
+- [x] **PCS-QA-001** CI performs requirement-ID validation, development type-catalog reachability validation, Item Bank validation, analytics/privacy/retention validation, security baseline validation, production dependency audit, persistence migration validation, real PostgreSQL/application/domain tests, retention cleanup dry-run, TypeScript typecheck, production build, and Chromium browser E2E including responsive-width, keyboard/touch and automated axe accessibility coverage.
 - [x] **PCS-QA-002** Unit tests cover the complete current domain pipeline including interactions, content selection/suppression, confidence/version handling and fail-closed result composition.
 - [x] **PCS-QA-003** Fixed structured-result Golden Snapshot verifies deterministic output and input-order invariance.
 - [x] **PCS-QA-004** Browser E2E covers anonymous start → back/edit → 147 answers → private result/reload → explicit public share → cookie-free public view → deterministic OG/portrait cards → revocation and public-link invalidation.
-- [ ] **PCS-QA-005** Automated accessibility + manual keyboard/mobile checks.
+- [ ] **PCS-QA-005** Automated accessibility + manual keyboard/mobile checks. *(Automated axe + real keyboard traversal + touch/mobile functional coverage are now green in Run 329; human assistive-technology/zoom/manual release review remains.)*
 - [ ] **PCS-QA-006** Visual regression at critical responsive widths.
 - [ ] **PCS-QA-007** Security/privacy checklist before release.
 
