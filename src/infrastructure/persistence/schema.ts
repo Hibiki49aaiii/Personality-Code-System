@@ -14,7 +14,7 @@ import {
   uniqueIndex,
   uuid
 } from 'drizzle-orm/pg-core';
-import type { ResultSnapshotV01 } from '../../domain/assessment/resultSnapshot';
+import type { ResultSnapshot } from '../../domain/assessment/resultSnapshot';
 
 const createdAt = () => timestamp('created_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow();
 
@@ -206,7 +206,7 @@ export const resultSnapshots = pgTable(
     interactionVersion: text('interaction_version').notNull(),
     contentVersion: text('content_version').notNull().references(() => contentVersions.contentVersion, { onDelete: 'restrict' }),
     locale: text('locale').notNull(),
-    snapshotJson: jsonb('snapshot_json').$type<ResultSnapshotV01>().notNull(),
+    snapshotJson: jsonb('snapshot_json').$type<ResultSnapshot>().notNull(),
     createdAt: createdAt()
   },
   (table) => [
