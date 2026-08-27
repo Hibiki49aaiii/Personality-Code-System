@@ -67,6 +67,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: pcs-visual-baselines
-          path: tests/e2e/visual-regression.spec.ts-snapshots/
+          path: |
+            tests/e2e/visual-regression.spec.ts-snapshots/
+            package-lock.json
           if-no-files-found: error
           retention-days: 7
