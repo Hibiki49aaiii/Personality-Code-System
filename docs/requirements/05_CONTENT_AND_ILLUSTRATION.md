@@ -147,7 +147,26 @@ The publication gate remains blocked unless the code schema and catalog are publ
 - `scripts/validate-illustration-briefs.mjs`;
 - `docs/model/ILLUSTRATION_BRIEF_SPEC_v0.1-dev.md`.
 
-Every development type now has a deterministic production brief, but every master/variant path remains null and every review gate remains open.
+Every development type now has a deterministic production brief, but every type-specific master/variant path remains null and every review gate remains open.
+
+## Current curated fallback artwork
+
+The current application also carries one repository-authored static fallback asset, `ILL-PCS-FALLBACK-HERO-v01`, defined by `data/illustration/v0.1-dev/fallback-asset.json` and `src/components/illustration/CuratedFallbackArtwork.tsx`.
+
+It is explicitly:
+
+- curated/versioned;
+- `type_specific=false`;
+- `public_use=false` while the public model/art catalog remains unapproved;
+- rendered without runtime AI/image generation;
+- frozen into new `result-snapshot-v0.2-dev` records;
+- propagated unchanged into sanitized share snapshots;
+- used on the private result, public share, OG card and portrait share card;
+- protected by PostgreSQL asset-existence and source→share asset-lineage guards.
+
+This completes the static/versioned runtime artwork requirement **PCS-ART-003** for the current application while deliberately leaving **PCS-ART-002** open. One generic fallback is not a substitute for 64 curated type-specific hero illustrations.
+
+Full CI Run 432 validates the current persistence/domain/build/E2E chain; Visual Baseline Run 9 freezes the resulting result/share presentation.
 
 ## Content QA
 
@@ -159,5 +178,5 @@ Before a Core Type is publishable:
 - [ ] adversarial wording is direct but not abusive;
 - [ ] Japanese proofreading complete;
 - [ ] illustration approved and correctly mapped;
-- [ ] share-card crop verified;
-- [ ] content/version metadata present.
+- [ ] type-specific share-card crop verified; *(generic curated fallback result/OG/portrait rendering is already browser/visual-tested)*
+- [x] development content/version metadata present; *(public published catalog/version approval remains PCS-CONTENT-001)*
