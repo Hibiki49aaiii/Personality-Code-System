@@ -2,6 +2,7 @@ import type { NextRequest } from 'next/server';
 import { savePublicAssessmentAnswer } from '../../../../application/assessment/serverAssessmentService';
 import { withPcsDatabase } from '../../../../server/assessmentRuntime';
 import { applyRateLimit } from '../../../../server/rateLimit';
+import { assertTrustedMutationRequest } from '../../../../server/requestSecurity';
 import { assessmentApiError, getAssessmentToken, noStoreJson } from '../_shared';
 
 export const runtime = 'nodejs';
@@ -14,6 +15,7 @@ export async function PUT(request: NextRequest) {
   }
 
   try {
+    assertTrustedMutationRequest(request);
     const body = await request.json() as { itemId?: unknown; value?: unknown };
     if (typeof body.itemId !== 'string' || !Number.isInteger(body.value)) {
       return noStoreJson({ error: 'INVALID_REQUEST', message: '回答データが不正です。' }, { status: 400 });
