@@ -15,6 +15,7 @@ The current repository already blocks or tests:
 - cross-site state-changing requests through Origin / Fetch Metadata guards;
 - privacy-safe rate-limit and rejection responses;
 - production client-address resolution is fail-closed unless an explicit `PCS_CLIENT_IP_HEADER` is selected from the versioned allowlist; arbitrary/non-IP-shaped header values are rejected;
+- `database-role-policy-v0.1-dev` exactly covers every current runtime table with table-specific privileges, and CI creates a real restricted PostgreSQL login proving representative runtime DML works while CREATE/ALTER and definition writes are denied;
 - migration-to-privacy-inventory exact coverage;
 - production dependency vulnerability audit;
 - Chromium security regression flows.
@@ -28,7 +29,7 @@ These are necessary but do not prove the deployed edge/database/secret-store con
 | TLS termination | canonical production URL, certificate/TLS observation | NOT RUN |
 | HSTS | production response observation after TLS deployment | NOT RUN |
 | Trusted proxy | edge/CDN config showing the selected `PCS_CLIENT_IP_HEADER` is overwritten/sanitized before reaching the app; production app code already refuses to guess another forwarded header | NOT RUN |
-| DB least privilege | production runtime role/grants vs migration/admin role | NOT RUN |
+| DB least privilege | production runtime role/grants vs migration/admin role; repository policy/template + CI restricted-role proof already exist | NOT RUN |
 | Secret store | provider/project secret configuration without exposing values | NOT RUN |
 | Secret rotation | documented/rehearsed rotation path for DB/rate-limit secrets | NOT RUN |
 | Environment separation | preview/prod deployment + database identities | NOT RUN |
