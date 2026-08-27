@@ -34,6 +34,7 @@ jobs:
       PCS_RATE_LIMIT_SECRET: pcs-ci-only-rate-limit-secret-0123456789abcdef
       PCS_VISUAL_REGRESSION: '1'
       PCS_DEPLOYMENT_ENV: preview
+      PCS_CLIENT_IP_HEADER: x-forwarded-for
 
     steps:
       - name: Checkout
