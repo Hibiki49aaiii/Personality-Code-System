@@ -52,6 +52,8 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  hidePoweredByHeader: true,
+  productionBrowserSourceMaps: false,
   async headers() {
     return [
       {
