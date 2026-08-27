@@ -1,7 +1,7 @@
 # Personality Code System — Master Requirements & Delivery Checklist
 
 > Status: authoritative development contract
-> Version: 0.11.0
+> Version: 0.11.1
 > Last updated: 2026-08-27
 
 This file is the single top-level source of truth for PCS scope and delivery status. Detailed requirements live under `docs/requirements/`.
@@ -190,12 +190,12 @@ Detailed requirements: [`docs/requirements/09_SOCIAL_SHARING_AND_ANALYTICS.md`](
 
 ## 11. Testing and QA
 
-- [x] **PCS-QA-001** CI performs requirement-ID validation, development type-catalog reachability validation, Item Bank validation, analytics/privacy/retention validation, security baseline validation, production dependency audit, persistence migration validation, real PostgreSQL/application/domain tests, retention cleanup dry-run, TypeScript typecheck, production build, and Chromium browser E2E including responsive-width, keyboard/touch and automated axe accessibility coverage.
+- [x] **PCS-QA-001** CI performs requirement-ID validation, development type-catalog reachability validation, Item Bank validation, analytics/privacy/retention validation, security baseline validation, production dependency audit, persistence migration validation, real PostgreSQL/application/domain tests, retention cleanup dry-run, TypeScript typecheck, production build, and Chromium browser E2E including responsive-width, keyboard/touch, automated axe accessibility, and committed screenshot visual-regression coverage.
 - [x] **PCS-QA-002** Unit tests cover the complete current domain pipeline including interactions, content selection/suppression, confidence/version handling and fail-closed result composition.
 - [x] **PCS-QA-003** Fixed structured-result Golden Snapshot verifies deterministic output and input-order invariance.
 - [x] **PCS-QA-004** Browser E2E covers anonymous start → back/edit → 147 answers → private result/reload → explicit public share → cookie-free public view → deterministic OG/portrait cards → revocation and public-link invalidation.
 - [ ] **PCS-QA-005** Automated accessibility + manual keyboard/mobile checks. *(Automated axe + real keyboard traversal + touch/mobile functional coverage are now green in Run 329; human assistive-technology/zoom/manual release review remains.)*
-- [ ] **PCS-QA-006** Visual regression at critical responsive widths.
+- [x] **PCS-QA-006** Visual regression at critical responsive widths. *(16 committed Linux/Chromium baselines: landing + assessment at 320/390/768/1024/1280/1440, completed private result at 390/1440, sanitized public share at 390/1440. Normal CI compares without `--update-snapshots`; CI Runs 343/344 passed. Baseline-update workflow and policy are separately controlled.)*
 - [ ] **PCS-QA-007** Security/privacy checklist before release.
 
 Detailed requirements: [`docs/requirements/10_TESTING_QA.md`](docs/requirements/10_TESTING_QA.md)
