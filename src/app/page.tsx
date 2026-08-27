@@ -194,6 +194,10 @@ export default function Home() {
 
       <footer className="footer shell">
         <span>© Personality Code System</span>
+        <nav className="footerLinks" aria-label="法務・プライバシー">
+          <a href="/privacy">PRIVACY DRAFT</a>
+          <a href="/terms">TERMS / LIMITATIONS DRAFT</a>
+        </nav>
         <span>MODEL STATUS — DEVELOPMENT / NOT VALIDATED</span>
       </footer>
     </main>
