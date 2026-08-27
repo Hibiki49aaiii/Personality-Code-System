@@ -141,11 +141,15 @@ CI Run `33044207630` (Run 329) verifies:
 
 Axe initially found actual color-contrast defects in the landing, assessment supplemental text, and private-result metadata. The palette was corrected rather than excluding those rules.
 
+The automated suite now also applies a 200% root text-scale stress condition to the 390px landing/assessment flow and verifies visible controls, answer/advance functionality, axe checks on the landing, and absence of horizontal overflow. This is a regression proxy for large-text behavior; it does not replace real browser zoom/mobile text scaling or assistive-technology review.
+
 This closes Master **PCS-A11Y-001** for keyboard-only assessment completion.
 
 Master **PCS-A11Y-002** remains open because automated checks cannot replace a release walkthrough with real assistive technology, browser text zoom/text scaling, final production illustrations/content, and broader manual focus/touch review.
 
 Detailed evidence boundary: `docs/reviews/RESPONSIVE_ACCESSIBILITY_QA_v0.1.md`.
+
+The remaining human release walkthrough is pre-structured in `docs/reviews/MANUAL_ACCESSIBILITY_RELEASE_QA_v0.1.md`. It is deliberately marked NOT RUN so CI cannot be mistaken for real NVDA/VoiceOver/TalkBack/browser-zoom evidence.
 
 ## Motion
 

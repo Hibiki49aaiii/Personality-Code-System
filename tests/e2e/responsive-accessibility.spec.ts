@@ -208,3 +208,37 @@ test('touch-enabled mobile context can answer and advance without layout overflo
     await context.close();
   }
 });
+
+
+test('core landing and assessment remain usable under 200% root text scaling', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+
+  const applyTwoHundredPercentTextScale = async () => {
+    await page.evaluate(() => {
+      document.documentElement.style.fontSize = '200%';
+    });
+  };
+
+  await page.goto('/');
+  await applyTwoHundredPercentTextScale();
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  await expect(page.getByRole('link', { name: /診断/ }).first()).toBeVisible();
+  await expectNoHorizontalOverflow(page);
+  await expectNoA11yViolations(page);
+
+  await page.goto('/diagnosis');
+  await applyTwoHundredPercentTextScale();
+  await expect(page.getByText('QUESTION 001')).toBeVisible();
+  await expect(page.getByRole('radio', { name: 'どちらともいえない' })).toBeVisible();
+  await expect(page.getByRole('button', { name: '次へ →' })).toBeVisible();
+  await expectNoHorizontalOverflow(page);
+
+  const option = page.getByRole('radio', { name: 'どちらともいえない' });
+  await option.click();
+  await expect(option).toBeChecked();
+  const next = page.getByRole('button', { name: '次へ →' });
+  await expect(next).toBeEnabled();
+  await next.click();
+  await expect(page.getByText('QUESTION 002')).toBeVisible();
+  await expectNoHorizontalOverflow(page);
+});
