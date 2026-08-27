@@ -41,13 +41,20 @@ try {
     FROM product_events
   `;
 
+  const [rateLimitCounts] = await sql`
+    SELECT count(*)::int AS expired
+    FROM rate_limit_buckets
+    WHERE expires_at < ${asOf}
+  `;
+
   const summary = {
     mode: execute ? 'execute' : 'dry-run',
     policyVersion: policy.retention_policy_version,
     asOf: asOf.toISOString(),
     unscopedCutoff: unscopedCutoff.toISOString(),
     sessionBoundCutoff: sessionBoundCutoff.toISOString(),
-    expired: counts
+    expired: counts,
+    expiredRateLimitBuckets: rateLimitCounts?.expired ?? 0
   };
   console.log(JSON.stringify(summary, null, 2));
 
@@ -67,9 +74,15 @@ try {
           AND created_at < ${sessionBoundCutoff}
         RETURNING event_id
       `;
+      const rateLimitBuckets = await tx`
+        DELETE FROM rate_limit_buckets
+        WHERE expires_at < ${asOf}
+        RETURNING bucket_hash
+      `;
       return {
         unscoped: unscoped.length,
-        sessionBound: sessionBound.length
+        sessionBound: sessionBound.length,
+        rateLimitBuckets: rateLimitBuckets.length
       };
     });
     console.log(JSON.stringify({ deleted }, null, 2));
