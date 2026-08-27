@@ -6,6 +6,7 @@ import {
 } from '../../../infrastructure/persistence/publicShareRepository';
 import { withPcsDatabase } from '../../../server/assessmentRuntime';
 import { getSiteOrigin } from '../../../server/siteOrigin';
+import { recordServerProductEventBestEffort } from '../../../server/productAnalytics';
 import {
   getAssessmentToken,
   noStoreJson
@@ -37,9 +38,17 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const created = await withPcsDatabase((db) =>
-      createPublicShareForPrivateResult(db, { privateToken })
-    );
+    const created = await withPcsDatabase(async (db) => {
+      const outcome = await createPublicShareForPrivateResult(db, { privateToken });
+      await recordServerProductEventBestEffort(db, {
+        name: 'share_snapshot_created',
+        privateToken,
+        properties: {
+          shareSchemaVersion: outcome.snapshot.shareSchemaVersion
+        }
+      });
+      return outcome;
+    });
 
     const shareUrl = new URL(`/s/${created.token}`, getSiteOrigin()).toString();
     return noStoreJson({
