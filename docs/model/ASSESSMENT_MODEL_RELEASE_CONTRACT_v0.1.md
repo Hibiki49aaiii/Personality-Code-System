@@ -67,4 +67,6 @@ A future manifest may set production/public activation true only when all applic
 
 `scripts/validate-release-operations.mjs` verifies the repository release policy, rollback-domain coverage, current development model version tuple, C01D non-public blocker, no production activation, and the presence of mandatory rollback/runbook sections.
 
+The separate `production-model-activation-gate-v0.1-dev` cross-checks the candidate manifest against the public catalog gate, manual accessibility gate, observability gate and public launch gate, and requires every production evidence field to remain pending while those sources are not ready.
+
 This advances PCS-SCORE-003/PCS-OPS-005 but does not close them because no production public model has yet passed the activation gate.
