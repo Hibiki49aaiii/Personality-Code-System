@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { getPrivateRenderedAssessmentResult } from "../../application/assessment/serverAssessmentService";
 import { ASSESSMENT_SESSION_COOKIE } from "../../server/assessmentCookie";
 import { withPcsDatabase } from "../../server/assessmentRuntime";
+import { recordServerProductEventBestEffort } from "../../server/productAnalytics";
 import ShareControls from "./ShareControls";
 import styles from "./result.module.css";
 
@@ -38,7 +39,17 @@ export default async function ResultPage() {
 
   let result;
   try {
-    result = await withPcsDatabase((db) => getPrivateRenderedAssessmentResult(db, token));
+    result = await withPcsDatabase(async (db) => {
+      const rendered = await getPrivateRenderedAssessmentResult(db, token);
+      if (rendered) {
+        await recordServerProductEventBestEffort(db, {
+          name: "result_viewed",
+          privateToken: token,
+          properties: {}
+        });
+      }
+      return rendered;
+    });
   } catch (error) {
     console.error("Failed to render private assessment result", error);
     return <MissingResult message="診断結果を読み込めませんでした。セッションの有効期限またはサーバ状態を確認してください。" />;
