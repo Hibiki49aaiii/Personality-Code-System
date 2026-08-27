@@ -16,6 +16,7 @@
     "src/domain/assessment/**/*.ts",
     "src/domain/analytics/**/*.ts",
     "src/domain/release/**/*.ts",
+    "src/domain/security/**/*.ts",
     "src/application/assessment/**/*.ts",
     "src/infrastructure/persistence/**/*.ts",
     "tests/domain/**/*.ts",
