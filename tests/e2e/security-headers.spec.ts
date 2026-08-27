@@ -16,9 +16,10 @@ test('production responses include the required browser security headers', async
   expect(headers['permissions-policy']).toContain('microphone=()');
   expect(headers['permissions-policy']).toContain('geolocation=()');
   expect(headers['strict-transport-security']).toContain('max-age=31536000');
+  expect(headers['x-powered-by']).toBeUndefined();
 });
 
-test('security headers also cover API responses', async ({ request }) => {
+test('security headers also cover API responses without framework disclosure', async ({ request }) => {
   const response = await request.get('/api/health');
   expect(response.status()).toBe(200);
 
@@ -27,4 +28,5 @@ test('security headers also cover API responses', async ({ request }) => {
   expect(headers['x-frame-options']).toBe('DENY');
   expect(headers['x-content-type-options']).toBe('nosniff');
   expect(headers['cache-control']).toContain('no-store');
+  expect(headers['x-powered-by']).toBeUndefined();
 });
