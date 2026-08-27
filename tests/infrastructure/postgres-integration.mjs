@@ -101,6 +101,16 @@ function snapshotPayload() {
 try {
   await applyMigrations();
 
+  await sql`
+    INSERT INTO illustration_assets (asset_version, asset_key, storage_ref, metadata_json)
+    VALUES (
+      'ILL-PCS-FALLBACK-HERO-v01',
+      'PCS-FALLBACK-HERO',
+      'src/components/illustration/CuratedFallbackArtwork.tsx',
+      ${sql.json({ curated: true, runtime_generation: false, type_specific: false })}
+    )
+  `;
+
   await sql`INSERT INTO trait_definitions (trait_id) VALUES ('SYS')`;
   await sql`
     INSERT INTO trait_definition_revisions
