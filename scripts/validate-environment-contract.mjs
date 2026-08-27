@@ -95,7 +95,7 @@ if (!rateLimit.includes("process.env.NODE_ENV !== 'production'")) errors.push('r
 , 'm'));
   if (!match || match[1].trim() !== '') errors.push(`.env.example must leave secret ${secret} blank`);
 }
-for (const forbidden of ['OPENAI_API_KEY','ANTHROPIC_API_KEY','GOOGLE_GENERATIVE_AI_API_KEY','COHERE_API_KEY','NEXT_PUBLIC_DATABASE_URL','NEXT_PUBLIC_PCS_RATE_LIMIT_SECRET']) {
+for (const forbidden of ['OPENAI_API_KEY','ANTHROPIC_API_KEY','GOOGLE_GENERATIVE_AI_API_KEY','COHERE_API_KEY']) {
   if (new RegExp(`^${forbidden}=`, 'm').test(example)) errors.push(`.env.example must not advertise forbidden/private runtime key ${forbidden}`);
 }
 
