@@ -30,13 +30,13 @@ A checkbox in `REQUIREMENTS.md` is marked complete only when inspectable specifi
 | PCS-RESULT-002 | complete (experimental engineering spec) | Core/Extended Code spec | `generatePersonalityCode`, `traitBandFromScoreBp` | exact boundaries/order/input invariance/missing+duplicate rejection |
 | PCS-RESULT-003 | complete (development engine) | `04_CODE_AND_RESULT_ENGINE.md`, versioned content/rule data | `interactions.ts`, `contentComposer.ts`, `resultEngine.ts` | interaction + composer + result-engine tests |
 | PCS-RESULT-004 | complete (development engine) | precedence/assertion/suppression contract | `contentComposer.ts` | disciplined-optimizer, deep-non-fused, inactive-generic and fallback contradiction fixtures |
-| PCS-RESULT-005 | partial | snapshot requirements + retention/immutability contract | `resultSnapshot.ts`, PostgreSQL `result_snapshots` + triggers | fixed Golden Snapshot + PostgreSQL update/version-coherence tests; illustration asset version still pending |
+| PCS-RESULT-005 | complete | result snapshot + retention/asset-lineage contract | historical v0.1 + new `result-snapshot-v0.2-dev`; exact displayed illustration asset version persisted; DB requires known asset and source/share equality | domain/repository/PostgreSQL + full CI Run 432 | type-specific artwork remains ART-002, not snapshot reproducibility |
 | PCS-CONTENT-001 | advanced draft / public promotion blocked | 64-entry editorial catalog + `TYPE_EDITORIAL_REVIEW_GATE_v0.1-dev.md` | exact reachable-code coverage, required fields/provenance/neighbor notes and per-type human approval ledger | catalog + editorial-review validators | C01D/catalog public_use=false; human approval and Phase 5C public schema remain |
 | PCS-CONTENT-002 | advanced draft / human QA pending | content v0.3 + 18-domain result contract | every required result domain resolves in development without selected fallback-only modules | result snapshot/application tests + editorial review ledger | final Japanese human editorial approval remains |
 | PCS-CONTENT-003 | advanced draft / human QA pending | adversarial rules + 64-entry draft catalog + review ledger | provenance/limitation-safe adversarial copy; insults/diagnoses/certainty patterns blocked | editorial-catalog validator + adversarial-tone review dimension | final human adversarial editorial approval remains |
 | PCS-ART-001 | complete (art-direction foundation) | `ILLUSTRATION_SYSTEM.md`, illustration system data | coherent 8×4×2 motif/composition grammar, static versioned asset contract | illustration slot validator |
 | PCS-ART-002 | pending assets / production briefs complete | `ILLUSTRATION_BRIEF_SPEC_v0.1-dev.md`, 64 slot/brief contracts | every C01D type has stable asset ID, scene/style/crop brief and open review checklist; no actual master/variant exists | illustration slot + brief validators; all asset paths intentionally null |
-| PCS-ART-003 | partial toward release | runtime generation prohibition is enforced by illustration system/brief validators | current runtime uses deterministic fallback/card rendering; curated hero assets still absent | static validators + runtime AI prohibition; final asset integration remains |
+| PCS-ART-003 | complete (current runtime artwork contract) | illustration system + fallback asset manifest | repository-authored static `ILL-PCS-FALLBACK-HERO-v01` used on result/share/cards; exact version frozen in snapshots; runtime generation false | illustration validator + Visual Baseline Run 9 + CI Run 432 | 64 type-specific heroes remain ART-002 |
 | PCS-FE-003 | complete (Phase 2C development UX) | `06_FRONTEND_RESPONSIVE_UX.md` | real 147-item assessment UI | Chromium start/save/back/edit/complete flow |
 | PCS-FE-004 | complete (Phase 2C development UX) | structured result hierarchy | real private result page | Chromium Core/Extended/Traits/18-section/reload assertions |
 | PCS-FE-005 | complete (current application responsive QA) | required width matrix + `RESPONSIVE_ACCESSIBILITY_QA_v0.1.md` | functional landing/assessment/result width checks + horizontal-overflow assertions | CI Run 329 (`33044207630`): 320/390/768/1024/1280/1440 | screenshot-diff visual regression remains PCS-QA-006 |
@@ -56,6 +56,7 @@ A checkbox in `REQUIREMENTS.md` is marked complete only when inspectable specifi
 | PCS-QA-001 | complete (current CI) | `10_TESTING_QA.md` | `.github/workflows/ci.yml` | production dependency + release-security audits → requirements/type/content/item/analytics/privacy/security/persistence validators → PostgreSQL/app/domain/retention → typecheck/build → client-artifact leakage audit → Chromium E2E |
 | PCS-QA-002 | complete (current domain pipeline) | result/scoring/code requirements | full current domain engine | scoring/code/interaction/composer/result/snapshot suites |
 | PCS-QA-003 | complete (development fixture) | Golden snapshot rule | `golden-result-snapshot-midpoint-v0.1.json` | exact equality + answer-order invariance tests |
+| PCS-SOC-001 | complete (development implementation) | `09_SOCIAL_SHARING_AND_ANALYTICS.md`, fallback asset manifest | deterministic OG/portrait images consume sanitized stored snapshot + exact curated asset version | byte-identical E2E, asset response header, DB source/share lineage, Visual Baseline Run 9, CI Run 432 |
 | PCS-SOC-002 | complete (development implementation) | `09_SOCIAL_SHARING_AND_ANALYTICS.md` | Web Share, X intent, LINE intent, URL copy on private result | Chromium assertions against exact opaque share URL |
 | PCS-SOC-003 | complete (development fallback) | versioned sanitized OG contract | dynamic share metadata + `/api/share/og/v0.1/[token]` | Run 190: image/png, template header, byte determinism, revoked 404 |
 | PCS-LEGAL-001 | advanced factual draft / legal approval pending | `PUBLIC_LEGAL_DISCLOSURE_DRAFT_v0.1.md`, legal disclosure contract | draft covers service limitations, data classes/retention, sharing, analytics, calibration, deletion gaps and Terms principles | legal-draft validator cross-checks privacy inventory/retention | final jurisdiction/legal review, production retention/backup/deletion/contact/consent publication remains |
@@ -121,7 +122,7 @@ This directly enforces the Master rule that requirement IDs are never reused for
 
 This is engineering completeness evidence only. It does not complete the published Core Type catalog or validate a 64-type psychological taxonomy.
 
-## Phase 4A sanitized sharing evidence
+## Phase 4A sanitized sharing + curated artwork evidence
 
 - Sanitized schema: `src/domain/sharing/shareSnapshot.ts`
 - Public capability: `src/infrastructure/persistence/publicShareToken.ts` (256-bit token / SHA-256 DB hash)
@@ -131,7 +132,7 @@ This is engineering completeness evidence only. It does not complete the publish
 - Public route: `src/app/s/[token]/page.tsx`
 - Versioned deterministic cards: `src/app/api/share/_image.tsx`, OG/portrait v0.1 routes
 - Browser proof: CI Run `33020306036` (Run 190) covers share controls, cookie-free public view, PNG/card byte determinism, dynamic OG metadata and revoke→404 behavior.
-- Production caveat: display-name/identity/illustration fields remain nullable until Phase 3A/3B/5C approval; PCS-SOC-001 remains open.
+- Public taxonomy caveat: display-name/identity remain nullable until Phase 3A/5C approval. New shares do freeze the current curated fallback illustration asset; type-specific heroes remain Phase 3B / PCS-ART-002.
 
 ## Responsive and accessibility evidence
 
@@ -212,7 +213,7 @@ Current CI gates include:
 9. production build;
 10. Chromium 147-item private assessment + explicit sanitized public-share/card/revocation E2E.
 
-The historical Phase 2C browser checkpoint is CI Run `32960309207`. Phase 4A sanitized sharing/card checkpoint is CI Run `33020306036` (Run 190). The current security/privacy full-head checkpoint is CI Run `33050505946` (Run 373), including privacy inventory, release static audit, production build-artifact leakage audit, and Chromium security/CSRF regression coverage. New validators remain release-blocking on every subsequent push/PR.
+The historical Phase 2C browser checkpoint is CI Run `32960309207`. Phase 4A sanitized sharing baseline is CI Run `33020306036` (Run 190). Curated artwork/result-share visual baselines are frozen by Visual Baseline Run 9, and the current asset-lineage/full-browser completion checkpoint is CI Run `33062695051` (Run 432). Security/privacy release validators remain release-blocking on every subsequent push/PR.
 
 CI success verifies software/data-contract invariants only. It is not evidence of psychological construct validity.
 
