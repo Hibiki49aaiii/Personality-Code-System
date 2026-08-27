@@ -1,7 +1,7 @@
 # Personality Code System — Master Requirements & Delivery Checklist
 
 > Status: authoritative development contract
-> Version: 0.11.3
+> Version: 0.11.4
 > Last updated: 2026-08-27
 
 This file is the single top-level source of truth for PCS scope and delivery status. Detailed requirements live under `docs/requirements/`.
@@ -90,7 +90,7 @@ Detailed requirements: [`docs/requirements/03_ITEM_BANK_AND_SCORING.md`](docs/re
 - [x] **PCS-RESULT-002** Extended Code syntax/order/bands/version behavior specified and implemented (`PCSX1`) as an experimental engineering format.
 - [x] **PCS-RESULT-003** Deterministic content-module selection implemented from versioned structured diagnostic output.
 - [x] **PCS-RESULT-004** Contradiction-prevention/precedence/suppression implemented and fixture-tested.
-- [ ] **PCS-RESULT-005** Immutable result snapshots persisted with all required model/content/asset versions. *(Current dev snapshot + PostgreSQL immutability are implemented/tested; curated illustration asset/version linkage remains Phase 3.)*
+- [x] **PCS-RESULT-005** Immutable result snapshots persisted with all required model/content/asset versions. *(New completions use `result-snapshot-v0.2-dev`, freezing the exact versioned illustration asset shown with the result; historical v0.1 snapshots remain readable. PostgreSQL rejects unknown/missing v0.2 assets and public shares cannot substitute a different asset version. Full CI Run 432 is green.)*
 
 Current development Core anchors: SYS, VER, AUT, EXE, NOV, RDP. They are direct measured Trait anchors, not claimed latent factors. The 64 theoretical combinations are a compression consequence, not a claim that the measurement model was designed around 64 types.
 
@@ -116,7 +116,7 @@ Detailed requirements: [`docs/requirements/04_CODE_AND_RESULT_ENGINE.md`](docs/r
 - [ ] **PCS-CONTENT-003** Adversarial analysis modules describe failure modes without insults/diagnoses/deterministic certainty. *(All 64 development type entries contain limitation/provenance-checked adversarial copy and prohibited-language validation; final human adversarial-tone approval remains pending.)*
 - [x] **PCS-ART-001** Single coherent illustration art direction defined. *(64-slot non-AI runtime art system and validator exist; actual hero assets remain unproduced.)*
 - [ ] **PCS-ART-002** One curated hero illustration per published Core Type.
-- [ ] **PCS-ART-003** Runtime image generation prohibited; result artwork uses curated versioned assets.
+- [x] **PCS-ART-003** Runtime image generation prohibited; result artwork uses curated versioned assets. *(Private/public result surfaces and deterministic share cards use repository-authored `ILL-PCS-FALLBACK-HERO-v01`, frozen by version into immutable result/share snapshots; runtime generative illustration remains prohibited. This does not complete PCS-ART-002: the 64 type-specific heroes are still unproduced.)*
 
 Current Phase 3A development artifacts:
 
@@ -179,7 +179,7 @@ Detailed requirements: [`docs/requirements/08_PRIVACY_SECURITY.md`](docs/require
 
 ## 10. Social sharing and analytics
 
-- [ ] **PCS-SOC-001** Shareable result image generated deterministically from stored result + curated artwork.
+- [x] **PCS-SOC-001** Shareable result image generated deterministically from stored result + curated artwork. *(Versioned OG/portrait templates consume the sanitized stored share snapshot plus its frozen curated asset version; repeated requests remain byte-identical and E2E verifies the exact artwork response header. CI Run 432 is green.)*
 - [x] **PCS-SOC-002** Web Share API, X intent, LINE intent, URL copy where applicable. *(Implemented on the private result page and browser-tested against the generated opaque share URL.)*
 - [x] **PCS-SOC-003** Correct Open Graph metadata/card for shareable result pages. *(Development fallback OG card is deterministic, versioned, sanitized and linked through dynamic share-page metadata; final curated illustration treatment remains PCS-SOC-001/Phase 3B.)*
 - [x] **PCS-ANA-001** Funnel analytics tracks start/progression/completion/result/share without exporting raw answers. *(First-party event dictionary + server-derived session metadata + client network/DB E2E verified in CI Run 238 / `33036549731`; answer interactions contain position/state only.)*
@@ -225,7 +225,7 @@ Detailed requirements: [`docs/requirements/11_RELEASE_OPERATIONS.md`](docs/requi
 - [x] Phase 2C — real assessment/result UX and server/web wiring, including Chromium 147-answer E2E.
 - [ ] Phase 3A — public Core Type/content catalog. *(ACTIVE: all 64 non-public C01D draft entries, provenance/neighbor checks, and human editorial approval ledger are complete as engineering foundations; actual review approvals + public schema/catalog promotion remain.)*
 - [ ] Phase 3B — illustrations.
-- [ ] Phase 4A — social sharing/OG. *(4A-1 sanitized sharing foundation complete; final curated-art/public-name presentation remains pending.)*
+- [x] Phase 4A — social sharing/OG. *(Development implementation complete: explicit sanitized sharing/revocation, X/LINE/Web Share/copy, deterministic OG/portrait images, immutable result→share artwork lineage, and a curated versioned fallback asset. Final type-specific artwork/public taxonomy remain Phase 3A/3B gates rather than sharing-engine blockers.)*
 - [ ] Phase 4B — analytics/monitoring. *(ACTIVE: privacy-bounded funnel telemetry, scoped observed-distribution, versioned 30/90-day retention cleanup, fixed-category client error telemetry, bucket-only Web Vitals and DB readiness health foundation are verified; production scheduling/environment separation/alerting and consented calibration export remain.)*
 - [ ] Phase 5A — closed beta/calibration collection.
 - [ ] Phase 5B — statistical review/pruning/retest.
