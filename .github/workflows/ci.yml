@@ -102,6 +102,9 @@ jobs:
       - name: Validate observability release contract remains fail-closed
         run: npm run validate:observability
 
+      - name: Validate runtime log privacy boundary
+        run: npm run validate:runtime-log-privacy
+
       - name: Validate environment separation contract
         run: npm run validate:environment
 
