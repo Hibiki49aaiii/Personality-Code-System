@@ -25,7 +25,8 @@
     "audit:prod": "npm audit --omit=dev --audit-level=high",
     "validate:security": "node scripts/validate-security-baseline.mjs",
     "audit:release-security": "node scripts/validate-release-security.mjs",
-    "audit:production-build": "node scripts/audit-production-build.mjs"
+    "audit:production-build": "node scripts/audit-production-build.mjs",
+    "validate:privacy-data": "node scripts/validate-privacy-data-inventory.mjs"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",
