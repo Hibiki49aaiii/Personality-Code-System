@@ -12,7 +12,8 @@
     "privacy_safe_rate_limit_errors": "complete",
     "privacy_data_inventory": "complete",
     "dependency_vulnerability_audit": "complete",
-    "browser_security_regression": "complete"
+    "browser_security_regression": "complete",
+    "client_address_header_fail_closed": "complete"
   },
   "deployment_manual_controls": {
     "production_tls_termination": "pending",
