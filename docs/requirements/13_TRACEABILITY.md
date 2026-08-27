@@ -123,8 +123,13 @@ Before checking a milestone complete:
 | Scope / Requirement | Status | Implementation | Test / Evidence | Version impact | Notes |
 | --- | --- | --- | --- | --- | --- |
 | PCS-FE-001 | verified | Next.js/React/TypeScript scaffold | CI typecheck + build | app | foundation |
-| PCS-FE-002 | verified as foundation | responsive CSS and assessment UI | browser E2E foundation | app | full width certification still later QA |
-| PCS-QA-001 | verified | `.github/workflows/ci.yml` | typecheck + production build steps | app | current Phase 3 full run may still be queued |
+| PCS-FE-002 | verified as foundation | responsive CSS and assessment UI | browser E2E foundation | app | authored non-AI visual system |
+| PCS-FE-005 | verified current application | 320/390/768/1024/1280/1440 functional width matrix | Run 329 (`33044207630`) landing/assessment/result overflow checks | app/responsive | screenshot-diff visual regression remains QA-006 |
+| PCS-A11Y-001 | verified | real keyboard focus traversal through all 147 questions + finalization | Run 329; `responsive-accessibility.spec.ts` | app/a11y | Tab/Shift+Tab/Space/Enter only |
+| PCS-A11Y-002 | in-progress | semantic progress/radiogroup/error/meters, accessible palette, focus/reduced-motion/touch checks, axe scans | Run 329 | app/a11y | real assistive-tech/text zoom/final production review remains |
+| PCS-QA-005 | in-progress | automated axe + keyboard/touch/mobile coverage | Run 329 + `RESPONSIVE_ACCESSIBILITY_QA_v0.1.md` | QA/a11y | human assistive-tech/zoom/manual release review remains |
+| PCS-QA-006 | planned | visual regression requirement | functional responsive matrix exists | QA/visual | committed screenshot baselines/diffs not yet implemented |
+| PCS-QA-001 | verified | `.github/workflows/ci.yml` | validators + dependency audit + PostgreSQL/app/domain + typecheck/build + expanded Chromium E2E | app/QA | current CI includes responsive/keyboard/touch/axe/security/telemetry gates |
 | PCS-GOV-001..010 | verified as governance decisions | `REQUIREMENTS.md` + derivative requirement set | requirement-ID validator | governance | master meanings remain authoritative |
 | PCS-SCORE-001..006 | verified as development model engineering | reviewed Item Bank + scoring domain | Item Bank validators, scoring Golden tests | assessment | statistical calibration remains Phase 5 |
 | PCS-RESULT-001..005 | verified as development result engine | Core/Extended Code, Interaction, Composer, Snapshot | domain tests + frozen snapshots | result/content | public taxonomy not implied |
@@ -243,6 +248,14 @@ The public share is a deliberate sanitized export. It is not a different view ov
 - Versions: app/security only; `rate-limits-v0.1-dev`; assessment/scoring/code/content semantics unchanged.
 - Evidence: Run 304 verifies PostgreSQL rate limiting, 20-allowed/21st-429 behavior, `Retry-After`, principal non-disclosure and security headers; Run 307 verifies the security baseline/audit gate; Run 309 is green on the resulting HEAD.
 - Remaining: production trusted-proxy/TLS/DB-least-privilege/secret-store evidence and final PCS-QA-007 review.
+
+### 2026-08-27 — Responsive and keyboard accessibility verification
+- IDs: PCS-FE-005, PCS-A11Y-001, PCS-A11Y-002, PCS-QA-005, PCS-QA-006
+- Change: add mandatory-width functional QA, actual keyboard focus traversal through the full 147-item assessment, mobile touch coverage, semantic progress/radiogroup/result meters, reduced-motion/focus/target-size checks, and axe WCAG A/AA scans.
+- Reason: replace “responsive CSS exists” and pointer-only assumptions with executable user-flow evidence.
+- Versions: app/QA only; assessment/scoring/code/content semantics unchanged.
+- Evidence: CI Run 329 (`33044207630`) passes the complete suite. Axe-detected landing/assessment/result contrast defects were corrected in CSS rather than waived.
+- Status: FE-005 and A11Y-001 verified; A11Y-002/QA-005 remain open for real assistive-technology/text-zoom/manual release review; QA-006 remains open for screenshot-diff visual regression.
 
 ## Material change records
 
