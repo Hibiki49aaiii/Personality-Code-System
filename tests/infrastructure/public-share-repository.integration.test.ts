@@ -104,6 +104,18 @@ test('repository creates multiple hash-only sanitized links and private owner ca
     const first = await createPublicShareForPrivateResult(connection.db, {
       privateToken: session.token
     });
+
+    await assert.rejects(
+      () => createPublicShareForPrivateResult(connection.db, {
+        privateToken: session.token,
+        presentation: {
+          displayName: null,
+          identitySentence: null,
+          illustrationAssetVersion: 'ILL-MISMATCH-HERO-v01'
+        }
+      }),
+      /illustration asset version does not match source result snapshot/i
+    );
     const second = await createPublicShareForPrivateResult(connection.db, {
       privateToken: session.token
     });
