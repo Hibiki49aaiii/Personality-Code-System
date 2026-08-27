@@ -35,7 +35,12 @@ test('cookie-authenticated mutations reject cross-site browser origins without l
   });
   expect(share.status()).toBe(403);
 
-  for (const response of [answer, complete, share]) {
+  const dataDeletion = await request.delete('/api/assessment/data', {
+    headers: hostileHeaders
+  });
+  expect(dataDeletion.status()).toBe(403);
+
+  for (const response of [answer, complete, share, dataDeletion]) {
     const body = await response.json() as Record<string, unknown>;
     expect(body.error).toBe('CROSS_SITE_MUTATION_REJECTED');
     const serialized = JSON.stringify(body);
