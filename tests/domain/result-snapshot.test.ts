@@ -9,7 +9,8 @@ import type { CoreCodeSchema } from '../../src/domain/assessment/personalityCode
 import type { InteractionRuleSet } from '../../src/domain/assessment/interactions';
 import type { ContentModule } from '../../src/domain/assessment/contentComposer';
 import { buildStructuredAssessmentResult } from '../../src/domain/assessment/resultEngine';
-import { createResultSnapshot, type ResultSnapshotV01 } from '../../src/domain/assessment/resultSnapshot';
+import { createResultSnapshot, createResultSnapshotV01, type ResultSnapshotV01 } from '../../src/domain/assessment/resultSnapshot';
+import { DEVELOPMENT_FALLBACK_ILLUSTRATION_ASSET_VERSION } from '../../src/domain/illustration/fallbackAsset';
 
 function loadJson<T>(relativePath: string): T {
   return JSON.parse(readFileSync(path.join(process.cwd(), relativePath), 'utf8')) as T;
@@ -50,14 +51,14 @@ function buildMidpointResult() {
 
 test('midpoint result snapshot matches the frozen golden JSON exactly', () => {
   const expected = loadJson<ResultSnapshotV01>('tests/fixtures/result-snapshot-midpoint-v0.1.json');
-  const actual = createResultSnapshot(buildMidpointResult());
+  const actual = createResultSnapshotV01(buildMidpointResult());
   assert.deepEqual(actual, expected);
   assert.equal(JSON.stringify(actual), JSON.stringify(expected));
 });
 
 test('snapshot is structurally isolated from later result mutation', () => {
   const result = buildMidpointResult();
-  const snapshot = createResultSnapshot(result);
+  const snapshot = createResultSnapshotV01(result);
   result.scoring.traitScores[0].scoreBp = 0;
   result.personalityCode.dimensions[0].symbol = 'X';
   result.content.selectedIds[0] = 'MUTATED';
@@ -67,4 +68,15 @@ test('snapshot is structurally isolated from later result mutation', () => {
   assert.equal(snapshot.personalityCode.dimensions[0].symbol, 'S');
   assert.equal(snapshot.content.selectedIds[0], 'DEV-LIMIT-001');
   assert.equal(snapshot.sections[0].moduleIds[0], 'DEV-LIMIT-001');
+});
+
+
+test('v0.2 snapshot freezes an exact illustration asset while v0.1 remains historically reproducible', () => {
+  const result = buildMidpointResult();
+  const snapshot = createResultSnapshot(result, {
+    illustrationAssetVersion: DEVELOPMENT_FALLBACK_ILLUSTRATION_ASSET_VERSION
+  });
+  assert.equal(snapshot.snapshotSchemaVersion, 'result-snapshot-v0.2-dev');
+  assert.equal(snapshot.assets.illustrationAssetVersion, DEVELOPMENT_FALLBACK_ILLUSTRATION_ASSET_VERSION);
+  assert.equal(createResultSnapshotV01(result).snapshotSchemaVersion, 'result-snapshot-v0.1-dev');
 });
