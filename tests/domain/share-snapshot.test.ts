@@ -4,7 +4,8 @@ import {
   createSanitizedShareSnapshot,
   SHARE_SNAPSHOT_SCHEMA_VERSION
 } from '../../src/domain/sharing/shareSnapshot';
-import type { ResultSnapshotV01 } from '../../src/domain/assessment/resultSnapshot';
+import type { ResultSnapshotV01, ResultSnapshotV02 } from '../../src/domain/assessment/resultSnapshot';
+import { DEVELOPMENT_FALLBACK_ILLUSTRATION_ASSET_VERSION } from '../../src/domain/illustration/fallbackAsset';
 
 function privateSnapshot(): ResultSnapshotV01 {
   return {
@@ -80,4 +81,17 @@ test('sanitized share snapshot exports only explicitly allowed result identity f
     'sourceResultSnapshotSchemaVersion',
     'versions'
   ]);
+});
+
+
+test('v0.2 source snapshot propagates its curated illustration asset into sanitized sharing by default', () => {
+  const source: ResultSnapshotV02 = {
+    ...privateSnapshot(),
+    snapshotSchemaVersion: 'result-snapshot-v0.2-dev',
+    assets: { illustrationAssetVersion: DEVELOPMENT_FALLBACK_ILLUSTRATION_ASSET_VERSION }
+  };
+  const sanitized = createSanitizedShareSnapshot(source);
+  assert.equal(sanitized.sourceResultSnapshotSchemaVersion, 'result-snapshot-v0.2-dev');
+  assert.equal(sanitized.presentation.illustrationAssetVersion, DEVELOPMENT_FALLBACK_ILLUSTRATION_ASSET_VERSION);
+  assert.equal(JSON.stringify(sanitized).includes('traitScores'), false);
 });
