@@ -30,6 +30,8 @@ jobs:
 
     env:
       DATABASE_URL: postgres://pcs:pcs@localhost:5432/pcs
+      # Test-only value. Production must configure an independent secret outside Git.
+      PCS_RATE_LIMIT_SECRET: pcs-ci-only-rate-limit-secret-0123456789abcdef
 
     steps:
       - name: Checkout
