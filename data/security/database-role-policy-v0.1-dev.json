@@ -1,0 +1,95 @@
+{
+  "database_role_policy_version": "database-role-policy-v0.1-dev",
+  "status": "repository-contract-tested-production-evidence-pending",
+  "runtime_role_template": "pcs_runtime",
+  "migration_admin_separation_required": true,
+  "runtime_schema_privileges": [
+    "USAGE"
+  ],
+  "runtime_schema_create_allowed": false,
+  "runtime_table_privileges": {
+    "trait_definitions": [
+      "SELECT"
+    ],
+    "trait_definition_revisions": [
+      "SELECT"
+    ],
+    "assessment_items": [
+      "SELECT"
+    ],
+    "assessment_item_revisions": [
+      "SELECT"
+    ],
+    "assessment_model_releases": [
+      "SELECT"
+    ],
+    "assessment_model_items": [
+      "SELECT"
+    ],
+    "content_versions": [
+      "SELECT"
+    ],
+    "content_modules": [
+      "SELECT"
+    ],
+    "illustration_assets": [
+      "SELECT"
+    ],
+    "anonymous_sessions": [
+      "SELECT",
+      "INSERT",
+      "UPDATE",
+      "DELETE"
+    ],
+    "assessment_answers": [
+      "SELECT",
+      "INSERT",
+      "UPDATE",
+      "DELETE"
+    ],
+    "assessment_trait_scores": [
+      "SELECT",
+      "INSERT"
+    ],
+    "result_snapshots": [
+      "SELECT",
+      "INSERT"
+    ],
+    "public_share_snapshots": [
+      "SELECT",
+      "INSERT",
+      "UPDATE",
+      "DELETE"
+    ],
+    "product_events": [
+      "SELECT",
+      "INSERT",
+      "DELETE"
+    ],
+    "rate_limit_buckets": [
+      "SELECT",
+      "INSERT",
+      "UPDATE",
+      "DELETE"
+    ]
+  },
+  "prohibited_runtime_capabilities": [
+    "CREATE-on-public-schema",
+    "CREATE-TABLE",
+    "ALTER-TABLE",
+    "DROP-TABLE",
+    "CREATE-ROLE",
+    "ALTER-ROLE",
+    "CREATE-EXTENSION",
+    "WRITE-versioned-definition-tables"
+  ],
+  "ci_contract_tested": true,
+  "production_role_evidence_complete": false,
+  "external_evidence_required": [
+    "production-runtime-role-identity",
+    "production-migration-admin-role-identity",
+    "production-runtime-grant-dump",
+    "production-runtime-denied-ddl-proof",
+    "credential-rotation-or-role-recreation-procedure"
+  ]
+}
