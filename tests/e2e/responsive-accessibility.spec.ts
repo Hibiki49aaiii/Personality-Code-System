@@ -95,3 +95,37 @@ test('focus indicators and reduced-motion behavior are present in the production
   const progressStyle = await progress.evaluate((element) => getComputedStyle(element).transitionDuration);
   expect(progressStyle === '0s' || progressStyle === '0.01ms').toBe(true);
 });
+
+
+test('assessment exposes progress semantics and practical touch targets', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/diagnosis');
+  await expect(page.getByText('QUESTION 001')).toBeVisible();
+
+  const progress = page.getByRole('progressbar', { name: '診断の回答進捗' });
+  await expect(progress).toHaveAttribute('aria-valuemin', '0');
+  await expect(progress).toHaveAttribute('aria-valuemax', '147');
+  await expect(progress).toHaveAttribute('aria-valuenow', '0');
+  await expect(progress).toHaveAttribute('aria-valuetext', '147問中0問回答済み');
+
+  const question = page.getByRole('heading', { level: 1 });
+  const questionId = await question.getAttribute('id');
+  expect(questionId).toBe('assessment-question');
+
+  const group = page.getByRole('radiogroup');
+  await expect(group).toHaveAttribute('aria-labelledby', 'assessment-question');
+
+  const brandBox = await page.getByRole('link', { name: 'PCS' }).boundingBox();
+  const backBox = await page.getByRole('button', { name: '← 戻る' }).boundingBox();
+  const nextBox = await page.getByRole('button', { name: '次へ →' }).boundingBox();
+  const optionBox = await page.getByRole('radio', { name: 'どちらともいえない' }).boundingBox();
+
+  for (const box of [brandBox, backBox, nextBox, optionBox]) {
+    expect(box).not.toBeNull();
+    expect(box!.height).toBeGreaterThanOrEqual(44);
+  }
+
+  await page.getByRole('radio', { name: 'どちらともいえない' }).press('Space');
+  await expect(progress).toHaveAttribute('aria-valuenow', '1');
+  await expect(progress).toHaveAttribute('aria-valuetext', '147問中1問回答済み');
+});
