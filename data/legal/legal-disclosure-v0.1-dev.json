@@ -50,5 +50,10 @@
     "session-bound-product-events",
     "derived-public-share-snapshots"
   ],
-  "anonymous_diagnostic_self_deletion_clears_cookie": true
+  "anonymous_diagnostic_self_deletion_clears_cookie": true,
+  "prelaunch_draft_routes_available": [
+    "/privacy",
+    "/terms"
+  ],
+  "prelaunch_draft_routes_noindex_required": true
 }
