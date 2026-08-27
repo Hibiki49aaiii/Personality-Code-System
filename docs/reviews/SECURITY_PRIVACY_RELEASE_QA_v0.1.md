@@ -17,6 +17,7 @@ The current repository already blocks or tests:
 - production client-address resolution is fail-closed unless an explicit `PCS_CLIENT_IP_HEADER` is selected from the versioned allowlist; arbitrary/non-IP-shaped header values are rejected;
 - `database-role-policy-v0.1-dev` exactly covers every current runtime table with table-specific privileges, and CI creates a real restricted PostgreSQL login proving representative runtime DML works while CREATE/ALTER and definition writes are denied;
 - an isolated logical backup/restore rehearsal compares every application-table row count, trigger count and post-restore published-model immutability without uploading the diagnostic dump;
+- unexpected runtime faults use a fixed three-field schema (`event`, bounded `surface`, bounded `category`); CI rejects direct runtime `console.error` bypasses so exception/request/token/answer/result objects are not accidentally serialized by application code;
 - migration-to-privacy-inventory exact coverage;
 - production dependency vulnerability audit;
 - Chromium security regression flows.
@@ -36,7 +37,7 @@ These are necessary but do not prove the deployed edge/database/secret-store con
 | Environment separation | preview/prod deployment + database identities | NOT RUN |
 | Backup/restore | provider-level production-equivalent restore, deletion-journal replay, retention cleanup and public-share non-resurrection; repository logical restore rehearsal already exists | NOT RUN |
 | External security review | independent review / penetration report and resolved findings | NOT RUN |
-| Production logs | provider/log pipeline review proving diagnostic secrets/answers are not emitted | NOT RUN |
+| Production logs | provider/log pipeline retention/access/enrichment review; application-side fixed-schema logging already forbids diagnostic exception payloads | NOT RUN |
 
 ## Manual attack cases
 
