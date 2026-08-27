@@ -127,6 +127,7 @@ try {
     await runtime.end({timeout:3});
   }
 } finally {
+  await admin.unsafe('DROP OWNED BY pcs_runtime_ci');
   await admin.unsafe('DROP ROLE IF EXISTS pcs_runtime_ci');
   await admin.end({timeout:3});
 }
