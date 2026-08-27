@@ -16,6 +16,7 @@ The current repository already blocks or tests:
 - privacy-safe rate-limit and rejection responses;
 - production client-address resolution is fail-closed unless an explicit `PCS_CLIENT_IP_HEADER` is selected from the versioned allowlist; arbitrary/non-IP-shaped header values are rejected;
 - `database-role-policy-v0.1-dev` exactly covers every current runtime table with table-specific privileges, and CI creates a real restricted PostgreSQL login proving representative runtime DML works while CREATE/ALTER and definition writes are denied;
+- an isolated logical backup/restore rehearsal compares every application-table row count, trigger count and post-restore published-model immutability without uploading the diagnostic dump;
 - migration-to-privacy-inventory exact coverage;
 - production dependency vulnerability audit;
 - Chromium security regression flows.
@@ -33,7 +34,7 @@ These are necessary but do not prove the deployed edge/database/secret-store con
 | Secret store | provider/project secret configuration without exposing values | NOT RUN |
 | Secret rotation | documented/rehearsed rotation path for DB/rate-limit secrets | NOT RUN |
 | Environment separation | preview/prod deployment + database identities | NOT RUN |
-| Backup/restore | actual restore rehearsal evidence | NOT RUN |
+| Backup/restore | provider-level production-equivalent restore, deletion-journal replay, retention cleanup and public-share non-resurrection; repository logical restore rehearsal already exists | NOT RUN |
 | External security review | independent review / penetration report and resolved findings | NOT RUN |
 | Production logs | provider/log pipeline review proving diagnostic secrets/answers are not emitted | NOT RUN |
 
