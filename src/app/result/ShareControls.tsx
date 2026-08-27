@@ -138,7 +138,7 @@ export default function ShareControls({ coreCode }: ShareControlsProps) {
             <a href={lineHref} target="_blank" rel="noreferrer" onClick={() => void sendClientProductEvent('share_method_selected', { method: 'line' })}>LINE</a>
             <button type="button" onClick={copyLink}>リンクをコピー</button>
             {portraitCardHref && (
-              <a href={portraitCardHref} download={`pcs-${coreCode}-portrait.png`}>縦型画像</a>
+              <a href={portraitCardHref} download={`pcs-${coreCode}-portrait.png`} onClick={() => void sendClientProductEvent('share_method_selected', { method: 'portrait-card' })}>縦型画像</a>
             )}
           </div>
           <button
