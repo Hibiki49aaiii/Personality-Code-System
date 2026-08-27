@@ -1,6 +1,22 @@
 import { expect, test } from '@playwright/test';
+import postgres from 'postgres';
 
 test('anonymous user completes the private result and can explicitly create then revoke a sanitized public share', async ({ page, browser }) => {
+  const analyticsPayloads: Array<{ name?: string; properties?: Record<string, unknown> }> = [];
+  const analyticsStatuses: number[] = [];
+
+  page.on('request', (request) => {
+    if (!request.url().endsWith('/api/analytics') || request.method() !== 'POST') return;
+    try {
+      analyticsPayloads.push(JSON.parse(request.postData() ?? '{}') as { name?: string; properties?: Record<string, unknown> });
+    } catch {
+      analyticsPayloads.push({});
+    }
+  });
+  page.on('response', (response) => {
+    if (response.url().endsWith('/api/analytics')) analyticsStatuses.push(response.status());
+  });
+
   await page.goto('/diagnosis');
 
   await expect(page.getByText('REVIEWED DEVELOPMENT ASSESSMENT')).toBeVisible();
@@ -17,6 +33,10 @@ test('anonymous user completes the private result and can explicitly create then
   await expect(somewhatApplies).toBeChecked();
   await midpoint.click();
   await page.getByRole('button', { name: '次へ →' }).click();
+
+  // Re-enter the assessment with the same HttpOnly session to verify resume behavior and telemetry.
+  await page.reload();
+  await expect(page.getByText('QUESTION 002')).toBeVisible();
 
   for (let index = 1; index < 147; index += 1) {
     await expect(page.getByText(`QUESTION ${String(index + 1).padStart(3, '0')}`)).toBeVisible();
@@ -84,6 +104,18 @@ test('anonymous user completes the private result and can explicitly create then
   expect(await xShare.getAttribute('href')).toContain(encodeURIComponent(shareUrl!));
   expect(await lineShare.getAttribute('href')).toContain(encodeURIComponent(shareUrl!));
 
+  const copyAnalyticsResponse = page.waitForResponse((response) => {
+    if (!response.url().endsWith('/api/analytics')) return false;
+    try {
+      const payload = JSON.parse(response.request().postData() ?? '{}') as { name?: string; properties?: { method?: string } };
+      return payload.name === 'share_method_selected' && payload.properties?.method === 'copy';
+    } catch {
+      return false;
+    }
+  });
+  await page.getByRole('button', { name: 'リンクをコピー' }).click();
+  expect((await copyAnalyticsResponse).status()).toBe(202);
+
   const shareToken = new URL(shareUrl!).pathname.split('/').filter(Boolean).at(-1);
   expect(shareToken).toMatch(/^[A-Za-z0-9_-]{43}$/);
 
@@ -138,10 +170,92 @@ test('anonymous user completes the private result and can explicitly create then
   expect(revokedPortrait.status()).toBe(404);
 
   await publicContext.close();
+
+  await expect.poll(() => analyticsStatuses.length, { timeout: 10_000 }).toBeGreaterThan(5);
+  expect(analyticsStatuses.every((status) => status === 202)).toBe(true);
+
+  const answerAnalytics = analyticsPayloads.filter((payload) => payload.name === 'answer_interaction');
+  expect(answerAnalytics.length).toBeGreaterThan(0);
+  for (const payload of answerAnalytics) {
+    expect(payload.properties).toHaveProperty('itemPosition');
+    expect(payload.properties).toHaveProperty('interactionType');
+    expect(payload.properties).not.toHaveProperty('answer');
+    expect(payload.properties).not.toHaveProperty('answerValue');
+    expect(payload.properties).not.toHaveProperty('value');
+    expect(payload.properties).not.toHaveProperty('modelVersion');
+  }
+
+  const questionAnalytics = analyticsPayloads.filter((payload) => payload.name === 'question_viewed');
+  expect(questionAnalytics.length).toBeGreaterThan(0);
+  for (const payload of questionAnalytics) {
+    expect(payload.properties).not.toHaveProperty('modelVersion');
+  }
+
+  const databaseUrl = process.env.DATABASE_URL;
+  expect(databaseUrl).toBeTruthy();
+  const sql = postgres(databaseUrl!, { max: 1 });
+  try {
+    const rows = await sql<{ event_name: string; properties_json: Record<string, unknown> }[]>\`
+      SELECT event_name, properties_json
+      FROM product_events
+      ORDER BY created_at
+    \`;
+    const funnelEvents = new Set(rows.map((row) => row.event_name));
+    for (const requiredEvent of [
+      'assessment_started',
+      'assessment_resumed',
+      'question_viewed',
+      'answer_interaction',
+      'assessment_completed',
+      'result_viewed',
+      'share_initiated',
+      'share_method_selected',
+      'share_snapshot_created',
+      'public_share_viewed'
+    ]) {
+      expect(funnelEvents.has(requiredEvent), `missing persisted funnel event ${requiredEvent}`).toBe(true);
+    }
+
+    for (const row of rows.filter((entry) => entry.event_name === 'answer_interaction')) {
+      expect(row.properties_json).not.toHaveProperty('answer');
+      expect(row.properties_json).not.toHaveProperty('answerValue');
+      expect(row.properties_json).not.toHaveProperty('value');
+      expect(row.properties_json).not.toHaveProperty('traitScores');
+    }
+    const persistedQuestion = rows.find((entry) => entry.event_name === 'question_viewed');
+    expect(persistedQuestion?.properties_json).toHaveProperty('modelVersion', 'assessment-dev-v0.3');
+  } finally {
+    await sql.end({ timeout: 5 });
+  }
 });
 
 test('private result is not retrievable in a fresh browser context without the bearer cookie', async ({ page }) => {
   await page.goto('/result');
   await expect(page.getByText('このブラウザに診断セッションがありません。')).toBeVisible();
   await expect(page.getByRole('link', { name: '診断へ進む' })).toBeVisible();
+});
+
+
+test('landing page emits only the minimal first-party landing analytics payload', async ({ page }) => {
+  let observedPayload: { name?: string; properties?: Record<string, unknown> } | null = null;
+  const analyticsResponse = page.waitForResponse((response) => {
+    if (!response.url().endsWith('/api/analytics')) return false;
+    try {
+      const payload = JSON.parse(response.request().postData() ?? '{}') as { name?: string; properties?: Record<string, unknown> };
+      if (payload.name !== 'landing_viewed') return false;
+      observedPayload = payload;
+      return true;
+    } catch {
+      return false;
+    }
+  });
+
+  await page.goto('/');
+  expect((await analyticsResponse).status()).toBe(202);
+  expect(observedPayload?.name).toBe('landing_viewed');
+  expect(observedPayload?.properties).toHaveProperty('viewportCategory');
+  expect(observedPayload?.properties).toHaveProperty('locale');
+  expect(observedPayload?.properties).not.toHaveProperty('traitScores');
+  expect(observedPayload?.properties).not.toHaveProperty('answerValue');
+  expect(observedPayload?.properties).not.toHaveProperty('sessionToken');
 });
