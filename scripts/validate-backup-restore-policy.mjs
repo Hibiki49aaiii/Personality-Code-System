@@ -16,6 +16,7 @@ if (policy.production_backup_access_least_privilege_required !== true) errors.pu
 if (policy.restore_quarantine_required !== true || policy.public_traffic_during_restore_allowed !== false) errors.push('restore must remain quarantined from public traffic');
 if (policy.production_restore_evidence_complete !== false) errors.push('production restore evidence must remain pending');
 if (policy.logical_ci_rehearsal?.backup_artifact_uploaded !== false) errors.push('CI diagnostic backup artifact must not be uploaded');
+if (policy.logical_ci_rehearsal?.verify_versioned_revision_immutability_after_restore !== true) errors.push('CI restore must re-prove immutable revision trigger behavior');
 
 const privacy=policy.privacy_restore_boundary;
 if (privacy.older_backup_may_contain_later_deleted_data !== true) errors.push('restore policy must acknowledge deletion resurrection risk');
@@ -38,7 +39,7 @@ for (const fragment of [
   "run('pg_restore'",
   'SELECT count(*)::int AS row_count',
   "WHERE NOT tgisinternal",
-  'published assessment_model_releases are immutable',
+  'versioned revision rows are immutable',
   "rm(dumpPath"
 ]) if (!integration.includes(fragment)) errors.push(`backup integration missing ${fragment}`);
 

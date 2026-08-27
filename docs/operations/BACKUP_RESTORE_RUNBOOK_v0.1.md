@@ -17,10 +17,10 @@ PCS treats this as a release-blocking privacy property, not only a disaster-reco
 2. restores it to a separate isolated database;
 3. compares row counts for every application table;
 4. compares non-internal trigger counts;
-5. rechecks published-model immutability on the restored DB;
+5. rechecks immutable Trait-revision trigger behavior on the restored DB;
 6. deletes the temporary dump instead of uploading it.
 
-This verifies that repository migrations/data/triggers are logically restorable. It does not establish provider backup encryption, retention, access control, RPO/RTO or production operational readiness.
+This verifies that repository migrations/data/triggers are logically restorable even when the current seed contains beta-only assessment releases; immutable revision behavior is re-proven directly after restore. It does not establish provider backup encryption, retention, access control, RPO/RTO or production operational readiness.
 
 ## Production restore quarantine
 

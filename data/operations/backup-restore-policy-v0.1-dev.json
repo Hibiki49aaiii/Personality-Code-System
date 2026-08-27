@@ -12,8 +12,8 @@
     "owner_acl_restore": false,
     "compare_all_application_table_row_counts": true,
     "compare_non_internal_trigger_count": true,
-    "verify_published_model_immutability_after_restore": true,
-    "backup_artifact_uploaded": false
+    "backup_artifact_uploaded": false,
+    "verify_versioned_revision_immutability_after_restore": true
   },
   "privacy_restore_boundary": {
     "older_backup_may_contain_later_deleted_data": true,

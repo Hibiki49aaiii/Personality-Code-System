@@ -94,23 +94,24 @@ try {
   `;
   assert.equal(restoredTriggers.trigger_count,sourceTriggers.trigger_count,'non-internal trigger count must survive logical restore');
 
-  const [publishedRelease] = await restored`
-    SELECT model_version
-    FROM assessment_model_releases
-    WHERE status='published'
-    ORDER BY published_at NULLS LAST, created_at
+  const [revision] = await restored`
+    SELECT trait_id, dictionary_version, locale
+    FROM trait_definition_revisions
+    ORDER BY trait_id, dictionary_version, locale
     LIMIT 1
   `;
-  assert.ok(publishedRelease?.model_version,'restored DB must contain a published model release');
+  assert.ok(revision?.trait_id,'restored DB must contain an immutable Trait revision fixture');
 
   await expectDbFailure(
-    'published assessment_model_releases are immutable after restore',
+    'versioned revision rows are immutable after restore',
     ()=>restored`
-      UPDATE assessment_model_releases
-      SET locale='en-US'
-      WHERE model_version=${publishedRelease.model_version}
+      UPDATE trait_definition_revisions
+      SET display_name = display_name || ' forbidden'
+      WHERE trait_id=${revision.trait_id}
+        AND dictionary_version=${revision.dictionary_version}
+        AND locale=${revision.locale}
     `,
-    /published assessment_model_releases are immutable/i
+    /versioned revision rows are immutable/i
   );
 
   assert.equal(policy.restore_quarantine_required,true);
