@@ -1,0 +1,40 @@
+{
+  "release_manifest_version": "assessment-release-manifest-v0.1-dev",
+  "model_version": "assessment-dev-v0.3",
+  "status": "beta",
+  "production_activation_allowed": false,
+  "public_release_allowed": false,
+  "locale": "ja-JP",
+  "versions": {
+    "trait_dictionary_version": "trait-dictionary-v0.2",
+    "item_bank_version": "item-bank-v0.2",
+    "scoring_version": "scoring-v0.1-dev",
+    "code_schema_version": "core-code-v0.1-dev",
+    "interaction_version": "trait-interactions-v0.1",
+    "content_version": "content-dev-v0.3"
+  },
+  "item_count": 147,
+  "release_checks": {
+    "deterministic_tests_required": true,
+    "golden_snapshot_required": true,
+    "migration_review_required": true,
+    "content_compatibility_required": true,
+    "rollback_plan_required": true,
+    "public_code_schema_required_for_production": true,
+    "evidence_stage_required_for_production": true
+  },
+  "current_blockers": [
+    "code-schema-public-use-false",
+    "phase-5-beta-evidence-not-collected",
+    "production-environment-not-proven",
+    "public-editorial-catalog-not-approved",
+    "curated-illustration-assets-not-approved"
+  ],
+  "rollback": {
+    "previous_model_version": "assessment-dev-v0.2",
+    "published_version_rewrite_allowed": false,
+    "database_strategy": "forward-fix",
+    "application_strategy": "redeploy-known-good-commit",
+    "model_strategy": "switch-active-version-without-mutating-history"
+  }
+}

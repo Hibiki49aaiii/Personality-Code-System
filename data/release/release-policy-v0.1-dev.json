@@ -1,0 +1,29 @@
+{
+  "release_policy_version": "release-operations-v0.1-dev",
+  "status": "development-contract",
+  "environments": ["development", "preview", "production"],
+  "production_requires_distinct_environment": true,
+  "production_secrets_outside_git": true,
+  "production_ai_runtime_credentials_allowed": false,
+  "normal_promotion_requires_ci_green": true,
+  "model_release": {
+    "allowed_states": ["draft", "internal-test", "beta", "published", "retired"],
+    "published_is_immutable": true,
+    "production_activation_requires_public_code_schema": true,
+    "production_activation_requires_evidence_stage": true,
+    "production_activation_requires_release_manifest": true,
+    "production_activation_requires_migration_review": true,
+    "production_activation_requires_rollback_plan": true
+  },
+  "rollback_domains": [
+    "application-code",
+    "database-migrations",
+    "assessment-model",
+    "content",
+    "illustration-assets",
+    "share-card-template"
+  ],
+  "database_rollback_default": "forward-fix",
+  "published_version_rewrite_allowed": false,
+  "current_development_release_manifest": "assessment-dev-v0.3"
+}

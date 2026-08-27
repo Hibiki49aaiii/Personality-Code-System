@@ -189,3 +189,10 @@ Old model fixtures remain executable/readable for historical audit.
 - **PCS-SCORE-004 — COMPLETE (development engine):** deterministic 0..10000 normalized Trait scoring implemented and tested.
 - **PCS-SCORE-005 — COMPLETE (v0.1 baseline):** deterministic response-quality metadata implemented separately from scores; richer confidence evidence remains future-version work.
 - **PCS-SCORE-006 — COMPLETE (current layer):** golden fixtures and invalid-input/order invariance tests exist and run in CI.
+
+
+## Current release/freeze foundation
+
+`docs/model/ASSESSMENT_MODEL_RELEASE_CONTRACT_v0.1.md` and `data/release/assessment-dev-v0.3.json` now bind the current 147-item development model to an explicit version tuple, migration/content compatibility checks, rollback behavior and production blockers. `scripts/validate-release-operations.mjs` prevents the development C01D beta manifest from being marked production/public activatable.
+
+This advances Master **PCS-SCORE-003** but does not complete it: the final production active-model release/freeze cannot occur until the public code-model and Phase 5 evidence gates are satisfied.

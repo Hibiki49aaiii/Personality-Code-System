@@ -72,6 +72,20 @@ Still required for production:
 - production retention scheduler execution evidence;
 - development/preview/production environment separation.
 
+## Repository-enforced release/rollback foundation
+
+The repository now carries a machine-readable release policy, the exact `assessment-dev-v0.3` beta release manifest, and a six-domain rollback runbook:
+
+- `data/release/release-policy-v0.1-dev.json`;
+- `data/release/assessment-dev-v0.3.json`;
+- `docs/model/ASSESSMENT_MODEL_RELEASE_CONTRACT_v0.1.md`;
+- `docs/operations/ROLLBACK_RUNBOOK_v0.1.md`;
+- `scripts/validate-release-operations.mjs`.
+
+The validator requires development/preview/production environment classes, secrets outside Git, no production AI runtime credential, green-CI promotion, immutable published versions, explicit model/content/migration/rollback checks, and application/database/model/content/asset/share-card rollback coverage.
+
+The current C01D beta manifest is intentionally `production_activation_allowed=false`; this foundation does not fabricate production environment, backup/restore or Phase 5 evidence.
+
 ## Model release lifecycle
 
 Assessment models require a separate lifecycle from ordinary UI deploys.
@@ -99,6 +113,8 @@ Content and illustration versions may release independently only if historical r
 Changes that alter diagnostic claims SHOULD create a new content version. Cosmetic typo fixes may follow a documented low-risk policy, but historical snapshots must remain auditable.
 
 ## Rollback
+
+The repository-level procedure is now documented in `docs/operations/ROLLBACK_RUNBOOK_v0.1.md` and machine-checked for all required rollback domains. Deployment-provider commands, restore rehearsal evidence and responsible contacts remain environment-specific release evidence.
 
 Production rollback procedure MUST address separately:
 
