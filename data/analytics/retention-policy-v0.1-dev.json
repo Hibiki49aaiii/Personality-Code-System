@@ -1,0 +1,8 @@
+{
+  "retention_policy_version": "analytics-retention-v0.1-dev",
+  "status": "development",
+  "unscoped_retention_days": 30,
+  "session_bound_retention_days": 90,
+  "session_delete_behavior": "cascade",
+  "third_party_export_default": false
+}
