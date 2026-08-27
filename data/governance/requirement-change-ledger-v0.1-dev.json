@@ -167,6 +167,34 @@
         "Container Package Run 30 success",
         "preview CI/build/runtime smoke configuration"
       ]
+    },
+    {
+      "change_id": "2026-08-28-prelaunch-legal-draft-routes",
+      "date": "2026-08-28",
+      "requirements_version_after": "0.11.7",
+      "affected_requirement_ids": [
+        "PCS-LEGAL-001",
+        "PCS-PROD-002"
+      ],
+      "change": "Expose implementation-grounded /privacy and /terms pre-launch drafts, link them from the landing footer, require noindex, and cover them in browser/legal validation.",
+      "rationale": "Make current privacy, diagnostic limitation, self-deletion, retention, backup and non-validation boundaries inspectable in the product before final legal approval without misrepresenting the draft as final terms.",
+      "impacted_files": [
+        "src/app/privacy/page.tsx",
+        "src/app/terms/page.tsx",
+        "src/app/page.tsx",
+        "scripts/validate-legal-disclosure-draft.mjs",
+        "tests/e2e/legal-disclosure.spec.ts"
+      ],
+      "assessment_model_impact": "none",
+      "code_schema_impact": "none-C01D-remains-public_use_false",
+      "content_impact": "legal-disclosure-draft-only-not-diagnostic-result-content",
+      "data_migration_impact": "none",
+      "compatibility_impact": "adds-prelaunch-noindex-legal-routes-and-landing-links",
+      "evidence": [
+        "legal disclosure validator",
+        "legal-disclosure Chromium E2E",
+        "controlled visual baseline refresh"
+      ]
     }
   ]
 }
