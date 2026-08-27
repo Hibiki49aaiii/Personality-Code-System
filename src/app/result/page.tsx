@@ -4,6 +4,7 @@ import { getPrivateRenderedAssessmentResult } from "../../application/assessment
 import { ASSESSMENT_SESSION_COOKIE } from "../../server/assessmentCookie";
 import { withPcsDatabase } from "../../server/assessmentRuntime";
 import { recordServerProductEventBestEffort } from "../../server/productAnalytics";
+import { logPrivacySafeServerFault } from "../../server/privacySafeLog";
 import ShareControls from "./ShareControls";
 import DataControls from "./DataControls";
 import { CuratedFallbackArtwork } from "../../components/illustration/CuratedFallbackArtwork";
@@ -54,7 +55,7 @@ export default async function ResultPage() {
       return rendered;
     });
   } catch (error) {
-    console.error("Failed to render private assessment result", error);
+    logPrivacySafeServerFault({ surface: 'assessment', category: 'render' });
     return <MissingResult message="診断結果を読み込めませんでした。セッションの有効期限またはサーバ状態を確認してください。" />;
   }
 
