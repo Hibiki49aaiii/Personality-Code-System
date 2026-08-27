@@ -128,6 +128,28 @@ The domain/repository implementation is covered by CI Run `33036572687` (Run 240
 
 Specification: `docs/model/OBSERVED_TYPE_DISTRIBUTION_SPEC_v0.1.md`.
 
+### Retention, error and performance foundation
+
+The development implementation now also includes:
+
+- versioned retention policy `analytics-retention-v0.1-dev`;
+- 30-day unscoped / 90-day session-bound product-event cleanup;
+- earlier cascade deletion when an anonymous assessment session is deleted;
+- `npm run cleanup:analytics` as a dry-run-first operational command, with `--execute` required to delete;
+- fixed-enum `client_error` / `server_error` property contracts; free-form message/stack fields are not allowlisted;
+- App Router and assessment/share client failure telemetry using only fixed category/surface values;
+- Web Vitals reduced to metric name plus rating bucket; raw value/delta/id are discarded before transport;
+- minimal `GET /api/health` PostgreSQL readiness response with no database URL, version or exception details.
+
+Verification:
+
+- CI Run `33037531921` (Run 269): fixed-category browser error telemetry;
+- CI Run `33037562880` (Run 270): retention policy, PostgreSQL cleanup integration and CLI dry-run;
+- CI Run `33037608636` (Run 272): minimal readiness endpoint;
+- CI Run `33037683667` (Run 273): API rejects raw Web Vital values/IDs and free-form error message/stack payloads.
+
+Production scheduling, independently durable monitoring/alerting and environment separation remain operations gates.
+
 ### Calibration export gate
 
 Calibration is still deliberately separate from ordinary analytics. `docs/model/CALIBRATION_EXPORT_SPEC_v0.1.md` defines the future consent/governance prerequisites. No raw-answer calibration export endpoint/job is shipped before those prerequisites exist.
