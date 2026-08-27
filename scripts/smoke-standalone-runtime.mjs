@@ -79,6 +79,12 @@ try {
   });
 }
 
-if (child.exitCode && child.exitCode !== 0 && child.signalCode !== 'SIGTERM') {
+// Next standalone may translate the intentional SIGTERM shutdown to conventional
+// process exit code 143 instead of exposing signalCode=SIGTERM to this parent.
+const expectedShutdown =
+  child.exitCode === 0 ||
+  child.exitCode === 143 ||
+  child.signalCode === 'SIGTERM';
+if (!expectedShutdown) {
   throw new Error(`standalone server exited unexpectedly: ${child.exitCode}\n${stderr}`);
 }
