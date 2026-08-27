@@ -16,7 +16,7 @@ PCS handles potentially intimate personality-response data. Collect less, separa
 - **PCS-PRIV-013** Diagnostic answers/scores MUST NOT be placed into ordinary third-party product analytics event properties.
 - **PCS-PRIV-014** Public sharing is opt-in; completing the test alone does not make a profile public.
 
-## Current Phase 2C private-flow controls
+## Current anonymous-flow and security controls
 
 The implemented anonymous assessment flow currently provides:
 
@@ -32,7 +32,28 @@ The implemented anonymous assessment flow currently provides:
 - private result retrieval only through the anonymous bearer cookie;
 - a browser E2E assertion that a fresh browser context without the cookie cannot access the completed result.
 
-These controls are sufficient evidence for Master **PCS-PRIV-001** at the current anonymous-flow level. They do **not** complete the full Master **PCS-SEC-001** requirement because rate limiting, complete security headers, dependency-security automation and release security review remain open.
+These controls are sufficient evidence for Master **PCS-PRIV-001** at the current anonymous-flow level.
+
+## Current security hardening implementation
+
+The development application now also provides:
+
+- versioned rate-limit policy `rate-limits-v0.1-dev`;
+- PostgreSQL fixed-window rate-limit buckets for session creation, answer mutation, completion, share mutation and analytics ingestion;
+- HMAC-SHA256 bucket principals; raw IP addresses and private session tokens are not persisted in the rate-limit table;
+- privacy-safe 429 responses with `Retry-After` and no principal/bucket/token details;
+- production requires an external `PCS_RATE_LIMIT_SECRET` of at least 32 characters;
+- global CSP, frame denial, content-type protection, Referrer Policy and Permissions Policy;
+- production HSTS;
+- production dependency vulnerability audit in CI at high severity or above;
+- machine validation of the security-header/rate-limit policy contract;
+- expired rate-limit buckets are included in the dry-run-first retention cleanup command.
+
+Verification evidence includes CI Run `33038326772` (Run 304), which passes rate-limit persistence, production build, security-header E2E and the API-boundary 429 test.
+
+The IP-based session-creation limit assumes the production reverse proxy/CDN overwrites or sanitizes forwarded client-address headers. Trusted-proxy behavior is therefore a deployment requirement and is not claimed by application code alone.
+
+This completes the enumerated Master **PCS-SEC-001** development implementation. It does **not** complete release security: TLS termination, trusted proxy configuration, production database least privilege, deployment secret-store proof, external penetration/security review and the final **PCS-QA-007** checklist remain release/operations gates.
 
 ## Data classification
 
@@ -133,7 +154,7 @@ No public share endpoint exists in Phase 2C. Phase 4 must implement the public s
 - unauthorized deletion/update;
 - accidental exposure through logs/analytics/OG generation.
 
-Current automated coverage includes off-model item rejection, invalid value rejection, completed-session mutation rejection, duplicate finalization/idempotency behavior, hash-only session credentials and private-result browser isolation. Remaining threat cases stay release-blocking where applicable.
+Current automated coverage includes off-model item rejection, invalid value rejection, completed-session mutation rejection, duplicate finalization/idempotency behavior, hash-only session/share credentials, private-result browser isolation, sanitized public-share boundaries, analytics leakage rejection, security-header assertions, and excessive session-creation rate limiting with privacy-safe 429 behavior. Remaining threat cases stay release-blocking where applicable.
 
 ## Legal/consent pages before launch
 
