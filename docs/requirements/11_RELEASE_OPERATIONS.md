@@ -10,6 +10,10 @@ PCS MUST maintain distinct environments for:
 
 Production diagnostic models/content versions must not be mutated casually from development data.
 
+## Environment contract evidence
+
+`docs/operations/ENVIRONMENT_CONTRACT_v0.1.md` and `data/operations/environment-contract-v0.1-dev.json` now define development/preview/production boundaries, server-only environment variables, TLS/database separation requirements, production AI-key prohibition and the exact external evidence still required before OPS-001/002 can close. `scripts/validate-environment-contract.mjs` keeps the repository from claiming deployed separation prematurely.
+
 ## Deployment
 
 - Production deployment must be reproducible from version-controlled source.

@@ -82,6 +82,9 @@ jobs:
       - name: Validate release and rollback operations contract
         run: npm run validate:release-operations
 
+      - name: Validate environment separation contract
+        run: npm run validate:environment
+
       - name: Validate security baseline
         run: npm run validate:security
 

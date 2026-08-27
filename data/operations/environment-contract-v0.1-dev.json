@@ -1,0 +1,74 @@
+{
+  "environment_contract_version": "environment-contract-v0.1-dev",
+  "status": "repository-contract-only",
+  "repository_proves_deployed_environment_separation": false,
+  "environments": {
+    "development": {
+      "public_traffic_allowed": false,
+      "tls_required": false,
+      "distinct_database_required": false,
+      "production_secrets_allowed": false
+    },
+    "preview": {
+      "public_traffic_allowed": false,
+      "tls_required": true,
+      "distinct_database_required": true,
+      "production_secrets_allowed": false
+    },
+    "production": {
+      "public_traffic_allowed": true,
+      "tls_required": true,
+      "distinct_database_required": true,
+      "production_secrets_allowed": true
+    }
+  },
+  "server_environment_variables": {
+    "DATABASE_URL": {
+      "classification": "secret",
+      "required_preview": true,
+      "required_production": true,
+      "client_exposure_allowed": false
+    },
+    "PCS_RATE_LIMIT_SECRET": {
+      "classification": "secret",
+      "required_preview": true,
+      "required_production": true,
+      "minimum_characters": 32,
+      "client_exposure_allowed": false
+    },
+    "PCS_SITE_ORIGIN": {
+      "classification": "configuration",
+      "required_preview": true,
+      "required_production": true,
+      "production_https_required": true,
+      "client_exposure_allowed": false
+    },
+    "PCS_ASSESSMENT_MODEL_VERSION": {
+      "classification": "release-configuration",
+      "required_preview": true,
+      "required_production": true,
+      "client_exposure_allowed": false
+    }
+  },
+  "production_forbidden_runtime_credentials": [
+    "OPENAI_API_KEY",
+    "ANTHROPIC_API_KEY",
+    "GOOGLE_GENERATIVE_AI_API_KEY",
+    "COHERE_API_KEY"
+  ],
+  "external_evidence_required_before_ops_001_completion": [
+    "distinct-preview-and-production-deployment-identities",
+    "distinct-preview-and-production-database-identities",
+    "production-domain-and-tls-evidence"
+  ],
+  "external_evidence_required_before_ops_002_completion": [
+    "deployment-secret-store-evidence",
+    "production-secret-rotation-procedure",
+    "production-client-bundle-secret-leakage-check"
+  ],
+  "external_evidence_required_before_qa_007_completion": [
+    "trusted-proxy-configuration",
+    "production-database-least-privilege",
+    "external-security-review"
+  ]
+}
