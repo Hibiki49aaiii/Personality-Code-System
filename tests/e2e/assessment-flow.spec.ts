@@ -237,25 +237,28 @@ test('private result is not retrievable in a fresh browser context without the b
 
 
 test('landing page emits only the minimal first-party landing analytics payload', async ({ page }) => {
-  let observedPayload: { name?: string; properties?: Record<string, unknown> } | null = null;
-  const analyticsResponse = page.waitForResponse((response) => {
+  const analyticsResponsePromise = page.waitForResponse((response) => {
     if (!response.url().endsWith('/api/analytics')) return false;
     try {
-      const payload = JSON.parse(response.request().postData() ?? '{}') as { name?: string; properties?: Record<string, unknown> };
-      if (payload.name !== 'landing_viewed') return false;
-      observedPayload = payload;
-      return true;
+      const payload = JSON.parse(response.request().postData() ?? '{}') as { name?: string };
+      return payload.name === 'landing_viewed';
     } catch {
       return false;
     }
   });
 
   await page.goto('/');
-  expect((await analyticsResponse).status()).toBe(202);
-  expect(observedPayload?.name).toBe('landing_viewed');
-  expect(observedPayload?.properties).toHaveProperty('viewportCategory');
-  expect(observedPayload?.properties).toHaveProperty('locale');
-  expect(observedPayload?.properties).not.toHaveProperty('traitScores');
-  expect(observedPayload?.properties).not.toHaveProperty('answerValue');
-  expect(observedPayload?.properties).not.toHaveProperty('sessionToken');
+  const analyticsResponse = await analyticsResponsePromise;
+  expect(analyticsResponse.status()).toBe(202);
+
+  const observedPayload = JSON.parse(
+    analyticsResponse.request().postData() ?? '{}'
+  ) as { name?: string; properties?: Record<string, unknown> };
+
+  expect(observedPayload.name).toBe('landing_viewed');
+  expect(observedPayload.properties).toHaveProperty('viewportCategory');
+  expect(observedPayload.properties).toHaveProperty('locale');
+  expect(observedPayload.properties).not.toHaveProperty('traitScores');
+  expect(observedPayload.properties).not.toHaveProperty('answerValue');
+  expect(observedPayload.properties).not.toHaveProperty('sessionToken');
 });
