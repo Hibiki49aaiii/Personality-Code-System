@@ -27,7 +27,9 @@ The deployment platform must inject server-side:
 - `DATABASE_URL`;
 - `PCS_RATE_LIMIT_SECRET`;
 - `PCS_SITE_ORIGIN`;
-- `PCS_ASSESSMENT_MODEL_VERSION`.
+- `PCS_ASSESSMENT_MODEL_VERSION`;
+- `PCS_DEPLOYMENT_ENV`;
+- `PCS_CLIENT_IP_HEADER`.
 
 The exact values remain outside Git.
 
@@ -38,3 +40,10 @@ The exact values remain outside Git.
 `npm run validate:runtime-package` statically verifies the non-root/standalone/no-baked-AI-secret packaging contract.
 
 This improves PCS-OPS-001/002/006 readiness but does **not** prove distinct preview/production deployments, registry digest provenance, TLS, runtime secret injection or production smoke evidence. Those remain external release gates.
+
+
+## Container Package workflow
+
+`.github/workflows/container-package.yml` builds the actual multi-stage image for the commit, verifies the configured runtime user is `nextjs`, starts it against PostgreSQL, checks `/api/health` and the reviewed landing page, and uploads package metadata without claiming a registry or production deployment.
+
+The workflow is an artifact/runtime reproducibility check, not proof of production hosting.
