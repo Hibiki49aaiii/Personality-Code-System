@@ -1,0 +1,71 @@
+{
+  "review_record_version": "manual-accessibility-release-review-v0.1-dev",
+  "status": "not-run",
+  "master_requirements": {
+    "PCS-A11Y-002": "open",
+    "PCS-QA-005": "open"
+  },
+  "automation_evidence": {
+    "keyboard_147_item_flow": true,
+    "axe_wcag_a_aa": true,
+    "reduced_motion": true,
+    "mobile_touch": true,
+    "root_text_scale_200_percent": true,
+    "mandatory_width_overflow_matrix": true,
+    "visual_regression": true
+  },
+  "manual_classes": [
+    {
+      "id": "desktop-screen-reader-keyboard",
+      "status": "pending",
+      "environment": null,
+      "tester": null,
+      "executed_at": null,
+      "issues": []
+    },
+    {
+      "id": "mobile-screen-reader-touch",
+      "status": "pending",
+      "environment": null,
+      "tester": null,
+      "executed_at": null,
+      "issues": []
+    },
+    {
+      "id": "browser-zoom-text-scaling",
+      "status": "pending",
+      "environment": null,
+      "tester": null,
+      "executed_at": null,
+      "issues": []
+    },
+    {
+      "id": "reduced-motion-manual",
+      "status": "pending",
+      "environment": null,
+      "tester": null,
+      "executed_at": null,
+      "issues": []
+    },
+    {
+      "id": "touch-only-mobile",
+      "status": "pending",
+      "environment": null,
+      "tester": null,
+      "executed_at": null,
+      "issues": []
+    }
+  ],
+  "required_surfaces": [
+    "landing",
+    "assessment",
+    "private-result",
+    "public-share",
+    "share-revoke-error",
+    "diagnostic-self-deletion"
+  ],
+  "final_artwork_accessibility_review": "pending",
+  "final_public_copy_wrapping_review": "pending",
+  "closure_allowed": false,
+  "note": "CI may validate this record is honest and complete as a template, but cannot convert pending human/device evidence to pass."
+}
