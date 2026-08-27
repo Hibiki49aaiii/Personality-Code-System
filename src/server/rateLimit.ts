@@ -1,5 +1,6 @@
 import type { NextRequest } from 'next/server';
 import policyData from '../../data/security/rate-limits-v0.1-dev.json';
+import { resolveClientAddress } from '../domain/security/clientAddress';
 import type { PcsDatabase } from '../infrastructure/persistence/database';
 import {
   consumeFixedWindowRateLimit,
@@ -54,12 +55,19 @@ function requireRateLimitSecret(): string {
 }
 
 function clientAddress(request: NextRequest): string {
-  const forwarded = request.headers.get('x-forwarded-for');
-  const firstForwarded = forwarded?.split(',')[0]?.trim();
-  const realIp = request.headers.get('x-real-ip')?.trim();
-  const candidate = firstForwarded || realIp || 'unknown';
+  const configuredEnvironment = process.env.PCS_DEPLOYMENT_ENV;
+  const deploymentEnvironment =
+    configuredEnvironment === 'production' ||
+    configuredEnvironment === 'preview' ||
+    configuredEnvironment === 'development'
+      ? configuredEnvironment
+      : 'development';
 
-  return candidate.length <= 128 ? candidate : candidate.slice(0, 128);
+  return resolveClientAddress({
+    deploymentEnvironment,
+    configuredHeader: process.env.PCS_CLIENT_IP_HEADER,
+    getHeader: (name) => request.headers.get(name)
+  });
 }
 
 function resolvePrincipal(
