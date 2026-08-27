@@ -65,7 +65,11 @@ Web Vitalsは現在、LCP / INP / CLS / TTFB の種類と good / needs-improveme
 
 現在の公開共有リンクには失効機能があります。
 
-匿名の回答・結果全体について公開ユーザー向け削除手順を最終化するには、所有権確認方法、production retention scheduler、backup restore/deletion behaviorを確定する必要があります。これらは公開前の未完事項です。
+同一ブラウザが保持するprivate session bearer cookieで所有権を確認できる場合、private result画面から匿名診断データの自己削除を実行できます。削除操作は二段階確認を要求し、成功時には匿名セッション、その回答、Trait Score、非公開Result Snapshot、session-bound product analytics、およびそのResult Snapshotから作成された公開共有Snapshotを削除します。削除後はprivate session cookieも破棄されます。
+
+共有Snapshotを先に削除してから親sessionを削除するため、private sourceを消した後に公開共有だけ残る状態を作らない設計です。
+
+この自己削除機能はproduction上の最終Retention/Privacy Policyを確定するものではありません。database backupに既に含まれたデータのrestore/deletion behavior、production retention scheduler、法的な保存義務・例外、privacy/security requestの連絡先は公開前に実環境と法務レビューで確定する必要があります。
 
 ## 10. Terms of Use draft principles
 
@@ -85,8 +89,8 @@ Web Vitalsは現在、LCP / INP / CLS / TTFB の種類と good / needs-improveme
 - 最終Terms of Use
 - 最終診断limitations文面
 - cookie/analytics consentの要否と実挙動
-- 最終retention/deletion方針
-- production backup保存/削除挙動
+- 最終retention/deletion方針とproduction retention scheduler
+- production backup保存・restore時の削除済みデータ取扱い
 - calibrationを開始する場合の別同意
 - privacy/security requestの実在する連絡先
 - 事業者情報・準拠法・責任制限等の法的条項
