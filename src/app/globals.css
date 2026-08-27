@@ -2,9 +2,9 @@
   --paper: #f2efe7;
   --surface: #fbfaf5;
   --ink: #171713;
-  --muted: #69675f;
+  --muted: #5f5d56;
   --line: #d7d1c5;
-  --accent: #c84f36;
+  --accent: #b74631;
   --accent-soft: #e6d6c9;
   --sage: #dce2d4;
   --dark: #20211d;
@@ -441,7 +441,7 @@ a {
 }
 
 .sectionIndex.light {
-  color: #aaa99f;
+  color: #fff9f1;
 }
 
 .adversarialBody {
