@@ -67,6 +67,9 @@ jobs:
       - name: PostgreSQL persistence integration
         run: npm run test:persistence:integration
 
+      - name: Analytics retention cleanup dry-run
+        run: npm run cleanup:analytics
+
       - name: Reviewed development model seed integration
         run: npm run test:seed:dev
 
