@@ -5,6 +5,8 @@ import { ASSESSMENT_SESSION_COOKIE } from "../../server/assessmentCookie";
 import { withPcsDatabase } from "../../server/assessmentRuntime";
 import { recordServerProductEventBestEffort } from "../../server/productAnalytics";
 import ShareControls from "./ShareControls";
+import { CuratedFallbackArtwork } from "../../components/illustration/CuratedFallbackArtwork";
+import { DEVELOPMENT_FALLBACK_ILLUSTRATION_ASSET_VERSION } from "../../domain/illustration/fallbackAsset";
 import styles from "./result.module.css";
 
 export const runtime = "nodejs";
@@ -58,6 +60,9 @@ export default async function ResultPage() {
   if (!result) return <MissingResult message="まだ確定済みの診断結果がありません。" />;
 
   const snapshot = result.snapshot;
+  const illustrationAssetVersion = "assets" in snapshot
+    ? snapshot.assets.illustrationAssetVersion
+    : null;
 
   return (
     <main className={styles.page}>
@@ -67,13 +72,21 @@ export default async function ResultPage() {
       </header>
 
       <section className={styles.hero}>
-        <p className={styles.eyebrow}>DETERMINISTIC DEVELOPMENT RESULT</p>
-        <h1>{snapshot.personalityCode.coreCode}</h1>
-        <p className={styles.extendedCode}>{snapshot.personalityCode.extendedCode}</p>
-        <p className={styles.lead}>
-          これは開発中の固定モデルによる結果です。科学的妥当性や人口希少性を確定したものではありません。
-          同一回答・同一versionでは同一スコア、コード、Interaction、Content Moduleが再現されます。
-        </p>
+        <div className={styles.heroCopy}>
+          <p className={styles.eyebrow}>DETERMINISTIC DEVELOPMENT RESULT</p>
+          <h1>{snapshot.personalityCode.coreCode}</h1>
+          <p className={styles.extendedCode}>{snapshot.personalityCode.extendedCode}</p>
+          <p className={styles.lead}>
+            これは開発中の固定モデルによる結果です。科学的妥当性や人口希少性を確定したものではありません。
+            同一回答・同一versionでは同一スコア、コード、Interaction、Content Moduleが再現されます。
+          </p>
+        </div>
+        {illustrationAssetVersion === DEVELOPMENT_FALLBACK_ILLUSTRATION_ASSET_VERSION && (
+          <figure className={styles.heroArtwork}>
+            <CuratedFallbackArtwork />
+            <figcaption>{illustrationAssetVersion}</figcaption>
+          </figure>
+        )}
       </section>
 
       <section className={styles.metaGrid} aria-label="結果メタデータ">
@@ -125,6 +138,7 @@ export default async function ResultPage() {
         <h2>Reproducibility record</h2>
         <dl>
           {Object.entries(snapshot.versions).map(([key, value]) => <div key={key}><dt>{key}</dt><dd>{value}</dd></div>)}
+          {illustrationAssetVersion && <div><dt>illustrationAssetVersion</dt><dd>{illustrationAssetVersion}</dd></div>}
           <div><dt>snapshotId</dt><dd>{result.snapshotId}</dd></div>
           <div><dt>createdAt</dt><dd>{result.createdAt}</dd></div>
         </dl>
