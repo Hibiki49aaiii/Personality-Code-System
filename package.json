@@ -49,7 +49,9 @@
     "validate:diagnostic-retention": "node scripts/validate-diagnostic-retention.mjs",
     "validate:runtime-package": "node scripts/validate-container-runtime.mjs",
     "smoke:standalone": "node scripts/smoke-standalone-runtime.mjs",
-    "validate:runtime-launch-gate": "node scripts/validate-runtime-launch-gate.mjs"
+    "validate:runtime-launch-gate": "node scripts/validate-runtime-launch-gate.mjs",
+    "validate:db-role": "node scripts/validate-database-role-policy.mjs",
+    "test:db-role:integration": "node tests/infrastructure/database-least-privilege.integration.mjs"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",
