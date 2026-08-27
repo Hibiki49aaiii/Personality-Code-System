@@ -1,3 +1,5 @@
+import LandingAnalytics from "./LandingAnalytics";
+
 const traitRows = [
   ["SYSTEM THINKING", 96],
   ["VERIFICATION", 98],
@@ -17,6 +19,7 @@ const domains = [
 export default function Home() {
   return (
     <main>
+      <LandingAnalytics />
       <header className="siteHeader shell">
         <a className="brand" href="#top" aria-label="Personality Code System home">
           <span className="brandMark" aria-hidden="true">PC</span>
