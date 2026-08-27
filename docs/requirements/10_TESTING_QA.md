@@ -131,7 +131,7 @@ Additional current E2E coverage includes:
 - privacy-safe analytics/error/performance contracts;
 - security headers;
 - privacy-safe rate limiting;
-- hostile cross-site mutation rejection with no persisted side effect and privacy-safe 403 response;
+- hostile cross-site mutation rejection with no persisted side effect and privacy-safe 403 response, including destructive diagnostic deletion;
 - health/readiness response.
 
 Still required in later QA layers:
@@ -240,6 +240,7 @@ Release checks:
 Current privacy/security automation additionally includes:
 
 - the versioned seven-class privacy data inventory and migration-to-inventory exact-coverage validator;
+- the anonymous diagnostic self-deletion contract/validator, repository integration test, cascade-guard negative tests, cookie invalidation browser flow and hostile-origin deletion rejection;
 - default prohibition of direct identity, precise-location, media, and contacts collection in the normal application surface;
 - release static scanning for runtime AI dependencies/imports, sensitive public environment names, obvious committed secrets/private keys, unsafe dynamic HTML/code execution, and Client Component access to server-only environment variables;
 - Next.js framework-header suppression with production browser source maps disabled;
@@ -272,16 +273,18 @@ Current CI performs, in order:
 5. reviewed Item Bank validation;
 6. analytics event/privacy validation;
 7. privacy data-inventory and collection-minimization validation;
-8. security-header/rate-limit policy validation;
-9. persistence migration/static invariant validation;
-10. real PostgreSQL persistence and application integration, including rate-limit/retention behavior;
-11. analytics/rate-limit retention dry-run;
-12. reviewed model-seed/application integration;
-13. domain/infrastructure unit and Golden Snapshot tests;
-14. TypeScript typecheck;
-15. Next.js production build;
-16. production client-artifact leakage audit;
-17. Chromium installation and E2E covering the full assessment/share journey plus responsive, keyboard, touch, axe, security/CSRF, telemetry and 16-image visual-regression contracts.
+8. anonymous diagnostic self-deletion contract validation;
+9. security-header/rate-limit policy validation;
+10. persistence migration/static invariant validation;
+11. real PostgreSQL persistence and application integration, including rate-limit/retention/privacy-deletion behavior;
+12. analytics/rate-limit retention dry-run;
+13. reviewed model-seed/application integration;
+14. domain/infrastructure unit and Golden Snapshot tests;
+15. TypeScript typecheck;
+16. Next.js production build;
+17. production client-artifact leakage audit;
+18. production artifact performance-budget audit;
+19. Chromium installation and E2E covering the full assessment/share/deletion journey plus responsive, keyboard, touch, axe, security/CSRF, telemetry and visual-regression contracts.
 
 Later release gates still require:
 
