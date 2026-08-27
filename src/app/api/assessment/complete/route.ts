@@ -1,6 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { completePublicAssessment } from '../../../../application/assessment/serverAssessmentService';
 import { withPcsDatabase } from '../../../../server/assessmentRuntime';
+import { recordServerProductEventBestEffort } from '../../../../server/productAnalytics';
 import { assessmentApiError, getAssessmentToken, noStoreJson } from '../_shared';
 
 export const runtime = 'nodejs';
@@ -13,7 +14,19 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const completed = await withPcsDatabase((db) => completePublicAssessment(db, token));
+    const completed = await withPcsDatabase(async (db) => {
+      const outcome = await completePublicAssessment(db, token);
+      if (!outcome.alreadyCompleted) {
+        await recordServerProductEventBestEffort(db, {
+          name: 'assessment_completed',
+          privateToken: token,
+          properties: {
+            answeredCount: outcome.snapshot.responseQuality.answerCount
+          }
+        });
+      }
+      return outcome;
+    });
     return noStoreJson({
       ok: true,
       snapshotId: completed.snapshotId,
