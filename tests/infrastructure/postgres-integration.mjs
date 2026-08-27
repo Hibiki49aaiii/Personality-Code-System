@@ -352,6 +352,22 @@ try {
     /answers may only change while a session is in_progress/i
   );
   await expectDbFailure(
+    'answer deletion after completion',
+    () => sql`
+      DELETE FROM assessment_answers
+      WHERE session_id = ${sessionId} AND item_id = 'PCS-SYS-001'
+    `,
+    /answers may only change while a session is in_progress/i
+  );
+  await expectDbFailure(
+    'trait score deletion after completion',
+    () => sql`
+      DELETE FROM assessment_trait_scores
+      WHERE session_id = ${sessionId} AND trait_id = 'SYS'
+    `,
+    /trait scores may only change while a session is in_progress/i
+  );
+  await expectDbFailure(
     'completed session mutation',
     () => sql`UPDATE anonymous_sessions SET locale = 'en-US' WHERE session_id = ${sessionId}`,
     /completed anonymous sessions are immutable/i
