@@ -46,12 +46,28 @@ The implemented anonymous assessment flow currently provides:
 
 These controls are sufficient evidence for Master **PCS-PRIV-001** at the current anonymous-flow level.
 
+### Current user-controlled anonymous diagnostic deletion
+
+The development application now implements an explicit destructive privacy path rather than relying only on future retention jobs:
+
+- `DELETE /api/assessment/data` requires the private HttpOnly session capability;
+- `assertTrustedMutationRequest()` rejects cross-site deletion attempts before destructive work;
+- a dedicated `data-deletion` HMAC rate-limit scope is session-bound;
+- the UI requires an explicit second confirmation and states that the operation cannot be undone;
+- derived `public_share_snapshots` are physically deleted before deleting the owning private session;
+- deleting `anonymous_sessions` cascades to answers, Trait Scores, private result snapshots and session-bound product events;
+- migration `0006_privacy_delete_cascade_guards.sql` permits only the parent-session cascade path while continuing to reject direct deletion/mutation of completed child rows;
+- the private session cookie is cleared after successful deletion;
+- `data/privacy/user-deletion-v0.1-dev.json` and `npm run validate:user-deletion` keep the ownership, scope, rate-limit, CSRF, cascade and remaining launch blockers machine-auditable.
+
+This advances the deletion portion of **PCS-LEGAL-001**, but does not close it. Production retention scheduling, backup restore/deletion behavior, final legal wording/contact route and jurisdiction-specific review remain release blockers.
+
 ## Current security hardening implementation
 
 The development application now also provides:
 
 - versioned rate-limit policy `rate-limits-v0.1-dev`;
-- PostgreSQL fixed-window rate-limit buckets for session creation, answer mutation, completion, share mutation and analytics ingestion;
+- PostgreSQL fixed-window rate-limit buckets for session creation, answer mutation, completion, share mutation, destructive data deletion and analytics ingestion;
 - HMAC-SHA256 bucket principals; raw IP addresses and private session tokens are not persisted in the rate-limit table;
 - privacy-safe 429 responses with `Retry-After` and no principal/bucket/token details;
 - production requires an external `PCS_RATE_LIMIT_SECRET` of at least 32 characters;
@@ -63,7 +79,7 @@ The development application now also provides:
 - `poweredByHeader: false` suppresses the default Next.js framework disclosure and production browser source maps remain disabled;
 - `scripts/validate-release-security.mjs` rejects runtime AI/LLM dependencies/imports, sensitive `NEXT_PUBLIC_*` names, obvious committed credentials/private keys, unsafe dynamic HTML/code execution primitives, and server-only environment references from Client Components;
 - `scripts/audit-production-build.mjs` scans production client artifacts for source maps and configured/server-only secret identifiers or values;
-- `assertTrustedMutationRequest()` rejects cross-site state-changing requests before rate-limit/DB mutation work, and Chromium E2E verifies hostile Origin/Sec-Fetch-Site requests cannot save answers, complete assessments, or create shares;
+- `assertTrustedMutationRequest()` rejects cross-site state-changing requests before rate-limit/DB mutation work, and Chromium E2E verifies hostile Origin/Sec-Fetch-Site requests cannot save answers, complete assessments, create/revoke shares, or delete diagnostic data;
 - rejected mutation/error responses are checked for absence of attacker-controlled origins, secrets, stack details, and hash-like internal identifiers.
 
 Verification evidence includes CI Run `33038326772` (Run 304) for the earlier rate-limit/security-header baseline and CI Run 373 (`33050505946`) for the current privacy inventory, release-security audit, typecheck/build, production-artifact audit, and Chromium security regression suite.
