@@ -101,3 +101,12 @@ Actual grants/roles are deployment evidence and remain open.
 - required external evidence lists remain non-empty.
 
 A hosting/deployment change must update this contract and its evidence rather than silently redefining what “production” means.
+
+
+## Database least privilege contract
+
+Production database credentials must not be assumed equivalent to CI/local credentials. The production application role should have only the privileges required by runtime queries, while migration/administrative capabilities are separated.
+
+The repository now defines `data/security/database-role-policy-v0.1-dev.json` and `ops/sql/runtime-role-grants.sql`. CI creates a real restricted PostgreSQL login from the machine policy, verifies all per-table SELECT/INSERT/UPDATE/DELETE grants, exercises representative session/analytics/rate-limit writes, and proves CREATE TABLE, ALTER TABLE and versioned-definition writes are denied.
+
+This proves the grant model is executable. The identity and actual grants of the deployed production role are still deployment evidence and remain open.
