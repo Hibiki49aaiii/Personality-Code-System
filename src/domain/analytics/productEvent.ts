@@ -25,7 +25,7 @@ interface EventDictionary {
   events: EventDefinition[];
 }
 
-const dictionary = dictionaryJson as EventDictionary;
+const dictionary = dictionaryJson as unknown as EventDictionary;
 const byName = new Map(dictionary.events.map((event) => [event.name, event]));
 const forbiddenLower = new Set(dictionary.forbidden_property_keys.map((key) => key.toLowerCase()));
 
