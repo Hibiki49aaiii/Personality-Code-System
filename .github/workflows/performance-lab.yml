@@ -42,6 +42,7 @@ jobs:
       PCS_RATE_LIMIT_SECRET: pcs-ci-only-rate-limit-secret-0123456789abcdef
       PCS_PERF_PROFILE: ${{ matrix.profile }}
       PCS_DEPLOYMENT_ENV: preview
+      PCS_SITE_ORIGIN: http://localhost:3000
       PCS_CLIENT_IP_HEADER: x-forwarded-for
 
     steps:
