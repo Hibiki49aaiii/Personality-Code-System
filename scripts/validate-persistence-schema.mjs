@@ -70,6 +70,8 @@ const requiredFragments = [
   ['answer session/model guard', /CREATE TRIGGER\s+assessment_answers_session_model_guard/i],
   ['trait-score session/model guard', /CREATE TRIGGER\s+assessment_trait_scores_session_model_guard/i],
   ['session completion guard', /CREATE TRIGGER\s+anonymous_sessions_completion_guard/i],
+  ['result illustration asset linkage guard', /CREATE TRIGGER\s+result_snapshots_asset_linkage_guard/i],
+  ['public share illustration asset linkage guard', /CREATE TRIGGER\s+public_share_snapshots_asset_linkage_guard/i],
   ['restrict model references', /assessment_model_releases\(model_version\)\s+ON DELETE RESTRICT/i],
   ['rate limit HMAC bucket hash', /bucket_hash\s+char\(64\)/i],
   ['rate limit count check', /request_count\s+integer\s+NOT NULL[\s\S]*request_count\s+>=\s+1/i],
