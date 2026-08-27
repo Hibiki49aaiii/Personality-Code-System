@@ -49,6 +49,9 @@ jobs:
       - name: Audit production dependencies
         run: npm run audit:prod
 
+      - name: Audit release security and runtime dependency boundary
+        run: npm run audit:release-security
+
       - name: Validate requirement IDs
         run: npm run validate:requirements
 
@@ -90,6 +93,9 @@ jobs:
 
       - name: Production build
         run: npm run build
+
+      - name: Audit production client artifact leakage
+        run: npm run audit:production-build
 
       - name: Install Chromium for E2E
         run: npx playwright install --with-deps chromium
