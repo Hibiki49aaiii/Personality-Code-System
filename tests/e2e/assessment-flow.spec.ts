@@ -176,6 +176,15 @@ test('anonymous user completes the private result and can explicitly create then
 
   await publicContext.close();
 
+  await page.getByRole('button', { name: '診断データを削除' }).click();
+  await expect(page.getByRole('group', { name: '診断データ削除の確認' })).toBeVisible();
+  await expect(page.getByText('この操作は取り消せません。')).toBeVisible();
+  await page.getByRole('button', { name: '削除を確定' }).click();
+  await expect(page).toHaveURL('http://localhost:3000/');
+
+  await page.goto('/result');
+  await expect(page.getByText('このブラウザに診断セッションがありません。')).toBeVisible();
+
   await expect.poll(() => analyticsStatuses.length, { timeout: 10_000 }).toBeGreaterThan(5);
   expect(analyticsStatuses.every((status) => status === 202)).toBe(true);
 
