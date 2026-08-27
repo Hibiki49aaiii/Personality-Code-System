@@ -5,6 +5,7 @@ import { ASSESSMENT_SESSION_COOKIE } from "../../server/assessmentCookie";
 import { withPcsDatabase } from "../../server/assessmentRuntime";
 import { recordServerProductEventBestEffort } from "../../server/productAnalytics";
 import ShareControls from "./ShareControls";
+import DataControls from "./DataControls";
 import { CuratedFallbackArtwork } from "../../components/illustration/CuratedFallbackArtwork";
 import { DEVELOPMENT_FALLBACK_ILLUSTRATION_ASSET_VERSION } from "../../domain/illustration/fallbackAsset";
 import styles from "./result.module.css";
@@ -133,6 +134,7 @@ export default async function ResultPage() {
       </section>
 
       <ShareControls coreCode={snapshot.personalityCode.coreCode} />
+      <DataControls />
 
       <section className={styles.versionBlock}>
         <h2>Reproducibility record</h2>
