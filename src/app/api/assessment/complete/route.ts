@@ -2,6 +2,7 @@ import type { NextRequest } from 'next/server';
 import { completePublicAssessment } from '../../../../application/assessment/serverAssessmentService';
 import { withPcsDatabase } from '../../../../server/assessmentRuntime';
 import { recordServerProductEventBestEffort } from '../../../../server/productAnalytics';
+import { applyRateLimit } from '../../../../server/rateLimit';
 import { assessmentApiError, getAssessmentToken, noStoreJson } from '../_shared';
 
 export const runtime = 'nodejs';
@@ -15,6 +16,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const completed = await withPcsDatabase(async (db) => {
+      await applyRateLimit(db, request, 'assessment-complete', token);
       const outcome = await completePublicAssessment(db, token);
       if (!outcome.alreadyCompleted) {
         await recordServerProductEventBestEffort(db, {
