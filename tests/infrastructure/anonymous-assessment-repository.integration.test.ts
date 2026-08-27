@@ -12,6 +12,7 @@ import {
 } from '../../src/infrastructure/persistence/anonymousAssessmentRepository';
 import { hashAnonymousSessionToken } from '../../src/infrastructure/persistence/sessionToken';
 import { anonymousSessions } from '../../src/infrastructure/persistence/schema';
+import { DEVELOPMENT_FALLBACK_ILLUSTRATION_ASSET_VERSION } from '../../src/domain/illustration/fallbackAsset';
 
 function oneTraitResult(): StructuredAssessmentResult {
   return {
@@ -106,11 +107,14 @@ test('repository creates hash-only session, persists answer/result atomically, a
 
     const completed = await completeAnonymousAssessment(connection.db, {
       token: created.token,
-      result: oneTraitResult()
+      result: oneTraitResult(),
+      illustrationAssetVersion: DEVELOPMENT_FALLBACK_ILLUSTRATION_ASSET_VERSION
     });
 
     assert.ok(completed.snapshotId);
     assert.equal(completed.snapshot.traitScores[0]?.scoreBp, 5000);
+    assert.equal(completed.snapshot.snapshotSchemaVersion, 'result-snapshot-v0.2-dev');
+    assert.equal(completed.snapshot.assets.illustrationAssetVersion, DEVELOPMENT_FALLBACK_ILLUSTRATION_ASSET_VERSION);
 
     const privateResult = await getPrivateResultByAnonymousToken(connection.db, created.token);
     assert.ok(privateResult);
