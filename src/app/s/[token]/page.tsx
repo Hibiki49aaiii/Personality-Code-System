@@ -4,6 +4,8 @@ import { getPublicShareByToken } from '../../../infrastructure/persistence/publi
 import { withPcsDatabase } from '../../../server/assessmentRuntime';
 import { getSiteOrigin } from '../../../server/siteOrigin';
 import { recordServerProductEventBestEffort } from '../../../server/productAnalytics';
+import { CuratedFallbackArtwork } from '../../../components/illustration/CuratedFallbackArtwork';
+import { DEVELOPMENT_FALLBACK_ILLUSTRATION_ASSET_VERSION } from '../../../domain/illustration/fallbackAsset';
 import styles from './share.module.css';
 
 export const runtime = 'nodejs';
@@ -105,6 +107,7 @@ export default async function PublicSharePage({
 
   const snapshot = result.snapshot;
   const displayName = snapshot.presentation.displayName;
+  const illustrationAssetVersion = snapshot.presentation.illustrationAssetVersion;
 
   return (
     <main className={styles.page}>
@@ -120,6 +123,12 @@ export default async function PublicSharePage({
         {snapshot.presentation.identitySentence && (
           <p className={styles.identity}>{snapshot.presentation.identitySentence}</p>
         )}
+        {illustrationAssetVersion === DEVELOPMENT_FALLBACK_ILLUSTRATION_ASSET_VERSION && (
+          <figure className={styles.artwork}>
+            <CuratedFallbackArtwork />
+            <figcaption>{illustrationAssetVersion}</figcaption>
+          </figure>
+        )}
         <p className={styles.note}>
           このページは本人が明示的に公開した共有Snapshotです。質問への回答、Trait Vector、
           Extended Code、Response Qualityなどの非公開診断データは含まれていません。
@@ -131,6 +140,7 @@ export default async function PublicSharePage({
         <div><span>CODE SCHEMA</span><strong>{snapshot.versions.codeSchemaVersion}</strong></div>
         <div><span>CONTENT</span><strong>{snapshot.versions.contentVersion}</strong></div>
         <div><span>SHARE SCHEMA</span><strong>{snapshot.shareSchemaVersion}</strong></div>
+        <div><span>ARTWORK</span><strong>{illustrationAssetVersion ?? 'none'}</strong></div>
       </section>
 
       <section className={styles.cta}>
