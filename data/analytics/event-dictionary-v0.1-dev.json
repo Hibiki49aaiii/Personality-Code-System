@@ -242,12 +242,27 @@
       "session_scope": "optional",
       "properties": {
         "category": {
-          "type": "string",
-          "max_length": 64
+          "type": "enum",
+          "values": [
+            "unexpected-ui-error",
+            "request-failure",
+            "persistence-failure",
+            "share-failure",
+            "analytics-failure"
+          ]
         },
         "surface": {
-          "type": "string",
-          "max_length": 64
+          "type": "enum",
+          "values": [
+            "root",
+            "app",
+            "landing",
+            "assessment",
+            "result",
+            "share",
+            "public-share",
+            "analytics"
+          ]
         }
       },
       "required_properties": [
@@ -261,12 +276,27 @@
       "session_scope": "optional",
       "properties": {
         "category": {
-          "type": "string",
-          "max_length": 64
+          "type": "enum",
+          "values": [
+            "unexpected-ui-error",
+            "request-failure",
+            "persistence-failure",
+            "share-failure",
+            "analytics-failure"
+          ]
         },
         "surface": {
-          "type": "string",
-          "max_length": 64
+          "type": "enum",
+          "values": [
+            "root",
+            "app",
+            "landing",
+            "assessment",
+            "result",
+            "share",
+            "public-share",
+            "analytics"
+          ]
         }
       },
       "required_properties": [
