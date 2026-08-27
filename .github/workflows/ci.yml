@@ -88,6 +88,9 @@ jobs:
       - name: Validate release and rollback operations contract
         run: npm run validate:release-operations
 
+      - name: Validate production model activation gate remains blocked
+        run: npm run validate:model-activation
+
       - name: Validate observability release contract remains fail-closed
         run: npm run validate:observability
 
