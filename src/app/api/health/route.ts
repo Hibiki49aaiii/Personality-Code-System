@@ -1,6 +1,7 @@
 import { sql } from 'drizzle-orm';
 import { NextResponse } from 'next/server';
 import { withPcsDatabase } from '../../../server/assessmentRuntime';
+import { logPrivacySafeServerFault } from '../../../server/privacySafeLog';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -25,7 +26,7 @@ export async function GET() {
     });
     return healthJson({ status: 'ok' }, 200);
   } catch {
-    console.error('PCS readiness check failed');
+    logPrivacySafeServerFault({ surface: 'health', category: 'readiness' });
     return healthJson({ status: 'degraded' }, 503);
   }
 }
