@@ -5,6 +5,7 @@ const visualEnabled = process.env.PCS_VISUAL_REGRESSION === '1';
 // Intentional baseline refresh trigger: versioned curated fallback artwork + result snapshot v0.2.
 // Intentional baseline refresh trigger: owner data-deletion panel on private result.
 // Intentional baseline refresh trigger: privacy self-deletion baseline v0.1.
+// Intentional baseline refresh trigger: pre-launch legal footer links baseline v0.1.
 
 const viewports = [
   { label: '320', width: 320, height: 844 },
