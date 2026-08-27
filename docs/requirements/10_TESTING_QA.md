@@ -135,7 +135,6 @@ Additional current E2E coverage includes:
 
 Still required in later QA layers:
 
-- screenshot-diff visual regression baselines;
 - real screen-reader / assistive-technology walkthrough;
 - browser text zoom/text scaling review;
 - richer expired/error recovery UX;
@@ -178,7 +177,18 @@ Functional responsive verification is now automated at:
 
 Run 329 (`33044207630`) verifies landing/assessment functionality and no document-level horizontal overflow at every mandatory width, then verifies the completed private result across the same width matrix. This is the current evidence for Master `PCS-FE-005`.
 
-Screenshot-diff visual regression is intentionally a separate gate. Master `PCS-QA-006` remains open until committed visual baselines/diffs cover the critical landing, assessment, result, adversarial/share/public-result states.
+Screenshot-diff visual regression is now a separate enforced CI gate.
+
+Current committed Linux/Chromium baseline set:
+
+- landing at 320/390/768/1024/1280/1440;
+- first assessment screen at the same six widths;
+- completed deterministic private result at 390/1440;
+- sanitized public share at 390/1440.
+
+The 16 PNG baselines live beside `tests/e2e/visual-regression.spec.ts`. Normal CI runs comparison mode with `PCS_VISUAL_REGRESSION=1` and does **not** use `--update-snapshots`. CI Runs 343/344 passed the committed baseline comparison. A dedicated baseline-update workflow is documented in `docs/reviews/VISUAL_REGRESSION_QA_v0.1.md`.
+
+This completes Master `PCS-QA-006` for the current development application. Final production artwork/copy changes will intentionally require reviewed baseline updates.
 
 ## Accessibility QA
 
@@ -256,12 +266,11 @@ Current CI performs, in order:
 10. domain/infrastructure unit and Golden Snapshot tests;
 11. TypeScript typecheck;
 12. Next.js production build;
-13. Chromium E2E covering the full assessment/share journey plus responsive, keyboard, touch, axe, security and telemetry contracts.
+13. Chromium E2E covering the full assessment/share journey plus responsive, keyboard, touch, axe, security, telemetry and 16-image visual-regression contracts.
 
 Later release gates still require:
 
 - human assistive-technology/text-zoom accessibility review;
-- screenshot-diff visual regression;
 - final release security/privacy checklist;
 - performance budgets/lab evidence;
 - deployed environment/operations QA.
