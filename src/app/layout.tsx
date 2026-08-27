@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { getSiteOrigin } from "../server/siteOrigin";
+import WebVitalsAnalytics from "./WebVitalsAnalytics";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -33,7 +34,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ja">
-      <body>{children}</body>
+      <body><WebVitalsAnalytics />{children}</body>
     </html>
   );
 }
