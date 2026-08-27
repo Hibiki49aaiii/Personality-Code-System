@@ -1,5 +1,7 @@
 import { ImageResponse } from 'next/og';
 import type { ShareSnapshotV01 } from '../../../domain/sharing/shareSnapshot';
+import { CuratedFallbackArtwork } from '../../../components/illustration/CuratedFallbackArtwork';
+import { DEVELOPMENT_FALLBACK_ILLUSTRATION_ASSET_VERSION } from '../../../domain/illustration/fallbackAsset';
 
 export const SHARE_OG_TEMPLATE_VERSION = 'share-og-v0.1-dev';
 export const SHARE_PORTRAIT_TEMPLATE_VERSION = 'share-portrait-v0.1-dev';
@@ -16,6 +18,8 @@ export function renderShareImage(snapshot: ShareSnapshotV01, kind: ShareImageKin
   const { width, height } = dimensions(kind);
   const isPortrait = kind === 'portrait';
   const templateVersion = isPortrait ? SHARE_PORTRAIT_TEMPLATE_VERSION : SHARE_OG_TEMPLATE_VERSION;
+  const illustrationAssetVersion = snapshot.presentation.illustrationAssetVersion;
+  const showFallbackArtwork = illustrationAssetVersion === DEVELOPMENT_FALLBACK_ILLUSTRATION_ASSET_VERSION;
 
   return new ImageResponse(
     (
@@ -39,7 +43,8 @@ export function renderShareImage(snapshot: ShareSnapshotV01, kind: ShareImageKin
           </div>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: isPortrait ? 34 : 52 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
           {snapshot.presentation.displayName ? (
             <div style={{ fontSize: isPortrait ? 42 : 30, fontWeight: 650, marginBottom: 18 }}>
               {snapshot.presentation.displayName}
@@ -83,6 +88,12 @@ export function renderShareImage(snapshot: ShareSnapshotV01, kind: ShareImageKin
               Personality Code System — sanitized shared result
             </div>
           )}
+          </div>
+          {showFallbackArtwork ? (
+            <div style={{ display: 'flex', width: isPortrait ? 300 : 250, height: isPortrait ? 300 : 250, flexShrink: 0 }}>
+              <CuratedFallbackArtwork width={isPortrait ? 300 : 250} height={isPortrait ? 300 : 250} decorative />
+            </div>
+          ) : null}
         </div>
 
         <div
@@ -105,7 +116,8 @@ export function renderShareImage(snapshot: ShareSnapshotV01, kind: ShareImageKin
       height,
       headers: {
         'Cache-Control': 'public, max-age=0, s-maxage=60',
-        'X-PCS-Share-Template': templateVersion
+        'X-PCS-Share-Template': templateVersion,
+        ...(illustrationAssetVersion ? { 'X-PCS-Illustration-Asset': illustrationAssetVersion } : {})
       }
     }
   );
