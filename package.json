@@ -41,7 +41,8 @@
     "validate:performance-lab": "node scripts/validate-performance-lab-evidence.mjs",
     "test:performance:lab": "playwright test -c playwright.performance.config.ts",
     "validate:a11y-release": "node scripts/validate-manual-accessibility-release.mjs",
-    "generate:type-editorial-review-worklist": "node scripts/materialize-type-editorial-review-worklist.mjs"
+    "generate:type-editorial-review-worklist": "node scripts/materialize-type-editorial-review-worklist.mjs",
+    "validate:observability": "node scripts/validate-observability-contract.mjs"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",
