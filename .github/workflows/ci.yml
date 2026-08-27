@@ -93,6 +93,9 @@ jobs:
       - name: Validate release and rollback operations contract
         run: npm run validate:release-operations
 
+      - name: Validate backup/restore privacy and quarantine policy
+        run: npm run validate:backup-restore
+
       - name: Validate production model activation gate remains blocked
         run: npm run validate:model-activation
 
@@ -146,6 +149,9 @@ jobs:
 
       - name: Reviewed development model seed integration
         run: npm run test:seed:dev
+
+      - name: Logical backup/restore rehearsal
+        run: npm run test:backup-restore:integration
 
       - name: Domain and infrastructure tests
         run: npm run test:domain
