@@ -145,6 +145,8 @@ Incidents affecting diagnostic correctness require identifying impacted model/ve
 
 ## Pre-launch gate
 
+The current fail-closed launch artifact is `data/release/public-launch-gate-v0.1-dev.json`, specified by `docs/operations/PUBLIC_LAUNCH_GATE_v0.1.md` and validated on every CI run. It remains `public_launch_ready=false` and cross-checks both repository requirements and external/manual evidence.
+
 Public v1.0 launch requires all of the following or an explicit documented exception approved in requirements:
 
 - [ ] production build/test suite green;

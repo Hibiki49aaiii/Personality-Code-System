@@ -31,7 +31,8 @@
     "audit:performance-build": "node scripts/audit-performance-build.mjs",
     "validate:calibration": "node scripts/validate-calibration-protocol.mjs",
     "validate:release-operations": "node scripts/validate-release-operations.mjs",
-    "validate:environment": "node scripts/validate-environment-contract.mjs"
+    "validate:environment": "node scripts/validate-environment-contract.mjs",
+    "validate:launch-gate": "node scripts/validate-public-launch-gate.mjs"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",

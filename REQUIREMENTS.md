@@ -207,7 +207,7 @@ Detailed requirements: [`docs/requirements/10_TESTING_QA.md`](docs/requirements/
 - [ ] **PCS-OPS-003** Error monitoring/health checks. *(Development foundation now includes fixed-category first-party client error telemetry, bucket-only Web Vitals, and a minimal DB readiness endpoint verified in Chromium/API CI; production external monitoring, server/API rate visibility and alerting remain.)*
 - [x] **PCS-OPS-004** Documented production rollback. *(Repository-level runbook covers application, database forward-fix, assessment model, content, illustration assets, share-card template, post-rollback verification and affected-result handling; release-operations validator passed in CI Run 383. Deployment-provider commands/restore rehearsal remain OPS-001/002/006 adjacent evidence rather than part of this documentation requirement.)*
 - [ ] **PCS-OPS-005** Assessment/model release requires explicit version freeze/migration review.
-- [ ] **PCS-OPS-006** Public launch gate complete before announcing v1.0.
+- [ ] **PCS-OPS-006** Public launch gate complete before announcing v1.0. *(Machine-readable fail-closed launch gate now enumerates open Master/phase requirements and external/manual evidence. `public_launch_ready=false`; v1 announcement/public indexing/validated/population-rarity actions remain explicitly blocked.)*
 
 Detailed requirements: [`docs/requirements/11_RELEASE_OPERATIONS.md`](docs/requirements/11_RELEASE_OPERATIONS.md)
 

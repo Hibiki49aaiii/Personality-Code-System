@@ -1,0 +1,55 @@
+{
+  "gate_version": "public-launch-gate-v0.1-dev",
+  "status": "blocked",
+  "public_launch_ready": false,
+  "checked_at": "2026-08-27",
+  "rule": "Every required master requirement must be checked and external/manual evidence fields must be non-pending before public_launch_ready can become true.",
+  "required_master_requirements": [
+    "PCS-SCORE-003",
+    "PCS-RESULT-005",
+    "PCS-CONTENT-001",
+    "PCS-CONTENT-002",
+    "PCS-CONTENT-003",
+    "PCS-ART-002",
+    "PCS-ART-003",
+    "PCS-A11Y-002",
+    "PCS-PERF-001",
+    "PCS-LEGAL-001",
+    "PCS-SOC-001",
+    "PCS-ANA-003",
+    "PCS-QA-005",
+    "PCS-QA-007",
+    "PCS-OPS-001",
+    "PCS-OPS-002",
+    "PCS-OPS-003",
+    "PCS-OPS-005"
+  ],
+  "required_phase_gates": [
+    "Phase 3A — public Core Type/content catalog.",
+    "Phase 3B — illustrations.",
+    "Phase 4A — social sharing/OG.",
+    "Phase 4B — analytics/monitoring.",
+    "Phase 5A — closed beta/calibration collection.",
+    "Phase 5B — statistical review/pruning/retest.",
+    "Phase 5C — production assessment/public code model v1.0 freeze."
+  ],
+  "external_manual_evidence": {
+    "production_environment_separation": "pending",
+    "production_tls_domain": "pending",
+    "deployment_secret_store_and_rotation": "pending",
+    "production_db_least_privilege": "pending",
+    "trusted_proxy_configuration": "pending",
+    "backup_restore_rehearsal": "pending",
+    "external_or_independent_monitoring": "pending",
+    "manual_accessibility_walkthrough": "pending",
+    "external_security_review": "pending",
+    "legal_publication_review": "pending",
+    "representative_cwv_evidence": "pending"
+  },
+  "launch_actions": {
+    "announce_v1_allowed": false,
+    "enable_public_indexing_allowed": false,
+    "claim_validated_allowed": false,
+    "publish_population_rarity_allowed": false
+  }
+}
