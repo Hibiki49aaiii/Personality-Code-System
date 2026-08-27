@@ -287,24 +287,35 @@ Public display remains pending production model freeze, valid-assessment exclusi
 
 #### 4B-3 Retention/observability foundation — COMPLETE as development implementation
 - [x] versioned analytics retention policy (`analytics-retention-v0.1-dev`);
-- [x] 30-day unscoped / 90-day session-bound cleanup repository;
-- [x] anonymous-session deletion still cascades linked analytics earlier;
-- [x] dry-run-first retention CLI with explicit `--execute` deletion mode;
-- [x] PostgreSQL retention-window integration coverage;
-- [x] CI executes analytics retention cleanup in dry-run mode;
+- [x] 30-day unscoped / 90-day session-bound analytics cleanup repository;
+- [x] bearer-owned destructive diagnostic self-deletion with public-share cleanup and cookie invalidation;
+- [x] versioned diagnostic retention policy with 30-day abandoned-session / 90-day raw-answer / 180-day private-result/session engineering windows;
+- [x] dry-run-first analytics + diagnostic retention CLIs with explicit execution acknowledgement;
+- [x] PostgreSQL retention-window and destructive-deletion integration coverage;
 - [x] fixed-enum client error telemetry with free-form message/stack rejection;
-- [x] App Router + assessment/share client failure instrumentation;
+- [x] fixed-schema server fault logger; runtime source may not directly serialize exception objects to `console.error`;
+- [x] App Router + assessment/share client/server failure instrumentation;
 - [x] bucket-only LCP/INP/CLS/TTFB telemetry; raw value/delta/id excluded;
-- [x] minimal PostgreSQL readiness endpoint with no sensitive environment/error details.
+- [x] minimal PostgreSQL readiness endpoint with no sensitive environment/error details;
+- [x] machine-readable production observability monitor classes remain fail-closed until independently durable external monitoring exists;
+- [x] representative performance-lab workflow exists separately from field-CWV claims.
 
-Evidence: CI Run 269 for error telemetry, Run 270 for retention policy/repository/CLI, and Run 272 for readiness health.
+Production schedulers, independent monitoring/alerting and field evidence remain external release gates; development completion here must not be interpreted as production operations completion.
 
-#### 4B-4 Production operations/calibration — PENDING
+#### 4B-4 Production operations/calibration — PARTIAL foundation / external evidence pending
+- [x] explicit development/preview/production runtime classification contract;
+- [x] production new-assessment activation and public indexing fail closed while launch/model gates are blocked;
+- [x] non-root Next standalone container package + real image build/health/landing smoke workflow;
+- [x] per-table least-privilege PostgreSQL runtime-role policy and restricted-role CI integration;
+- [x] isolated logical backup/restore rehearsal with restore-quarantine/privacy-resurrection policy;
 - [ ] scheduled production execution/evidence for retention cleanup;
-- [ ] development/preview/production analytics separation;
+- [ ] distinct deployed preview/production analytics/database identities;
 - [ ] independently durable server/API error-rate monitoring and operational dashboards;
 - [ ] database latency/availability monitoring independent of the primary DB;
 - [ ] deployment/version correlation + alerting/escalation;
+- [ ] real edge/CDN client-address header sanitization evidence;
+- [ ] production DB role/grant dump and migration-admin separation evidence;
+- [ ] provider backup encryption/access plus deletion-journal replay/non-resurrection proof;
 - [ ] legal/consent behavior aligned with analytics implementation;
 - [ ] consented privacy-preserving calibration data pipeline/export;
 - [ ] deployed third-party/network leakage audit.
