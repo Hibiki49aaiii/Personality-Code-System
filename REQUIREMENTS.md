@@ -1,7 +1,7 @@
 # Personality Code System — Master Requirements & Delivery Checklist
 
 > Status: authoritative development contract
-> Version: 0.9.1
+> Version: 0.10.0
 > Last updated: 2026-08-27
 
 This file is the single top-level source of truth for PCS scope and delivery status. Detailed requirements live under `docs/requirements/`.
@@ -172,7 +172,7 @@ Detailed requirements: [`docs/requirements/07_APPLICATION_ARCHITECTURE_AND_DATA.
 - [ ] **PCS-PRIV-002** Collect only data required for diagnosis/reliability/operation/consented features.
 - [x] **PCS-PRIV-003** Raw answers/personality scores excluded from third-party analytics payloads by default. *(Current product analytics is first-party-only with third-party export disabled; event/DB allowlists reject answer values, Trait vectors and diagnostic internals, and Chromium network assertions verify answer interactions send no answer value.)*
 - [x] **PCS-PRIV-004** Public/shareable result persistence requires explicit user action. *(Separate opt-in Share API/UI; assessment completion itself creates no public snapshot.)*
-- [ ] **PCS-SEC-001** Secure session tokens, validation, rate limits, security headers, dependency scanning. *(Token/validation/cookie controls exist; rate limiting, full security headers and dependency-security gate remain.)*
+- [x] **PCS-SEC-001** Secure session tokens, validation, rate limits, security headers, dependency scanning. *(Development implementation verified: 256-bit/hash-only session and share capabilities, server-side write validation, PostgreSQL HMAC fixed-window mutation rate limits with privacy-safe 429s, CSP/HSTS/frame/content-type/referrer/permissions headers, machine-checked security policy, and CI production dependency audit. Deployment TLS/trusted-proxy/least-privilege/release review remain OPS/QA gates.)*
 - [ ] **PCS-LEGAL-001** Privacy/terms/diagnostic limitations/data deletion-retention explanation before public launch.
 
 Detailed requirements: [`docs/requirements/08_PRIVACY_SECURITY.md`](docs/requirements/08_PRIVACY_SECURITY.md)
@@ -190,7 +190,7 @@ Detailed requirements: [`docs/requirements/09_SOCIAL_SHARING_AND_ANALYTICS.md`](
 
 ## 11. Testing and QA
 
-- [x] **PCS-QA-001** CI performs requirement-ID validation, development type-catalog reachability validation, Item Bank validation, analytics/privacy and retention-policy validation, persistence migration validation, real PostgreSQL/application/domain tests, analytics retention dry-run, TypeScript typecheck, production build, and Chromium browser E2E.
+- [x] **PCS-QA-001** CI performs requirement-ID validation, development type-catalog reachability validation, Item Bank validation, analytics/privacy/retention validation, security baseline validation, production dependency audit, persistence migration validation, real PostgreSQL/application/domain tests, retention cleanup dry-run, TypeScript typecheck, production build, and Chromium browser E2E.
 - [x] **PCS-QA-002** Unit tests cover the complete current domain pipeline including interactions, content selection/suppression, confidence/version handling and fail-closed result composition.
 - [x] **PCS-QA-003** Fixed structured-result Golden Snapshot verifies deterministic output and input-order invariance.
 - [x] **PCS-QA-004** Browser E2E covers anonymous start → back/edit → 147 answers → private result/reload → explicit public share → cookie-free public view → deterministic OG/portrait cards → revocation and public-link invalidation.
