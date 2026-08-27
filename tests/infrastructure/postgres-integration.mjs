@@ -35,7 +35,8 @@ async function applyMigrations() {
     '0001_phase2b_immutability_hardening.sql',
     '0002_phase4a_public_share_snapshots.sql',
     '0003_phase4b_first_party_analytics.sql',
-    '0004_security_rate_limits.sql'
+    '0004_security_rate_limits.sql',
+    '0005_result_snapshot_asset_linkage.sql'
   ]);
 
   for (const file of files) {
