@@ -41,6 +41,10 @@ export default function ShareControls({ coreCode }: ShareControlsProps) {
       setState('ready');
       setMessage('公開用の共有リンクを作成しました。診断回答やTrait Vectorは公開されません。');
     } catch (error) {
+      void sendClientProductEvent('client_error', {
+        category: 'share-failure',
+        surface: 'share'
+      });
       setState('error');
       setMessage(error instanceof Error ? error.message : '共有リンクを作成できませんでした。');
     }
@@ -53,6 +57,10 @@ export default function ShareControls({ coreCode }: ShareControlsProps) {
       await navigator.clipboard.writeText(shareUrl);
       setMessage('共有リンクをコピーしました。');
     } catch {
+      void sendClientProductEvent('client_error', {
+        category: 'share-failure',
+        surface: 'share'
+      });
       setMessage('コピーできませんでした。リンクを長押ししてコピーしてください。');
     }
   }
@@ -89,6 +97,10 @@ export default function ShareControls({ coreCode }: ShareControlsProps) {
       setState('revoked');
       setMessage(`${count}件の公開共有リンクを無効化しました。`);
     } catch (error) {
+      void sendClientProductEvent('client_error', {
+        category: 'share-failure',
+        surface: 'share'
+      });
       setState('error');
       setMessage(error instanceof Error ? error.message : '共有リンクを無効化できませんでした。');
     }
