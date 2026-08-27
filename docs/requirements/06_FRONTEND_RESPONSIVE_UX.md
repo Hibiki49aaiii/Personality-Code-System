@@ -149,7 +149,7 @@ Master **PCS-A11Y-002** remains open because automated checks cannot replace a r
 
 Detailed evidence boundary: `docs/reviews/RESPONSIVE_ACCESSIBILITY_QA_v0.1.md`.
 
-The remaining human release walkthrough is pre-structured in `docs/reviews/MANUAL_ACCESSIBILITY_RELEASE_QA_v0.1.md`. It is deliberately marked NOT RUN so CI cannot be mistaken for real NVDA/VoiceOver/TalkBack/browser-zoom evidence.
+The remaining human release walkthrough is pre-structured in `docs/reviews/MANUAL_ACCESSIBILITY_RELEASE_QA_v0.1.md` and mirrored by `data/accessibility/manual-release-review-v0.1-dev.json`. The template now covers the destructive diagnostic self-deletion confirmation/cancel/execute path in addition to assessment/share flows. `npm run validate:a11y-release` deliberately requires every real screen-reader/device execution record to remain pending until a human performs it, so CI cannot be mistaken for NVDA/VoiceOver/TalkBack/browser-zoom evidence.
 
 ## Motion
 
@@ -178,7 +178,7 @@ A versioned development budget now exists at `data/performance/budgets-v0.1-dev.
 
 After every production build, `scripts/audit-performance-build.mjs` enforces explicit limits for total/largest client JavaScript, total/largest CSS, total/largest `.next/static` output, and browser source-map absence. The audit emits the measured byte totals into CI so budget movement is inspectable.
 
-This closes the previously undefined **artifact-budget** portion only. Master **PCS-PERF-001** remains open because artifact size is not evidence that real users meet Core Web Vitals.
+This closes the previously undefined **artifact-budget** portion. A separate representative lab harness now exercises landing, assessment, private result and public share under desktop and constrained-mobile profiles; Performance Lab Run 1 is green and frozen in `data/performance/lab-evidence-v0.1-dev.json`. Master **PCS-PERF-001** nevertheless remains open because lab observations and scripted Event Timing proxies are not representative field p75 Core Web Vitals.
 
 Additional requirements remain:
 
@@ -214,7 +214,6 @@ Implemented/green in current development CI:
 
 Still required for release:
 
-- screenshot/visual-regression baselines at critical widths;
 - real screen-reader / assistive-technology walkthrough;
 - browser text zoom/text-scaling verification;
 - result-page long-content stress review with final production content;
