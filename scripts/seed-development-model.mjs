@@ -55,6 +55,7 @@ try {
   const scaffold = await readJson('data/type-catalog/v0.1-dev/editorial-scaffold.json');
   const typePrimitives = await readJson('data/type-catalog/v0.1-dev/editorial-primitives.ja.json');
   const traitPrimitives = await readJson('data/content/trait-editorial-primitives.ja-v0.1-dev.json');
+  const fallbackIllustration = await readJson('data/illustration/v0.1-dev/fallback-asset.json');
 
   const contentV02 = materializeDevelopmentContentV02({ manifest: v02Manifest, baseContent, scaffold, primitives: typePrimitives });
   const contentV03 = materializeDevelopmentContentV03({
@@ -83,6 +84,27 @@ try {
     const traitIds = [...new Set(reviewed.map((item) => item.primary_trait))];
     assert.equal(traitIds.length, 21);
     for (const traitId of traitIds) await tx`INSERT INTO trait_definitions (trait_id) VALUES (${traitId}) ON CONFLICT (trait_id) DO NOTHING`;
+
+    const storedFallback = await tx`
+      SELECT asset_key, storage_ref, metadata_json
+      FROM illustration_assets
+      WHERE asset_version = ${fallbackIllustration.asset_version}
+    `;
+    if (storedFallback.length === 0) {
+      await tx`
+        INSERT INTO illustration_assets (asset_version, asset_key, storage_ref, metadata_json)
+        VALUES (
+          ${fallbackIllustration.asset_version},
+          ${fallbackIllustration.asset_key},
+          ${fallbackIllustration.source_ref},
+          ${tx.json(fallbackIllustration)}
+        )
+      `;
+    } else {
+      assertSame('fallback illustration asset key', storedFallback[0].asset_key, fallbackIllustration.asset_key);
+      assertSame('fallback illustration storage ref', storedFallback[0].storage_ref, fallbackIllustration.source_ref);
+      assert.deepEqual(storedFallback[0].metadata_json, fallbackIllustration, 'fallback illustration metadata drift');
+    }
 
     for (const item of reviewed) {
       const existingItem = await tx`SELECT item_id, primary_trait_id FROM assessment_items WHERE item_id = ${item.id}`;
