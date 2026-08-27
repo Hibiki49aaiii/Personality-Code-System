@@ -138,6 +138,35 @@
         "PostgreSQL diagnostic retention integration",
         "CI cleanup dry-run"
       ]
+    },
+    {
+      "change_id": "2026-08-28-server-only-canonical-origin",
+      "date": "2026-08-28",
+      "requirements_version_after": "0.11.7",
+      "affected_requirement_ids": [
+        "PCS-OPS-001",
+        "PCS-OPS-002",
+        "PCS-SOC-003"
+      ],
+      "change": "Remove the legacy public environment fallback for canonical site origin; preview/production require explicit PCS_SITE_ORIGIN and production requires HTTPS.",
+      "rationale": "Prevent misconfigured preview/production share and metadata URLs from silently falling back to localhost or a client-exposed configuration path.",
+      "impacted_files": [
+        "src/server/siteOrigin.ts",
+        ".github/workflows/ci.yml",
+        ".github/workflows/visual-baseline.yml",
+        ".github/workflows/performance-lab.yml",
+        "scripts/validate-environment-contract.mjs"
+      ],
+      "assessment_model_impact": "none",
+      "code_schema_impact": "none",
+      "content_impact": "none",
+      "data_migration_impact": "none",
+      "compatibility_impact": "preview-and-production-now-require-explicit-server-only-origin",
+      "evidence": [
+        "environment contract validator",
+        "Container Package Run 30 success",
+        "preview CI/build/runtime smoke configuration"
+      ]
     }
   ]
 }
