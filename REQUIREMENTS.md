@@ -1,7 +1,7 @@
 # Personality Code System — Master Requirements & Delivery Checklist
 
 > Status: authoritative development contract
-> Version: 0.11.1
+> Version: 0.11.2
 > Last updated: 2026-08-27
 
 This file is the single top-level source of truth for PCS scope and delivery status. Detailed requirements live under `docs/requirements/`.
@@ -169,10 +169,10 @@ Detailed requirements: [`docs/requirements/07_APPLICATION_ARCHITECTURE_AND_DATA.
 ## 9. Privacy and security
 
 - [x] **PCS-PRIV-001** Anonymous assessment default in real web flow. *(No account; opaque 256-bit token stored only as hash server-side; browser carries HttpOnly/SameSite cookie.)*
-- [ ] **PCS-PRIV-002** Collect only data required for diagnosis/reliability/operation/consented features.
+- [x] **PCS-PRIV-002** Collect only data required for diagnosis/reliability/operation/consented features. *(Development implementation is machine-enforced by `data/privacy/data-inventory-v0.1-dev.json`, `docs/model/DATA_MINIMIZATION_SPEC_v0.1.md`, and `npm run validate:privacy-data`: every migration-created table is inventoried exactly once with purpose/retention/public/export defaults, prohibited direct identity/precise-location/media/contact collection remains absent from the normal app surface, and CI Run 373 / `33050505946` passes the contract. Public legal wording remains PCS-LEGAL-001.)*
 - [x] **PCS-PRIV-003** Raw answers/personality scores excluded from third-party analytics payloads by default. *(Current product analytics is first-party-only with third-party export disabled; event/DB allowlists reject answer values, Trait vectors and diagnostic internals, and Chromium network assertions verify answer interactions send no answer value.)*
 - [x] **PCS-PRIV-004** Public/shareable result persistence requires explicit user action. *(Separate opt-in Share API/UI; assessment completion itself creates no public snapshot.)*
-- [x] **PCS-SEC-001** Secure session tokens, validation, rate limits, security headers, dependency scanning. *(Development implementation verified: 256-bit/hash-only session and share capabilities, server-side write validation, PostgreSQL HMAC fixed-window mutation rate limits with privacy-safe 429s, CSP/HSTS/frame/content-type/referrer/permissions headers, machine-checked security policy, and CI production dependency audit. Deployment TLS/trusted-proxy/least-privilege/release review remain OPS/QA gates.)*
+- [x] **PCS-SEC-001** Secure session tokens, validation, rate limits, security headers, dependency scanning. *(Development implementation verified: 256-bit/hash-only session and share capabilities, server-side write validation, PostgreSQL HMAC fixed-window mutation rate limits with privacy-safe 429s, CSP/HSTS/frame/content-type/referrer/permissions headers, machine-checked security policy, CI production dependency audit, release static/runtime-boundary audit, production client-artifact leakage audit, and trusted-origin/Fetch Metadata guards for state-changing routes. Deployment TLS/trusted-proxy/least-privilege/release review remain OPS/QA gates.)*
 - [ ] **PCS-LEGAL-001** Privacy/terms/diagnostic limitations/data deletion-retention explanation before public launch.
 
 Detailed requirements: [`docs/requirements/08_PRIVACY_SECURITY.md`](docs/requirements/08_PRIVACY_SECURITY.md)
@@ -196,7 +196,7 @@ Detailed requirements: [`docs/requirements/09_SOCIAL_SHARING_AND_ANALYTICS.md`](
 - [x] **PCS-QA-004** Browser E2E covers anonymous start → back/edit → 147 answers → private result/reload → explicit public share → cookie-free public view → deterministic OG/portrait cards → revocation and public-link invalidation.
 - [ ] **PCS-QA-005** Automated accessibility + manual keyboard/mobile checks. *(Automated axe + real keyboard traversal + touch/mobile functional coverage are now green in Run 329; human assistive-technology/zoom/manual release review remains.)*
 - [x] **PCS-QA-006** Visual regression at critical responsive widths. *(16 committed Linux/Chromium baselines: landing + assessment at 320/390/768/1024/1280/1440, completed private result at 390/1440, sanitized public share at 390/1440. Normal CI compares without `--update-snapshots`; CI Runs 343/344 passed. Baseline-update workflow and policy are separately controlled.)*
-- [ ] **PCS-QA-007** Security/privacy checklist before release.
+- [ ] **PCS-QA-007** Security/privacy checklist before release. *(Automated release-security foundation now covers runtime AI dependency prohibition, committed-secret/public-env scanning, supported Next.js hardening, production client artifact leakage checks, cross-site mutation rejection, and privacy-safe failure responses. Deployment TLS/trusted-proxy/DB least privilege/secret-store/environment separation and external security review remain release gates.)*
 
 Detailed requirements: [`docs/requirements/10_TESTING_QA.md`](docs/requirements/10_TESTING_QA.md)
 

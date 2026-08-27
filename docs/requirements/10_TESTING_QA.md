@@ -131,6 +131,7 @@ Additional current E2E coverage includes:
 - privacy-safe analytics/error/performance contracts;
 - security headers;
 - privacy-safe rate limiting;
+- hostile cross-site mutation rejection with no persisted side effect and privacy-safe 403 response;
 - health/readiness response.
 
 Still required in later QA layers:
@@ -236,7 +237,17 @@ Release checks:
 - dependency vulnerability scan/review;
 - no AI API key/dependency required.
 
-Current privacy evidence includes hash-only anonymous session credentials, HttpOnly/SameSite bearer-cookie transport, raw-answer separation from result snapshots/URLs, server-side model-bound writes and browser private-result isolation.
+Current privacy/security automation additionally includes:
+
+- the versioned seven-class privacy data inventory and migration-to-inventory exact-coverage validator;
+- default prohibition of direct identity, precise-location, media, and contacts collection in the normal application surface;
+- release static scanning for runtime AI dependencies/imports, sensitive public environment names, obvious committed secrets/private keys, unsafe dynamic HTML/code execution, and Client Component access to server-only environment variables;
+- Next.js framework-header suppression with production browser source maps disabled;
+- post-build scanning of `.next/static` for source maps plus configured/server-only secret identifiers or values;
+- trusted-origin / Fetch Metadata mutation guards on answer, completion, share creation, and share revocation;
+- Chromium hostile-origin tests proving rejected writes do not persist and 403 bodies do not leak secrets, stacks, attacker origins, or internal hash-like values.
+
+CI Run 373 (`33050505946`) is the current full-head evidence checkpoint for these automated controls. They materially advance Master **PCS-QA-007**, but do not complete it: deployed TLS termination, trusted-proxy behavior, production database least privilege, external secret-store evidence, environment separation, and external penetration/security review remain manual/deployment release gates.
 
 ## Performance QA
 
@@ -255,18 +266,22 @@ Measure at least landing, assessment, and result pages. Investigate regressions 
 Current CI performs, in order:
 
 1. production dependency vulnerability audit;
-2. authoritative requirement-ID validation;
-3. development Core Type/display-name/content/illustration integrity validation;
-4. reviewed Item Bank validation;
-5. analytics privacy/retention-policy validation;
-6. security-header/rate-limit policy validation;
-7. persistence migration/static invariant validation;
-8. real PostgreSQL persistence and application integration, including rate-limit/retention behavior;
-9. analytics/rate-limit retention dry-run;
-10. domain/infrastructure unit and Golden Snapshot tests;
-11. TypeScript typecheck;
-12. Next.js production build;
-13. Chromium E2E covering the full assessment/share journey plus responsive, keyboard, touch, axe, security, telemetry and 16-image visual-regression contracts.
+2. release-security/runtime-dependency static audit;
+3. authoritative requirement-ID validation;
+4. development Core Type/display-name/content/illustration integrity validation;
+5. reviewed Item Bank validation;
+6. analytics event/privacy validation;
+7. privacy data-inventory and collection-minimization validation;
+8. security-header/rate-limit policy validation;
+9. persistence migration/static invariant validation;
+10. real PostgreSQL persistence and application integration, including rate-limit/retention behavior;
+11. analytics/rate-limit retention dry-run;
+12. reviewed model-seed/application integration;
+13. domain/infrastructure unit and Golden Snapshot tests;
+14. TypeScript typecheck;
+15. Next.js production build;
+16. production client-artifact leakage audit;
+17. Chromium installation and E2E covering the full assessment/share journey plus responsive, keyboard, touch, axe, security/CSRF, telemetry and 16-image visual-regression contracts.
 
 Later release gates still require:
 

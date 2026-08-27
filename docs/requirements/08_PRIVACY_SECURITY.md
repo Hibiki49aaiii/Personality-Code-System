@@ -16,6 +16,18 @@ PCS handles potentially intimate personality-response data. Collect less, separa
 - **PCS-PRIV-013** Diagnostic answers/scores MUST NOT be placed into ordinary third-party product analytics event properties.
 - **PCS-PRIV-014** Public sharing is opt-in; completing the test alone does not make a profile public.
 
+### Current enforceable data-minimization implementation
+
+The current development implementation closes the Master **PCS-PRIV-002** engineering gate through an explicit allowlist inventory rather than an informal review:
+
+- `data/privacy/data-inventory-v0.1-dev.json` assigns every migration-created PostgreSQL table exactly once to one of seven documented privacy classes;
+- every class records purpose, personal-data status, retention basis/window, `public_by_default=false`, and `third_party_export_default=false`;
+- the ordinary anonymous assessment does not collect real name, email, telephone, postal address, precise geolocation, employer, health history, political/religious identity, sexual data, or biometric media;
+- `scripts/validate-privacy-data-inventory.mjs` fails CI for an unregistered/unknown table, missing purpose/retention, public/export defaults, or common direct collection capabilities such as email/tel inputs, geolocation, media capture, or contact access;
+- `docs/model/DATA_MINIMIZATION_SPEC_v0.1.md` defines the change gate for future collection, retention, analytics/share allowlists, disclosure/consent, and traceability updates.
+
+CI Run 373 (`33050505946`) is the current evidence checkpoint for this contract. This is an engineering/data-governance completion only; Privacy Policy/Terms/consent wording remains **PCS-LEGAL-001**.
+
 ## Current anonymous-flow and security controls
 
 The implemented anonymous assessment flow currently provides:
@@ -47,9 +59,14 @@ The development application now also provides:
 - production HSTS;
 - production dependency vulnerability audit in CI at high severity or above;
 - machine validation of the security-header/rate-limit policy contract;
-- expired rate-limit buckets are included in the dry-run-first retention cleanup command.
+- expired rate-limit buckets are included in the dry-run-first retention cleanup command;
+- `poweredByHeader: false` suppresses the default Next.js framework disclosure and production browser source maps remain disabled;
+- `scripts/validate-release-security.mjs` rejects runtime AI/LLM dependencies/imports, sensitive `NEXT_PUBLIC_*` names, obvious committed credentials/private keys, unsafe dynamic HTML/code execution primitives, and server-only environment references from Client Components;
+- `scripts/audit-production-build.mjs` scans production client artifacts for source maps and configured/server-only secret identifiers or values;
+- `assertTrustedMutationRequest()` rejects cross-site state-changing requests before rate-limit/DB mutation work, and Chromium E2E verifies hostile Origin/Sec-Fetch-Site requests cannot save answers, complete assessments, or create shares;
+- rejected mutation/error responses are checked for absence of attacker-controlled origins, secrets, stack details, and hash-like internal identifiers.
 
-Verification evidence includes CI Run `33038326772` (Run 304), which passes rate-limit persistence, production build, security-header E2E and the API-boundary 429 test.
+Verification evidence includes CI Run `33038326772` (Run 304) for the earlier rate-limit/security-header baseline and CI Run 373 (`33050505946`) for the current privacy inventory, release-security audit, typecheck/build, production-artifact audit, and Chromium security regression suite.
 
 The IP-based session-creation limit assumes the production reverse proxy/CDN overwrites or sanitizes forwarded client-address headers. Trusted-proxy behavior is therefore a deployment requirement and is not claimed by application code alone.
 
@@ -139,7 +156,7 @@ First-party statistical/calibration storage is separate from third-party analyti
 - Private internal IDs SHOULD not be exposed unless harmless and intentionally stable.
 - Search-engine indexing policy must be explicit; default should be `noindex` for non-public/private result routes.
 
-No public share endpoint exists in Phase 2C. Phase 4 must implement the public snapshot as a separate explicit export rather than reusing the private bearer token.
+Phase 4A implements the public snapshot as a separate explicit export rather than reusing the private bearer token. Public share persistence is created only by explicit mutation, uses a separate opaque hash-only capability, and is independently revocable.
 
 ## Threat cases to test
 
@@ -154,7 +171,7 @@ No public share endpoint exists in Phase 2C. Phase 4 must implement the public s
 - unauthorized deletion/update;
 - accidental exposure through logs/analytics/OG generation.
 
-Current automated coverage includes off-model item rejection, invalid value rejection, completed-session mutation rejection, duplicate finalization/idempotency behavior, hash-only session/share credentials, private-result browser isolation, sanitized public-share boundaries, analytics leakage rejection, security-header assertions, and excessive session-creation rate limiting with privacy-safe 429 behavior. Remaining threat cases stay release-blocking where applicable.
+Current automated coverage includes off-model item rejection, invalid value rejection, completed-session mutation rejection, duplicate finalization/idempotency behavior, hash-only session/share credentials, private-result browser isolation, sanitized public-share boundaries, analytics leakage rejection, security-header assertions, excessive session-creation rate limiting with privacy-safe 429 behavior, hostile cross-site mutation rejection before persistence, release static scanning, and production client-artifact leakage checks. Remaining deployment/external-review threat cases stay release-blocking where applicable.
 
 ## Legal/consent pages before launch
 

@@ -44,11 +44,11 @@ A checkbox in `REQUIREMENTS.md` is marked complete only when inspectable specifi
 | PCS-ARCH-004 | complete (current persistence) | immutability contract | SQL triggers protect published model/items/content/revisions/snapshots | `postgres-integration.mjs` exercises actual rejection behavior |
 | PCS-ARCH-005 | complete (foundation) | ADR-0001 migration/rollback policy | ordered committed SQL migrations | migration validator + PostgreSQL application in CI; deployment backup rehearsal is OPS |
 | PCS-PRIV-001 | complete (anonymous private flow) | `08_PRIVACY_SECURITY.md` | opaque token + hash-only DB + HttpOnly/SameSite cookie | repository tests + fresh-browser private-result isolation |
-| PCS-PRIV-002 | partial | data-minimization/retention/privacy requirements | anonymous/private-first architecture + bounded analytics | release legal/data-minimization audit remains open | optional/future collection must remain separately justified |
+| PCS-PRIV-002 | complete (development implementation) | `08_PRIVACY_SECURITY.md`, `DATA_MINIMIZATION_SPEC_v0.1.md`, `data-inventory-v0.1-dev.json` | seven-class exact table inventory + default collection prohibitions + `validate-privacy-data-inventory.mjs` | CI Run 373 (`33050505946`) privacy-data gate + full-head green | public legal wording/consent remains PCS-LEGAL-001; future collection must pass the change gate |
 | PCS-PRIV-003 | complete (development implementation) | first-party-only analytics privacy contract | allowlisted network/DB event payloads; third-party export disabled; raw answer/Trait vector bans | CI Run 238 + Run 273 | deployed provider/log audit remains release QA |
 | PCS-PRIV-004 | complete (development share flow) | opt-in public-share policy | POST `/api/share` requires private bearer cookie and explicit UI action | Chromium explicit-share flow + separate public snapshot persistence |
-| PCS-SEC-001 | complete (development implementation) | `08_PRIVACY_SECURITY.md`, `rate-limits-v0.1-dev`, security-header baseline | opaque/hash-only capabilities, server validation, HMAC DB-backed rate limits, privacy-safe 429s, CSP/HSTS/frame/nosniff/referrer/permissions headers, production dependency audit | CI Run 304 (`33038326772`) rate-limit/security E2E + Run 307 security validator/audit + Run 309 latest full HEAD | deployment TLS/trusted proxy/DB least privilege/final QA remain OPS/QA gates |
-| PCS-QA-001 | complete (current CI) | `10_TESTING_QA.md` | `.github/workflows/ci.yml` | requirements → type/content/item/analytics/security/persistence validators → production dependency audit → PostgreSQL/app/domain → retention dry-run → typecheck/build → Chromium E2E |
+| PCS-SEC-001 | complete (development implementation) | `08_PRIVACY_SECURITY.md`, `rate-limits-v0.1-dev`, security-header/release-hardening baseline | opaque/hash-only capabilities, server validation, HMAC DB-backed rate limits, privacy-safe 429s, CSP/HSTS/frame/nosniff/referrer/permissions headers, release static/runtime-boundary audit, post-build leakage audit, cross-site mutation guard | CI Run 304 (`33038326772`) earlier rate-limit/security baseline + Run 373 (`33050505946`) current full-head security/privacy suite | deployment TLS/trusted proxy/DB least privilege/secret store/final QA remain OPS/QA gates |
+| PCS-QA-001 | complete (current CI) | `10_TESTING_QA.md` | `.github/workflows/ci.yml` | production dependency + release-security audits → requirements/type/content/item/analytics/privacy/security/persistence validators → PostgreSQL/app/domain/retention → typecheck/build → client-artifact leakage audit → Chromium E2E |
 | PCS-QA-002 | complete (current domain pipeline) | result/scoring/code requirements | full current domain engine | scoring/code/interaction/composer/result/snapshot suites |
 | PCS-QA-003 | complete (development fixture) | Golden snapshot rule | `golden-result-snapshot-midpoint-v0.1.json` | exact equality + answer-order invariance tests |
 | PCS-SOC-002 | complete (development implementation) | `09_SOCIAL_SHARING_AND_ANALYTICS.md` | Web Share, X intent, LINE intent, URL copy on private result | Chromium assertions against exact opaque share URL |
@@ -61,7 +61,7 @@ A checkbox in `REQUIREMENTS.md` is marked complete only when inspectable specifi
 | PCS-QA-004 | complete through Phase 4A-1 journey | E2E path contract | Playwright Chromium flow | start → back/edit → 147 answers → private result → explicit public share → cookie-free view/cards → revoke/404 |
 | PCS-QA-005 | partial | automated axe + keyboard/touch/mobile evidence | `responsive-accessibility.spec.ts`, QA evidence record | Run 329 green | human assistive-tech/text-zoom/manual release review remains |
 | PCS-QA-006 | complete (current development application) | `visual-regression.spec.ts` + 16 committed Linux/Chromium baselines + controlled update workflow | normal CI comparison mode; Runs 343/344 green | landing/assessment six widths + result/public-share 390/1440; baseline updates require review |
-| PCS-QA-007 | pending | release security/privacy checklist | substantial security/privacy automation exists | SEC-001/analytics/security CI evidence | deployed release review remains |
+| PCS-QA-007 | partial automated foundation / release gate still open | `08_PRIVACY_SECURITY.md`, `10_TESTING_QA.md` | release static audit, production artifact leakage audit, CSRF/origin guard, privacy inventory, privacy-safe error assertions | CI Run 373 (`33050505946`) | deployed TLS/trusted proxy/DB least privilege/secret store/environment separation/external security review remain |
 
 ## Requirement governance evidence
 
@@ -156,7 +156,10 @@ This is engineering completeness evidence only. It does not complete the publish
 - Header baseline: `next.config.ts` (CSP, HSTS in production, DENY framing, nosniff, referrer and permissions policies).
 - Machine validator: `scripts/validate-security-baseline.mjs`.
 - Dependency gate: `npm audit --omit=dev --audit-level=high` in CI.
-- E2E: `tests/e2e/security-headers.spec.ts`, `rate-limit.spec.ts`.
+- Release static audit: `scripts/validate-release-security.mjs` checks runtime AI/dependency boundaries, sensitive public env names, obvious committed secrets, unsafe dynamic HTML/code execution, Client Component server-env references, and required Next.js hardening.
+- Production client-artifact audit: `scripts/audit-production-build.mjs` checks `.next/static` for source maps and server-only/configured secret identifiers or values.
+- Cross-site mutation guard: `src/server/requestSecurity.ts` plus `tests/e2e/csrf-origin.spec.ts` rejects hostile Origin/Fetch Metadata writes before persistence/rate-limit consumption and verifies privacy-safe 403 responses.
+- E2E: `tests/e2e/security-headers.spec.ts`, `rate-limit.spec.ts`, `csrf-origin.spec.ts`.
 - DB integration: `tests/infrastructure/rate-limit-repository.integration.test.ts`.
 - Evidence checkpoints: Run 304 (`33038326772`) privacy-safe 429/security-header/dependency suite; Run 307 security validator/audit; Run 309 latest full HEAD.
 - Remaining release gates: trusted proxy/CDN configuration, TLS termination verification, production DB least privilege, deployment secret-store proof, final security/privacy checklist/penetration review.
@@ -197,7 +200,7 @@ Current CI gates include:
 9. production build;
 10. Chromium 147-item private assessment + explicit sanitized public-share/card/revocation E2E.
 
-The historical Phase 2C browser checkpoint is CI Run `32960309207`. Phase 4A sanitized sharing/card checkpoint is CI Run `33020306036` (Run 190). New validators remain release-blocking on every subsequent push/PR.
+The historical Phase 2C browser checkpoint is CI Run `32960309207`. Phase 4A sanitized sharing/card checkpoint is CI Run `33020306036` (Run 190). The current security/privacy full-head checkpoint is CI Run `33050505946` (Run 373), including privacy inventory, release static audit, production build-artifact leakage audit, and Chromium security/CSRF regression coverage. New validators remain release-blocking on every subsequent push/PR.
 
 CI success verifies software/data-contract invariants only. It is not evidence of psychological construct validity.
 
