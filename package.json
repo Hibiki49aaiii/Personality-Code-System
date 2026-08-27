@@ -26,7 +26,8 @@
     "validate:security": "node scripts/validate-security-baseline.mjs",
     "audit:release-security": "node scripts/validate-release-security.mjs",
     "audit:production-build": "node scripts/audit-production-build.mjs",
-    "validate:privacy-data": "node scripts/validate-privacy-data-inventory.mjs"
+    "validate:privacy-data": "node scripts/validate-privacy-data-inventory.mjs",
+    "validate:landing-claims": "node scripts/validate-landing-claims.mjs"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",

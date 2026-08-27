@@ -41,6 +41,8 @@ PCS is a public web-based personality assessment system that produces a high-res
 - **PCS-PROD-012** MUST NOT use “scientifically proven/validated” unless validation gates are met.
 - **PCS-PROD-013** SHOULD show approximate item/time burden only after the real bank is frozen.
 
+Current landing implementation explicitly describes continuous multi-Trait measurement, states that PCS is not a medical/clinical diagnosis, identifies the current Core Code as a non-public development schema, and avoids treating the 64 engineering combinations as a validated psychological taxonomy. `scripts/validate-landing-claims.mjs` makes those claim boundaries CI-enforced. Approximate completion time remains intentionally absent because the production bank is not frozen.
+
 ### Assessment
 
 - **PCS-PROD-020** MUST not require account creation.
@@ -67,7 +69,7 @@ Current Phase 2C result renders deterministic Core/Extended Code, 21 Trait score
 - **PCS-PROD-041** MUST never put raw answer data in query parameters, URL fragments, QR payloads, or OG metadata.
 - **PCS-PROD-042** MUST allow users to copy/share a result without requiring a social login.
 
-Public sharing is intentionally not implemented in Phase 2C. Private completion alone creates no public result URL.
+Phase 4A now implements explicit public sharing through a separate sanitized snapshot and opaque share capability. Private completion alone still creates no public result URL; the user must invoke the Share action.
 
 ## Success metrics
 

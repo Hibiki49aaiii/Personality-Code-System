@@ -11,8 +11,8 @@ const domains = [
   ["01", "思考", "情報をどう分解し、何を根拠として判断するか。"],
   ["02", "感情", "感情をどう認識し、処理し、他者へ伝えるか。"],
   ["03", "行動", "実行、継続、探索、最適化のバランス。"],
-  ["04", "恋愛", "親密さ、境界、相互性、飽きやすさ、衝突傾向。"],
-  ["05", "仕事", "自律性、設計、委任、リーダーシップ、リスク判断。"],
+  ["04", "恋愛", "親密さ、境界、相互性、関係への投資の深さ。"],
+  ["05", "仕事", "自律性、実行、最適化、リスク判断、派生プロフィール。"],
   ["06", "ストレス", "不確実性や制御不能な状況への反応。"],
 ] as const;
 
@@ -38,8 +38,8 @@ export default function Home() {
           <p className="eyebrow">HIGH-RESOLUTION PERSONALITY ASSESSMENT</p>
           <h1>あなたを、<br />16種類では終わらせない。</h1>
           <p className="heroLead">
-            思考、感情、行動、恋愛、仕事、ストレス耐性。複数の特性を連続値で測定し、
-            あなた固有の「性格コード」として可視化します。
+            思考、感情、行動、関係性、仕事、ストレスなどの傾向を連続値で測定し、
+            「性格コード」として可視化します。これは医療・臨床診断ではありません。
           </p>
           <div className="heroActions">
             <a className="primaryButton" href="/diagnosis">診断プロトタイプへ</a>
@@ -54,13 +54,13 @@ export default function Home() {
 
         <div className="profileSpecimen" aria-label="Sample personality result">
           <div className="specimenTopline">
-            <span>SAMPLE PROFILE</span>
-            <span>PCS / 01</span>
+            <span>DEVELOPMENT SAMPLE</span>
+            <span>C01D / NON-PUBLIC</span>
           </div>
-          <div className="specimenCode">AVX—COS</div>
-          <div className="specimenTitle">ADVERSARIAL<br />ARCHITECT</div>
+          <div className="specimenCode">SVAEND</div>
+          <div className="specimenTitle">VERIFICATION<br />DESIGNER</div>
           <p className="specimenStatement">
-            「人を疑う」のではなく、<br />「信用するために検証する」。
+            構造と根拠を自分で確かめ、<br />必要なら前提から組み直す。
           </p>
           <div className="traitList">
             {traitRows.map(([label, value]) => (
@@ -71,8 +71,8 @@ export default function Home() {
             ))}
           </div>
           <div className="specimenFooter">
-            <span>CORE TYPE</span>
-            <strong>01 / 64</strong>
+            <span>MODEL STATUS</span>
+            <strong>DEVELOPMENT</strong>
           </div>
         </div>
       </section>
@@ -83,7 +83,8 @@ export default function Home() {
           <p className="manifestoText">
             性格を「それっぽい文章」に当てはめるのではなく、
             <strong>測定値 → コード → 解説</strong>の順で組み立てる。
-            AIが毎回違う人格を作る診断にはしません。
+            AIが毎回違う人格を作る診断にはしません。現在のCore Codeは開発中で、
+            心理学上の固定分類や科学的妥当性を主張するものではありません。
           </p>
         </div>
       </section>
@@ -102,12 +103,12 @@ export default function Home() {
           <article>
             <span className="methodNumber">B</span>
             <h3>Core Type</h3>
-            <p>主要傾向を人間が理解しやすい短いコードへ圧縮。専用名称とイラストを持たせます。</p>
+            <p>主要傾向を人間が理解しやすい短いコードへ圧縮。現行コードは開発スキーマで、公開分類としては未確定です。</p>
           </article>
           <article>
             <span className="methodNumber">C</span>
             <h3>Extended Code</h3>
-            <p>同じCore Typeの中にある差を、恋愛・仕事・ストレス・才能などの補助コードで保持します。</p>
+            <p>同じCore Typeの中にある差を、21 Traitの帯域や補助情報を含むExtended Codeで保持します。</p>
           </article>
         </div>
       </section>
@@ -116,10 +117,10 @@ export default function Home() {
         <div className="sectionHeading splitHeading">
           <div>
             <p className="sectionIndex">02 — DOMAINS</p>
-            <h2>一人の中にある、<br />複数の人格傾向を見る。</h2>
+            <h2>一人の中にある、<br />複数の行動傾向を見る。</h2>
           </div>
           <p className="sectionDescription">
-            「論理型」「感情型」のような一語ではなく、場面ごとの行動差を別々に評価します。
+            一語のタイプ名だけで決めつけず、複数の測定Traitと相互作用から場面ごとの傾向を読み分けます。
           </p>
         </div>
         <div className="domainList">
@@ -164,10 +165,10 @@ export default function Home() {
         </div>
         <div className="sharePreview">
           <div className="shareCard">
-            <div className="shareCardHeader"><span>PERSONALITY CODE</span><span>PCS</span></div>
-            <strong className="shareCode">AVX—COS</strong>
-            <p>THE ADVERSARIAL ARCHITECT</p>
-            <div className="shareQuote">人を信用しないのではなく、<br />信用するために検証する。</div>
+            <div className="shareCardHeader"><span>DEVELOPMENT SHARE PREVIEW</span><span>PCS</span></div>
+            <strong className="shareCode">SVAEND</strong>
+            <p>開拓の探究設計家〈深縁〉</p>
+            <div className="shareQuote">構造と根拠を組み直しながら、<br />未知へ動き、深い関係を育てやすい。</div>
             <div className="shareStats"><span>THINK 96</span><span>LOVE 88</span><span>WORK 98</span></div>
           </div>
           <div className="shareNotes">
@@ -176,7 +177,8 @@ export default function Home() {
               <li>結果URLをそのまま共有</li>
               <li>X / LINE / Web Share対応</li>
               <li>OG画像と縦長SNSカードを自動生成</li>
-              <li>タイプ別専用イラストを表示</li>
+              <li>公開時は承認済みタイプ別イラストを表示</li>
+              <li>現在のタイプ名・コードは開発版で、公開分類ではない</li>
             </ul>
           </div>
         </div>
@@ -192,7 +194,7 @@ export default function Home() {
 
       <footer className="footer shell">
         <span>© Personality Code System</span>
-        <span>MODEL STATUS — FOUNDATION / v0.1</span>
+        <span>MODEL STATUS — DEVELOPMENT / NOT VALIDATED</span>
       </footer>
     </main>
   );

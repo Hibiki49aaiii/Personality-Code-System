@@ -55,6 +55,9 @@ jobs:
       - name: Validate requirement IDs
         run: npm run validate:requirements
 
+      - name: Validate landing claim boundaries
+        run: npm run validate:landing-claims
+
       - name: Validate type catalog reachability and display names
         run: npm run validate:type-catalog
 

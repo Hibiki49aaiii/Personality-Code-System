@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 const visualEnabled = process.env.PCS_VISUAL_REGRESSION === '1';
+// Intentional baseline refresh trigger: landing claim-review copy/sample alignment v0.1.
 
 const viewports = [
   { label: '320', width: 320, height: 844 },
