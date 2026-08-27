@@ -46,7 +46,7 @@ For each environment:
 11. Create a public share explicitly.
 12. Confirm public share exposes only sanitized content.
 13. Revoke the share and confirm the link becomes unavailable.
-14. Reach the diagnostic data control, understand that deletion is irreversible and affects private/public result data, open the confirmation state, then cancel once to verify safe focus/state restoration.
+14. 「診断データを削除」controlへ到達し、削除が不可逆でprivate/public result dataへ影響することを理解できるか確認する。confirmation stateを開き、一度cancelしてfocus/stateが安全に戻ることを確認する。
 15. Re-open the deletion confirmation and verify the `削除を確定` action, warning text and cancellation control are announced distinctly. Execute destructive deletion only in a disposable QA session and confirm the browser returns to a non-authenticated state.
 
 ## Pass criteria
