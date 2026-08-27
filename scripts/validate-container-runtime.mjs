@@ -29,6 +29,7 @@ for (const required of ['node_modules','.next','.git','.env']) if (!ignore.inclu
 if (!health.includes("status: 'ok'") || !health.includes("status: 'degraded'")) errors.push('health route contract missing');
 if (!smoke.includes("runtime:'next-standalone'") || !smoke.includes('/api/health')) errors.push('standalone runtime smoke test missing');
 if (!contract.required_server_environment.includes('PCS_DEPLOYMENT_ENV')) errors.push('runtime contract must require explicit PCS_DEPLOYMENT_ENV');
+if (!contract.required_server_environment.includes('PCS_CLIENT_IP_HEADER')) errors.push('runtime contract must require explicit PCS_CLIENT_IP_HEADER');
 if (contract.external_evidence_required.length < 6) errors.push('runtime external evidence list incomplete');
 
 if (errors.length) {
