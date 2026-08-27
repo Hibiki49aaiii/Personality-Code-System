@@ -143,6 +143,7 @@ Before checking a milestone complete:
 | PCS-ANA-002 | in-progress foundation | exact-scope observed distribution domain/repository | CI Run 240 (`33036572687`) domain + immutable-snapshot DB aggregation | analytics/statistics | public model/eligibility/minimum-sample/privacy wording gate remains |
 | PCS-ANA-003 | blocked pending consent/governance | `CALIBRATION_EXPORT_SPEC_v0.1.md` | absence of export is intentional | privacy/research | ordinary product analytics must not become calibration data |
 | Phase 4B-3 retention/observability | verified development implementation | retention policy/repository/CLI, fixed error telemetry, Web Vitals sanitizer, health route | CI Runs 269/270/272/273 | analytics/ops/privacy | production scheduler/external monitoring/environment separation remain |
+| PCS-SEC-001 | verified development implementation | hash-only capabilities, server validation, HMAC PostgreSQL rate limits, security headers, production dependency audit | Run 304 (`33038326772`), Run 307 security validator/audit, Run 309 latest HEAD | security/app/persistence | trusted proxy/TLS/least privilege/deployment secret store/final security QA remain release gates |
 | PCS-OPS-003 | in-progress | minimal DB readiness + client error/performance telemetry | Runs 269/272/273 | operations | independent production monitoring and alerting remain |
 
 ## Phase 3 evidence map
@@ -234,6 +235,14 @@ The public share is a deliberate sanitized export. It is not a different view ov
 - Versions: `analytics-retention-v0.1-dev`; analytics event dictionary remains `analytics-events-v0.1-dev`.
 - Evidence: Run 269 browser error telemetry, Run 270 retention cleanup/dry-run, Run 272 health endpoint, Run 273 analytics API privacy rejection tests.
 - Remaining: scheduled production execution, environment separation, independently durable server/API/database monitoring and alerting.
+
+### 2026-08-27 — Security baseline completion
+- IDs: PCS-SEC-001, PCS-QA-001
+- Change: add global production browser hardening headers, versioned HMAC-backed fixed-window rate limits for public mutation/analytics endpoints, privacy-safe 429 behavior, production dependency vulnerability audit and machine security-policy validation.
+- Reason: complete the Master security implementation without persisting raw IP/session principals or exposing rate-limit internals.
+- Versions: app/security only; `rate-limits-v0.1-dev`; assessment/scoring/code/content semantics unchanged.
+- Evidence: Run 304 verifies PostgreSQL rate limiting, 20-allowed/21st-429 behavior, `Retry-After`, principal non-disclosure and security headers; Run 307 verifies the security baseline/audit gate; Run 309 is green on the resulting HEAD.
+- Remaining: production trusted-proxy/TLS/DB-least-privilege/secret-store evidence and final PCS-QA-007 review.
 
 ## Material change records
 
