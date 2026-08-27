@@ -6,7 +6,7 @@
 
 ## Purpose
 
-Define what PCS means by development, preview, and production environments before a hosting platform is selected/configured. The repository can enforce required boundaries and fail closed on unsafe assumptions, but it cannot prove that two external deployments/databases/secrets actually exist.
+Define what PCS means by development, preview, and production environments before a hosting platform is selected/configured. `PCS_DEPLOYMENT_ENV` now makes the runtime class explicit: a production-mode server cannot silently infer a safe preview/development identity for new assessment starts. The repository can enforce required boundaries and fail closed on unsafe assumptions, but it cannot prove that two external deployments/databases/secrets actually exist.
 
 Therefore this contract advances OPS-001/002 without closing them.
 
@@ -56,6 +56,15 @@ Production PCS does not require or permit an AI/LLM service credential for diagn
 The environment contract explicitly forbids production runtime credentials such as OpenAI/Anthropic/Google generative/Cohere keys. Development tooling outside shipped runtime is governed separately and must never turn into a production dependency.
 
 ## Trusted proxy boundary
+
+Application-side behavior is now intentionally fail-closed in production:
+
+- `PCS_CLIENT_IP_HEADER` must select exactly one reviewed address header from the versioned allowlist;
+- production code does not fall back across arbitrary forwarded headers when that setting is absent;
+- unselected forwarded headers are ignored by the production rate-limit principal path;
+- malformed/non-IP-shaped values collapse to an `unavailable` principal instead of becoming attacker-controlled bucket identities.
+
+This reduces spoofing surface inside the application, but it still cannot prove that the selected header is owned by the real edge/CDN.
 
 The current IP-based session-creation rate limiter reads forwarded address headers. That is only safe when the production reverse proxy/CDN overwrites/sanitizes those headers.
 
