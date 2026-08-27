@@ -1,0 +1,21 @@
+{
+  "diagnostic_retention_policy_version": "diagnostic-retention-v0.1-dev",
+  "status": "development-engineering-baseline",
+  "locale": "ja-JP",
+  "abandoned_session_days": 30,
+  "completed_raw_answers_days": 90,
+  "completed_private_result_days": 180,
+  "completed_session_metadata_days": 180,
+  "completed_trait_scores_days": 180,
+  "public_share_on_private_result_retention": "revoke-and-detach",
+  "user_controlled_deletion_available_before_schedule": true,
+  "dry_run_default": true,
+  "execute_requires_explicit_ack": true,
+  "execution_ack_value": "diagnostic-retention-v0.1-dev",
+  "policy_notes": [
+    "Completed raw answers become directly retention-deletable only after the 90-day database guard window.",
+    "Completed session deletion at 180 days cascades Trait Scores/private result/session-bound rows; result deletion revokes and detaches active public shares.",
+    "Interactive bearer-owned deletion may remove diagnostic data earlier at the user's explicit request.",
+    "Production scheduler, backup restore behavior and final public legal promises remain release gates."
+  ]
+}

@@ -37,7 +37,8 @@ async function applyMigrations() {
     '0003_phase4b_first_party_analytics.sql',
     '0004_security_rate_limits.sql',
     '0005_result_snapshot_asset_linkage.sql',
-    '0006_privacy_delete_cascade_guards.sql'
+    '0006_privacy_delete_cascade_guards.sql',
+    '0007_diagnostic_retention_answer_guard.sql'
   ]);
 
   for (const file of files) {

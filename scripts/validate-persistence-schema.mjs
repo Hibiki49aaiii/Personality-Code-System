@@ -75,7 +75,8 @@ const requiredFragments = [
   ['restrict model references', /assessment_model_releases\(model_version\)\s+ON DELETE RESTRICT/i],
   ['rate limit HMAC bucket hash', /bucket_hash\s+char\(64\)/i],
   ['rate limit count check', /request_count\s+integer\s+NOT NULL[\s\S]*request_count\s+>=\s+1/i],
-  ['rate limit expiry index', /CREATE INDEX\s+rate_limit_buckets_expires_idx/i]
+  ['rate limit expiry index', /CREATE INDEX\s+rate_limit_buckets_expires_idx/i],
+  ['completed raw-answer retention window guard', /session_completed_at\s*<=\s*now\(\)\s*-\s*interval\s*'90 days'/i]
 ];
 
 for (const [label, pattern] of requiredFragments) {
