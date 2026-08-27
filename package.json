@@ -51,7 +51,9 @@
     "smoke:standalone": "node scripts/smoke-standalone-runtime.mjs",
     "validate:runtime-launch-gate": "node scripts/validate-runtime-launch-gate.mjs",
     "validate:db-role": "node scripts/validate-database-role-policy.mjs",
-    "test:db-role:integration": "node tests/infrastructure/database-least-privilege.integration.mjs"
+    "test:db-role:integration": "node tests/infrastructure/database-least-privilege.integration.mjs",
+    "validate:backup-restore": "node scripts/validate-backup-restore-policy.mjs",
+    "test:backup-restore:integration": "node tests/infrastructure/backup-restore-rehearsal.integration.mjs"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",
