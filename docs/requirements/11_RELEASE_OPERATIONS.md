@@ -22,6 +22,14 @@ Production diagnostic models/content versions must not be mutated casually from 
 - Environment variables/secrets are managed outside Git.
 - Production must not require an AI/LLM/generative service credential.
 
+### Secret/configuration handoff template
+
+`.env.example` now enumerates only the four current server-side deployment inputs. Secret fields are intentionally blank, production origin is visibly HTTPS-shaped, and no AI/LLM or private `NEXT_PUBLIC_*` credential is advertised.
+
+The environment validator fails if required names disappear, secret examples gain committed values, or forbidden AI/public-secret keys are introduced. Dependabot is also configured for weekly npm and GitHub Actions dependency update proposals.
+
+This improves **PCS-OPS-002** repository evidence, but the real production secret manager, access policy and rotation evidence remain external.
+
 ## Database operations
 
 Before storing production diagnostic data:
