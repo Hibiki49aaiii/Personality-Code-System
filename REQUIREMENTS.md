@@ -1,7 +1,7 @@
 # Personality Code System — Master Requirements & Delivery Checklist
 
 > Status: authoritative development contract
-> Version: 0.8.0
+> Version: 0.9.0
 > Last updated: 2026-08-27
 
 This file is the single top-level source of truth for PCS scope and delivery status. Detailed requirements live under `docs/requirements/`.
@@ -170,7 +170,7 @@ Detailed requirements: [`docs/requirements/07_APPLICATION_ARCHITECTURE_AND_DATA.
 
 - [x] **PCS-PRIV-001** Anonymous assessment default in real web flow. *(No account; opaque 256-bit token stored only as hash server-side; browser carries HttpOnly/SameSite cookie.)*
 - [ ] **PCS-PRIV-002** Collect only data required for diagnosis/reliability/operation/consented features.
-- [ ] **PCS-PRIV-003** Raw answers/personality scores excluded from third-party analytics payloads by default.
+- [x] **PCS-PRIV-003** Raw answers/personality scores excluded from third-party analytics payloads by default. *(Current product analytics is first-party-only with third-party export disabled; event/DB allowlists reject answer values, Trait vectors and diagnostic internals, and Chromium network assertions verify answer interactions send no answer value.)*
 - [x] **PCS-PRIV-004** Public/shareable result persistence requires explicit user action. *(Separate opt-in Share API/UI; assessment completion itself creates no public snapshot.)*
 - [ ] **PCS-SEC-001** Secure session tokens, validation, rate limits, security headers, dependency scanning. *(Token/validation/cookie controls exist; rate limiting, full security headers and dependency-security gate remain.)*
 - [ ] **PCS-LEGAL-001** Privacy/terms/diagnostic limitations/data deletion-retention explanation before public launch.
@@ -182,9 +182,9 @@ Detailed requirements: [`docs/requirements/08_PRIVACY_SECURITY.md`](docs/require
 - [ ] **PCS-SOC-001** Shareable result image generated deterministically from stored result + curated artwork.
 - [x] **PCS-SOC-002** Web Share API, X intent, LINE intent, URL copy where applicable. *(Implemented on the private result page and browser-tested against the generated opaque share URL.)*
 - [x] **PCS-SOC-003** Correct Open Graph metadata/card for shareable result pages. *(Development fallback OG card is deterministic, versioned, sanitized and linked through dynamic share-page metadata; final curated illustration treatment remains PCS-SOC-001/Phase 3B.)*
-- [ ] **PCS-ANA-001** Funnel analytics tracks start/progression/completion/result/share without exporting raw answers.
-- [ ] **PCS-ANA-002** Observed type distributions labeled by model/sample/time/scope.
-- [ ] **PCS-ANA-003** Privacy-preserving calibration-data export path exists.
+- [x] **PCS-ANA-001** Funnel analytics tracks start/progression/completion/result/share without exporting raw answers. *(First-party event dictionary + server-derived session metadata + client network/DB E2E verified in CI Run 238 / `33036549731`; answer interactions contain position/state only.)*
+- [ ] **PCS-ANA-002** Observed type distributions labeled by model/sample/time/scope. *(Development aggregation foundation is implemented/tested against immutable snapshots with exact model/code/locale/time scope and `populationClaimAllowed=false`; public eligibility/minimum-sample/display policy remains Phase 5/public-model work.)*
+- [ ] **PCS-ANA-003** Privacy-preserving calibration-data export path exists. *(Design gate is documented; implementation is intentionally blocked until explicit calibration consent/governance exists.)*
 
 Detailed requirements: [`docs/requirements/09_SOCIAL_SHARING_AND_ANALYTICS.md`](docs/requirements/09_SOCIAL_SHARING_AND_ANALYTICS.md)
 
@@ -226,7 +226,7 @@ Detailed requirements: [`docs/requirements/11_RELEASE_OPERATIONS.md`](docs/requi
 - [ ] Phase 3A — public Core Type/content catalog. *(ACTIVE: non-public C01D 64-code reachability/provenance foundation complete; naming/editorial/public promotion remain.)*
 - [ ] Phase 3B — illustrations.
 - [ ] Phase 4A — social sharing/OG. *(4A-1 sanitized sharing foundation complete; final curated-art/public-name presentation remains pending.)*
-- [ ] Phase 4B — analytics/monitoring.
+- [ ] Phase 4B — analytics/monitoring. *(ACTIVE: 4B-1 first-party privacy-bounded funnel telemetry verified; scoped observed-distribution foundation verified; retention enforcement, environment separation, monitoring and consented calibration export remain.)*
 - [ ] Phase 5A — closed beta/calibration collection.
 - [ ] Phase 5B — statistical review/pruning/retest.
 - [ ] Phase 5C — production assessment/public code model v1.0 freeze.
