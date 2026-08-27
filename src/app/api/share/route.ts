@@ -8,6 +8,7 @@ import { withPcsDatabase } from '../../../server/assessmentRuntime';
 import { getSiteOrigin } from '../../../server/siteOrigin';
 import { recordServerProductEventBestEffort } from '../../../server/productAnalytics';
 import { applyRateLimit, RateLimitExceededError } from '../../../server/rateLimit';
+import { logPrivacySafeServerFault } from '../../../server/privacySafeLog';
 import {
   assertTrustedMutationRequest,
   CrossSiteMutationError
@@ -36,7 +37,7 @@ function shareApiError(error: unknown) {
     return noStoreJson({ error: error.code, message: error.message }, { status });
   }
 
-  console.error('Public share API failure', error);
+  logPrivacySafeServerFault({ surface: 'public-share', category: 'unexpected' });
   return noStoreJson(
     { error: 'INTERNAL_ERROR', message: '共有リンクの処理中にエラーが発生しました。' },
     { status: 500 }
