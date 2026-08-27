@@ -88,6 +88,9 @@ jobs:
       - name: Validate public launch gate remains fail-closed
         run: npm run validate:launch-gate
 
+      - name: Validate legal/privacy disclosure draft against implementation
+        run: npm run validate:legal-draft
+
       - name: Validate security baseline
         run: npm run validate:security
 

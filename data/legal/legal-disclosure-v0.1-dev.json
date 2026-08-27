@@ -1,0 +1,41 @@
+{
+  "legal_disclosure_contract_version": "legal-disclosure-v0.1-dev",
+  "status": "draft-factual-disclosure",
+  "legally_approved": false,
+  "public_publish_ready": false,
+  "locale": "ja-JP",
+  "account_required": false,
+  "clinical_or_medical_diagnosis": false,
+  "runtime_ai_result_generation": false,
+  "direct_identity_collection_default": false,
+  "precise_location_collection_default": false,
+  "third_party_diagnostic_export_default": false,
+  "public_share_requires_explicit_action": true,
+  "public_share_revocable": true,
+  "current_engineering_retention": {
+    "abandoned_session_days": 30,
+    "completed_answers_days": 90,
+    "private_result_days": 180,
+    "product_events_unscoped_days": 30,
+    "product_events_session_bound_days": 90,
+    "public_share": "until-revoked-or-future-public-share-policy",
+    "calibration_dataset": "not-created-by-default",
+    "database_backup_days": "engineering-baseline-35-not-yet-deployment-proven"
+  },
+  "public_documents_required": [
+    "privacy-policy",
+    "terms-of-use",
+    "diagnostic-limitations",
+    "analytics-cookie-disclosure",
+    "retention-deletion-explanation",
+    "privacy-security-contact"
+  ],
+  "release_review_required": [
+    "legal-jurisdiction-review",
+    "actual-production-backup-behavior",
+    "actual-production-contact-route",
+    "consent-cookie-behavior",
+    "calibration-consent-if-enabled",
+    "final-retention-policy"
+  ]
+}

@@ -175,6 +175,8 @@ Current automated coverage includes off-model item rejection, invalid value reje
 
 ## Legal/consent pages before launch
 
+The current implementation-grounded disclosure draft is `docs/legal/PUBLIC_LEGAL_DISCLOSURE_DRAFT_v0.1.md`, backed by `data/legal/legal-disclosure-v0.1-dev.json` and `scripts/validate-legal-disclosure-draft.mjs`. It is intentionally non-public/non-approved and exists to prevent final legal text from drifting away from actual retention/share/analytics behavior.
+
 MUST provide or finalize as applicable:
 
 - Privacy Policy;
