@@ -112,9 +112,18 @@ Text MUST not be baked into the master character illustration if it prevents loc
 
 ## Current Phase 3A engineering gate
 
-The current development Core schema `core-code-v0.1-dev` / `C01D` is explicitly `public_use=false`. Phase 3A may therefore build and validate a complete **draft engineering catalog** for every reachable C01D code, including one-axis neighbors and claim-provenance anchors, while public names/final prose remain unapproved.
+The current development Core schema `core-code-v0.1-dev` / `C01D` is explicitly `public_use=false`. Phase 3A now materializes and validates a complete **draft engineering/editorial catalog** for every reachable C01D code, including display-name drafts, all required type-level prose fields, field-level claim provenance, limitation-safe non-Core domains, and six one-axis neighbor differentiation records. Human approval/public names/final prose remain unapproved.
 
 Promotion of any entry to `published` requires a later `public_use=true` schema decision plus final editorial and illustration QA. This prevents Phase 3 work from silently pre-empting the Phase 5C public-code evidence gate.
+
+### Current draft-catalog evidence
+
+- `data/type-catalog/v0.1-dev/editorial-catalog-manifest.ja.json` freezes the draft composition/limitation rules;
+- `scripts/materialize-type-editorial-catalog.mjs` deterministically materializes all 64 development entries;
+- `scripts/validate-type-editorial-catalog.mjs` verifies required fields, prohibited claims, field provenance, non-Core limitation wording, six-neighbor differentiation, and illustration-unassigned state;
+- `docs/model/TYPE_EDITORIAL_CATALOG_SPEC_v0.1-dev.md` defines the publication boundary.
+
+This is development editorial completeness evidence, not human editorial approval or public-schema approval.
 
 ## Content QA
 

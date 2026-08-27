@@ -8,7 +8,7 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "validate:requirements": "node scripts/validate-requirement-ids.mjs",
-    "validate:type-catalog": "node scripts/validate-type-catalog.mjs && node scripts/validate-type-display-names.mjs",
+    "validate:type-catalog": "node scripts/validate-type-catalog.mjs && node scripts/validate-type-display-names.mjs && node scripts/validate-type-editorial-catalog.mjs",
     "validate:illustration": "node scripts/validate-illustration-slots.mjs",
     "validate:content": "node scripts/validate-content-v0.2.mjs && node scripts/validate-content-v0.3.mjs",
     "validate:item-bank": "node scripts/validate-item-bank.mjs && node scripts/validate-reviewed-item-bank.mjs",

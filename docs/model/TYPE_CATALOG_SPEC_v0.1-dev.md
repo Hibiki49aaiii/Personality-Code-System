@@ -22,6 +22,8 @@ The current code schema has six binary positions, therefore exactly `2^6 = 64` r
 
 `C01D` is `public_use=false`. Therefore every Phase 3A artifact derived from C01D is a **draft engineering artifact**.
 
+A complete 64-entry Japanese structural/editorial draft is now materialized by `TYPE_EDITORIAL_CATALOG_SPEC_v0.1-dev.md` and its validator. This closes missing-field engineering for the draft catalog but does not approve any entry for public taxonomy use.
+
 It MAY be used for:
 
 - completeness engineering;
