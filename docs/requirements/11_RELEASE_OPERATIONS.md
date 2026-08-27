@@ -102,6 +102,14 @@ The validator requires development/preview/production environment classes, secre
 
 The current C01D beta manifest is intentionally `production_activation_allowed=false`; this foundation does not fabricate production environment, backup/restore or Phase 5 evidence.
 
+## Explicit production model activation gate
+
+`data/release/production-model-activation-gate-v0.1-dev.json`, `docs/model/PRODUCTION_MODEL_ACTIVATION_GATE_v0.1-dev.md` and `scripts/validate-production-model-activation.mjs` now separate repository-complete release mechanics from production/public evidence.
+
+The current candidate has an exact immutable version tuple, versioned item mappings, deterministic/Golden tests, migration review framework, rollback plan, DB immutability and result/asset lineage. Production activation remains blocked on Phase 5 evidence, public schema/catalog/art, real environment/migration rehearsal, accessibility/performance/legal/security/observability evidence.
+
+This advances **PCS-OPS-005** without pretending the current beta model has been production-frozen.
+
 ## Model release lifecycle
 
 Assessment models require a separate lifecycle from ordinary UI deploys.
