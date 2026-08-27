@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { getPublicShareByToken } from '../../../infrastructure/persistence/publicShareRepository';
 import { withPcsDatabase } from '../../../server/assessmentRuntime';
 import { getSiteOrigin } from '../../../server/siteOrigin';
+import { recordServerProductEventBestEffort } from '../../../server/productAnalytics';
 import styles from './share.module.css';
 
 export const runtime = 'nodejs';
@@ -18,7 +19,18 @@ export async function generateMetadata({
 
   let result = null;
   try {
-    result = await withPcsDatabase((db) => getPublicShareByToken(db, token));
+    result = await withPcsDatabase(async (db) => {
+      const publicShare = await getPublicShareByToken(db, token);
+      if (publicShare) {
+        await recordServerProductEventBestEffort(db, {
+          name: 'public_share_viewed',
+          properties: {
+            shareSchemaVersion: publicShare.snapshot.shareSchemaVersion
+          }
+        });
+      }
+      return publicShare;
+    });
   } catch (error) {
     console.error('Failed to build public share metadata', error);
   }
