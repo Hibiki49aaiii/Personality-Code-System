@@ -18,6 +18,7 @@ const expectedScopes = {
   'assessment-answer': { principal: 'session' },
   'assessment-complete': { principal: 'session' },
   'share-mutation': { principal: 'session' },
+  'data-deletion': { principal: 'session' },
   analytics: { principal: 'session-or-ip' }
 };
 
