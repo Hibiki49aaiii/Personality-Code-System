@@ -105,6 +105,15 @@ test('repository creates hash-only session, persists answer/result atomically, a
       value: 3
     });
 
+    await assert.rejects(
+      () => completeAnonymousAssessment(connection.db, {
+        token: created.token,
+        result: oneTraitResult(),
+        illustrationAssetVersion: 'ILL-UNKNOWN-HERO-v01'
+      }),
+      /unknown illustration asset version/i
+    );
+
     const completed = await completeAnonymousAssessment(connection.db, {
       token: created.token,
       result: oneTraitResult(),
