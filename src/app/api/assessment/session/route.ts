@@ -5,6 +5,7 @@ import {
 } from '../../../../application/assessment/serverAssessmentService';
 import { withPcsDatabase } from '../../../../server/assessmentRuntime';
 import { recordServerProductEventBestEffort } from '../../../../server/productAnalytics';
+import { applyRateLimit } from '../../../../server/rateLimit';
 import {
   assessmentApiError,
   getAssessmentToken,
@@ -42,6 +43,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const resumed = await withPcsDatabase(async (db) => {
+      await applyRateLimit(db, request, 'assessment-session-create');
       const outcome = await startOrResumeAnonymousAssessment(db, getAssessmentToken(request));
       await recordServerProductEventBestEffort(db, outcome.created
         ? {
