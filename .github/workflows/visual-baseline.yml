@@ -9,7 +9,7 @@ on:
       - 'tests/e2e/visual-regression.spec.ts'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   baseline:
@@ -62,6 +62,18 @@ jobs:
 
       - name: Generate visual baselines
         run: npx playwright test tests/e2e/visual-regression.spec.ts --update-snapshots
+
+      - name: Commit visual baselines and lockfile
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package-lock.json tests/e2e/visual-regression.spec.ts-snapshots/
+          if git diff --cached --quiet; then
+            echo "Visual baselines already match the repository."
+          else
+            git commit -m "test: freeze visual regression baselines"
+            git push origin HEAD:main
+          fi
 
       - name: Upload baseline artifact
         uses: actions/upload-artifact@v4
