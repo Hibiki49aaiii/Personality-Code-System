@@ -140,6 +140,17 @@ Every reachable C01D code is individually tracked across naming consistency, cla
 
 The publication gate remains blocked unless the code schema and catalog are public, all review dimensions are approved, editorial issues are closed, illustration mapping is approved, and Phase 5C model freeze is complete.
 
+### Human editorial review worklist
+
+Review execution is now operationalized by a deterministic 64-type packet generator rather than requiring reviewers to manually join multiple source files:
+
+- `scripts/materialize-type-editorial-review-worklist.mjs`;
+- `scripts/validate-type-editorial-review-worklist.mjs`;
+- `docs/model/TYPE_EDITORIAL_REVIEW_WORKLIST_v0.1-dev.md`;
+- `npm run generate:type-editorial-review-worklist`.
+
+Each packet includes the draft name/title, all six Core anchors, all nine editorial prose fields, claim provenance, six one-axis neighbor comparisons, exact ledger state and the eight-point reviewer checklist. The generator never auto-approves a type or invents reviewer evidence.
+
 ## Illustration brief evidence
 
 - `data/illustration/v0.1-dev/brief-system.json`;
