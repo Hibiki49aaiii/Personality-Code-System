@@ -40,7 +40,7 @@ The development application now has automated functional width coverage at:
 
 The test checks landing and assessment controls at each width, and checks the completed private result across the same width matrix. Document/body scroll width must not exceed the viewport width. CI Run `33044207630` (Run 329) passes this matrix. This closes Master **PCS-FE-005** for the current application scope.
 
-This is responsive functional evidence, not a substitute for screenshot-diff visual regression; Master **PCS-QA-006** remains open.
+This functional matrix is supplemented by committed screenshot-diff regression coverage. Master **PCS-QA-006** is now verified for the current development application through 16 Linux/Chromium baselines: landing and first-assessment at all six mandatory widths, plus completed private result and sanitized public share at 390/1440. Normal CI compares without updating snapshots. See `docs/reviews/VISUAL_REGRESSION_QA_v0.1.md` and CI Runs 343/344.
 
 ## Landing page
 
