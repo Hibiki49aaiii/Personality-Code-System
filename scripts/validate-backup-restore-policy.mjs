@@ -34,8 +34,8 @@ const inventoryTables=inventory.classes.flatMap((row)=>row.tables).sort();
 if (JSON.stringify(created)!==JSON.stringify(inventoryTables)) errors.push('backup policy table scope must stay aligned with privacy inventory');
 
 for (const fragment of [
-  "spawnSync('pg_dump'",
-  "spawnSync('pg_restore'",
+  "run('pg_dump'",
+  "run('pg_restore'",
   'SELECT count(*)::int AS row_count',
   "WHERE NOT tgisinternal",
   'published assessment_model_releases are immutable',
