@@ -76,9 +76,10 @@ test('anonymous user completes the private result and can explicitly create then
   await expect(page.getByText(/最適化欲求:/)).toBeVisible();
   await expect(page.getByText(/不確実性耐性:/)).toBeVisible();
 
-  const traitBars = page.locator('[aria-label^="ABS "]');
+  const traitBars = page.getByRole('meter', { name: 'ABS Trait score' });
   await expect(traitBars).toHaveCount(1);
-  await expect(traitBars).toHaveAttribute('aria-label', 'ABS 50.00');
+  await expect(traitBars).toHaveAttribute('aria-valuenow', '50');
+  await expect(traitBars).toHaveAttribute('aria-valuetext', '50.00 / 100');
   await expect(page.locator('code')).toHaveCount(26);
   await expect(page.locator('code', { hasText: 'DEV-FALLBACK-' })).toHaveCount(0);
 
