@@ -1,0 +1,96 @@
+name: Container Package
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'Dockerfile'
+      - '.dockerignore'
+      - 'next.config.ts'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'public/**'
+      - 'src/**'
+      - 'data/operations/container-runtime-v0.1-dev.json'
+      - 'scripts/validate-container-runtime.mjs'
+      - '.github/workflows/container-package.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: pcs
+          POSTGRES_PASSWORD: pcs
+          POSTGRES_DB: pcs
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U pcs -d pcs"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate runtime package contract
+        run: node scripts/validate-container-runtime.mjs
+
+      - name: Build immutable local image
+        run: docker build --pull --tag pcs-runtime:${{ github.sha }} .
+
+      - name: Verify image runs as non-root
+        run: |
+          test "$(docker image inspect pcs-runtime:${{ github.sha }} --format '{{.Config.User}}')" = "nextjs"
+
+      - name: Start packaged runtime
+        run: |
+          docker run --detach --rm             --name pcs-runtime-smoke             --network host             -e DATABASE_URL=postgres://pcs:pcs@127.0.0.1:5432/pcs             -e PCS_RATE_LIMIT_SECRET=pcs-container-smoke-secret-0123456789abcdef             -e PCS_SITE_ORIGIN=https://pcs-smoke.invalid             -e PCS_ASSESSMENT_MODEL_VERSION=assessment-dev-v0.3             pcs-runtime:${{ github.sha }}
+
+      - name: Smoke health and landing
+        run: |
+          for i in $(seq 1 40); do
+            if curl --fail --silent http://127.0.0.1:3000/api/health > health.json; then
+              break
+            fi
+            sleep 0.25
+          done
+          grep -F '"status":"ok"' health.json
+          curl --fail --silent http://127.0.0.1:3000/ > landing.html
+          grep -F 'あなたを、16種類では終わらせない。' landing.html
+
+      - name: Freeze package metadata
+        run: |
+          mkdir -p artifacts/container-package
+          IMAGE_ID="$(docker image inspect pcs-runtime:${{ github.sha }} --format '{{.Id}}')"
+          IMAGE_USER="$(docker image inspect pcs-runtime:${{ github.sha }} --format '{{.Config.User}}')"
+          cat > artifacts/container-package/image-metadata.json <<EOF
+          {
+            "source_commit": "${{ github.sha }}",
+            "image_id": "$IMAGE_ID",
+            "runtime_user": "$IMAGE_USER",
+            "registry_digest": null,
+            "production_deployment_proven": false
+          }
+          EOF
+
+      - name: Upload package metadata
+        uses: actions/upload-artifact@v4
+        with:
+          name: pcs-container-package-${{ github.sha }}
+          path: artifacts/container-package/image-metadata.json
+          retention-days: 30
+
+      - name: Stop packaged runtime
+        if: always()
+        run: docker stop pcs-runtime-smoke || true
