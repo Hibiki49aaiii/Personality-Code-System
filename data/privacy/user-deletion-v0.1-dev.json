@@ -1,0 +1,54 @@
+{
+  "deletion_contract_version": "anonymous-diagnostic-deletion-v0.1-dev",
+  "status": "development-implemented",
+  "endpoint": "DELETE /api/assessment/data",
+  "ownership": "private-session-bearer-cookie",
+  "csrf_guard_required": true,
+  "rate_limit_scope": "data-deletion",
+  "cookie_cleared_on_success": true,
+  "irreversible": true,
+  "deletion_order": [
+    "public_share_snapshots-derived-from-result",
+    "anonymous_sessions-owner"
+  ],
+  "owner_session_cascade_tables": [
+    "assessment_answers",
+    "assessment_trait_scores",
+    "result_snapshots",
+    "product_events-session-bound"
+  ],
+  "directly_deleted_tables": [
+    "public_share_snapshots"
+  ],
+  "intentionally_not_deleted": [
+    {
+      "data": "versioned product/model/content definitions",
+      "reason": "not user-specific diagnostic data and required for reproducibility"
+    },
+    {
+      "data": "unscoped product events such as public_share_viewed",
+      "reason": "not linked to the private anonymous session by session_id"
+    },
+    {
+      "data": "rate_limit_buckets",
+      "reason": "HMAC pseudonymous abuse-prevention buckets expire independently and do not store the raw bearer token"
+    },
+    {
+      "data": "database backups",
+      "reason": "production backup deletion/restore behavior remains a launch-time legal/operations gate"
+    }
+  ],
+  "required_evidence": [
+    "repository integration proves child/session/public-share removal",
+    "database triggers permit owner-session cascade but reject direct completed child mutation",
+    "browser E2E proves user control and cookie invalidation",
+    "hostile cross-site DELETE rejected before mutation"
+  ],
+  "public_policy_ready": false,
+  "remaining_public_policy_blockers": [
+    "production retention scheduler",
+    "production backup restore/deletion behavior",
+    "final legal jurisdiction review",
+    "final public privacy wording and contact route"
+  ]
+}
