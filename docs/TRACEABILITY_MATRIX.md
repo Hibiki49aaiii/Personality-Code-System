@@ -60,7 +60,7 @@ A checkbox in `REQUIREMENTS.md` is marked complete only when inspectable specifi
 | PCS-OPS-003 | partial | client error/performance telemetry + DB readiness endpoint | Runs 269/272/273 | independently durable production monitoring and alerting remain open |
 | PCS-QA-004 | complete through Phase 4A-1 journey | E2E path contract | Playwright Chromium flow | start → back/edit → 147 answers → private result → explicit public share → cookie-free view/cards → revoke/404 |
 | PCS-QA-005 | partial | automated axe + keyboard/touch/mobile evidence | `responsive-accessibility.spec.ts`, QA evidence record | Run 329 green | human assistive-tech/text-zoom/manual release review remains |
-| PCS-QA-006 | pending | responsive visual-regression requirement | functional width matrix exists | no committed screenshot-diff baseline yet | keep open |
+| PCS-QA-006 | complete (current development application) | `visual-regression.spec.ts` + 16 committed Linux/Chromium baselines + controlled update workflow | normal CI comparison mode; Runs 343/344 green | landing/assessment six widths + result/public-share 390/1440; baseline updates require review |
 | PCS-QA-007 | pending | release security/privacy checklist | substantial security/privacy automation exists | SEC-001/analytics/security CI evidence | deployed release review remains |
 
 ## Requirement governance evidence
@@ -134,6 +134,17 @@ This is engineering completeness evidence only. It does not complete the publish
 - Focus-visible, reduced-motion and practical assessment target-size assertions are included.
 - Successful checkpoint: CI Run 329 (`33044207630`).
 - Remaining: real assistive-technology/text-zoom manual review and screenshot-diff visual regression.
+
+## Visual regression evidence
+
+- Test: `tests/e2e/visual-regression.spec.ts`
+- Baselines: `tests/e2e/visual-regression.spec.ts-snapshots/` (16 PNGs)
+- Controlled update workflow: `.github/workflows/visual-baseline.yml`
+- Review policy: `docs/reviews/VISUAL_REGRESSION_QA_v0.1.md`
+- Dependency reproducibility: committed `package-lock.json`; normal/visual jobs use `npm ci`.
+- Baseline scope: landing + assessment at 320/390/768/1024/1280/1440; completed private result + sanitized public share at 390/1440.
+- Normal CI sets `PCS_VISUAL_REGRESSION=1` and compares without `--update-snapshots`.
+- Evidence: CI Run 343 (`33047133202`) and Run 344 (`33047140525`) passed the committed baseline comparison; Visual Baseline Run 7 reproduced the same snapshots from the lockfile.
 
 ## Security baseline evidence
 
