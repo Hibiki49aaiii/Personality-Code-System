@@ -1,9 +1,11 @@
 import { and, isNotNull, isNull, lt } from 'drizzle-orm';
+import retentionPolicy from '../../../data/analytics/retention-policy-v0.1-dev.json';
 import type { PcsDatabase } from './database';
 import { productEvents } from './analyticsSchema';
 
-export const UNSCOPED_ANALYTICS_RETENTION_DAYS = 30;
-export const SESSION_ANALYTICS_RETENTION_DAYS = 90;
+export const ANALYTICS_RETENTION_POLICY_VERSION = retentionPolicy.retention_policy_version;
+export const UNSCOPED_ANALYTICS_RETENTION_DAYS = retentionPolicy.unscoped_retention_days;
+export const SESSION_ANALYTICS_RETENTION_DAYS = retentionPolicy.session_bound_retention_days;
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
