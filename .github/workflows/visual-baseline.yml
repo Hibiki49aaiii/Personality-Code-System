@@ -1,0 +1,72 @@
+name: Visual Baseline
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/visual-baseline.yml'
+      - 'tests/e2e/visual-regression.spec.ts'
+
+permissions:
+  contents: read
+
+jobs:
+  baseline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: pcs
+          POSTGRES_PASSWORD: pcs
+          POSTGRES_DB: pcs
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U pcs -d pcs"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+
+    env:
+      DATABASE_URL: postgres://pcs:pcs@localhost:5432/pcs
+      PCS_RATE_LIMIT_SECRET: pcs-ci-only-rate-limit-secret-0123456789abcdef
+      PCS_VISUAL_REGRESSION: '1'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Apply persistence integration
+        run: npm run test:persistence:integration
+
+      - name: Seed reviewed development model
+        run: npm run test:seed:dev
+
+      - name: Production build
+        run: npm run build
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Generate visual baselines
+        run: npx playwright test tests/e2e/visual-regression.spec.ts --update-snapshots
+
+      - name: Upload baseline artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pcs-visual-baselines
+          path: tests/e2e/visual-regression.spec.ts-snapshots/
+          if-no-files-found: error
+          retention-days: 7
