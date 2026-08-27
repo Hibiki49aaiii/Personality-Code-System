@@ -139,6 +139,9 @@ Before checking a milestone complete:
 | PCS-SOC-002 | verified development implementation | `ShareControls.tsx`, `/api/share` | Chromium X/LINE/Web Share/copy assertions | app/share | no social OAuth |
 | PCS-SOC-003 | verified development fallback | `/s/[token]` metadata + versioned `/api/share/og/v0.1/[token]` | CI Run 190, image/status/metadata E2E | app/share-template | final curated artwork remains PCS-SOC-001 |
 | Phase 4A-1 sanitized sharing | verified | share schema/token/repository/API/public page/card routes | CI Run 190 + PostgreSQL + browser E2E | persistence/app/share | 4A-2 final public-name/art presentation pending |
+| PCS-PRIV-003 / PCS-ANA-001 | verified development implementation | first-party event dictionary/API/repository + funnel wiring | CI Run 238 (`33036549731`) real network + DB telemetry assertions | analytics/app/privacy | answer values and diagnostic vectors excluded; third-party export disabled |
+| PCS-ANA-002 | in-progress foundation | exact-scope observed distribution domain/repository | CI Run 240 (`33036572687`) domain + immutable-snapshot DB aggregation | analytics/statistics | public model/eligibility/minimum-sample/privacy wording gate remains |
+| PCS-ANA-003 | blocked pending consent/governance | `CALIBRATION_EXPORT_SPEC_v0.1.md` | absence of export is intentional | privacy/research | ordinary product analytics must not become calibration data |
 
 ## Phase 3 evidence map
 
@@ -191,6 +194,36 @@ Before checking a milestone complete:
 - Successful evidence checkpoint: GitHub Actions CI Run `33020306036` / Run 190.
 
 The public share is a deliberate sanitized export. It is not a different view over the private snapshot and cannot retrieve raw answers, the Trait vector, Extended Code, Response Quality or private bearer credentials.
+
+## Phase 4B analytics evidence
+
+- Event dictionary: `data/analytics/event-dictionary-v0.1-dev.json`
+- Validator: `scripts/validate-analytics-events.mjs`, `src/domain/analytics/productEvent.ts`
+- Persistence: `src/infrastructure/persistence/analyticsSchema.ts`, `analyticsRepository.ts`, `drizzle/0003_phase4b_first_party_analytics.sql`
+- First-party endpoint/browser transport: `src/app/api/analytics/route.ts`, `src/app/_analytics/client.ts`
+- Server best-effort instrumentation: `src/server/productAnalytics.ts`
+- Browser privacy proof: `tests/e2e/assessment-flow.spec.ts`; CI Run `33036549731` / Run 238
+- Analytics privacy/retention design: `docs/model/ANALYTICS_PRIVACY_BASELINE_v0.1.md`
+- Observed distribution: `src/domain/analytics/observedTypeDistribution.ts`, `src/infrastructure/persistence/typeDistributionRepository.ts`
+- Distribution policy: `docs/model/OBSERVED_TYPE_DISTRIBUTION_SPEC_v0.1.md`
+- Distribution integration proof: CI Run `33036572687` / Run 240
+- Calibration gate: `docs/model/CALIBRATION_EXPORT_SPEC_v0.1.md`
+
+### 2026-08-27 — First-party privacy-bounded funnel analytics
+- IDs: PCS-PRIV-003, PCS-ANA-001
+- Change: add versioned first-party-only funnel telemetry across landing, assessment, result and share journeys.
+- Reason: measure product completion/drop-off without creating a second diagnostic dataset.
+- Versions: `analytics-events-v0.1-dev`; assessment/scoring/code/content semantics unchanged.
+- Evidence: CI Run 238 inspects actual browser analytics requests and DB rows, proving answer interactions contain only item position/state while server injects model identity.
+- Remaining: production retention cleanup, environment separation, legal/consent review and operational monitoring.
+
+### 2026-08-27 — Scoped observed type-distribution foundation
+- IDs: PCS-ANA-002
+- Change: aggregate immutable completed snapshots by exact model/code/locale/time scope with sample size and basis-point shares.
+- Reason: support future honest observed-sample statistics without theoretical rarity fabrication.
+- Versions: `observed-type-distribution-v0.1-dev`.
+- Evidence: CI Run 240 domain + application/DB integration.
+- Remaining: production model freeze, valid-assessment exclusion policy, minimum sample/privacy threshold and public wording approval; requirement remains open.
 
 ## Material change records
 
