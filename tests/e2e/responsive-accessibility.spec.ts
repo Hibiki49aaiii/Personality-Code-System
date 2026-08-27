@@ -1,3 +1,4 @@
+import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 
 const viewports = [
@@ -8,6 +9,22 @@ const viewports = [
   { width: 1280, height: 800 },
   { width: 1440, height: 900 }
 ] as const;
+
+async function expectNoA11yViolations(page: Page) {
+  const results = await new AxeBuilder({ page })
+    .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
+    .analyze();
+
+  expect(
+    results.violations,
+    results.violations.map((violation) => ({
+      id: violation.id,
+      impact: violation.impact,
+      help: violation.help,
+      nodes: violation.nodes.map((node) => node.target)
+    }))
+  ).toEqual([]);
+}
 
 async function expectNoHorizontalOverflow(page: Page) {
   const dimensions = await page.evaluate(() => ({
@@ -61,6 +78,7 @@ test('assessment can be completed without mouse or touch and the result remains 
 
   await expect(page).toHaveURL(/\/result$/);
   await expect(page.getByRole('heading', { level: 1, name: 'SVAEND' })).toBeVisible();
+  await expectNoA11yViolations(page);
 
   for (const viewport of viewports) {
     await page.setViewportSize(viewport);
@@ -128,4 +146,17 @@ test('assessment exposes progress semantics and practical touch targets', async 
   await page.getByRole('radio', { name: 'どちらともいえない' }).press('Space');
   await expect(progress).toHaveAttribute('aria-valuenow', '1');
   await expect(progress).toHaveAttribute('aria-valuetext', '147問中1問回答済み');
+});
+
+
+test('landing and first assessment screen pass automated WCAG A/AA checks', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+
+  await page.goto('/');
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  await expectNoA11yViolations(page);
+
+  await page.goto('/diagnosis');
+  await expect(page.getByText('QUESTION 001')).toBeVisible();
+  await expectNoA11yViolations(page);
 });
