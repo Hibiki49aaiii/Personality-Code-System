@@ -2,19 +2,19 @@ import type { NextRequest } from 'next/server';
 import {
   AnonymousDataDeletionError,
   deleteAnonymousAssessmentDataByToken
-} from '../../../../../infrastructure/persistence/anonymousDataDeletionRepository';
-import { withPcsDatabase } from '../../../../../server/assessmentRuntime';
-import { applyRateLimit, RateLimitExceededError } from '../../../../../server/rateLimit';
+} from '../../../../infrastructure/persistence/anonymousDataDeletionRepository';
+import { withPcsDatabase } from '../../../../server/assessmentRuntime';
+import { applyRateLimit, RateLimitExceededError } from '../../../../server/rateLimit';
 import {
   assertTrustedMutationRequest,
   CrossSiteMutationError
-} from '../../../../../server/requestSecurity';
+} from '../../../../server/requestSecurity';
 import {
   clearAssessmentSessionCookie,
   getAssessmentToken,
   noStoreJson,
   rateLimitApiResponse
-} from '../../_shared';
+} from '../_shared';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
