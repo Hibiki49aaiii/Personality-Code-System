@@ -7,15 +7,20 @@ import {
 import { withPcsDatabase } from '../../../server/assessmentRuntime';
 import { getSiteOrigin } from '../../../server/siteOrigin';
 import { recordServerProductEventBestEffort } from '../../../server/productAnalytics';
+import { applyRateLimit, RateLimitExceededError } from '../../../server/rateLimit';
 import {
   getAssessmentToken,
-  noStoreJson
+  noStoreJson,
+  rateLimitApiResponse
 } from '../assessment/_shared';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 function shareApiError(error: unknown) {
+  if (error instanceof RateLimitExceededError) {
+    return rateLimitApiResponse(error);
+  }
   if (error instanceof PublicShareRepositoryError) {
     const status = error.code === 'PRIVATE_RESULT_NOT_FOUND' ? 404 : 400;
     return noStoreJson({ error: error.code, message: error.message }, { status });
@@ -39,6 +44,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const created = await withPcsDatabase(async (db) => {
+      await applyRateLimit(db, request, 'share-mutation', privateToken);
       const outcome = await createPublicShareForPrivateResult(db, { privateToken });
       await recordServerProductEventBestEffort(db, {
         name: 'share_snapshot_created',
@@ -71,9 +77,10 @@ export async function DELETE(request: NextRequest) {
   }
 
   try {
-    const result = await withPcsDatabase((db) =>
-      revokePublicSharesForPrivateResult(db, privateToken)
-    );
+    const result = await withPcsDatabase(async (db) => {
+      await applyRateLimit(db, request, 'share-mutation', privateToken);
+      return revokePublicSharesForPrivateResult(db, privateToken);
+    });
     return noStoreJson(result);
   } catch (error) {
     return shareApiError(error);
