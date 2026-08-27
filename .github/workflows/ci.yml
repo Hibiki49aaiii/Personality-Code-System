@@ -32,6 +32,7 @@ jobs:
       DATABASE_URL: postgres://pcs:pcs@localhost:5432/pcs
       # Test-only value. Production must configure an independent secret outside Git.
       PCS_RATE_LIMIT_SECRET: pcs-ci-only-rate-limit-secret-0123456789abcdef
+      PCS_VISUAL_REGRESSION: '1'
 
     steps:
       - name: Checkout
@@ -43,7 +44,7 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
-        run: npm install --no-audit --no-fund
+        run: npm ci --no-audit --no-fund
 
       - name: Audit production dependencies
         run: npm run audit:prod
