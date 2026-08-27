@@ -21,7 +21,7 @@ for (const name of ['preview','production']) {
 if (contract.environments.production?.public_traffic_allowed !== true) errors.push('production must be the only normal public-traffic environment');
 if (contract.environments.preview?.production_secrets_allowed !== false) errors.push('preview must prohibit production secrets');
 
-for (const name of ['DATABASE_URL','PCS_RATE_LIMIT_SECRET','PCS_SITE_ORIGIN','PCS_ASSESSMENT_MODEL_VERSION']) {
+for (const name of ['DATABASE_URL','PCS_RATE_LIMIT_SECRET','PCS_SITE_ORIGIN','PCS_ASSESSMENT_MODEL_VERSION','PCS_DEPLOYMENT_ENV']) {
   const def=contract.server_environment_variables[name];
   if (!def) errors.push(`missing server env definition ${name}`);
   else {
@@ -31,6 +31,7 @@ for (const name of ['DATABASE_URL','PCS_RATE_LIMIT_SECRET','PCS_SITE_ORIGIN','PC
 }
 if (contract.server_environment_variables.PCS_RATE_LIMIT_SECRET?.minimum_characters !== 32) errors.push('production rate-limit secret minimum must remain 32 chars');
 if (contract.server_environment_variables.PCS_SITE_ORIGIN?.production_https_required !== true) errors.push('production PCS_SITE_ORIGIN must require HTTPS');
+if (JSON.stringify(contract.server_environment_variables.PCS_DEPLOYMENT_ENV?.allowed_values) !== JSON.stringify(['development','preview','production'])) errors.push('PCS_DEPLOYMENT_ENV allowed values drift');
 
 for (const key of ['OPENAI_API_KEY','ANTHROPIC_API_KEY','GOOGLE_GENERATIVE_AI_API_KEY','COHERE_API_KEY']) {
   if (!contract.production_forbidden_runtime_credentials.includes(key)) errors.push(`missing prohibited production AI credential ${key}`);
@@ -45,7 +46,7 @@ if (!rateLimit.includes('process.env.PCS_RATE_LIMIT_SECRET')) errors.push('runti
 if (!rateLimit.includes("process.env.NODE_ENV !== 'production'")) errors.push('rate-limit development fallback boundary missing');
 if (!origin.includes('process.env.PCS_SITE_ORIGIN')) errors.push('explicit site-origin configuration path missing');
 
-for (const name of ['DATABASE_URL','PCS_RATE_LIMIT_SECRET','PCS_SITE_ORIGIN','PCS_ASSESSMENT_MODEL_VERSION']) {
+for (const name of ['DATABASE_URL','PCS_RATE_LIMIT_SECRET','PCS_SITE_ORIGIN','PCS_ASSESSMENT_MODEL_VERSION','PCS_DEPLOYMENT_ENV']) {
   if (!new RegExp('^' + name + '=', 'm').test(example)) errors.push(`.env.example missing ${name}`);
 }
 for (const secret of ['DATABASE_URL','PCS_RATE_LIMIT_SECRET']) {
