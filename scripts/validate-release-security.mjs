@@ -27,7 +27,7 @@ for (const dependency of runtimeDependencies) {
 }
 
 for (const requiredFragment of [
-  'hidePoweredByHeader: true',
+  'poweredByHeader: false',
   'productionBrowserSourceMaps: false'
 ]) {
   if (!nextConfig.includes(requiredFragment)) {
