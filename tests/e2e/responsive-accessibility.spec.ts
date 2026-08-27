@@ -56,27 +56,39 @@ test('landing and assessment remain functional without horizontal overflow at ev
   }
 });
 
-test('assessment can be completed without mouse or touch and the result remains usable at every mandatory width', async ({ page }) => {
+test('assessment can be completed by actual keyboard traversal and the result remains usable at every mandatory width', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/diagnosis');
   await expect(page.getByText('QUESTION 001')).toBeVisible();
 
+  // From the document start: PCS link -> option 1 -> option 2 -> midpoint option 3.
+  for (let tab = 0; tab < 4; tab += 1) await page.keyboard.press('Tab');
+  await expect(page.getByRole('radio', { name: 'どちらともいえない' })).toBeFocused();
+
   for (let index = 0; index < 147; index += 1) {
     const midpoint = page.getByRole('radio', { name: 'どちらともいえない' });
-    await midpoint.press('Space');
+    await page.keyboard.press('Space');
     await expect(midpoint).toBeChecked();
 
+    const terminalButton = index === 146
+      ? page.getByRole('button', { name: '診断結果を確定' })
+      : page.getByRole('button', { name: '次へ →' });
+    await expect(terminalButton).toBeEnabled();
+
+    // midpoint -> option 4 -> option 5 -> back (except Q1, where it is disabled) -> next/finish.
+    const forwardTabs = index === 0 ? 3 : 4;
+    for (let tab = 0; tab < forwardTabs; tab += 1) await page.keyboard.press('Tab');
+    await expect(terminalButton).toBeFocused();
+    await page.keyboard.press('Enter');
+
     if (index < 146) {
-      const next = page.getByRole('button', { name: '次へ →' });
-      await expect(next).toBeEnabled();
-      await next.press('Enter');
       await expect(page.getByText(`QUESTION ${String(index + 2).padStart(3, '0')}`)).toBeVisible();
+
+      // The persistent next button retains focus. Traverse backward through back/option5/option4 to midpoint.
+      for (let tab = 0; tab < 4; tab += 1) await page.keyboard.press('Shift+Tab');
+      await expect(page.getByRole('radio', { name: 'どちらともいえない' })).toBeFocused();
     }
   }
-
-  const finish = page.getByRole('button', { name: '診断結果を確定' });
-  await expect(finish).toBeEnabled();
-  await finish.press('Enter');
 
   await expect(page).toHaveURL(/\/result$/);
   await expect(page.getByRole('heading', { level: 1, name: 'SVAEND' })).toBeVisible();
