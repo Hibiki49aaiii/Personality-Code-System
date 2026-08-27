@@ -31,9 +31,17 @@ export interface ResultSnapshotV01 {
   sections: ResultSnapshotSection[];
 }
 
-export function createResultSnapshot(result: StructuredAssessmentResult): ResultSnapshotV01 {
+export interface ResultSnapshotV02 extends Omit<ResultSnapshotV01, 'snapshotSchemaVersion'> {
+  snapshotSchemaVersion: 'result-snapshot-v0.2-dev';
+  assets: {
+    illustrationAssetVersion: string;
+  };
+}
+
+export type ResultSnapshot = ResultSnapshotV01 | ResultSnapshotV02;
+
+function snapshotBody(result: StructuredAssessmentResult): Omit<ResultSnapshotV01, 'snapshotSchemaVersion'> {
   return {
-    snapshotSchemaVersion: 'result-snapshot-v0.1-dev',
     versions: { ...result.versions },
     locale: result.locale,
     traitScores: result.scoring.traitScores.map((trait) => ({
@@ -63,5 +71,34 @@ export function createResultSnapshot(result: StructuredAssessmentResult): Result
       domain: section.domain,
       moduleIds: [...section.moduleIds]
     }))
+  };
+}
+
+export function createResultSnapshotV01(result: StructuredAssessmentResult): ResultSnapshotV01 {
+  return {
+    snapshotSchemaVersion: 'result-snapshot-v0.1-dev',
+    ...snapshotBody(result)
+  };
+}
+
+export function createResultSnapshot(result: StructuredAssessmentResult): ResultSnapshotV01;
+export function createResultSnapshot(
+  result: StructuredAssessmentResult,
+  input: { illustrationAssetVersion: string }
+): ResultSnapshotV02;
+export function createResultSnapshot(
+  result: StructuredAssessmentResult,
+  input?: { illustrationAssetVersion: string }
+): ResultSnapshot {
+  if (!input) return createResultSnapshotV01(result);
+  if (!input.illustrationAssetVersion || input.illustrationAssetVersion.length > 120) {
+    throw new Error('A valid illustrationAssetVersion is required for result-snapshot-v0.2-dev');
+  }
+  return {
+    snapshotSchemaVersion: 'result-snapshot-v0.2-dev',
+    ...snapshotBody(result),
+    assets: {
+      illustrationAssetVersion: input.illustrationAssetVersion
+    }
   };
 }
