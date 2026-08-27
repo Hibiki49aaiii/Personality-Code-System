@@ -79,6 +79,9 @@ jobs:
       - name: Validate privacy data inventory and collection minimization
         run: npm run validate:privacy-data
 
+      - name: Validate anonymous diagnostic self-deletion contract
+        run: npm run validate:user-deletion
+
       - name: Validate beta calibration protocol remains gated
         run: npm run validate:calibration
 
