@@ -99,7 +99,7 @@ export default function DiagnosisPage() {
           <div className={styles.headerMeta}><span>ASSESSMENT</span></div>
         </header>
         <section className={styles.content}>
-          <p className={error ? styles.errorText : styles.loadingText}>
+          <p className={error ? styles.errorText : styles.loadingText} role={error ? "alert" : "status"} aria-live={error ? "assertive" : "polite"}>
             {error ?? "診断モデルと保存済み回答を読み込んでいます…"}
           </p>
           {error ? <Link className={styles.nextButton} href="/">トップへ戻る</Link> : null}
@@ -180,8 +180,16 @@ export default function DiagnosisPage() {
         </div>
       </header>
 
-      <div className={styles.progressTrack} aria-hidden="true">
-        <span style={{ width: `${progress}%` }} />
+      <div
+        className={styles.progressTrack}
+        role="progressbar"
+        aria-label="診断の回答進捗"
+        aria-valuemin={0}
+        aria-valuemax={assessment.items.length}
+        aria-valuenow={answeredCount}
+        aria-valuetext={`${assessment.items.length}問中${answeredCount}問回答済み`}
+      >
+        <span aria-hidden="true" style={{ width: `${progress}%` }} />
       </div>
 
       <section className={styles.content}>
@@ -190,9 +198,15 @@ export default function DiagnosisPage() {
           <span>{answeredCount} ANSWERED · {assessment.modelVersion}</span>
         </div>
 
-        <h1>{item.text}</h1>
+        <h1 id="assessment-question">{item.text}</h1>
 
-        <div className={styles.choices} role="radiogroup" aria-label="回答を選択" aria-busy={saving}>
+        <div
+          className={styles.choices}
+          role="radiogroup"
+          aria-labelledby="assessment-question"
+          aria-describedby={error ? "assessment-error" : undefined}
+          aria-busy={saving}
+        >
           {assessment.responseScale.values.map(({ value, label }) => (
             <button
               type="button"
@@ -240,7 +254,7 @@ export default function DiagnosisPage() {
           )}
         </div>
 
-        {error ? <p className={styles.errorText} role="alert">{error}</p> : null}
+        {error ? <p id="assessment-error" className={styles.errorText} role="alert">{error}</p> : null}
         <p className={styles.prototypeNote}>
           回答は匿名セッションに保存され、戻って変更できます。現在は検証用の reviewed model です。Core Code・Interaction・結果文は固定されたversionから決定論的に生成され、実行時AIは使用しません。
         </p>
