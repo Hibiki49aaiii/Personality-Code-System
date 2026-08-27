@@ -3,6 +3,7 @@ import { completePublicAssessment } from '../../../../application/assessment/ser
 import { withPcsDatabase } from '../../../../server/assessmentRuntime';
 import { recordServerProductEventBestEffort } from '../../../../server/productAnalytics';
 import { applyRateLimit } from '../../../../server/rateLimit';
+import { assertTrustedMutationRequest } from '../../../../server/requestSecurity';
 import { assessmentApiError, getAssessmentToken, noStoreJson } from '../_shared';
 
 export const runtime = 'nodejs';
@@ -15,6 +16,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
+    assertTrustedMutationRequest(request);
     const completed = await withPcsDatabase(async (db) => {
       await applyRateLimit(db, request, 'assessment-complete', token);
       const outcome = await completePublicAssessment(db, token);
