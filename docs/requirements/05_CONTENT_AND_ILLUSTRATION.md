@@ -127,6 +127,19 @@ Promotion of any entry to `published` requires a later `public_use=true` schema 
 
 This is development editorial completeness evidence, not human editorial approval or public-schema approval.
 
+### Human editorial approval ledger
+
+Phase 3A now also has an explicit 64-type human review ledger and fail-closed publication gate:
+
+- `data/type-catalog/v0.1-dev/editorial-review-ledger.ja.json`;
+- `data/type-catalog/v0.1-dev/publication-gate.json`;
+- `docs/model/TYPE_EDITORIAL_REVIEW_GATE_v0.1-dev.md`;
+- `scripts/validate-type-editorial-review-gate.mjs`.
+
+Every reachable C01D code is individually tracked across naming consistency, claim provenance, neighbor differentiation, non-clinical language, adversarial tone, non-Core limitation wording, Japanese proofreading, and final editorial approval. All entries begin `pending`.
+
+The publication gate remains blocked unless the code schema and catalog are public, all review dimensions are approved, editorial issues are closed, illustration mapping is approved, and Phase 5C model freeze is complete.
+
 ## Illustration brief evidence
 
 - `data/illustration/v0.1-dev/brief-system.json`;
@@ -140,8 +153,8 @@ Every development type now has a deterministic production brief, but every maste
 
 Before a Core Type is publishable:
 
-- [ ] all mandatory content fields exist;
-- [ ] claims trace to traits/interactions;
+- [x] all mandatory draft content fields exist for every reachable C01D code; *(machine-validated development evidence)*
+- [x] draft claims trace to allowed Core/limitation provenance; *(machine-validated development evidence)*
 - [ ] no internal contradiction remains;
 - [ ] adversarial wording is direct but not abusive;
 - [ ] Japanese proofreading complete;
