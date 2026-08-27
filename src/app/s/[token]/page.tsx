@@ -4,6 +4,7 @@ import { getPublicShareByToken } from '../../../infrastructure/persistence/publi
 import { withPcsDatabase } from '../../../server/assessmentRuntime';
 import { getSiteOrigin } from '../../../server/siteOrigin';
 import { recordServerProductEventBestEffort } from '../../../server/productAnalytics';
+import { logPrivacySafeServerFault } from '../../../server/privacySafeLog';
 import { CuratedFallbackArtwork } from '../../../components/illustration/CuratedFallbackArtwork';
 import { DEVELOPMENT_FALLBACK_ILLUSTRATION_ASSET_VERSION } from '../../../domain/illustration/fallbackAsset';
 import styles from './share.module.css';
@@ -34,7 +35,7 @@ export async function generateMetadata({
       return publicShare;
     });
   } catch (error) {
-    console.error('Failed to build public share metadata', error);
+    logPrivacySafeServerFault({ surface: 'public-share', category: 'render' });
   }
 
   if (!result) {
@@ -87,7 +88,7 @@ export default async function PublicSharePage({
   try {
     result = await withPcsDatabase((db) => getPublicShareByToken(db, token));
   } catch (error) {
-    console.error('Failed to render public share', error);
+    logPrivacySafeServerFault({ surface: 'public-share', category: 'render' });
     result = null;
   }
 
