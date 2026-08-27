@@ -9,6 +9,10 @@ import { getSiteOrigin } from '../../../server/siteOrigin';
 import { recordServerProductEventBestEffort } from '../../../server/productAnalytics';
 import { applyRateLimit, RateLimitExceededError } from '../../../server/rateLimit';
 import {
+  assertTrustedMutationRequest,
+  CrossSiteMutationError
+} from '../../../server/requestSecurity';
+import {
   getAssessmentToken,
   noStoreJson,
   rateLimitApiResponse
@@ -18,6 +22,12 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 function shareApiError(error: unknown) {
+  if (error instanceof CrossSiteMutationError) {
+    return noStoreJson(
+      { error: 'CROSS_SITE_MUTATION_REJECTED', message: 'この操作は同一サイトから実行してください。' },
+      { status: 403 }
+    );
+  }
   if (error instanceof RateLimitExceededError) {
     return rateLimitApiResponse(error);
   }
@@ -43,6 +53,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
+    assertTrustedMutationRequest(request);
     const created = await withPcsDatabase(async (db) => {
       await applyRateLimit(db, request, 'share-mutation', privateToken);
       const outcome = await createPublicShareForPrivateResult(db, { privateToken });
@@ -77,6 +88,7 @@ export async function DELETE(request: NextRequest) {
   }
 
   try {
+    assertTrustedMutationRequest(request);
     const result = await withPcsDatabase(async (db) => {
       await applyRateLimit(db, request, 'share-mutation', privateToken);
       return revokePublicSharesForPrivateResult(db, privateToken);
