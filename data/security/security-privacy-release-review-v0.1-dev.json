@@ -13,7 +13,8 @@
     "privacy_data_inventory": "complete",
     "dependency_vulnerability_audit": "complete",
     "browser_security_regression": "complete",
-    "client_address_header_fail_closed": "complete"
+    "client_address_header_fail_closed": "complete",
+    "database_runtime_role_contract": "complete"
   },
   "deployment_manual_controls": {
     "production_tls_termination": "pending",
