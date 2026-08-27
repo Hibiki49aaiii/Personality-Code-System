@@ -248,7 +248,7 @@ Exit: no published result can resolve to missing required copy or visual assets.
 - [x] revoked share pages and image routes fail closed;
 - [x] public page emits dynamic Open Graph/Twitter metadata using the versioned sanitized OG route.
 
-Evidence checkpoint: CI Run 190 proved the image/card and full 147-item browser flow together. Canonical deployment origin is centralized by `PCS_SITE_ORIGIN` / `NEXT_PUBLIC_SITE_ORIGIN`.
+Evidence checkpoint: CI Run 190 proved the image/card and full 147-item browser flow together. Canonical deployment origin is server-only `PCS_SITE_ORIGIN`; preview/production require it explicitly and production requires HTTPS.
 
 #### 4A-2 Production share presentation — PENDING on Phase 3A/3B/5C
 - [ ] approved public type name/identity sentence frozen into the share snapshot;
