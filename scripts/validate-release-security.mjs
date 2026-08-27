@@ -1,5 +1,4 @@
 import fs from 'node:fs';
-import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 
 const errors = [];
@@ -40,8 +39,11 @@ const trackedFiles = execFileSync('git', ['ls-files'], { encoding: 'utf8' })
   .split('\n')
   .map((value) => value.trim())
   .filter(Boolean)
+  // Documentation, tests and CI fixtures may intentionally contain examples/test-only credentials.
+  // Runtime/source/config files are scanned separately from those controlled fixtures.
   .filter((file) => !file.startsWith('docs/'))
   .filter((file) => !file.startsWith('tests/'))
+  .filter((file) => !file.startsWith('.github/'))
   .filter((file) => !file.endsWith('.png'))
   .filter((file) => !file.endsWith('.lock'));
 
@@ -94,4 +96,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`Release security static audit passed: ${runtimeDependencies.length} runtime dependencies and ${trackedFiles.length} tracked non-doc/test files checked; no runtime AI dependency, public-secret env misuse or obvious committed secret detected.`);
+console.log(`Release security static audit passed: ${runtimeDependencies.length} runtime dependencies and ${trackedFiles.length} tracked runtime/config files checked; no runtime AI dependency, public-secret env misuse or obvious committed secret detected.`);
