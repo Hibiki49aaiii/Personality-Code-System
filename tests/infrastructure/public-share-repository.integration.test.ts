@@ -15,6 +15,7 @@ import {
 } from '../../src/infrastructure/persistence/publicShareRepository';
 import { hashPublicShareToken } from '../../src/infrastructure/persistence/publicShareToken';
 import { publicShareSnapshots } from '../../src/infrastructure/persistence/sharingSchema';
+import { DEVELOPMENT_FALLBACK_ILLUSTRATION_ASSET_VERSION } from '../../src/domain/illustration/fallbackAsset';
 
 function oneTraitResult(): StructuredAssessmentResult {
   return {
@@ -96,7 +97,8 @@ test('repository creates multiple hash-only sanitized links and private owner ca
     });
     const completed = await completeAnonymousAssessment(connection.db, {
       token: session.token,
-      result: oneTraitResult()
+      result: oneTraitResult(),
+      illustrationAssetVersion: DEVELOPMENT_FALLBACK_ILLUSTRATION_ASSET_VERSION
     });
 
     const first = await createPublicShareForPrivateResult(connection.db, {
@@ -109,6 +111,7 @@ test('repository creates multiple hash-only sanitized links and private owner ca
     assert.notEqual(first.token, second.token);
     assert.equal(first.snapshot.coreCode, 'SVAEND');
     assert.equal(first.snapshot.presentation.displayName, null);
+    assert.equal(first.snapshot.presentation.illustrationAssetVersion, DEVELOPMENT_FALLBACK_ILLUSTRATION_ASSET_VERSION);
 
     const [stored] = await connection.db
       .select({
