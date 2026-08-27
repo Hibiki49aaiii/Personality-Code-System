@@ -137,7 +137,7 @@ Detailed requirements: [`docs/requirements/05_CONTENT_AND_ILLUSTRATION.md`](docs
 - [x] **PCS-FE-005** Layouts verified at 320, 375/390, 768, 1024, 1280, 1440+ CSS px. *(Chromium functional QA covers 320/390/768/1024/1280/1440 widths for landing/assessment and the completed private result, with document-level horizontal-overflow assertions; CI Run 329 / `33044207630`.)*
 - [x] **PCS-A11Y-001** Keyboard-only assessment completion works. *(Chromium completes all 147 questions and finalization using actual `Tab` / `Shift+Tab` / `Space` / `Enter` traversal only; CI Run 329 / `33044207630`.)*
 - [ ] **PCS-A11Y-002** Semantic labeling, focus, contrast, zoom, motion, and touch-target checks pass. *(Automated foundation now passes semantic progress/radiogroup/meter checks, focus-visible, WCAG A/AA axe scans, reduced-motion behavior, mobile touch interaction and 44px target assertions in Run 329; real assistive-technology walkthrough and browser text zoom/scaling remain release gates.)*
-- [ ] **PCS-PERF-001** Public pages meet defined performance budgets/acceptable Core Web Vitals.
+- [ ] **PCS-PERF-001** Public pages meet defined performance budgets/acceptable Core Web Vitals. *(Production artifact budgets are CI-enforced. Performance Lab Run 1 now covers landing/assessment/private-result/public-share on desktop and constrained mobile profiles with LCP/CLS plus scripted Event Timing interaction proxies; all frozen lab observations are within the current good thresholds. Field p75 CWV/release review still remains before closure.)*
 
 Detailed requirements: [`docs/requirements/06_FRONTEND_RESPONSIVE_UX.md`](docs/requirements/06_FRONTEND_RESPONSIVE_UX.md)
 
