@@ -82,6 +82,8 @@ The visual family SHOULD feel authored and collectible, not like unrelated promp
 
 ## Asset production
 
+Current Phase 3B preparation additionally materializes 64 production briefs from the illustration slot grammar. The briefs freeze motif, style, crop, prohibited-trope, non-diagnostic representation, and review-check requirements while keeping every actual asset path/status unproduced. This is preparation evidence only and does not satisfy the hero-asset requirement.
+
 - **PCS-ART-010** One approved hero illustration per published Core Type.
 - **PCS-ART-011** Source/master asset retained outside runtime optimization pipeline where practical.
 - **PCS-ART-012** Web-optimized variants generated deterministically from approved masters.
@@ -124,6 +126,15 @@ Promotion of any entry to `published` requires a later `public_use=true` schema 
 - `docs/model/TYPE_EDITORIAL_CATALOG_SPEC_v0.1-dev.md` defines the publication boundary.
 
 This is development editorial completeness evidence, not human editorial approval or public-schema approval.
+
+## Illustration brief evidence
+
+- `data/illustration/v0.1-dev/brief-system.json`;
+- `scripts/materialize-illustration-briefs.mjs`;
+- `scripts/validate-illustration-briefs.mjs`;
+- `docs/model/ILLUSTRATION_BRIEF_SPEC_v0.1-dev.md`.
+
+Every development type now has a deterministic production brief, but every master/variant path remains null and every review gate remains open.
 
 ## Content QA
 

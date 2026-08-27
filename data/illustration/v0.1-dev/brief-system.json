@@ -1,0 +1,43 @@
+{
+  "brief_system_version": "illustration-brief-system-v0.1-dev",
+  "illustration_system_version": "illustration-system-v0.1-dev",
+  "editorial_catalog_version": "type-editorial-catalog-ja-v0.1-dev",
+  "locale": "ja-JP",
+  "status": "production-brief-foundation",
+  "public_use": false,
+  "runtime_generation": false,
+  "shared_style": {
+    "medium": "2D editorial print illustration with clean vector-like silhouette edges and restrained ink/paper texture",
+    "background": "warm neutral paper-like field with sparse geometric/environmental motifs",
+    "character": "stylized non-photorealistic character with consistent catalog body proportions",
+    "lighting": "flat to limited tonal steps; no glossy cinematic lighting",
+    "text_in_master": false
+  },
+  "crop_contract": {
+    "result-portrait": "primary face, hands and identity prop remain inside the central portrait-safe region",
+    "og-landscape": "subject remains readable when lateral background is cropped to 1.91:1",
+    "share-portrait": "subject and main role motif remain readable on a narrow mobile portrait card"
+  },
+  "representation_rotation": [
+    "androgynous-young-adult-a",
+    "androgynous-young-adult-b",
+    "adult-a",
+    "adult-b",
+    "older-adult-a",
+    "older-adult-b",
+    "mobility-aid-neutral",
+    "hearing-device-neutral"
+  ],
+  "representation_note": "Representation variants rotate by catalog index only. They are editorial diversity slots and never inferred from personality, score, code, gender, ethnicity, age, disability, attractiveness, or social status.",
+  "review_checks": [
+    "motif-mapping",
+    "style-consistency",
+    "anatomy-geometry",
+    "no-prestige-hierarchy",
+    "no-diagnostic-stereotype",
+    "result-crop",
+    "og-crop",
+    "share-crop",
+    "license-source-provenance"
+  ]
+}

@@ -140,11 +140,13 @@ All compositions must be designed so the primary subject survives:
 
 Critical face/hand/identity prop geometry must remain inside a central safe region. Background motifs may extend beyond it.
 
-## 9. Development asset slots
+## 9. Development asset slots and production briefs
 
 The machine-readable art system is stored under `data/illustration/v0.1-dev/`. A deterministic slot materializer maps all 64 reachable development Core Codes to stable asset IDs and component keys.
 
-An `unproduced` slot is not an illustration. It exists so the repository can detect missing, duplicate or incorrectly mapped assets before public release.
+A second deterministic brief layer maps those slots to exact scene/style/crop/prohibited-trope/review requirements and a balanced catalog-index-only representation rotation. Representation is editorial diversity planning and is never inferred from personality data.
+
+An `unproduced` or `brief-ready-asset-unproduced` slot is not an illustration. It exists so the repository can detect missing, duplicate or incorrectly mapped assets before public release.
 
 ## 10. Review gates for one hero asset
 
