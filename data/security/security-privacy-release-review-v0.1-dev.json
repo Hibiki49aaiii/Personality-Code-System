@@ -14,7 +14,8 @@
     "dependency_vulnerability_audit": "complete",
     "browser_security_regression": "complete",
     "client_address_header_fail_closed": "complete",
-    "database_runtime_role_contract": "complete"
+    "database_runtime_role_contract": "complete",
+    "logical_backup_restore_rehearsal": "complete"
   },
   "deployment_manual_controls": {
     "production_tls_termination": "pending",
