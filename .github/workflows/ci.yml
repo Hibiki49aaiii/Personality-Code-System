@@ -73,6 +73,9 @@ jobs:
       - name: Validate analytics event privacy contract
         run: npm run validate:analytics
 
+      - name: Validate observed-distribution publication policy
+        run: npm run validate:observed-distribution
+
       - name: Validate privacy data inventory and collection minimization
         run: npm run validate:privacy-data
 

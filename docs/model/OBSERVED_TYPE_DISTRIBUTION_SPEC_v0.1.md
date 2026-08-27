@@ -98,15 +98,36 @@ Changes to any of the following require a new distribution schema/policy version
 - validity exclusion rules;
 - population-claim policy.
 
+## Public-display policy foundation
+
+A separate versioned policy now exists at `data/analytics/observed-distribution-publication-policy-v0.1-dev.json`.
+
+The current development policy requires all of:
+
+- assessment model status = `published`;
+- code schema `public_use=true`;
+- at least 1,000 assessments in the exact scope;
+- at least 10 observations for the individual Core Code before its percentage is displayed;
+- one decimal place for public percentage presentation;
+- exact model/version, locale, time window and sample size in the statement;
+- `populationClaimAllowed=false` remains invariant.
+
+If any gate fails, the display contract returns `集計データ不足` instead of a percentage. These thresholds are conservative product privacy/stability display policy, not scientific validation or proof of representativeness.
+
+Current C01D remains `public_use=false`, so the policy mechanically prevents its observed distribution from becoming public.
+
+Domain implementation: `src/domain/analytics/observedDistributionPublication.ts`.
+Validator: `scripts/validate-observed-distribution-publication.mjs`.
+
 ## Production gaps
 
 Before this statistic is shown publicly:
 
 1. production assessment/public Core Code schema must be frozen;
 2. valid-assessment exclusion policy must be decided from beta/calibration evidence;
-3. minimum sample/aggregation threshold must be specified;
-4. privacy review for rare-code disclosure must be completed;
-5. user-facing copy must show sample size/time/model scope;
-6. QA must verify no theoretical/population wording can be substituted.
+3. minimum sample/aggregation threshold is now specified in the development publication policy and must be reviewed against beta/production evidence;
+4. privacy review for rare-code disclosure must confirm or revise the minimum-code-count policy;
+5. user-facing copy contract now requires sample size/time/model/locale scope, but production UI remains disabled until the public model exists;
+6. QA must verify no theoretical/population wording can be substituted in the final public surface.
 
 Therefore the current implementation is an aggregation foundation and does **not** complete public `PCS-ANA-002`.

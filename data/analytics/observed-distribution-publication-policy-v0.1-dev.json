@@ -1,0 +1,28 @@
+{
+  "policy_version": "observed-distribution-publication-policy-v0.1-dev",
+  "status": "development-policy",
+  "population_claim_allowed": false,
+  "required_model_status": "published",
+  "require_public_code_schema": true,
+  "minimum_scope_sample_size": 1000,
+  "minimum_code_count": 10,
+  "display_percentage_decimals": 1,
+  "insufficient_sample_label_ja": "集計データ不足",
+  "required_display_scope_fields": [
+    "assessmentModelVersion",
+    "codeSchemaVersion",
+    "locale",
+    "startInclusive",
+    "endExclusive",
+    "sampleSize"
+  ],
+  "prohibited_copy_patterns": [
+    "人口の",
+    "人類の",
+    "日本人の",
+    "1人に1人",
+    "希少タイプ",
+    "レアタイプ"
+  ],
+  "note": "Thresholds are product privacy/stability display policy, not psychometric validation or representative population inference. Review after beta evidence."
+}
