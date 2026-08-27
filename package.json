@@ -54,7 +54,8 @@
     "test:db-role:integration": "node tests/infrastructure/database-least-privilege.integration.mjs",
     "validate:backup-restore": "node scripts/validate-backup-restore-policy.mjs",
     "test:backup-restore:integration": "node tests/infrastructure/backup-restore-rehearsal.integration.mjs",
-    "validate:runtime-log-privacy": "node scripts/validate-runtime-log-privacy.mjs"
+    "validate:runtime-log-privacy": "node scripts/validate-runtime-log-privacy.mjs",
+    "validate:change-ledger": "node scripts/validate-requirement-change-ledger.mjs"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",
