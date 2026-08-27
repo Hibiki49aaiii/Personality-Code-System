@@ -102,6 +102,9 @@ jobs:
       - name: Validate environment separation contract
         run: npm run validate:environment
 
+      - name: Validate database runtime-role least privilege contract
+        run: npm run validate:db-role
+
       - name: Validate standalone container runtime package contract
         run: npm run validate:runtime-package
 
@@ -128,6 +131,9 @@ jobs:
 
       - name: PostgreSQL persistence integration
         run: npm run test:persistence:integration
+
+      - name: Database runtime-role least privilege integration
+        run: npm run test:db-role:integration
 
       - name: Diagnostic retention integration
         run: npm run test:diagnostic-retention:integration
