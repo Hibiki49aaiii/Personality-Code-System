@@ -561,6 +561,19 @@ a {
   letter-spacing: 0.08em;
 }
 
+.footerLinks {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+}
+
+.footerLinks a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 4px;
