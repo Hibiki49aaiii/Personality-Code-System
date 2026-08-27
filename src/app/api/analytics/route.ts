@@ -8,6 +8,7 @@ import {
 } from '../../../domain/analytics/productEvent';
 import { withPcsDatabase } from '../../../server/assessmentRuntime';
 import { applyRateLimit, RateLimitExceededError } from '../../../server/rateLimit';
+import { logPrivacySafeServerFault } from '../../../server/privacySafeLog';
 import {
   getAssessmentToken,
   noStoreJson,
@@ -68,7 +69,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.error('First-party analytics API failure', error);
+    logPrivacySafeServerFault({ surface: 'analytics', category: 'unexpected' });
     return noStoreJson(
       { error: 'INTERNAL_ERROR', message: 'Analytics event could not be recorded.' },
       { status: 500 }
