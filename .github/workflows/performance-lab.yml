@@ -41,6 +41,7 @@ jobs:
       DATABASE_URL: postgres://pcs:pcs@localhost:5432/pcs
       PCS_RATE_LIMIT_SECRET: pcs-ci-only-rate-limit-secret-0123456789abcdef
       PCS_PERF_PROFILE: ${{ matrix.profile }}
+      PCS_DEPLOYMENT_ENV: preview
 
     steps:
       - name: Checkout
