@@ -66,6 +66,16 @@ Evidence checkpoints:
 - CI Run 270 (`33037562880`): retention policy/repository/CLI dry-run with the full suite;
 - CI Run 272 (`33037608636`): minimal readiness endpoint and E2E.
 
+### Machine-readable production observability gate
+
+The repository now also carries:
+
+- `data/operations/observability-v0.1-dev.json`;
+- `docs/operations/OBSERVABILITY_RUNBOOK_v0.1.md`;
+- `scripts/validate-observability-contract.mjs`.
+
+This freezes the privacy boundary, readiness response contract, required monitor classes, incident severities and evidence needed before production observability can be called operational. Every provider-dependent monitor remains `pending-external` and `production_operational=false`.
+
 Still required for production:
 
 - external or independently durable application/server error monitoring;
@@ -75,6 +85,8 @@ Still required for production:
 - alert routing/escalation;
 - production retention scheduler execution evidence;
 - development/preview/production environment separation.
+
+The repository validator deliberately prevents Master **PCS-OPS-003** from being checked while the machine-readable observability contract still says `production_operational=false`.
 
 ## Repository-enforced release/rollback foundation
 
