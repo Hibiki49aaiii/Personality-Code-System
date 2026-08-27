@@ -297,7 +297,7 @@ test('assessment request failure emits only fixed error telemetry', async ({ pag
   });
 
   await page.getByRole('radio', { name: 'どちらともいえない' }).click();
-  await expect(page.getByRole('alert')).toContainText('simulated failure');
+  await expect(page.locator('p[role="alert"]')).toContainText('simulated failure');
 
   const analyticsResponse = await errorAnalyticsPromise;
   expect(analyticsResponse.status()).toBe(202);
