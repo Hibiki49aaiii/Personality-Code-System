@@ -5,6 +5,7 @@ import {
 } from '../../../../infrastructure/persistence/anonymousDataDeletionRepository';
 import { withPcsDatabase } from '../../../../server/assessmentRuntime';
 import { applyRateLimit, RateLimitExceededError } from '../../../../server/rateLimit';
+import { logPrivacySafeServerFault } from '../../../../server/privacySafeLog';
 import {
   assertTrustedMutationRequest,
   CrossSiteMutationError
@@ -38,7 +39,7 @@ function deletionError(error: unknown) {
     return response;
   }
 
-  console.error('Anonymous assessment data deletion failure', error);
+  logPrivacySafeServerFault({ surface: 'assessment', category: 'persistence' });
   return noStoreJson(
     { error: 'INTERNAL_ERROR', message: '診断データを削除できませんでした。' },
     { status: 500 }
