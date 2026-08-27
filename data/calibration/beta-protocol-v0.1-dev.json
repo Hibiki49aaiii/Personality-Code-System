@@ -1,0 +1,68 @@
+{
+  "protocol_version": "beta-calibration-protocol-v0.1-dev",
+  "status": "planning-only",
+  "locale": "ja-JP",
+  "collection_enabled": false,
+  "export_enabled": false,
+  "public_validation_claims_allowed": false,
+  "ordinary_product_analytics_is_calibration_data": false,
+  "activation_prerequisites": [
+    "explicit-calibration-consent-state",
+    "versioned-consent-purpose",
+    "legal-privacy-approval",
+    "production-environment-separation",
+    "retention-deletion-policy",
+    "operator-authorization-audit",
+    "pre-registered-sample-plan",
+    "frozen-analysis-version-scope"
+  ],
+  "version_scope_required": [
+    "assessment_model_version",
+    "item_bank_version",
+    "scoring_version",
+    "trait_dictionary_version",
+    "locale"
+  ],
+  "planned_analysis_modules": [
+    "item-distributions-floor-ceiling",
+    "item-total-scale-behavior",
+    "internal-consistency-omega",
+    "inter-trait-redundancy",
+    "test-retest-stability",
+    "exploratory-factor-review",
+    "held-out-confirmatory-review-when-supported",
+    "differential-item-functioning-when-supported",
+    "measurement-invariance-when-supported",
+    "response-quality-sensitivity-analysis",
+    "item-removal-rewording-ledger"
+  ],
+  "sample_plan": {
+    "status": "must-be-pre-registered-before-collection",
+    "fixed_universal_minimum_n": null,
+    "rule": "justify sample size per planned analysis complexity, uncertainty target, retest attrition and subgroup/DIF scope before activation"
+  },
+  "retest_plan": {
+    "status": "must-be-frozen-before-collection",
+    "requires_interval_definition": true,
+    "requires_attrition_rule": true,
+    "requires_context_change_recording": true,
+    "requires_exact_model_version": true
+  },
+  "decision_policy": {
+    "single_statistic_can_promote_stage": false,
+    "changes_require_new_model_or_item_revision": true,
+    "marketing_type_count_can_override_measurement_evidence": false,
+    "failed_or_ambiguous_construct_may_be_removed_or_merged": true,
+    "all_changes_require_rationale_ledger": true
+  },
+  "outputs_required_before_stable_model_review": [
+    "dataset-definition-and-exclusions",
+    "version-scope-manifest",
+    "reliability-report",
+    "retest-report",
+    "factor-structure-report",
+    "overlap-discriminant-report",
+    "item-change-ledger",
+    "limitations-report"
+  ]
+}

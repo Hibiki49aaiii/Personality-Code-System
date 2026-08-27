@@ -150,7 +150,13 @@ PCS is not allowed to infer or claim from ordinary personality scores:
 - relationship destiny;
 - guaranteed future behavior.
 
-## 8. Validation artifact requirements
+## 8. Closed-beta protocol foundation
+
+Before Stage B collection begins, PCS uses `BETA_CALIBRATION_PROTOCOL_v0.1.md` and `data/calibration/beta-protocol-v0.1-dev.json` to freeze activation prerequisites, version scope, planned analysis classes, retest/sample-planning requirements and versioned model-change rules.
+
+The machine-readable protocol intentionally keeps collection/export/public-validation claims disabled until consent, legal/privacy, environment separation and pre-registered analysis prerequisites exist.
+
+## 9. Validation artifact requirements
 
 Every evidence-stage promotion requires a versioned report containing:
 

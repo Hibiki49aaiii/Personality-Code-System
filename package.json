@@ -28,7 +28,8 @@
     "audit:production-build": "node scripts/audit-production-build.mjs",
     "validate:privacy-data": "node scripts/validate-privacy-data-inventory.mjs",
     "validate:landing-claims": "node scripts/validate-landing-claims.mjs",
-    "audit:performance-build": "node scripts/audit-performance-build.mjs"
+    "audit:performance-build": "node scripts/audit-performance-build.mjs",
+    "validate:calibration": "node scripts/validate-calibration-protocol.mjs"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",

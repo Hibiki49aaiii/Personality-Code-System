@@ -66,3 +66,5 @@ A future export job must:
 ## Current decision
 
 PCS deliberately leaves `PCS-ANA-003` open. Building a raw-answer export before the consent/governance layer would contradict the privacy requirements rather than advance them.
+
+The companion `BETA_CALIBRATION_PROTOCOL_v0.1.md` now freezes the pre-collection analysis/governance contract while keeping both collection and export disabled. This means Phase 5 planning can progress without weakening the privacy boundary.

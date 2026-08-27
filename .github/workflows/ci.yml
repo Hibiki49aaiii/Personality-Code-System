@@ -76,6 +76,9 @@ jobs:
       - name: Validate privacy data inventory and collection minimization
         run: npm run validate:privacy-data
 
+      - name: Validate beta calibration protocol remains gated
+        run: npm run validate:calibration
+
       - name: Validate security baseline
         run: npm run validate:security
 
