@@ -71,7 +71,6 @@ test('DB-backed fixed-window limiter never stores raw principals and resets on t
       .where(eq(rateLimitBuckets.bucketHash, hash));
     assert.equal(stored.length, 1);
     assert.equal(stored[0]?.requestCount, 3);
-    assert.equal(JSON.stringify(stored[0])).includes(principal);
     assert.equal(JSON.stringify(stored[0]).includes(principal), false);
     assert.equal(JSON.stringify(stored[0]).includes('203.0.113.25'), false);
 
