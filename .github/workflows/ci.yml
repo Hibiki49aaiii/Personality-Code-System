@@ -91,6 +91,9 @@ jobs:
       - name: Validate legal/privacy disclosure draft against implementation
         run: npm run validate:legal-draft
 
+      - name: Validate security/privacy release review remains fail-closed
+        run: npm run validate:security-release-review
+
       - name: Validate security baseline
         run: npm run validate:security
 

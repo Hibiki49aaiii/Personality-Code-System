@@ -307,3 +307,8 @@ Release-blocking examples:
 - production build/test failure.
 
 Editorial cosmetic issues may be non-blocking only if they do not change meaning or accessibility.
+
+
+## Security/privacy manual release record
+
+`data/security/security-privacy-release-review-v0.1-dev.json` and `docs/reviews/SECURITY_PRIVACY_RELEASE_QA_v0.1.md` now separate repository-verified controls from real deployment/manual controls. `scripts/validate-security-release-review.mjs` requires the latter to remain pending and keeps PCS-QA-007 open until inspectable production evidence exists.

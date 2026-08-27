@@ -1,0 +1,38 @@
+{
+  "review_version": "security-privacy-release-review-v0.1-dev",
+  "status": "automated-foundation-complete-manual-release-review-pending",
+  "release_ready": false,
+  "automated_controls": {
+    "runtime_ai_dependency_prohibition": "complete",
+    "committed_secret_static_scan": "complete",
+    "sensitive_public_env_scan": "complete",
+    "production_client_artifact_leakage_scan": "complete",
+    "security_headers_contract": "complete",
+    "csrf_origin_fetch_metadata_guard": "complete",
+    "privacy_safe_rate_limit_errors": "complete",
+    "privacy_data_inventory": "complete",
+    "dependency_vulnerability_audit": "complete",
+    "browser_security_regression": "complete"
+  },
+  "deployment_manual_controls": {
+    "production_tls_termination": "pending",
+    "production_hsts_observation": "pending",
+    "trusted_proxy_forwarded_header_sanitization": "pending",
+    "production_database_least_privilege": "pending",
+    "deployment_secret_store_evidence": "pending",
+    "secret_rotation_rehearsal": "pending",
+    "preview_production_environment_separation": "pending",
+    "backup_restore_rehearsal": "pending",
+    "external_security_review": "pending",
+    "production_log_provider_privacy_review": "pending"
+  },
+  "attack_scenarios_manual_or_external": [
+    "proxy-header-spoofing-behind-real-edge",
+    "production-secret-read-scope",
+    "database-role-escalation",
+    "production-log-redaction",
+    "backup-access-control",
+    "deployment-control-plane-access"
+  ],
+  "closure_rule": "PCS-QA-007 may close only when automated controls remain green and every deployment/manual control has inspectable production evidence."
+}

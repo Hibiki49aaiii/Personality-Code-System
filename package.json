@@ -33,7 +33,8 @@
     "validate:release-operations": "node scripts/validate-release-operations.mjs",
     "validate:environment": "node scripts/validate-environment-contract.mjs",
     "validate:launch-gate": "node scripts/validate-public-launch-gate.mjs",
-    "validate:legal-draft": "node scripts/validate-legal-disclosure-draft.mjs"
+    "validate:legal-draft": "node scripts/validate-legal-disclosure-draft.mjs",
+    "validate:security-release-review": "node scripts/validate-security-release-review.mjs"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",
