@@ -31,9 +31,11 @@ const forbiddenClientStrings = [
   'PCS_RATE_LIMIT_SECRET',
   'OPENAI_API_KEY',
   'ANTHROPIC_API_KEY',
-  'pcs-ci-only-rate-limit-secret-0123456789abcdef',
-  'postgres://pcs:pcs@localhost:5432/pcs'
-];
+  process.env.DATABASE_URL,
+  process.env.PCS_RATE_LIMIT_SECRET,
+  process.env.OPENAI_API_KEY,
+  process.env.ANTHROPIC_API_KEY
+].filter((value) => typeof value === 'string' && value.length >= 8);
 
 for (const file of staticFiles) {
   const stat = fs.statSync(file);
@@ -48,7 +50,7 @@ for (const file of staticFiles) {
 
   for (const forbidden of forbiddenClientStrings) {
     if (content.includes(forbidden)) {
-      errors.push(`${file}: client bundle contains forbidden server-only identifier/value ${forbidden}`);
+      errors.push(`${file}: client bundle contains a forbidden server-only identifier or configured secret value`);
     }
   }
 }
@@ -71,4 +73,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`Production build privacy audit passed: ${staticFiles.length} client static files checked; no browser source maps or server-only secret identifiers/CI values exposed.`);
+console.log(`Production build privacy audit passed: ${staticFiles.length} client static files checked; no browser source maps or server-only secret identifiers/configured secret values exposed.`);
