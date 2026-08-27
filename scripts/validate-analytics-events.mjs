@@ -3,6 +3,9 @@ import fs from 'node:fs';
 const dictionary = JSON.parse(
   fs.readFileSync('data/analytics/event-dictionary-v0.1-dev.json', 'utf8')
 );
+const retention = JSON.parse(
+  fs.readFileSync('data/analytics/retention-policy-v0.1-dev.json', 'utf8')
+);
 const errors = [];
 const allowedSources = new Set(['client', 'server', 'either']);
 const allowedScopes = new Set(['none', 'optional', 'required']);
@@ -17,6 +20,30 @@ if (dictionary.transport_policy !== 'first-party-only' || dictionary.third_party
 }
 if (!Array.isArray(dictionary.events) || dictionary.events.length < 10) {
   errors.push('analytics event dictionary must contain the required product funnel events');
+}
+
+if (retention.retention_policy_version !== 'analytics-retention-v0.1-dev') {
+  errors.push('unexpected analytics retention policy version');
+}
+if (
+  !Number.isInteger(retention.unscoped_retention_days) ||
+  retention.unscoped_retention_days < 1 ||
+  retention.unscoped_retention_days > 3650
+) {
+  errors.push('unscoped analytics retention must be an integer from 1 to 3650 days');
+}
+if (
+  !Number.isInteger(retention.session_bound_retention_days) ||
+  retention.session_bound_retention_days < retention.unscoped_retention_days ||
+  retention.session_bound_retention_days > 3650
+) {
+  errors.push('session-bound analytics retention must be >= unscoped retention and <= 3650 days');
+}
+if (retention.session_delete_behavior !== 'cascade') {
+  errors.push('session-bound analytics must cascade-delete with the anonymous session');
+}
+if (retention.third_party_export_default !== false) {
+  errors.push('analytics retention policy must keep third-party export disabled by default');
 }
 
 const names = new Set();
@@ -71,4 +98,4 @@ if (errors.length) {
   for (const error of errors) console.error(`- ${error}`);
   process.exit(1);
 }
-console.log(`Analytics event validation passed: ${dictionary.events.length} first-party events, property allowlists, and raw diagnostic payload bans enforced.`);
+console.log(`Analytics validation passed: ${dictionary.events.length} first-party events plus ${retention.retention_policy_version}; property allowlists, retention windows, cascade deletion and raw diagnostic payload bans enforced.`);
