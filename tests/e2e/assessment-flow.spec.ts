@@ -195,11 +195,11 @@ test('anonymous user completes the private result and can explicitly create then
   expect(databaseUrl).toBeTruthy();
   const sql = postgres(databaseUrl!, { max: 1 });
   try {
-    const rows = await sql<{ event_name: string; properties_json: Record<string, unknown> }[]>\`
+    const rows = await sql<{ event_name: string; properties_json: Record<string, unknown> }[]>`
       SELECT event_name, properties_json
       FROM product_events
       ORDER BY created_at
-    \`;
+    `;
     const funnelEvents = new Set(rows.map((row) => row.event_name));
     for (const requiredEvent of [
       'assessment_started',
