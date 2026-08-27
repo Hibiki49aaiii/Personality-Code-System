@@ -54,6 +54,8 @@ A checkbox in `REQUIREMENTS.md` is marked complete only when inspectable specifi
 | PCS-PRIV-003 / PCS-ANA-001 | complete (development implementation) | `event-dictionary-v0.1-dev`, `/api/analytics`, server/client funnel wiring, `product_events` | CI Run 238 (`33036549731`): Chromium network payload + DB assertions | first-party only; answer values/Trait vectors/private tokens are prohibited and third-party export defaults off |
 | PCS-ANA-002 | in-progress foundation | `observedTypeDistribution.ts`, `typeDistributionRepository.ts`, scoped distribution spec | CI Run 240 (`33036572687`): domain + real snapshot aggregation integration | exact model/code/locale/time/sample only; `populationClaimAllowed=false`; public eligibility/min-sample policy pending |
 | PCS-ANA-003 | blocked by design prerequisites | `CALIBRATION_EXPORT_SPEC_v0.1.md` | no runtime export intentionally exists | requires explicit calibration consent/governance before implementation |
+| Phase 4B-3 retention/observability foundation | complete (development implementation) | versioned retention policy + cleanup repository/CLI + fixed error telemetry + bucketed Web Vitals + `/api/health` | Runs 269/270/272/273 | production scheduler, external monitoring/alerting and environment separation remain |
+| PCS-OPS-003 | partial | client error/performance telemetry + DB readiness endpoint | Runs 269/272/273 | independently durable production monitoring and alerting remain open |
 | PCS-QA-004 | complete through Phase 4A-1 journey | E2E path contract | Playwright Chromium flow | start → back/edit → 147 answers → private result → explicit public share → cookie-free view/cards → revoke/404 |
 | PCS-QA-005..007 | pending | a11y/visual/security requirements | partial foundations only | later release gates |
 
@@ -127,6 +129,12 @@ This is engineering completeness evidence only. It does not complete the publish
 - Observed distribution domain/repository/spec: `observedTypeDistribution.ts`, `typeDistributionRepository.ts`, `OBSERVED_TYPE_DISTRIBUTION_SPEC_v0.1.md`
 - Observed-distribution DB proof: CI Run `33036572687` (Run 240)
 - Calibration design gate: `docs/model/CALIBRATION_EXPORT_SPEC_v0.1.md`; no raw-answer export is enabled.
+- Retention policy: `data/analytics/retention-policy-v0.1-dev.json`
+- Retention cleanup: `src/infrastructure/persistence/analyticsRetentionRepository.ts`, `scripts/cleanup-analytics-retention.mjs`
+- Error boundaries/instrumentation: `src/app/error.tsx`, `src/app/global-error.tsx`, assessment/share client paths
+- Web Vitals sanitizer: `src/domain/analytics/webVitals.ts`, `src/app/WebVitalsAnalytics.tsx`
+- Readiness route: `src/app/api/health/route.ts`
+- Operational/privacy evidence: Runs 269 (error telemetry), 270 (retention), 272 (health), 273 (API payload rejection).
 
 The first-party product-event table is not a calibration dataset. Observed type distributions are computed from immutable result snapshots and explicitly prohibit population extrapolation.
 
