@@ -1,0 +1,15 @@
+{
+  "publication_gate_version": "type-catalog-publication-gate-v0.1-dev",
+  "status": "blocked",
+  "public_catalog_ready": false,
+  "requirements": {
+    "code_schema_public_use_true": false,
+    "editorial_catalog_public_use_true": false,
+    "all_reachable_codes_present": true,
+    "all_review_dimensions_approved": false,
+    "no_open_editorial_issues": false,
+    "illustration_mapping_approved": false,
+    "phase5c_public_model_freeze": false
+  },
+  "note": "This gate is intentionally blocked while C01D remains an experimental public_use=false schema. Editorial review may proceed, but public promotion cannot occur before the public model/schema decision."
+}
