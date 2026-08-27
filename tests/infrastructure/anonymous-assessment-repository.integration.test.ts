@@ -14,6 +14,19 @@ import { hashAnonymousSessionToken } from '../../src/infrastructure/persistence/
 import { anonymousSessions } from '../../src/infrastructure/persistence/schema';
 import { DEVELOPMENT_FALLBACK_ILLUSTRATION_ASSET_VERSION } from '../../src/domain/illustration/fallbackAsset';
 
+function errorChainMatches(error: unknown, pattern: RegExp): boolean {
+  const seen = new Set<unknown>();
+  let current: unknown = error;
+
+  while (current && typeof current === 'object' && !seen.has(current)) {
+    seen.add(current);
+    if (current instanceof Error && pattern.test(current.message)) return true;
+    current = (current as { cause?: unknown }).cause;
+  }
+
+  return false;
+}
+
 function oneTraitResult(): StructuredAssessmentResult {
   return {
     versions: {
@@ -111,7 +124,7 @@ test('repository creates hash-only session, persists answer/result atomically, a
         result: oneTraitResult(),
         illustrationAssetVersion: 'ILL-UNKNOWN-HERO-v01'
       }),
-      /unknown illustration asset version/i
+      (error: unknown) => errorChainMatches(error, /unknown illustration asset version/i)
     );
 
     const completed = await completeAnonymousAssessment(connection.db, {
