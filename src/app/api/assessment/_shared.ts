@@ -9,6 +9,7 @@ import {
 import { RateLimitExceededError } from '../../../server/rateLimit';
 import { CrossSiteMutationError } from '../../../server/requestSecurity';
 import { AssessmentReleaseBlockedError } from '../../../server/deploymentGate';
+import { logPrivacySafeServerFault } from '../../../server/privacySafeLog';
 
 export { ASSESSMENT_SESSION_COOKIE };
 
@@ -86,7 +87,7 @@ export function assessmentApiError(error: unknown): NextResponse {
     );
   }
 
-  console.error('Assessment API failure', error);
+  logPrivacySafeServerFault({ surface: 'assessment', category: 'unexpected' });
   return noStoreJson(
     { error: 'INTERNAL_ERROR', message: '診断処理中にエラーが発生しました。' },
     { status: 500 }
