@@ -85,7 +85,8 @@ test('anonymous user completes the private result and can explicitly create then
 
   await page.reload();
   await expect(page.getByRole('heading', { level: 1, name: 'SVAEND' })).toBeVisible();
-  await expect(page.getByText('result-snapshot-v0.1-dev', { exact: true })).toBeVisible();
+  await expect(page.getByText('result-snapshot-v0.2-dev', { exact: true })).toBeVisible();
+  await expect(page.getByText('ILL-PCS-FALLBACK-HERO-v01', { exact: true }).first()).toBeVisible();
   await expect(page.getByText('DEV-TRAIT-SYS-MID', { exact: true })).toBeVisible();
 
   await page.getByRole('button', { name: '公開共有リンクを作成' }).click();
@@ -125,6 +126,7 @@ test('anonymous user completes the private result and can explicitly create then
   expect(ogResponse.status()).toBe(200);
   expect(ogResponse.headers()['content-type']).toContain('image/png');
   expect(ogResponse.headers()['x-pcs-share-template']).toBe('share-og-v0.1-dev');
+  expect(ogResponse.headers()['x-pcs-illustration-asset']).toBe('ILL-PCS-FALLBACK-HERO-v01');
   const repeatedOgResponse = await publicContext.request.get(`/api/share/og/v0.1/${shareToken}`);
   expect(repeatedOgResponse.status()).toBe(200);
   expect(Buffer.compare(await ogResponse.body(), await repeatedOgResponse.body())).toBe(0);
@@ -133,6 +135,7 @@ test('anonymous user completes the private result and can explicitly create then
   expect(portraitResponse.status()).toBe(200);
   expect(portraitResponse.headers()['content-type']).toContain('image/png');
   expect(portraitResponse.headers()['x-pcs-share-template']).toBe('share-portrait-v0.1-dev');
+  expect(portraitResponse.headers()['x-pcs-illustration-asset']).toBe('ILL-PCS-FALLBACK-HERO-v01');
   const repeatedPortraitResponse = await publicContext.request.get(`/api/share/card/v0.1/${shareToken}`);
   expect(repeatedPortraitResponse.status()).toBe(200);
   expect(Buffer.compare(await portraitResponse.body(), await repeatedPortraitResponse.body())).toBe(0);
@@ -154,6 +157,7 @@ test('anonymous user completes the private result and can explicitly create then
     'summary_large_image'
   );
   await expect(publicPage.getByText('share-snapshot-v0.1-dev', { exact: true })).toBeVisible();
+  await expect(publicPage.getByText('ILL-PCS-FALLBACK-HERO-v01', { exact: true }).first()).toBeVisible();
   await expect(publicPage.getByText(/PCSX1/)).toHaveCount(0);
   await expect(publicPage.getByText('Trait Vector', { exact: true })).toHaveCount(0);
   await expect(publicPage.getByText(/all_midpoint_responses/)).toHaveCount(0);
