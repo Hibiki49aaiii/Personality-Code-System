@@ -22,13 +22,13 @@ Production diagnostic models/content versions must not be mutated casually from 
 
 Before storing production diagnostic data:
 
-- [ ] migration framework selected;
+- [x] migration framework selected; *(PostgreSQL + Drizzle + committed ordered SQL migrations.)*
 - [ ] staging migration tested;
 - [ ] backup strategy defined;
 - [ ] restore procedure tested at least once before broad launch;
 - [ ] destructive migration review procedure defined;
-- [ ] published model/version records protected from unintended deletion/modification;
-- [ ] retention cleanup jobs tested against fixtures.
+- [x] published model/version records protected from unintended deletion/modification; *(PostgreSQL immutability triggers + integration tests.)*
+- [x] retention cleanup jobs tested against fixtures. *(Versioned analytics retention policy, real PostgreSQL cleanup integration and CI dry-run command.)*
 
 ## Observability
 
@@ -43,6 +43,34 @@ Production SHOULD provide:
 - alerting for severe availability/error regressions.
 
 Logs MUST avoid raw answers and unnecessary diagnostic profiles by default.
+
+## Current development observability foundation
+
+The current application provides a privacy-minimized foundation, not final production observability:
+
+- `client_error` analytics accepts only fixed category/surface enums; free-form message/stack fields are rejected by the event validator/API;
+- App Router error boundaries and assessment/share failure paths emit only fixed categories;
+- Web Vitals are reduced to `LCP|INP|CLS|TTFB` plus `good|needs-improvement|poor`; raw metric value, delta and ID are not sent;
+- `GET /api/health` checks PostgreSQL readiness and returns only `{"status":"ok"}` or `{"status":"degraded"}`, with no connection/version/exception details;
+- analytics retention uses versioned 30-day unscoped / 90-day session-bound windows;
+- `npm run cleanup:analytics` is dry-run by default and requires `--execute` for deletion;
+- CI executes the retention command in dry-run mode on every run.
+
+Evidence checkpoints:
+
+- CI Run 269 (`33037531921`): fixed error telemetry browser flow;
+- CI Run 270 (`33037562880`): retention policy/repository/CLI dry-run with the full suite;
+- CI Run 272 (`33037608636`): minimal readiness endpoint and E2E.
+
+Still required for production:
+
+- external or independently durable application/server error monitoring;
+- server/API error-rate and finalization-failure dashboards;
+- database latency/availability metrics independent of the primary database;
+- deployment/version correlation;
+- alert routing/escalation;
+- production retention scheduler execution evidence;
+- development/preview/production environment separation.
 
 ## Model release lifecycle
 
