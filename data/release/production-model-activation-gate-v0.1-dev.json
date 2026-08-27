@@ -1,0 +1,45 @@
+{
+  "activation_gate_version": "production-model-activation-gate-v0.1-dev",
+  "status": "blocked",
+  "candidate_model_version": "assessment-dev-v0.3",
+  "candidate_release_manifest_version": "assessment-release-manifest-v0.1-dev",
+  "production_activation_allowed": false,
+  "public_release_allowed": false,
+  "freeze_semantics": {
+    "published_version_rewrite_allowed": false,
+    "activation_must_reference_exact_version_tuple": true,
+    "migration_review_required": true,
+    "rollback_plan_required": true,
+    "green_ci_required": true
+  },
+  "repository_evidence": {
+    "exact_version_tuple_manifest": "complete",
+    "item_count_and_mapping_versioned": "complete",
+    "deterministic_domain_tests": "complete",
+    "golden_snapshot_evidence": "complete",
+    "migration_framework_and_ordered_sql": "complete",
+    "migration_static_review_gate": "complete",
+    "rollback_runbook": "complete",
+    "published_db_immutability": "complete",
+    "result_asset_lineage": "complete"
+  },
+  "production_evidence": {
+    "public_code_schema": "pending",
+    "phase5_beta_calibration_evidence": "pending",
+    "production_environment_separation": "pending",
+    "production_migration_rehearsal": "pending",
+    "public_editorial_catalog": "pending",
+    "type_specific_or_approved_public_art_mapping": "pending",
+    "manual_accessibility_review": "pending",
+    "representative_field_performance_review": "pending",
+    "final_legal_privacy_review": "pending",
+    "production_observability": "pending",
+    "production_security_privacy_review": "pending"
+  },
+  "activation_actions": {
+    "switch_production_active_model": false,
+    "announce_public_model": false,
+    "allow_public_code_taxonomy_claim": false
+  },
+  "note": "This is a release decision gate, not a psychometric validation result. Repository-complete mechanics do not satisfy external/public evidence."
+}
