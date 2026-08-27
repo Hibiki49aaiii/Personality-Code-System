@@ -83,3 +83,47 @@ test('analytics enum and integer ranges fail closed', () => {
     ProductEventValidationError
   );
 });
+
+
+test('error analytics accepts only fixed categories/surfaces and rejects message-like fields', () => {
+  const event = validateProductEvent({
+    name: 'client_error',
+    source: 'client',
+    properties: {
+      category: 'request-failure',
+      surface: 'assessment'
+    }
+  });
+
+  assert.deepEqual(event.properties, {
+    category: 'request-failure',
+    surface: 'assessment'
+  });
+
+  assert.throws(
+    () => validateProductEvent({
+      name: 'client_error',
+      source: 'client',
+      properties: {
+        category: 'TypeError: user answer was 5',
+        surface: 'assessment'
+      }
+    }),
+    ProductEventValidationError
+  );
+
+  assert.throws(
+    () => validateProductEvent({
+      name: 'client_error',
+      source: 'client',
+      properties: {
+        category: 'request-failure',
+        surface: 'assessment',
+        message: 'sensitive runtime error details'
+      }
+    }),
+    (error: unknown) =>
+      error instanceof ProductEventValidationError &&
+      error.code === 'UNKNOWN_PROPERTY'
+  );
+});
