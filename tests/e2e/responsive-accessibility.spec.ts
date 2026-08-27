@@ -15,15 +15,17 @@ async function expectNoA11yViolations(page: Page) {
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
     .analyze();
 
-  expect(
-    results.violations,
+  const diagnostic = JSON.stringify(
     results.violations.map((violation) => ({
       id: violation.id,
       impact: violation.impact,
       help: violation.help,
       nodes: violation.nodes.map((node) => node.target)
-    }))
-  ).toEqual([]);
+    })),
+    null,
+    2
+  );
+  expect(results.violations, diagnostic).toEqual([]);
 }
 
 async function expectNoHorizontalOverflow(page: Page) {
