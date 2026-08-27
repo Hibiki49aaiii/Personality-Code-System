@@ -1,5 +1,6 @@
 import { LIKERT_5_JA_V01 } from '../../domain/assessment/responseScale';
-import type { ResultSnapshotV01 } from '../../domain/assessment/resultSnapshot';
+import type { ResultSnapshot } from '../../domain/assessment/resultSnapshot';
+import { DEVELOPMENT_FALLBACK_ILLUSTRATION_ASSET_VERSION } from '../../domain/illustration/fallbackAsset';
 import type { PcsDatabase } from '../../infrastructure/persistence/database';
 import {
   completeAnonymousAssessment,
@@ -40,9 +41,9 @@ export interface PublicAssessmentState {
 export interface PrivateRenderedResult {
   snapshotId: string;
   createdAt: string;
-  snapshot: ResultSnapshotV01;
+  snapshot: ResultSnapshot;
   sections: Array<{
-    domain: ResultSnapshotV01['sections'][number]['domain'];
+    domain: ResultSnapshot['sections'][number]['domain'];
     modules: Array<{ id: string; text: string }>;
   }>;
 }
@@ -129,7 +130,7 @@ export async function savePublicAssessmentAnswer(
 export async function completePublicAssessment(
   db: PcsDatabase,
   token: string
-): Promise<{ snapshotId: string; snapshot: ResultSnapshotV01; alreadyCompleted: boolean }> {
+): Promise<{ snapshotId: string; snapshot: ResultSnapshot; alreadyCompleted: boolean }> {
   const existing = await getPrivateResultByAnonymousToken(db, token);
   if (existing) {
     return {
@@ -147,7 +148,11 @@ export async function completePublicAssessment(
   const result = await buildResultForAnonymousState(db, state);
 
   try {
-    const completed = await completeAnonymousAssessment(db, { token, result });
+    const completed = await completeAnonymousAssessment(db, {
+      token,
+      result,
+      illustrationAssetVersion: DEVELOPMENT_FALLBACK_ILLUSTRATION_ASSET_VERSION
+    });
     return {
       snapshotId: completed.snapshotId,
       snapshot: completed.snapshot,
