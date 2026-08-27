@@ -1,4 +1,5 @@
 import { LIKERT_5_JA_V01 } from '../../domain/assessment/responseScale';
+import { assertNewAssessmentStartAllowed } from '../../server/deploymentGate';
 import type { ResultSnapshot } from '../../domain/assessment/resultSnapshot';
 import { DEVELOPMENT_FALLBACK_ILLUSTRATION_ASSET_VERSION } from '../../domain/illustration/fallbackAsset';
 import type { PcsDatabase } from '../../infrastructure/persistence/database';
@@ -71,8 +72,12 @@ export async function startOrResumeAnonymousAssessment(
     }
   }
 
+  const modelVersion =
+    process.env.PCS_ASSESSMENT_MODEL_VERSION ?? DEVELOPMENT_ASSESSMENT_MODEL_VERSION;
+  assertNewAssessmentStartAllowed(modelVersion);
+
   const created = await createAnonymousAssessmentSession(db, {
-    modelVersion: process.env.PCS_ASSESSMENT_MODEL_VERSION ?? DEVELOPMENT_ASSESSMENT_MODEL_VERSION,
+    modelVersion,
     locale: DEVELOPMENT_ASSESSMENT_LOCALE,
     expiresAt: new Date(Date.now() + DEVELOPMENT_SESSION_TTL_MS),
     allowedModelStatuses: ['beta', 'published']
