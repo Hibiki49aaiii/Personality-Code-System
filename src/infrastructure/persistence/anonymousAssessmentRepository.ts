@@ -3,7 +3,7 @@ import type { StructuredAssessmentResult } from '../../domain/assessment/resultE
 import {
   createResultSnapshot,
   type ResultSnapshot,
-  type ResultSnapshotV01
+  type ResultSnapshotV02
 } from '../../domain/assessment/resultSnapshot';
 import { createAnonymousSessionCredential, hashAnonymousSessionToken } from './sessionToken';
 import type { PcsDatabase } from './database';
@@ -225,10 +225,12 @@ export async function saveAnonymousAssessmentAnswer(
 
 export async function completeAnonymousAssessment(
   db: PcsDatabase,
-  input: { token: string; result: StructuredAssessmentResult }
-): Promise<{ snapshotId: string; snapshot: ResultSnapshotV01 }> {
+  input: { token: string; result: StructuredAssessmentResult; illustrationAssetVersion: string }
+): Promise<{ snapshotId: string; snapshot: ResultSnapshotV02 }> {
   const session = await requireWritableSession(db, input.token);
-  const snapshot = createResultSnapshot(input.result);
+  const snapshot = createResultSnapshot(input.result, {
+    illustrationAssetVersion: input.illustrationAssetVersion
+  });
   const completedAt = new Date();
 
   return db.transaction(async (tx) => {
