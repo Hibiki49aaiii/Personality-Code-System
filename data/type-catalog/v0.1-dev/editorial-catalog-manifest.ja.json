@@ -16,6 +16,6 @@
     "relationship_noncore": "恋愛・関係性の詳細はRDPだけでは決まらず、BND・REC・CON・EMO・COGなどの個別Traitを優先して読む。",
     "work_noncore": "仕事上の継続・仕上げ・最適化・リスク・派生プロフィールはCore Codeだけでは決まらず、FIN・PER・OPT・RSK等を個別に読む。",
     "stress_noncore": "Core Codeはストレス耐性を分類していない。ストレス下の反応はSTR・UNC・RSK・EMO等の個別Traitを優先して読む。",
-    "growth_not_destiny": "成長ガイダンスは固定的な欠点や運命ではなく、測定傾向が負荷条件でどう表れ得るかを点検するための補助情報として扱う。"
+    "growth_not_destiny": "成長ガイダンスは固定的な欠点や不可避の将来像ではなく、測定傾向が負荷条件でどう表れ得るかを点検するための補助情報として扱う。"
   }
 }
