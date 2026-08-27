@@ -142,6 +142,8 @@ Before checking a milestone complete:
 | PCS-PRIV-003 / PCS-ANA-001 | verified development implementation | first-party event dictionary/API/repository + funnel wiring | CI Run 238 (`33036549731`) real network + DB telemetry assertions | analytics/app/privacy | answer values and diagnostic vectors excluded; third-party export disabled |
 | PCS-ANA-002 | in-progress foundation | exact-scope observed distribution domain/repository | CI Run 240 (`33036572687`) domain + immutable-snapshot DB aggregation | analytics/statistics | public model/eligibility/minimum-sample/privacy wording gate remains |
 | PCS-ANA-003 | blocked pending consent/governance | `CALIBRATION_EXPORT_SPEC_v0.1.md` | absence of export is intentional | privacy/research | ordinary product analytics must not become calibration data |
+| Phase 4B-3 retention/observability | verified development implementation | retention policy/repository/CLI, fixed error telemetry, Web Vitals sanitizer, health route | CI Runs 269/270/272/273 | analytics/ops/privacy | production scheduler/external monitoring/environment separation remain |
+| PCS-OPS-003 | in-progress | minimal DB readiness + client error/performance telemetry | Runs 269/272/273 | operations | independent production monitoring and alerting remain |
 
 ## Phase 3 evidence map
 
@@ -224,6 +226,14 @@ The public share is a deliberate sanitized export. It is not a different view ov
 - Versions: `observed-type-distribution-v0.1-dev`.
 - Evidence: CI Run 240 domain + application/DB integration.
 - Remaining: production model freeze, valid-assessment exclusion policy, minimum sample/privacy threshold and public wording approval; requirement remains open.
+
+### 2026-08-27 — Retention and observability foundation
+- IDs: PCS-ANA-001, PCS-OPS-003, Phase 4B
+- Change: add versioned 30/90-day analytics retention policy, cleanup repository/CLI, fixed-category client error telemetry, bucket-only Web Vitals and a minimal DB readiness endpoint.
+- Reason: make product telemetry operationally useful without allowing raw error text, stack traces, raw performance values or indefinite first-party event retention.
+- Versions: `analytics-retention-v0.1-dev`; analytics event dictionary remains `analytics-events-v0.1-dev`.
+- Evidence: Run 269 browser error telemetry, Run 270 retention cleanup/dry-run, Run 272 health endpoint, Run 273 analytics API privacy rejection tests.
+- Remaining: scheduled production execution, environment separation, independently durable server/API/database monitoring and alerting.
 
 ## Material change records
 
