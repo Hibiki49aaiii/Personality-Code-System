@@ -83,10 +83,30 @@ for (const file of trackedFiles) {
 
 const sourceFiles = trackedFiles.filter((file) => file.startsWith('src/') && /\.(?:ts|tsx|js|jsx)$/.test(file));
 const runtimeAiImportPattern = /(?:from\s+|require\s*\(|import\s*\()["'](?:openai|@openai\/|anthropic|@anthropic-ai\/|@ai-sdk\/|ai["']|langchain|@langchain\/|@google\/generative-ai)/i;
+const dangerousRuntimePatterns = [
+  ['dangerouslySetInnerHTML', /\bdangerouslySetInnerHTML\b/],
+  ['eval', /\beval\s*\(/],
+  ['new Function', /\bnew\s+Function\s*\(/],
+  ['document.write', /\bdocument\.write\s*\(/],
+  ['direct innerHTML assignment', /\.innerHTML\s*=/]
+];
+
 for (const file of sourceFiles) {
   const content = fs.readFileSync(file, 'utf8');
   if (runtimeAiImportPattern.test(content)) {
     errors.push(`${file}: runtime AI/LLM import is prohibited`);
+  }
+  for (const [label, pattern] of dangerousRuntimePatterns) {
+    if (pattern.test(content)) errors.push(`${file}: prohibited dynamic HTML/code execution primitive detected (${label})`);
+  }
+
+  const isClientComponent = /^\s*["']use client["'];/m.test(content);
+  if (isClientComponent) {
+    const serverEnvReference = /process\.env\.(?!NEXT_PUBLIC_)[A-Z0-9_]+/g;
+    const references = [...content.matchAll(serverEnvReference)].map((match) => match[0]);
+    for (const reference of references) {
+      errors.push(`${file}: client component references server-only environment variable via ${reference}`);
+    }
   }
 }
 
@@ -96,4 +116,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`Release security static audit passed: ${runtimeDependencies.length} runtime dependencies and ${trackedFiles.length} tracked runtime/config files checked; no runtime AI dependency, public-secret env misuse or obvious committed secret detected.`);
+console.log(`Release security static audit passed: ${runtimeDependencies.length} runtime dependencies and ${trackedFiles.length} tracked runtime/config files checked; no runtime AI dependency, public-secret env misuse, obvious committed secret, unsafe dynamic HTML/code execution, or client-side server-env reference detected.`);
