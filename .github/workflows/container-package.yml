@@ -55,7 +55,7 @@ jobs:
 
       - name: Start packaged runtime
         run: |
-          docker run --detach --rm             --name pcs-runtime-smoke             --network host             -e DATABASE_URL=postgres://pcs:pcs@127.0.0.1:5432/pcs             -e PCS_RATE_LIMIT_SECRET=pcs-container-smoke-secret-0123456789abcdef             -e PCS_SITE_ORIGIN=https://pcs-smoke.invalid             -e PCS_ASSESSMENT_MODEL_VERSION=assessment-dev-v0.3             pcs-runtime:${{ github.sha }}
+          docker run --detach --rm             --name pcs-runtime-smoke             --network host             -e DATABASE_URL=postgres://pcs:pcs@127.0.0.1:5432/pcs             -e PCS_RATE_LIMIT_SECRET=pcs-container-smoke-secret-0123456789abcdef             -e PCS_SITE_ORIGIN=https://pcs-smoke.invalid             -e PCS_ASSESSMENT_MODEL_VERSION=assessment-dev-v0.3             -e PCS_DEPLOYMENT_ENV=preview             pcs-runtime:${{ github.sha }}
 
       - name: Smoke health and landing
         run: |
