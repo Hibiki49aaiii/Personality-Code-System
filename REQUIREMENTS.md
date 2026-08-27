@@ -68,7 +68,7 @@ Detailed requirements: [`docs/requirements/02_DIAGNOSTIC_MODEL.md`](docs/require
 
 - [x] **PCS-SCORE-001** 6–8 candidate items authored per retained Trait. *(147 = 21 × 7.)*
 - [x] **PCS-SCORE-002** Complete per-item wording/construct-purity review recorded. *(98 accept-r1 / 39 revise-r2 / 10 hold-for-beta.)*
-- [ ] **PCS-SCORE-003** Every item/scoring key is versioned through a formal production active-model release/freeze lifecycle. *(Revision/model metadata and DB release records exist; final production activation workflow remains Phase 5C.)*
+- [ ] **PCS-SCORE-003** Every item/scoring key is versioned through a formal production active-model release/freeze lifecycle. *(Exact model/revision metadata, DB immutability, beta release manifest and a fail-closed production activation gate now enforce the lifecycle mechanically. Current candidate activation remains false until Phase 5/public schema/environment/editorial/art/accessibility/performance/legal/security/observability evidence is complete.)*
 - [x] **PCS-SCORE-004** Deterministic normalized Trait scoring implemented. *(Canonical integer `score_bp` 0..10000.)*
 - [x] **PCS-SCORE-005** Deterministic response-quality metadata baseline implemented separately from Trait Scores; it does not label deception.
 - [x] **PCS-SCORE-006** Golden/manual fixtures and input/order invariance tests prove exact current-layer reproducibility.
@@ -206,7 +206,7 @@ Detailed requirements: [`docs/requirements/10_TESTING_QA.md`](docs/requirements/
 - [ ] **PCS-OPS-002** Secrets never committed; production has no AI API key requirement.
 - [ ] **PCS-OPS-003** Error monitoring/health checks. *(Development foundation now includes privacy-safe fixed-category telemetry, bucket-only Web Vitals, minimal DB readiness, plus a machine-readable six-class production monitoring/incident contract and runbook. All independent production monitors remain `pending-external`; provider configuration, alert routing, deployment correlation and drill evidence are still required.)*
 - [x] **PCS-OPS-004** Documented production rollback. *(Repository-level runbook covers application, database forward-fix, assessment model, content, illustration assets, share-card template, post-rollback verification and affected-result handling; release-operations validator passed in CI Run 383. Deployment-provider commands/restore rehearsal remain OPS-001/002/006 adjacent evidence rather than part of this documentation requirement.)*
-- [ ] **PCS-OPS-005** Assessment/model release requires explicit version freeze/migration review.
+- [ ] **PCS-OPS-005** Assessment/model release requires explicit version freeze/migration review. *(Repository mechanics are explicit and machine-enforced: exact candidate version tuple, migration-review requirement, rollback plan, green-CI requirement and immutable publication semantics feed a fail-closed production activation gate. Actual production freeze/activation remains Phase 5C.)*
 - [ ] **PCS-OPS-006** Public launch gate complete before announcing v1.0. *(Machine-readable fail-closed launch gate now enumerates open Master/phase requirements and external/manual evidence. `public_launch_ready=false`; v1 announcement/public indexing/validated/population-rarity actions remain explicitly blocked.)*
 
 Detailed requirements: [`docs/requirements/11_RELEASE_OPERATIONS.md`](docs/requirements/11_RELEASE_OPERATIONS.md)
