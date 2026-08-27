@@ -57,3 +57,17 @@ The launch gate explicitly tracks evidence that repository CI cannot invent:
 `scripts/validate-public-launch-gate.mjs` parses `REQUIREMENTS.md`, proves that the declared blockers are actually still open, proves external/manual evidence is still pending, and requires PCS-OPS-006 to remain unchecked.
 
 When all blockers are eventually resolved, the correct change is **not** to bypass this validator. Create a reviewed launch-gate version/update that records exact evidence and then flip the gate intentionally.
+
+
+## Runtime enforcement
+
+The gate is no longer only a release-document validator.
+
+- `src/domain/release/deploymentGate.ts` makes production activation a deterministic fail-closed decision;
+- `src/server/deploymentGate.ts` binds that decision to the exact current release manifest and public-launch gate;
+- new anonymous assessment creation calls the gate before creating a production session;
+- preview/development environments may continue exercising the beta candidate;
+- global metadata and `/robots.txt` remain `noindex` / disallow-all while public indexing is not explicitly allowed;
+- `tests/e2e/launch-gate.spec.ts` verifies the pre-launch crawler boundary in the real preview web flow.
+
+Current C01D / assessment-dev-v0.3 therefore cannot become a public production assessment merely because an operator deploys the application or sets the model environment variable.
