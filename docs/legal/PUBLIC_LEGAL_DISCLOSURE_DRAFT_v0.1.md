@@ -43,6 +43,8 @@ PCSの結果は医療・臨床診断ではありません。精神疾患、発�
 - calibration dataset: 標準では作成しない
 - database backup: 35日というengineering baselineはあるが、実production providerの復旧仕様は未確定
 
+30/90/180日の診断データ基準については、開発リポジトリ内にdry-run-firstの削除コマンドとPostgreSQL統合テストがあります。ただし、これはproduction schedulerが実際に稼働している証拠ではありません。公開前に実デプロイ環境の定期実行、失敗監視、backup restore時の削除済みデータ取扱いを一致させます。
+
 ## 6. 公開共有
 
 診断を完了しただけでは結果は公開されません。ユーザーが明示的に共有操作を行った場合にのみ、別の公開共有Snapshotと推測困難な共有URLを作成します。

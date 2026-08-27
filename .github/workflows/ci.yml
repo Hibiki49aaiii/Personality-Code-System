@@ -82,6 +82,9 @@ jobs:
       - name: Validate anonymous diagnostic self-deletion contract
         run: npm run validate:user-deletion
 
+      - name: Validate diagnostic retention policy and cleanup contract
+        run: npm run validate:diagnostic-retention
+
       - name: Validate beta calibration protocol remains gated
         run: npm run validate:calibration
 

@@ -117,6 +117,18 @@ Retention periods MUST be documented to users where legally/ethically relevant a
 
 Current pre-legal engineering defaults are documented in `docs/model/PERSISTENCE_RETENTION_BASELINE_v0.1.md`; they are not final public legal promises.
 
+### Current scheduled-retention engineering implementation
+
+The repository now enforces the pre-legal diagnostic retention baseline as executable engineering behavior:
+
+- `data/privacy/diagnostic-retention-v0.1-dev.json` is the machine policy;
+- migration `0007_diagnostic_retention_answer_guard.sql` allows completed raw-answer deletion only after 90 days while keeping younger completed answers immutable;
+- `scripts/cleanup-diagnostic-retention.mjs` is dry-run by default and requires an explicit version acknowledgement for execution;
+- real PostgreSQL integration verifies abandoned-session deletion at 30 days, raw-answer deletion at 90 days, private-result/session/Trait-score deletion at 180 days, and active public-share revocation/detachment when its private source ages out;
+- CI also executes the production-shaped cleanup command in dry-run mode.
+
+This materially closes the **engineering tooling** gap behind the stated retention baseline. It does not prove a production scheduler is running and does not define how provider backups behave after source deletion; those remain PCS-LEGAL-001 / OPS / release evidence.
+
 ## User controls
 
 Where data is persisted beyond a short anonymous session, the product MUST define how users can:

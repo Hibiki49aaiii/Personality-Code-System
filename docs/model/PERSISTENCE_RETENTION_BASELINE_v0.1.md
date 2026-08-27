@@ -32,6 +32,27 @@
 - Scheduled deletion jobs operate on internal UUIDs and timestamps, not bearer tokens. The interactive self-deletion path necessarily authenticates with the browser bearer capability but stores/looks up only its server-side hash.
 - A result snapshot is immutable while retained; retention deletion is not considered mutation.
 
+## Executable development retention tooling
+
+The engineering baseline is now represented by `data/privacy/diagnostic-retention-v0.1-dev.json` and an executable dry-run-first cleanup command:
+
+- `npm run cleanup:diagnostic` — inspect expired diagnostic rows only;
+- `npm run cleanup:diagnostic -- --execute` — execute only when `PCS_DIAGNOSTIC_RETENTION_EXECUTION_ACK=diagnostic-retention-v0.1-dev` is also set.
+
+Current behavior:
+
+- in-progress sessions older than 30 days by `updated_at` are deleted with their draft answers;
+- completed raw answers older than 90 days are deleted while the completed session, Trait Scores and private result remain;
+- completed sessions/private results/Trait Scores older than 180 days are deleted together;
+- when a 180-day private result disappears, existing result-delete behavior revokes active derived public shares and detaches their private source reference;
+- explicit bearer-owned user deletion remains available earlier and is a separate path.
+
+Migration `0007_diagnostic_retention_answer_guard.sql` preserves completed-answer immutability for the first 90 days, then permits direct retention deletion after the database-observed completion age crosses 90 days. The policy window and DB guard are versioned together.
+
+CI executes a real PostgreSQL retention integration proving dry-run non-destruction, 30/90/180-day deletion behavior, preserved 91-day private results and automatic public-share revocation/detachment at the 180-day private-result boundary.
+
+This is repository execution tooling, not proof that a production scheduler is actually configured.
+
 ## Logging exclusions
 
 Do not log by default:

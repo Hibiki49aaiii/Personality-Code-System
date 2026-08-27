@@ -1,7 +1,7 @@
 # Personality Code System — Master Requirements & Delivery Checklist
 
 > Status: authoritative development contract
-> Version: 0.11.5
+> Version: 0.11.6
 > Last updated: 2026-08-27
 
 This file is the single top-level source of truth for PCS scope and delivery status. Detailed requirements live under `docs/requirements/`.
@@ -173,7 +173,7 @@ Detailed requirements: [`docs/requirements/07_APPLICATION_ARCHITECTURE_AND_DATA.
 - [x] **PCS-PRIV-003** Raw answers/personality scores excluded from third-party analytics payloads by default. *(Current product analytics is first-party-only with third-party export disabled; event/DB allowlists reject answer values, Trait vectors and diagnostic internals, and Chromium network assertions verify answer interactions send no answer value.)*
 - [x] **PCS-PRIV-004** Public/shareable result persistence requires explicit user action. *(Separate opt-in Share API/UI; assessment completion itself creates no public snapshot.)*
 - [x] **PCS-SEC-001** Secure session tokens, validation, rate limits, security headers, dependency scanning. *(Development implementation verified: 256-bit/hash-only session and share capabilities, server-side write validation, PostgreSQL HMAC fixed-window mutation rate limits with privacy-safe 429s, CSP/HSTS/frame/content-type/referrer/permissions headers, machine-checked security policy, CI production dependency audit, release static/runtime-boundary audit, production client-artifact leakage audit, and trusted-origin/Fetch Metadata guards for state-changing routes. Deployment TLS/trusted-proxy/least-privilege/release review remain OPS/QA gates.)*
-- [ ] **PCS-LEGAL-001** Privacy/terms/diagnostic limitations/data deletion-retention explanation before public launch. *(Implementation-grounded Japanese factual disclosure/Terms principles draft and machine contracts exist. Anonymous diagnostic self-deletion is implemented behind the private bearer cookie with CSRF/rate-limit protection, public-share cleanup, session-bound analytics cascade and cookie clearing; final jurisdiction/legal review, contact route, consent, production retention scheduler and backup restore/deletion behavior remain explicitly open.)*
+- [ ] **PCS-LEGAL-001** Privacy/terms/diagnostic limitations/data deletion-retention explanation before public launch. *(Implementation-grounded Japanese factual disclosure/Terms principles draft and machine contracts exist. Anonymous self-deletion plus dry-run-first 30/90/180-day diagnostic retention cleanup are implemented and PostgreSQL-tested; final jurisdiction/legal review, contact route, consent, deployed scheduler evidence and backup restore/deletion behavior remain explicitly open.)*
 
 Detailed requirements: [`docs/requirements/08_PRIVACY_SECURITY.md`](docs/requirements/08_PRIVACY_SECURITY.md)
 
@@ -226,7 +226,7 @@ Detailed requirements: [`docs/requirements/11_RELEASE_OPERATIONS.md`](docs/requi
 - [ ] Phase 3A — public Core Type/content catalog. *(ACTIVE: all 64 non-public C01D draft entries, provenance/neighbor checks, fail-closed human approval ledger, publication gate and deterministic 64-packet review worklist are complete as engineering/review foundations; actual human approvals + public schema/catalog promotion remain.)*
 - [ ] Phase 3B — illustrations.
 - [x] Phase 4A — social sharing/OG. *(Development implementation complete: explicit sanitized sharing/revocation, X/LINE/Web Share/copy, deterministic OG/portrait images, immutable result→share artwork lineage, and a curated versioned fallback asset. Final type-specific artwork/public taxonomy remain Phase 3A/3B gates rather than sharing-engine blockers.)*
-- [ ] Phase 4B — analytics/monitoring. *(ACTIVE: privacy-bounded funnel telemetry, scoped observed-distribution, versioned 30/90-day retention cleanup, fixed-category client error telemetry, bucket-only Web Vitals and DB readiness health foundation are verified; production scheduling/environment separation/alerting and consented calibration export remain.)*
+- [ ] Phase 4B — analytics/monitoring. *(ACTIVE: privacy-bounded funnel telemetry, scoped observed-distribution, analytics/rate-limit cleanup, executable 30/90/180-day diagnostic retention with dry-run+integration proof, fixed-category error telemetry, bucket-only Web Vitals, DB readiness and observability contracts are verified; deployed scheduling/environment separation/independent alerting and consented calibration export remain.)*
 - [ ] Phase 5A — closed beta/calibration collection.
 - [ ] Phase 5B — statistical review/pruning/retest.
 - [ ] Phase 5C — production assessment/public code model v1.0 freeze.
