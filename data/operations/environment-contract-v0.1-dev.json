@@ -48,6 +48,17 @@
       "required_preview": true,
       "required_production": true,
       "client_exposure_allowed": false
+    },
+    "PCS_DEPLOYMENT_ENV": {
+      "classification": "release-configuration",
+      "required_preview": true,
+      "required_production": true,
+      "allowed_values": [
+        "development",
+        "preview",
+        "production"
+      ],
+      "client_exposure_allowed": false
     }
   },
   "production_forbidden_runtime_credentials": [
