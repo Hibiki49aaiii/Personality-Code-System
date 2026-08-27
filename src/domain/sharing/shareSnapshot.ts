@@ -1,4 +1,4 @@
-import type { ResultSnapshotV01 } from '../assessment/resultSnapshot';
+import type { ResultSnapshot } from '../assessment/resultSnapshot';
 
 export const SHARE_SNAPSHOT_SCHEMA_VERSION = 'share-snapshot-v0.1-dev' as const;
 
@@ -10,7 +10,7 @@ export interface SharePresentationV01 {
 
 export interface ShareSnapshotV01 {
   shareSchemaVersion: typeof SHARE_SNAPSHOT_SCHEMA_VERSION;
-  sourceResultSnapshotSchemaVersion: ResultSnapshotV01['snapshotSchemaVersion'];
+  sourceResultSnapshotSchemaVersion: ResultSnapshot['snapshotSchemaVersion'];
   versions: {
     assessmentModelVersion: string;
     codeSchemaVersion: string;
@@ -22,13 +22,14 @@ export interface ShareSnapshotV01 {
 }
 
 export function createSanitizedShareSnapshot(
-  source: ResultSnapshotV01,
-  presentation: SharePresentationV01 = {
+  source: ResultSnapshot,
+  presentation?: SharePresentationV01
+): ShareSnapshotV01 {
+  const resolvedPresentation: SharePresentationV01 = presentation ?? {
     displayName: null,
     identitySentence: null,
-    illustrationAssetVersion: null
-  }
-): ShareSnapshotV01 {
+    illustrationAssetVersion: 'assets' in source ? source.assets.illustrationAssetVersion : null
+  };
   return {
     shareSchemaVersion: SHARE_SNAPSHOT_SCHEMA_VERSION,
     sourceResultSnapshotSchemaVersion: source.snapshotSchemaVersion,
@@ -40,9 +41,9 @@ export function createSanitizedShareSnapshot(
     locale: source.locale,
     coreCode: source.personalityCode.coreCode,
     presentation: {
-      displayName: presentation.displayName,
-      identitySentence: presentation.identitySentence,
-      illustrationAssetVersion: presentation.illustrationAssetVersion
+      displayName: resolvedPresentation.displayName,
+      identitySentence: resolvedPresentation.identitySentence,
+      illustrationAssetVersion: resolvedPresentation.illustrationAssetVersion
     }
   };
 }
