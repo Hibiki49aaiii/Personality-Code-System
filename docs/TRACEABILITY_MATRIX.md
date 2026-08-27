@@ -59,7 +59,7 @@ A checkbox in `REQUIREMENTS.md` is marked complete only when inspectable specifi
 | PCS-SOC-001 | complete (development implementation) | `09_SOCIAL_SHARING_AND_ANALYTICS.md`, fallback asset manifest | deterministic OG/portrait images consume sanitized stored snapshot + exact curated asset version | byte-identical E2E, asset response header, DB source/share lineage, Visual Baseline Run 9, CI Run 432 |
 | PCS-SOC-002 | complete (development implementation) | `09_SOCIAL_SHARING_AND_ANALYTICS.md` | Web Share, X intent, LINE intent, URL copy on private result | Chromium assertions against exact opaque share URL |
 | PCS-SOC-003 | complete (development fallback) | versioned sanitized OG contract | dynamic share metadata + `/api/share/og/v0.1/[token]` | Run 190: image/png, template header, byte determinism, revoked 404 |
-| PCS-LEGAL-001 | advanced factual draft / legal approval pending | `PUBLIC_LEGAL_DISCLOSURE_DRAFT_v0.1.md`, legal disclosure contract | draft covers service limitations, data classes/retention, sharing, analytics, calibration, deletion gaps and Terms principles | legal-draft validator cross-checks privacy inventory/retention | final jurisdiction/legal review, production retention/backup/deletion/contact/consent publication remains |
+| PCS-LEGAL-001 | advanced factual draft / legal approval pending | `PUBLIC_LEGAL_DISCLOSURE_DRAFT_v0.1.md`, legal disclosure + anonymous deletion contracts | factual draft now covers implemented bearer-owned diagnostic self-deletion, public-share cleanup, cookie clearing and remaining backup/scheduler/legal gaps | legal-draft + user-deletion validators, repository/DB/browser tests | final jurisdiction/legal review, production retention scheduler, backup restore/deletion behavior, contact/consent publication remain |
 | PCS-PRIV-003 / PCS-ANA-001 | complete (development implementation) | `event-dictionary-v0.1-dev`, `/api/analytics`, server/client funnel wiring, `product_events` | CI Run 238 (`33036549731`): Chromium network payload + DB assertions | first-party only; answer values/Trait vectors/private tokens are prohibited and third-party export defaults off |
 | PCS-ANA-002 | advanced partial / public data gate pending | observed distribution + publication policy specs | exact immutable-snapshot aggregation; published/public-schema gate; min scope/cell thresholds; scoped display formatter; population claims false | DB aggregation integration + publication policy/domain tests | production public model, real qualifying sample and final privacy review remain |
 | PCS-ANA-003 | blocked runtime path / pre-collection protocol complete | `CALIBRATION_EXPORT_SPEC_v0.1.md`, `BETA_CALIBRATION_PROTOCOL_v0.1.md`, beta protocol manifest | no runtime export intentionally exists; collection/export flags remain false | calibration protocol validator | explicit consent/legal/environment separation/operator authorization still required before implementation |
@@ -234,3 +234,13 @@ CI success verifies software/data-contract invariants only. It is not evidence o
 ## Update rule
 
 Whenever a requirement becomes checked in `REQUIREMENTS.md`, this table must be updated in the same change set with exact evidence. Future phases add implementation paths/test IDs/release artifacts without deleting historical evidence.
+
+
+## Anonymous diagnostic self-deletion evidence
+
+- Contract: `data/privacy/user-deletion-v0.1-dev.json`.
+- API/UI: `DELETE /api/assessment/data`, private Result `DataControls`, two-step irreversible confirmation and successful cookie clearing.
+- Persistence: `anonymousDataDeletionRepository.ts` deletes source-derived public shares first, then the owning anonymous session; FK cascades remove answers, Trait Scores, private result and session-bound product events.
+- DB safety: migration `0006_privacy_delete_cascade_guards.sql` allows only parent-session cascade deletion while direct completed answer/Trait-score deletion remains rejected.
+- Security: dedicated session-bound HMAC rate-limit and trusted-origin/Fetch Metadata guard; hostile-origin browser test includes DELETE.
+- Public legal status remains open because scheduler, backup restore behavior, contact/consent and jurisdictional review require production/legal evidence.
