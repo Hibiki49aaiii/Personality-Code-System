@@ -33,6 +33,7 @@ jobs:
       # Test-only value. Production must configure an independent secret outside Git.
       PCS_RATE_LIMIT_SECRET: pcs-ci-only-rate-limit-secret-0123456789abcdef
       PCS_VISUAL_REGRESSION: '1'
+      PCS_DEPLOYMENT_ENV: preview
 
     steps:
       - name: Checkout
@@ -105,6 +106,9 @@ jobs:
 
       - name: Validate public launch gate remains fail-closed
         run: npm run validate:launch-gate
+
+      - name: Validate runtime public-launch enforcement
+        run: npm run validate:runtime-launch-gate
 
       - name: Validate legal/privacy disclosure draft against implementation
         run: npm run validate:legal-draft
