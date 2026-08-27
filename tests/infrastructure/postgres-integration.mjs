@@ -33,7 +33,8 @@ async function applyMigrations() {
   assert.deepEqual(files, [
     '0000_phase2b_persistence.sql',
     '0001_phase2b_immutability_hardening.sql',
-    '0002_phase4a_public_share_snapshots.sql'
+    '0002_phase4a_public_share_snapshots.sql',
+    '0003_phase4b_first_party_analytics.sql'
   ]);
 
   for (const file of files) {
