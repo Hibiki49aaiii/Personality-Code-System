@@ -23,7 +23,9 @@
     "validate:analytics": "node scripts/validate-analytics-events.mjs",
     "cleanup:analytics": "node scripts/cleanup-analytics-retention.mjs",
     "audit:prod": "npm audit --omit=dev --audit-level=high",
-    "validate:security": "node scripts/validate-security-baseline.mjs"
+    "validate:security": "node scripts/validate-security-baseline.mjs",
+    "audit:release-security": "node scripts/validate-release-security.mjs",
+    "audit:production-build": "node scripts/audit-production-build.mjs"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",
