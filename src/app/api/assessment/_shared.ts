@@ -8,6 +8,7 @@ import {
 } from '../../../server/assessmentCookie';
 import { RateLimitExceededError } from '../../../server/rateLimit';
 import { CrossSiteMutationError } from '../../../server/requestSecurity';
+import { AssessmentReleaseBlockedError } from '../../../server/deploymentGate';
 
 export { ASSESSMENT_SESSION_COOKIE };
 
@@ -55,6 +56,15 @@ export function assessmentApiError(error: unknown): NextResponse {
   }
   if (error instanceof RateLimitExceededError) {
     return rateLimitApiResponse(error);
+  }
+  if (error instanceof AssessmentReleaseBlockedError) {
+    return noStoreJson(
+      {
+        error: error.code,
+        message: 'この環境では新しい診断の開始が許可されていません。'
+      },
+      { status: 503 }
+    );
   }
   if (error instanceof PersistenceError) {
     const status =
