@@ -1,8 +1,8 @@
 # Personality Code System — Master Requirements & Delivery Checklist
 
 > Status: authoritative development contract
-> Version: 0.11.6
-> Last updated: 2026-08-27
+> Version: 0.11.7
+> Last updated: 2026-08-28
 
 This file is the single top-level source of truth for PCS scope and delivery status. Detailed requirements live under `docs/requirements/`.
 
@@ -239,6 +239,6 @@ Detailed exit criteria: [`docs/requirements/12_DELIVERY_PHASES.md`](docs/require
 - [x] Requirement-to-code/test matrix maintained: [`docs/TRACEABILITY_MATRIX.md`](docs/TRACEABILITY_MATRIX.md).
 - [x] Requirement declaration IDs are machine-checked for unapproved Master shadowing/duplicates by `scripts/validate-requirement-ids.mjs`.
 - [ ] Every checked production implementation requirement has final release-grade evidence. *(Phase-specific conceptual/development completions are labeled as such.)*
-- [ ] Requirement changes/release notes continuously record rationale and affected model/content versions through production lifecycle.
+- [x] Requirement changes/release notes continuously record rationale and affected model/content versions through production lifecycle. *(Governance process implemented via `requirement-change-ledger-v0.1-dev` + CI validator. Each material entry records IDs, rationale, impacted files, assessment/code/content/data/compatibility impact and evidence; this remains an ongoing obligation for future changes.)*
 
 Traceability rules: [`docs/requirements/13_TRACEABILITY.md`](docs/requirements/13_TRACEABILITY.md)
