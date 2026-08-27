@@ -11,6 +11,7 @@ export type RateLimitScope =
   | 'assessment-answer'
   | 'assessment-complete'
   | 'share-mutation'
+  | 'data-deletion'
   | 'analytics';
 
 type PrincipalMode = 'ip' | 'session' | 'session-or-ip';
