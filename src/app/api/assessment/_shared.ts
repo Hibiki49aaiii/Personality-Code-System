@@ -6,6 +6,7 @@ import {
   ASSESSMENT_SESSION_COOKIE,
   assessmentCookieOptions
 } from '../../../server/assessmentCookie';
+import { RateLimitExceededError } from '../../../server/rateLimit';
 
 export { ASSESSMENT_SESSION_COOKIE };
 
@@ -35,7 +36,19 @@ export function noStoreJson(body: unknown, init?: ResponseInit): NextResponse {
   return response;
 }
 
+export function rateLimitApiResponse(error: RateLimitExceededError): NextResponse {
+  const response = noStoreJson(
+    { error: 'RATE_LIMITED', message: 'リクエストが多すぎます。時間を置いて再試行してください。' },
+    { status: 429 }
+  );
+  response.headers.set('Retry-After', String(error.retryAfterSeconds));
+  return response;
+}
+
 export function assessmentApiError(error: unknown): NextResponse {
+  if (error instanceof RateLimitExceededError) {
+    return rateLimitApiResponse(error);
+  }
   if (error instanceof PersistenceError) {
     const status =
       error.code === 'SESSION_NOT_FOUND' ? 401 :
