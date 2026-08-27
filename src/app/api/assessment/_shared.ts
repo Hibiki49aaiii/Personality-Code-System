@@ -7,6 +7,7 @@ import {
   assessmentCookieOptions
 } from '../../../server/assessmentCookie';
 import { RateLimitExceededError } from '../../../server/rateLimit';
+import { CrossSiteMutationError } from '../../../server/requestSecurity';
 
 export { ASSESSMENT_SESSION_COOKIE };
 
@@ -46,6 +47,12 @@ export function rateLimitApiResponse(error: RateLimitExceededError): NextRespons
 }
 
 export function assessmentApiError(error: unknown): NextResponse {
+  if (error instanceof CrossSiteMutationError) {
+    return noStoreJson(
+      { error: 'CROSS_SITE_MUTATION_REJECTED', message: 'この操作は同一サイトから実行してください。' },
+      { status: 403 }
+    );
+  }
   if (error instanceof RateLimitExceededError) {
     return rateLimitApiResponse(error);
   }
