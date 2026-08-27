@@ -82,6 +82,13 @@ for (const [label, pattern] of requiredFragments) {
   if (!pattern.test(sqlText)) errors.push(`missing ${label}`);
 }
 
+const privacyCascadeGuards = sqlText.match(
+  /IF\s+TG_OP\s*=\s*'DELETE'\s+AND\s+session_status\s+IS\s+NULL\s+THEN/gi
+) ?? [];
+if (privacyCascadeGuards.length < 2) {
+  errors.push('missing privacy cascade delete parent-absence guards for answers and trait scores');
+}
+
 if (/\baccess_token\b(?!_hash)/i.test(sqlText)) {
   errors.push('migration appears to persist a raw access_token column');
 }
