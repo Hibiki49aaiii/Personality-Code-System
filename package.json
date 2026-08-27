@@ -39,7 +39,8 @@
     "validate:type-editorial-review": "node scripts/validate-type-editorial-review-gate.mjs",
     "validate:user-deletion": "node scripts/validate-user-deletion.mjs",
     "validate:performance-lab": "node scripts/validate-performance-lab-evidence.mjs",
-    "test:performance:lab": "playwright test -c playwright.performance.config.ts"
+    "test:performance:lab": "playwright test -c playwright.performance.config.ts",
+    "validate:a11y-release": "node scripts/validate-manual-accessibility-release.mjs"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",
