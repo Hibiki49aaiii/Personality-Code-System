@@ -4,6 +4,7 @@ import {
 } from '../../../_image';
 import { getPublicShareByToken } from '../../../../../../infrastructure/persistence/publicShareRepository';
 import { withPcsDatabase } from '../../../../../../server/assessmentRuntime';
+import { logPrivacySafeServerFault } from '../../../../../../server/privacySafeLog';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -21,7 +22,7 @@ export async function GET(
     response.headers.set('Content-Disposition', `inline; filename="pcs-${result.snapshot.coreCode}-portrait.png"`);
     return response;
   } catch (error) {
-    console.error('Failed to render portrait share card', error);
+    logPrivacySafeServerFault({ surface: 'public-share', category: 'render' });
     return unavailableShareImage('portrait');
   }
 }
