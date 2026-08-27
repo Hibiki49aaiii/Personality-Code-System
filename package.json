@@ -36,11 +36,12 @@
     "validate:legal-draft": "node scripts/validate-legal-disclosure-draft.mjs",
     "validate:security-release-review": "node scripts/validate-security-release-review.mjs",
     "validate:observed-distribution": "node scripts/validate-observed-distribution-publication.mjs",
-    "validate:type-editorial-review": "node scripts/validate-type-editorial-review-gate.mjs",
+    "validate:type-editorial-review": "node scripts/validate-type-editorial-review-gate.mjs && node scripts/validate-type-editorial-review-worklist.mjs",
     "validate:user-deletion": "node scripts/validate-user-deletion.mjs",
     "validate:performance-lab": "node scripts/validate-performance-lab-evidence.mjs",
     "test:performance:lab": "playwright test -c playwright.performance.config.ts",
-    "validate:a11y-release": "node scripts/validate-manual-accessibility-release.mjs"
+    "validate:a11y-release": "node scripts/validate-manual-accessibility-release.mjs",
+    "generate:type-editorial-review-worklist": "node scripts/materialize-type-editorial-review-worklist.mjs"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",
