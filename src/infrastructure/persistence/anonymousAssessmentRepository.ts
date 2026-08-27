@@ -1,6 +1,10 @@
 import { and, asc, eq } from 'drizzle-orm';
 import type { StructuredAssessmentResult } from '../../domain/assessment/resultEngine';
-import { createResultSnapshot, type ResultSnapshotV01 } from '../../domain/assessment/resultSnapshot';
+import {
+  createResultSnapshot,
+  type ResultSnapshot,
+  type ResultSnapshotV01
+} from '../../domain/assessment/resultSnapshot';
 import { createAnonymousSessionCredential, hashAnonymousSessionToken } from './sessionToken';
 import type { PcsDatabase } from './database';
 import {
@@ -281,7 +285,7 @@ export async function completeAnonymousAssessment(
 export async function getPrivateResultByAnonymousToken(
   db: PcsDatabase,
   token: string
-): Promise<{ snapshotId: string; snapshot: ResultSnapshotV01; createdAt: Date } | null> {
+): Promise<{ snapshotId: string; snapshot: ResultSnapshot; createdAt: Date } | null> {
   const tokenHash = hashAnonymousSessionToken(token);
   const [row] = await db
     .select({
