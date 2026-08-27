@@ -1,0 +1,85 @@
+{
+  "evidence_version": "performance-lab-evidence-v0.1-dev",
+  "source_workflow": {
+    "name": "Performance Lab",
+    "run_number": 1,
+    "run_id": 33068786639,
+    "head_sha": "02cbc095e7bca33b543742a639abfe5f3d0cf48b",
+    "conclusion": "success",
+    "completed_at": "2026-08-27T11:48:26Z"
+  },
+  "field_data": false,
+  "master_requirement_closure": false,
+  "profiles": {
+    "desktop_ci": {
+      "metrics": [
+        {
+          "surface": "landing",
+          "LCP_ms": 176,
+          "CLS": 0,
+          "TTFB_ms": 11,
+          "max_interaction_event_ms": 0
+        },
+        {
+          "surface": "assessment",
+          "LCP_ms": 200,
+          "CLS": 0.0003,
+          "TTFB_ms": 6,
+          "max_interaction_event_ms": 24
+        },
+        {
+          "surface": "private-result",
+          "LCP_ms": 184,
+          "CLS": 0,
+          "TTFB_ms": 87,
+          "max_interaction_event_ms": 80
+        },
+        {
+          "surface": "public-share",
+          "LCP_ms": 128,
+          "CLS": 0,
+          "TTFB_ms": 41,
+          "max_interaction_event_ms": 0
+        }
+      ]
+    },
+    "mobile_slow4g_ci": {
+      "metrics": [
+        {
+          "surface": "landing",
+          "LCP_ms": 572,
+          "CLS": 0,
+          "TTFB_ms": 5,
+          "max_interaction_event_ms": 0
+        },
+        {
+          "surface": "assessment",
+          "LCP_ms": 940,
+          "CLS": 0,
+          "TTFB_ms": 6,
+          "max_interaction_event_ms": 32
+        },
+        {
+          "surface": "private-result",
+          "LCP_ms": 328,
+          "CLS": 0,
+          "TTFB_ms": 68,
+          "max_interaction_event_ms": 48
+        },
+        {
+          "surface": "public-share",
+          "LCP_ms": 360,
+          "CLS": 0,
+          "TTFB_ms": 30,
+          "max_interaction_event_ms": 0
+        }
+      ]
+    }
+  },
+  "interpretation": {
+    "lcp_cls": "All observed lab LCP/CLS values were within the recorded good thresholds in this run.",
+    "interaction": "Observed Event Timing maxima on interactive surfaces were below the 200 ms good INP threshold, but they are only scripted lab INP candidates/proxies and are not field p75 INP.",
+    "ttfb": "Recorded as lab diagnostic context only; localhost/CI timing and synthetic network emulation do not establish field TTFB.",
+    "conclusion": "Representative lab harness is operational and currently shows no obvious performance regression. Field CWV and reviewed release evidence remain required before PCS-PERF-001 closure."
+  }
+}
