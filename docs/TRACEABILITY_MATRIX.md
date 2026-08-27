@@ -51,6 +51,9 @@ A checkbox in `REQUIREMENTS.md` is marked complete only when inspectable specifi
 | PCS-QA-003 | complete (development fixture) | Golden snapshot rule | `golden-result-snapshot-midpoint-v0.1.json` | exact equality + answer-order invariance tests |
 | PCS-SOC-002 | complete (development implementation) | `09_SOCIAL_SHARING_AND_ANALYTICS.md` | Web Share, X intent, LINE intent, URL copy on private result | Chromium assertions against exact opaque share URL |
 | PCS-SOC-003 | complete (development fallback) | versioned sanitized OG contract | dynamic share metadata + `/api/share/og/v0.1/[token]` | Run 190: image/png, template header, byte determinism, revoked 404 |
+| PCS-PRIV-003 / PCS-ANA-001 | complete (development implementation) | `event-dictionary-v0.1-dev`, `/api/analytics`, server/client funnel wiring, `product_events` | CI Run 238 (`33036549731`): Chromium network payload + DB assertions | first-party only; answer values/Trait vectors/private tokens are prohibited and third-party export defaults off |
+| PCS-ANA-002 | in-progress foundation | `observedTypeDistribution.ts`, `typeDistributionRepository.ts`, scoped distribution spec | CI Run 240 (`33036572687`): domain + real snapshot aggregation integration | exact model/code/locale/time/sample only; `populationClaimAllowed=false`; public eligibility/min-sample policy pending |
+| PCS-ANA-003 | blocked by design prerequisites | `CALIBRATION_EXPORT_SPEC_v0.1.md` | no runtime export intentionally exists | requires explicit calibration consent/governance before implementation |
 | PCS-QA-004 | complete through Phase 4A-1 journey | E2E path contract | Playwright Chromium flow | start → back/edit → 147 answers → private result → explicit public share → cookie-free view/cards → revoke/404 |
 | PCS-QA-005..007 | pending | a11y/visual/security requirements | partial foundations only | later release gates |
 
@@ -111,6 +114,21 @@ This is engineering completeness evidence only. It does not complete the publish
 - Versioned deterministic cards: `src/app/api/share/_image.tsx`, OG/portrait v0.1 routes
 - Browser proof: CI Run `33020306036` (Run 190) covers share controls, cookie-free public view, PNG/card byte determinism, dynamic OG metadata and revoke→404 behavior.
 - Production caveat: display-name/identity/illustration fields remain nullable until Phase 3A/3B/5C approval; PCS-SOC-001 remains open.
+
+## Phase 4B first-party analytics evidence
+
+- Event contract: `data/analytics/event-dictionary-v0.1-dev.json`
+- Runtime validator: `src/domain/analytics/productEvent.ts`
+- First-party persistence: `src/infrastructure/persistence/analyticsRepository.ts`, `analyticsSchema.ts`, `drizzle/0003_phase4b_first_party_analytics.sql`
+- Client transport: `src/app/api/analytics/route.ts`, `src/app/_analytics/client.ts`
+- Funnel wiring: landing, assessment start/resume/question/answer state/completion/result/share/public-share routes
+- Privacy baseline: `docs/model/ANALYTICS_PRIVACY_BASELINE_v0.1.md`
+- Browser/network + persisted-row proof: CI Run `33036549731` (Run 238)
+- Observed distribution domain/repository/spec: `observedTypeDistribution.ts`, `typeDistributionRepository.ts`, `OBSERVED_TYPE_DISTRIBUTION_SPEC_v0.1.md`
+- Observed-distribution DB proof: CI Run `33036572687` (Run 240)
+- Calibration design gate: `docs/model/CALIBRATION_EXPORT_SPEC_v0.1.md`; no raw-answer export is enabled.
+
+The first-party product-event table is not a calibration dataset. Observed type distributions are computed from immutable result snapshots and explicitly prohibit population extrapolation.
 
 ## Current CI evidence
 
