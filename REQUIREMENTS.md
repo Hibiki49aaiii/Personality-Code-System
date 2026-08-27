@@ -223,7 +223,7 @@ Detailed requirements: [`docs/requirements/11_RELEASE_OPERATIONS.md`](docs/requi
 - [x] Phase 2A — complete deterministic domain result engine + Golden Snapshot.
 - [x] Phase 2B — PostgreSQL/Drizzle persistence + model immutability + anonymous private-result persistence foundation.
 - [x] Phase 2C — real assessment/result UX and server/web wiring, including Chromium 147-answer E2E.
-- [ ] Phase 3A — public Core Type/content catalog. *(ACTIVE: all 64 non-public C01D draft entries, provenance/neighbor checks, and human editorial approval ledger are complete as engineering foundations; actual review approvals + public schema/catalog promotion remain.)*
+- [ ] Phase 3A — public Core Type/content catalog. *(ACTIVE: all 64 non-public C01D draft entries, provenance/neighbor checks, fail-closed human approval ledger, publication gate and deterministic 64-packet review worklist are complete as engineering/review foundations; actual human approvals + public schema/catalog promotion remain.)*
 - [ ] Phase 3B — illustrations.
 - [x] Phase 4A — social sharing/OG. *(Development implementation complete: explicit sanitized sharing/revocation, X/LINE/Web Share/copy, deterministic OG/portrait images, immutable result→share artwork lineage, and a curated versioned fallback asset. Final type-specific artwork/public taxonomy remain Phase 3A/3B gates rather than sharing-engine blockers.)*
 - [ ] Phase 4B — analytics/monitoring. *(ACTIVE: privacy-bounded funnel telemetry, scoped observed-distribution, versioned 30/90-day retention cleanup, fixed-category client error telemetry, bucket-only Web Vitals and DB readiness health foundation are verified; production scheduling/environment separation/alerting and consented calibration export remain.)*
