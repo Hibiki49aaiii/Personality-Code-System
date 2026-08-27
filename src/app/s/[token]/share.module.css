@@ -56,6 +56,25 @@
   line-height: 1.55;
 }
 
+.artwork {
+  width: min(320px, 72vw);
+  margin: 34px 0 0;
+}
+
+.artwork svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.artwork figcaption {
+  margin-top: 8px;
+  color: #737a75;
+  font-size: 9px;
+  letter-spacing: .08em;
+  overflow-wrap: anywhere;
+}
+
 .note {
   max-width: 720px;
   margin: 28px 0 0;
@@ -65,7 +84,7 @@
 
 .record {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   border-top: 1px solid #c9cbc4;
   border-bottom: 1px solid #c9cbc4;
 }
