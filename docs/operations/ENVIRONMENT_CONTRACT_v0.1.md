@@ -110,3 +110,10 @@ Production database credentials must not be assumed equivalent to CI/local crede
 The repository now defines `data/security/database-role-policy-v0.1-dev.json` and `ops/sql/runtime-role-grants.sql`. CI creates a real restricted PostgreSQL login from the machine policy, verifies all per-table SELECT/INSERT/UPDATE/DELETE grants, exercises representative session/analytics/rate-limit writes, and proves CREATE TABLE, ALTER TABLE and versioned-definition writes are denied.
 
 This proves the grant model is executable. The identity and actual grants of the deployed production role are still deployment evidence and remain open.
+
+
+## Canonical site-origin boundary
+
+The canonical site origin is server-only `PCS_SITE_ORIGIN`; the legacy public-environment fallback is removed. Preview and production runtime classes require an explicit origin. Production additionally rejects non-HTTPS origins.
+
+Local development without an explicit deployment class may continue to use `http://localhost:3000`.
