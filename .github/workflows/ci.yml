@@ -100,6 +100,9 @@ jobs:
       - name: Validate security/privacy release review remains fail-closed
         run: npm run validate:security-release-review
 
+      - name: Validate manual accessibility release review remains fail-closed
+        run: npm run validate:a11y-release
+
       - name: Validate security baseline
         run: npm run validate:security
 
