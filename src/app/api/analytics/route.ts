@@ -7,9 +7,11 @@ import {
   ProductEventValidationError
 } from '../../../domain/analytics/productEvent';
 import { withPcsDatabase } from '../../../server/assessmentRuntime';
+import { applyRateLimit, RateLimitExceededError } from '../../../server/rateLimit';
 import {
   getAssessmentToken,
-  noStoreJson
+  noStoreJson,
+  rateLimitApiResponse
 } from '../assessment/_shared';
 
 export const runtime = 'nodejs';
@@ -34,16 +36,21 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    await withPcsDatabase((db) =>
-      recordFirstPartyProductEvent(db, {
+    const privateToken = getAssessmentToken(request);
+    await withPcsDatabase(async (db) => {
+      await applyRateLimit(db, request, 'analytics', privateToken);
+      await recordFirstPartyProductEvent(db, {
         name: body.name as string,
         source: 'client',
         properties: body.properties,
-        privateToken: getAssessmentToken(request)
-      })
-    );
+        privateToken
+      });
+    });
     return noStoreJson({ ok: true }, { status: 202 });
   } catch (error) {
+    if (error instanceof RateLimitExceededError) {
+      return rateLimitApiResponse(error);
+    }
     if (error instanceof ProductEventValidationError) {
       return noStoreJson(
         { error: error.code, message: 'Analytics event was rejected by the privacy contract.' },
