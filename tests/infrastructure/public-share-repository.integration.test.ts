@@ -17,6 +17,19 @@ import { hashPublicShareToken } from '../../src/infrastructure/persistence/publi
 import { publicShareSnapshots } from '../../src/infrastructure/persistence/sharingSchema';
 import { DEVELOPMENT_FALLBACK_ILLUSTRATION_ASSET_VERSION } from '../../src/domain/illustration/fallbackAsset';
 
+function errorChainMatches(error: unknown, pattern: RegExp): boolean {
+  const seen = new Set<unknown>();
+  let current: unknown = error;
+
+  while (current && typeof current === 'object' && !seen.has(current)) {
+    seen.add(current);
+    if (current instanceof Error && pattern.test(current.message)) return true;
+    current = (current as { cause?: unknown }).cause;
+  }
+
+  return false;
+}
+
 function oneTraitResult(): StructuredAssessmentResult {
   return {
     versions: {
@@ -114,7 +127,7 @@ test('repository creates multiple hash-only sanitized links and private owner ca
           illustrationAssetVersion: 'ILL-MISMATCH-HERO-v01'
         }
       }),
-      /illustration asset version does not match source result snapshot/i
+      (error: unknown) => errorChainMatches(error, /illustration asset version does not match source result snapshot/i)
     );
     const second = await createPublicShareForPrivateResult(connection.db, {
       privateToken: session.token
