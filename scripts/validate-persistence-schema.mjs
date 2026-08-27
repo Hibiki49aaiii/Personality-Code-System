@@ -35,7 +35,9 @@ const requiredTables = [
   'assessment_answers',
   'assessment_trait_scores',
   'result_snapshots',
-  'public_share_snapshots'
+  'public_share_snapshots',
+  'product_events',
+  'rate_limit_buckets'
 ];
 
 for (const table of requiredTables) {
@@ -68,7 +70,10 @@ const requiredFragments = [
   ['answer session/model guard', /CREATE TRIGGER\s+assessment_answers_session_model_guard/i],
   ['trait-score session/model guard', /CREATE TRIGGER\s+assessment_trait_scores_session_model_guard/i],
   ['session completion guard', /CREATE TRIGGER\s+anonymous_sessions_completion_guard/i],
-  ['restrict model references', /assessment_model_releases\(model_version\)\s+ON DELETE RESTRICT/i]
+  ['restrict model references', /assessment_model_releases\(model_version\)\s+ON DELETE RESTRICT/i],
+  ['rate limit HMAC bucket hash', /bucket_hash\s+char\(64\)/i],
+  ['rate limit count check', /request_count\s+integer\s+NOT NULL[\s\S]*request_count\s+>=\s+1/i],
+  ['rate limit expiry index', /CREATE INDEX\s+rate_limit_buckets_expires_idx/i]
 ];
 
 for (const [label, pattern] of requiredFragments) {
