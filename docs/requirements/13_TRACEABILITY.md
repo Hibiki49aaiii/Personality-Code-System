@@ -128,7 +128,7 @@ Before checking a milestone complete:
 | PCS-A11Y-001 | verified | real keyboard focus traversal through all 147 questions + finalization | Run 329; `responsive-accessibility.spec.ts` | app/a11y | Tab/Shift+Tab/Space/Enter only |
 | PCS-A11Y-002 | in-progress | semantic progress/radiogroup/error/meters, accessible palette, focus/reduced-motion/touch checks, axe scans | Run 329 | app/a11y | real assistive-tech/text zoom/final production review remains |
 | PCS-QA-005 | in-progress | automated axe + keyboard/touch/mobile coverage | Run 329 + `RESPONSIVE_ACCESSIBILITY_QA_v0.1.md` | QA/a11y | human assistive-tech/zoom/manual release review remains |
-| PCS-QA-006 | planned | visual regression requirement | functional responsive matrix exists | QA/visual | committed screenshot baselines/diffs not yet implemented |
+| PCS-QA-006 | verified current development application | 16 committed Linux/Chromium screenshot baselines + normal CI comparison mode | CI Runs 343/344; `VISUAL_REGRESSION_QA_v0.1.md` | QA/visual | future production art/copy changes require reviewed baseline updates |
 | PCS-QA-001 | verified | `.github/workflows/ci.yml` | validators + dependency audit + PostgreSQL/app/domain + typecheck/build + expanded Chromium E2E | app/QA | current CI includes responsive/keyboard/touch/axe/security/telemetry gates |
 | PCS-GOV-001..010 | verified as governance decisions | `REQUIREMENTS.md` + derivative requirement set | requirement-ID validator | governance | master meanings remain authoritative |
 | PCS-SCORE-001..006 | verified as development model engineering | reviewed Item Bank + scoring domain | Item Bank validators, scoring Golden tests | assessment | statistical calibration remains Phase 5 |
@@ -255,7 +255,15 @@ The public share is a deliberate sanitized export. It is not a different view ov
 - Reason: replace “responsive CSS exists” and pointer-only assumptions with executable user-flow evidence.
 - Versions: app/QA only; assessment/scoring/code/content semantics unchanged.
 - Evidence: CI Run 329 (`33044207630`) passes the complete suite. Axe-detected landing/assessment/result contrast defects were corrected in CSS rather than waived.
-- Status: FE-005 and A11Y-001 verified; A11Y-002/QA-005 remain open for real assistive-technology/text-zoom/manual release review; QA-006 remains open for screenshot-diff visual regression.
+- Status: FE-005, A11Y-001 and QA-006 verified for the current development application; A11Y-002/QA-005 remain open for real assistive-technology/text-zoom/manual release review.
+
+### 2026-08-27 — Visual regression baseline enforcement
+- IDs: PCS-QA-001, PCS-QA-006, PCS-FE-005
+- Change: freeze 16 Linux/Chromium screenshots covering landing/assessment at six mandatory widths plus completed private result/public share at mobile/desktop; add controlled baseline workflow and normal-CI comparison mode.
+- Reason: detect unintended visual drift separately from functional responsive assertions.
+- Versions: app/QA only; assessment/scoring/code/content semantics unchanged.
+- Evidence: baselines committed by Visual Baseline workflow; CI Runs 343/344 pass comparison without `--update-snapshots`; Visual Baseline Run 7 reproduces from committed lockfile.
+- Remaining: final production illustrations/type copy will intentionally require reviewed baseline updates.
 
 ## Material change records
 
