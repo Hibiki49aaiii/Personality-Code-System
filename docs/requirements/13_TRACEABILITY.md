@@ -45,6 +45,12 @@ Depending on the requirement:
 
 A commit hash alone is insufficient if it does not demonstrate requirement behavior.
 
+## Machine-readable change ledger
+
+Material changes are now additionally recorded in `data/governance/requirement-change-ledger-v0.1-dev.json`. CI validates that the ledger targets the current Master Requirements version/date, references only real requirement IDs, and records rationale plus assessment-model, code-schema, content, data-migration and compatibility impact.
+
+The Markdown examples below remain useful narrative release notes; the machine ledger is the release-blocking minimum record.
+
 ## Requirement change record
 
 For every material requirement change record:
@@ -296,3 +302,11 @@ The public share is a deliberate sanitized export. It is not a different view ov
 - Reason: allow art production to proceed without ad-hoc per-type prompts or mutable runtime generation.
 - Versions: `illustration-system-v0.1-dev`; all slots unproduced.
 - Evidence: illustration slot materializer/validator and art-direction specification.
+
+
+### 2026-08-28 — Version-impact change ledger gate
+- IDs: governance/process requirement; affected operational IDs are listed per machine entry.
+- Change: introduce `requirement-change-ledger-v0.1-dev` and CI validation tied to Master Requirements v0.11.7.
+- Reason: prevent material requirement changes from being merged without an explicit assessment/code/content/data/compatibility decision.
+- Versions: governance-only; current assessment/code/content versions unchanged.
+- Evidence: `npm run validate:change-ledger` in normal CI.
