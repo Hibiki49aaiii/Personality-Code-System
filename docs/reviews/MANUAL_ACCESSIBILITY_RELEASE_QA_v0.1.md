@@ -46,6 +46,8 @@ For each environment:
 11. Create a public share explicitly.
 12. Confirm public share exposes only sanitized content.
 13. Revoke the share and confirm the link becomes unavailable.
+14. Reach the diagnostic data control, understand that deletion is irreversible and affects private/public result data, open the confirmation state, then cancel once to verify safe focus/state restoration.
+15. Re-open the deletion confirmation and verify the `削除を確定` action, warning text and cancellation control are announced distinctly. Execute destructive deletion only in a disposable QA session and confirm the browser returns to a non-authenticated state.
 
 ## Pass criteria
 
@@ -60,6 +62,7 @@ For each environment:
 - Reduced motion does not hide/delay required content.
 - Result hierarchy is navigable by headings/landmarks.
 - Share action is clearly explicit; private/public distinction is understandable.
+- Destructive diagnostic deletion is distinguishable from share revocation, exposes an irreversible warning before execution, provides a cancel path, and does not lose focus/context unexpectedly.
 - Japanese punctuation/code labels are not read in a way that makes the core result unusable.
 
 ## Evidence table
@@ -71,6 +74,7 @@ For each environment:
 | Private result | pending | pending | NOT RUN | |
 | Public share | pending | pending | NOT RUN | |
 | Revoke/error flow | pending | pending | NOT RUN | |
+| Diagnostic self-deletion | pending | pending | NOT RUN | |
 
 ## Closure rule
 
@@ -80,5 +84,7 @@ PCS-A11Y-002 / PCS-QA-005 may close only when:
 - 200% scaling regression is green;
 - this manual record contains real executed evidence rather than placeholders;
 - any release-blocking issue is fixed or explicitly documented/approved under the requirements process.
+
+`data/accessibility/manual-release-review-v0.1-dev.json` mirrors the fail-closed execution state in machine-readable form. CI validates that no tester/device evidence or PASS state is fabricated.
 
 This file intentionally remains `NOT RUN` until a human/device walkthrough occurs.
