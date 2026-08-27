@@ -1,0 +1,36 @@
+{
+  "runtime_log_policy_version": "runtime-log-policy-v0.1-dev",
+  "status": "repository-enforced-production-provider-pending",
+  "allowed_server_fault_fields": [
+    "event",
+    "surface",
+    "category"
+  ],
+  "allowed_event_value": "pcs_server_fault",
+  "forbidden_payload_classes": [
+    "Error-object",
+    "stack",
+    "request",
+    "headers",
+    "cookies",
+    "URL-with-capability",
+    "session-token",
+    "public-share-token",
+    "raw-answer",
+    "trait-vector",
+    "extended-code",
+    "result-prose",
+    "free-text"
+  ],
+  "direct_console_error_allowed_files": [
+    "src/server/privacySafeLog.ts"
+  ],
+  "production_provider_privacy_review_complete": false,
+  "external_evidence_required": [
+    "production-log-provider-identity",
+    "retention-policy",
+    "access-control",
+    "redaction-or-payload-sample-review",
+    "proof-diagnostic-capabilities-not-exported"
+  ]
+}
