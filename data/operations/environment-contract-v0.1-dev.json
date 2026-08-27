@@ -59,6 +59,20 @@
         "production"
       ],
       "client_exposure_allowed": false
+    },
+    "PCS_CLIENT_IP_HEADER": {
+      "classification": "configuration",
+      "required_preview": true,
+      "required_production": true,
+      "allowed_values": [
+        "cf-connecting-ip",
+        "x-vercel-forwarded-for",
+        "x-forwarded-for",
+        "x-real-ip",
+        "fly-client-ip"
+      ],
+      "client_exposure_allowed": false,
+      "note": "Production application code uses only this explicitly selected forwarded address header; the edge must overwrite/sanitize it."
     }
   },
   "production_forbidden_runtime_credentials": [
