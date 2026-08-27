@@ -21,14 +21,15 @@ Development is governed by:
 
 When a design/research note conflicts with these requirements, the requirements win. Requirement changes must be explicit and version-impact reviewed.
 
-## Initial stack
+## Runtime stack
 
-- Next.js 16 (App Router)
-- React 19
-- TypeScript
-- CSS custom properties + authored responsive CSS
-- Planned: PostgreSQL + versioned relational persistence
-- Planned: privacy-reviewed analytics, error monitoring, deterministic share-card rendering
+- Next.js 16 (App Router) / React 19 / TypeScript
+- PostgreSQL 16 + Drizzle-style typed persistence and ordered SQL migrations
+- authored responsive CSS and Playwright/axe browser QA
+- deterministic server-side assessment/result/share pipeline
+- first-party privacy-bounded analytics and fixed-schema operational fault logging
+- deterministic sanitized OG / portrait share-card rendering
+- Next standalone multi-stage container runtime; no production AI/LLM dependency
 
 ## Product architecture
 
@@ -48,13 +49,19 @@ Application architecture further separates framework-independent diagnostic doma
 
 ## Development status
 
-Foundation phase complete enough to begin formal measurement design:
+The deterministic development application is substantially implemented:
 
-- application scaffold: complete
-- responsive visual prototype: complete
-- CI typecheck + production build: complete
-- authoritative requirement system: complete
-- Trait Dictionary v0.2: next
-- item bank/scoring engine: not yet frozen/implemented
+- 21 direct measured Traits and 147-item reviewed candidate bank;
+- deterministic scoring, Response Quality, C01D Core/Extended Code and Interaction engine;
+- immutable private Result Snapshots and sanitized public-share snapshots;
+- complete 64-code **non-public** editorial draft/review worklist;
+- PostgreSQL persistence, privacy deletion, 30/90/180-day engineering retention, least-privilege DB-role policy and logical restore rehearsal;
+- responsive/keyboard/axe/visual/browser regression suites;
+- performance artifact budgets plus representative desktop/constrained-mobile lab evidence;
+- fail-closed release/runtime gates, non-root standalone container package, health endpoint and privacy-safe operational logging.
 
-Do not treat prototype questions or provisional trait definitions as the final diagnostic model.
+The project is **not public-launch ready**. Current C01D remains `public_use=false`, the current assessment manifest is beta/development-only, and production activation/indexing are blocked.
+
+Major remaining evidence is deliberately external or human: Phase 5 calibration/statistical review, public taxonomy/model freeze, human editorial approval, curated type artwork, real assistive-technology QA, field CWV, legal/privacy publication review, deployed TLS/secrets/database/proxy/monitoring/backup evidence, and external security review.
+
+Do not describe the current development model as scientifically validated, a finalized 64-type taxonomy, or as establishing population rarity.
