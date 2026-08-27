@@ -1,0 +1,129 @@
+.panel {
+  width: min(1180px, calc(100vw - 48px));
+  margin: 0 auto 72px;
+  padding: 24px;
+  border: 1px solid #d7d1c5;
+  background: #f8f5ed;
+}
+
+.heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.heading p,
+.heading span {
+  margin: 0;
+  color: #69675f;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .13em;
+}
+
+.heading h2 {
+  margin: 5px 0 0;
+  font-family: Georgia, "Yu Mincho", serif;
+  font-size: clamp(25px, 3vw, 38px);
+  font-weight: 400;
+}
+
+.description {
+  max-width: 820px;
+  margin: 18px 0 22px;
+  color: #4f514c;
+  font-size: 14px;
+  line-height: 1.85;
+}
+
+.deleteButton,
+.confirmDelete,
+.cancel {
+  min-height: 44px;
+  appearance: none;
+  border: 1px solid #7a3f38;
+  padding: 10px 17px;
+  background: transparent;
+  color: #6f342e;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.confirmation {
+  max-width: 720px;
+  padding: 18px;
+  border: 1px solid #c7a49e;
+  background: #f5ebe7;
+}
+
+.confirmation strong {
+  display: block;
+  font-size: 15px;
+}
+
+.confirmation p {
+  margin: 8px 0 16px;
+  line-height: 1.7;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.confirmDelete {
+  background: #6f342e;
+  color: #fff;
+}
+
+.cancel {
+  border-color: #77756e;
+  color: #343630;
+}
+
+.confirmDelete:disabled,
+.cancel:disabled {
+  opacity: .55;
+  cursor: wait;
+}
+
+.status {
+  min-height: 1.5em;
+  margin: 14px 0 0;
+  color: #5d625e;
+  font-size: 13px;
+}
+
+@media (max-width: 800px) {
+  .panel {
+    width: calc(100vw - 28px);
+    padding: 18px;
+  }
+
+  .heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .actions {
+    grid-template-columns: 1fr;
+  }
+
+  .deleteButton,
+  .confirmDelete,
+  .cancel {
+    width: 100%;
+  }
+}
