@@ -1,0 +1,97 @@
+{
+  "inventory_version": "privacy-data-inventory-v0.1-dev",
+  "status": "development",
+  "account_required": false,
+  "direct_identity_collection": false,
+  "precise_location_collection": false,
+  "third_party_diagnostic_export_default": false,
+  "classes": [
+    {
+      "id": "versioned-product-definition",
+      "personal_data": false,
+      "purpose": "Deterministic assessment, scoring, content, artwork and historical reproducibility.",
+      "retention": "indefinite-while-referenced",
+      "public_by_default": false,
+      "third_party_export_default": false,
+      "tables": [
+        "trait_definitions",
+        "trait_definition_revisions",
+        "assessment_items",
+        "assessment_item_revisions",
+        "assessment_model_releases",
+        "assessment_model_items",
+        "content_versions",
+        "content_modules",
+        "illustration_assets"
+      ]
+    },
+    {
+      "id": "anonymous-session-operational",
+      "personal_data": true,
+      "purpose": "Resume an anonymous assessment and bind writes/results to one opaque browser capability.",
+      "retention": "abandoned-30-days-engineering-baseline",
+      "public_by_default": false,
+      "third_party_export_default": false,
+      "tables": ["anonymous_sessions"]
+    },
+    {
+      "id": "anonymous-diagnostic-answers",
+      "personal_data": true,
+      "purpose": "Compute deterministic Trait Scores and permit short-term support/reliability investigation during MVP/beta.",
+      "retention": "completed-90-days-engineering-baseline",
+      "public_by_default": false,
+      "third_party_export_default": false,
+      "tables": ["assessment_answers"]
+    },
+    {
+      "id": "derived-private-diagnostic-result",
+      "personal_data": true,
+      "purpose": "Render and reproduce the private deterministic result without recomputing against mutable content.",
+      "retention": "private-result-180-days-engineering-baseline",
+      "public_by_default": false,
+      "third_party_export_default": false,
+      "tables": ["assessment_trait_scores", "result_snapshots"]
+    },
+    {
+      "id": "explicit-public-share",
+      "personal_data": true,
+      "purpose": "Store the separately sanitized result identity explicitly exported by the user for sharing.",
+      "retention": "until-revoked-or-future-public-share-policy",
+      "public_by_default": false,
+      "public_after_explicit_action": true,
+      "third_party_export_default": false,
+      "tables": ["public_share_snapshots"]
+    },
+    {
+      "id": "first-party-product-analytics",
+      "personal_data": true,
+      "purpose": "Measure product funnel, coarse errors and bucketed performance without copying diagnostic answers/results.",
+      "retention": "30-days-unscoped-90-days-session-bound",
+      "public_by_default": false,
+      "third_party_export_default": false,
+      "tables": ["product_events"]
+    },
+    {
+      "id": "security-abuse-prevention",
+      "personal_data": true,
+      "purpose": "Enforce public mutation rate limits using HMAC-derived principals without storing raw IP/session credentials.",
+      "retention": "short-fixed-window-plus-cleanup",
+      "public_by_default": false,
+      "third_party_export_default": false,
+      "tables": ["rate_limit_buckets"]
+    }
+  ],
+  "prohibited_default_collection": [
+    "real_name",
+    "email",
+    "phone",
+    "postal_address",
+    "precise_geolocation",
+    "employer",
+    "health_history",
+    "political_identity",
+    "religious_identity",
+    "sexual_data",
+    "biometric_media"
+  ]
+}
