@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { sendClientProductEvent } from '../_analytics/client';
 import styles from './share-controls.module.css';
 
 interface ShareControlsProps {
@@ -24,6 +25,7 @@ export default function ShareControls({ coreCode }: ShareControlsProps) {
   );
 
   async function createShare() {
+    void sendClientProductEvent('share_initiated');
     setState('creating');
     setMessage('');
     try {
