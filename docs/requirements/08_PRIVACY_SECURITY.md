@@ -84,7 +84,7 @@ The development application now also provides:
 
 Verification evidence includes CI Run `33038326772` (Run 304) for the earlier rate-limit/security-header baseline and CI Run 373 (`33050505946`) for the current privacy inventory, release-security audit, typecheck/build, production-artifact audit, and Chromium security regression suite.
 
-The IP-based session-creation limit assumes the production reverse proxy/CDN overwrites or sanitizes forwarded client-address headers. Trusted-proxy behavior is therefore a deployment requirement and is not claimed by application code alone.
+The production IP-based session-creation limit no longer guesses among arbitrary forwarded headers. `PCS_CLIENT_IP_HEADER` must select one reviewed header name, unselected forwarded headers are ignored in production, malformed/non-IP-shaped values fail to an `unavailable` principal, and domain tests freeze that behavior. The selected header still must be overwritten/sanitized by the real reverse proxy/CDN, so trusted-edge proof remains a deployment requirement rather than an application-only claim.
 
 This completes the enumerated Master **PCS-SEC-001** development implementation. It does **not** complete release security: TLS termination, trusted proxy configuration, production database least privilege, deployment secret-store proof, external penetration/security review and the final **PCS-QA-007** checklist remain release/operations gates.
 
