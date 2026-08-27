@@ -46,6 +46,9 @@ if (!cookie.includes("secure: process.env.NODE_ENV === 'production'")) errors.pu
 if (!rateLimit.includes('process.env.PCS_RATE_LIMIT_SECRET')) errors.push('runtime rate-limit secret lookup missing');
 if (!rateLimit.includes("process.env.NODE_ENV !== 'production'")) errors.push('rate-limit development fallback boundary missing');
 if (!origin.includes('process.env.PCS_SITE_ORIGIN')) errors.push('explicit site-origin configuration path missing');
+if (origin.includes('NEXT_PUBLIC_SITE_ORIGIN')) errors.push('public site-origin fallback must not exist');
+if (!origin.includes("deploymentEnvironment === 'production' && url.protocol !== 'https:'")) errors.push('production site origin must fail closed on non-HTTPS');
+if (!origin.includes("deploymentEnvironment === 'preview' || deploymentEnvironment === 'production'")) errors.push('preview/production site origin must be explicit');
 
 for (const name of ['DATABASE_URL','PCS_RATE_LIMIT_SECRET','PCS_SITE_ORIGIN','PCS_ASSESSMENT_MODEL_VERSION','PCS_DEPLOYMENT_ENV','PCS_CLIENT_IP_HEADER']) {
   if (!new RegExp('^' + name + '=', 'm').test(example)) errors.push(`.env.example missing ${name}`);
