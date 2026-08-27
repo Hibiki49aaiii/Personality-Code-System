@@ -215,14 +215,14 @@ A finalized result snapshot must retain enough metadata to reproduce what the us
 
 Current development implementation:
 
-- `src/domain/assessment/resultSnapshot.ts` creates `result-snapshot-v0.1-dev` without duplicating raw answers or prose;
-- `tests/fixtures/golden-result-snapshot-midpoint-v0.1.json` freezes a known structured snapshot;
+- `src/domain/assessment/resultSnapshot.ts` preserves historical `result-snapshot-v0.1-dev` support and creates `result-snapshot-v0.2-dev` for new completions, adding the exact `illustrationAssetVersion` without duplicating raw answers or prose;
+- `tests/fixtures/golden-result-snapshot-midpoint-v0.1.json` freezes the historical v0.1 structured snapshot; additional tests verify v0.2 asset-version freezing without mutating v0.1;
 - `tests/domain/result-snapshot.test.ts` verifies exact snapshot equality and input-order invariance;
 - PostgreSQL `result_snapshots` stores the snapshot as JSONB plus indexed version columns;
-- SQL triggers reject snapshot `UPDATE` and reject inserted snapshots whose indexed model/version/locale metadata conflicts with the owning session/model or embedded JSON metadata;
+- SQL triggers reject snapshot `UPDATE`, reject indexed model/version/locale drift, require a known `illustration_assets` version for v0.2, and reject public-share artwork substitution against the source result snapshot;
 - persistence tests verify retention/privacy `DELETE` remains possible while mutation is not.
 
-The current snapshot intentionally has no illustration asset reference because the curated illustration system does not yet exist. Therefore the top-level production requirement remains **partial**, not falsely complete.
+New completions freeze the curated static development fallback `ILL-PCS-FALLBACK-HERO-v01` into the immutable v0.2 result snapshot and propagate that exact identity into sanitized sharing. Historical v0.1 remains valid/readable. Type-specific C01D hero production is intentionally separate under **PCS-ART-002**, so it no longer blocks snapshot reproducibility.
 
 ## Current requirement status
 
@@ -232,4 +232,4 @@ The current snapshot intentionally has no illustration asset reference because t
 | PCS-RESULT-002 | COMPLETE as experimental engineering specification — PCSX1 syntax/bands/order/version behavior are deterministic, documented, implemented, and tested. |
 | PCS-RESULT-003 | COMPLETE as development deterministic engine — structured module selection is implemented/tested; production editorial catalog remains Phase 3. |
 | PCS-RESULT-004 | COMPLETE as development deterministic engine — precedence/suppression is enforced and contradiction fixtures pass. |
-| PCS-RESULT-005 | PARTIAL — deterministic immutable development snapshot + PostgreSQL persistence exists and is integration-tested; curated illustration asset/version linkage remains Phase 3 before production completion. |
+| PCS-RESULT-005 | COMPLETE — historical v0.1 remains supported; new v0.2 snapshots freeze the exact displayed illustration asset version and PostgreSQL/public-share guards preserve immutable asset lineage. Full CI Run 432 is green. |
