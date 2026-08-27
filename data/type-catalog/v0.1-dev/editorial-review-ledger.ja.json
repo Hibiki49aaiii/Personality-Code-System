@@ -1,0 +1,1172 @@
+{
+  "review_ledger_version": "type-editorial-review-ledger-ja-v0.1-dev",
+  "editorial_catalog_version": "type-editorial-catalog-ja-v0.1-dev",
+  "code_schema_version": "core-code-v0.1-dev",
+  "locale": "ja-JP",
+  "status": "review-not-started",
+  "public_use": false,
+  "review_dimensions": [
+    "name-system-consistency",
+    "claim-provenance",
+    "neighbor-differentiation",
+    "non-clinical-language",
+    "adversarial-tone",
+    "relationship-work-stress-limitations",
+    "japanese-proofreading",
+    "final-editorial-approval"
+  ],
+  "entries": [
+    {
+      "core_code": "LTGPFB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "LTGPFD",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "LTGPNB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "LTGPND",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "LTGEFB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "LTGEFD",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "LTGENB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "LTGEND",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "LTAPFB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "LTAPFD",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "LTAPNB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "LTAPND",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "LTAEFB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "LTAEFD",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "LTAENB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "LTAEND",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "LVGPFB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "LVGPFD",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "LVGPNB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "LVGPND",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "LVGEFB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "LVGEFD",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "LVGENB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "LVGEND",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "LVAPFB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "LVAPFD",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "LVAPNB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "LVAPND",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "LVAEFB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "LVAEFD",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "LVAENB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "LVAEND",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "STGPFB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "STGPFD",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "STGPNB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "STGPND",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "STGEFB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "STGEFD",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "STGENB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "STGEND",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "STAPFB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "STAPFD",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "STAPNB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "STAPND",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "STAEFB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "STAEFD",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "STAENB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "STAEND",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "SVGPFB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "SVGPFD",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "SVGPNB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "SVGPND",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "SVGEFB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "SVGEFD",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "SVGENB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "SVGEND",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "SVAPFB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "SVAPFD",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "SVAPNB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "SVAPND",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "SVAEFB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "SVAEFD",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "SVAENB",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    },
+    {
+      "core_code": "SVAEND",
+      "status": "pending",
+      "dimensions": {
+        "name-system-consistency": "pending",
+        "claim-provenance": "pending",
+        "neighbor-differentiation": "pending",
+        "non-clinical-language": "pending",
+        "adversarial-tone": "pending",
+        "relationship-work-stress-limitations": "pending",
+        "japanese-proofreading": "pending",
+        "final-editorial-approval": "pending"
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "issue_refs": [],
+      "notes": null
+    }
+  ]
+}
