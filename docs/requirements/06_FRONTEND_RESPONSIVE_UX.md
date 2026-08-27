@@ -27,6 +27,21 @@ Mandatory verification widths:
 
 The existence of responsive CSS is not sufficient evidence for Master **PCS-FE-005**. The required widths must be explicitly exercised and recorded through visual/functional QA.
 
+### Current responsive verification
+
+The development application now has automated functional width coverage at:
+
+- 320 × 844;
+- 390 × 844;
+- 768 × 1024;
+- 1024 × 768;
+- 1280 × 800;
+- 1440 × 900.
+
+The test checks landing and assessment controls at each width, and checks the completed private result across the same width matrix. Document/body scroll width must not exceed the viewport width. CI Run `33044207630` (Run 329) passes this matrix. This closes Master **PCS-FE-005** for the current application scope.
+
+This is responsive functional evidence, not a substitute for screenshot-diff visual regression; Master **PCS-QA-006** remains open.
+
 ## Landing page
 
 MUST include:
@@ -107,7 +122,30 @@ Release-blocking baseline:
 
 Target WCAG level: practical WCAG 2.2 AA conformity for user-facing core flows, with documented exceptions if any.
 
-Current browser E2E uses pointer interaction and is **not** evidence that Master PCS-A11Y-001/002 are complete.
+Current accessibility automation now includes an independent keyboard/touch/a11y suite.
+
+### Current keyboard and accessibility evidence
+
+CI Run `33044207630` (Run 329) verifies:
+
+- all 147 assessment questions and finalization can be completed using actual `Tab`, `Shift+Tab`, `Space`, and `Enter` traversal without pointer/touch activation;
+- assessment progress is exposed as a semantic progressbar with current/max/readable value text;
+- the response radiogroup is explicitly labelled by the current question;
+- saving/errors expose busy/alert relationships;
+- result Trait bars are semantic meters with readable 0–100 values;
+- visible keyboard focus is present;
+- reduced-motion mode suppresses non-essential transition timing;
+- practical assessment targets are at least 44 CSS px high in the mobile check;
+- a touch-enabled 390px mobile context can select/advance without overflow;
+- `@axe-core/playwright` reports no WCAG A/AA-tagged violations on the tested landing, first assessment screen, and completed private result.
+
+Axe initially found actual color-contrast defects in the landing, assessment supplemental text, and private-result metadata. The palette was corrected rather than excluding those rules.
+
+This closes Master **PCS-A11Y-001** for keyboard-only assessment completion.
+
+Master **PCS-A11Y-002** remains open because automated checks cannot replace a release walkthrough with real assistive technology, browser text zoom/text scaling, final production illustrations/content, and broader manual focus/touch review.
+
+Detailed evidence boundary: `docs/reviews/RESPONSIVE_ACCESSIBILITY_QA_v0.1.md`.
 
 ## Motion
 
@@ -153,10 +191,19 @@ Exact thresholds should align with contemporary Core Web Vitals guidance and be 
 
 ## Frontend test evidence
 
-- screenshots/visual regression at required widths;
-- keyboard walkthrough;
-- automated accessibility scan;
+Implemented/green in current development CI:
+
+- functional width matrix at all mandatory widths;
+- actual keyboard-only 147-item assessment completion;
+- automated axe WCAG A/AA scan of core pages;
 - reduced-motion verification;
-- touch-device assessment test;
-- result-page long-content stress test;
-- Japanese text wrapping/long type-name stress test.
+- touch-enabled mobile assessment test;
+- horizontal-overflow assertions.
+
+Still required for release:
+
+- screenshot/visual-regression baselines at critical widths;
+- real screen-reader / assistive-technology walkthrough;
+- browser text zoom/text-scaling verification;
+- result-page long-content stress review with final production content;
+- Japanese wrapping/long public type-name stress review after public names are approved.
