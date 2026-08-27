@@ -1,0 +1,102 @@
+{
+  "observability_contract_version": "observability-v0.1-dev",
+  "status": "repository-foundation",
+  "production_operational": false,
+  "privacy": {
+    "raw_answers_in_logs_allowed": false,
+    "trait_vector_in_logs_allowed": false,
+    "bearer_tokens_in_logs_allowed": false,
+    "free_form_client_error_in_analytics_allowed": false,
+    "third_party_diagnostic_payload_export_default": false
+  },
+  "readiness": {
+    "route": "GET /api/health",
+    "healthy_status": 200,
+    "degraded_status": 503,
+    "response_fields": [
+      "status"
+    ],
+    "forbidden_response_fields": [
+      "databaseUrl",
+      "version",
+      "exception",
+      "stack",
+      "host",
+      "token"
+    ]
+  },
+  "first_party_signals": [
+    "client_error",
+    "server_error",
+    "performance_measure",
+    "assessment_started",
+    "assessment_completed"
+  ],
+  "production_monitors": [
+    {
+      "id": "readiness-availability",
+      "source": "independent-http-probe",
+      "status": "pending-external",
+      "target": "/api/health",
+      "cadence_seconds": 60,
+      "alert_after_consecutive_failures": 3
+    },
+    {
+      "id": "application-error-rate",
+      "source": "independently-durable-server-monitoring",
+      "status": "pending-external",
+      "target": "application/server exceptions and 5xx",
+      "alert_policy": "provider-specific-threshold-required"
+    },
+    {
+      "id": "assessment-finalization-health",
+      "source": "server/API monitoring plus privacy-safe aggregate funnel",
+      "status": "pending-external",
+      "target": "assessment completion failures / unexpected 5xx",
+      "alert_policy": "provider-specific-threshold-required"
+    },
+    {
+      "id": "database-health-latency",
+      "source": "database/platform telemetry independent of primary application DB",
+      "status": "pending-external",
+      "target": "availability and latency",
+      "alert_policy": "provider-specific-threshold-required"
+    },
+    {
+      "id": "deployment-correlation",
+      "source": "deployment platform",
+      "status": "pending-external",
+      "target": "immutable commit/release identifier attached to operational events"
+    },
+    {
+      "id": "cwv-field-monitoring",
+      "source": "representative field measurement",
+      "status": "pending-external",
+      "target": "LCP/INP/CLS p75 by release/surface where sample permits"
+    }
+  ],
+  "severity": {
+    "P0": [
+      "raw-answer-or-private-result-exposure",
+      "widespread-diagnostic-corruption",
+      "public-share-authorization-bypass",
+      "material-data-loss"
+    ],
+    "P1": [
+      "broad-unavailability",
+      "sustained-finalization-failure",
+      "severe-production-regression"
+    ],
+    "P2": [
+      "localized-feature-regression",
+      "non-critical-performance-regression"
+    ]
+  },
+  "operational_evidence_required": [
+    "monitor-provider-or-independent-probe-identity",
+    "alert-routing-destination",
+    "deployment-version-correlation-proof",
+    "test-alert-or-incident-drill",
+    "production-retention-scheduler-proof"
+  ]
+}
