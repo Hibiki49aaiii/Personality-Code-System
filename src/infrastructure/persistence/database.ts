@@ -3,11 +3,13 @@ import postgres from 'postgres';
 import * as assessmentSchema from './schema';
 import * as sharingSchema from './sharingSchema';
 import * as analyticsSchema from './analyticsSchema';
+import * as securitySchema from './securitySchema';
 
 const schema = {
   ...assessmentSchema,
   ...sharingSchema,
-  ...analyticsSchema
+  ...analyticsSchema,
+  ...securitySchema
 };
 
 export type PcsDatabase = PostgresJsDatabase<typeof schema>;
