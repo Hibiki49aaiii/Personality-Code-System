@@ -1,0 +1,53 @@
+{
+  "lab_profile_version": "performance-lab-profile-v0.1-dev",
+  "status": "development-evidence",
+  "public_use": false,
+  "browser": "playwright-chromium",
+  "profiles": {
+    "desktop_ci": {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "cpu_slowdown_rate": 1,
+      "network": null,
+      "note": "GitHub Actions runner, no synthetic network throttling."
+    },
+    "mobile_slow4g_ci": {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "cpu_slowdown_rate": 4,
+      "network": {
+        "latency_ms": 150,
+        "download_kbps": 1600,
+        "upload_kbps": 750
+      },
+      "note": "Synthetic constrained mobile lab profile; not field-data evidence."
+    }
+  },
+  "measured_surfaces": [
+    "landing",
+    "assessment",
+    "private-result",
+    "public-share"
+  ],
+  "measurements": [
+    "LCP_ms",
+    "CLS",
+    "TTFB_ms",
+    "max_interaction_event_ms"
+  ],
+  "interpretation": {
+    "LCP_ms": "Buffered LargestContentfulPaint entry observed after the surface load.",
+    "CLS": "Sum of layout-shift entries without recent input.",
+    "TTFB_ms": "Navigation responseStart minus requestStart.",
+    "max_interaction_event_ms": "Largest Event Timing duration observed after representative scripted interaction; useful as an INP candidate/proxy, not a field INP percentile."
+  },
+  "acceptance_policy": {
+    "report_only": true,
+    "master_requirement_closure": false,
+    "note": "Lab output is evidence input. PCS-PERF-001 remains open until representative evidence is reviewed and field data is collected when traffic permits."
+  }
+}
