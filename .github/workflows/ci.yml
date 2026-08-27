@@ -100,6 +100,9 @@ jobs:
       - name: Validate environment separation contract
         run: npm run validate:environment
 
+      - name: Validate standalone container runtime package contract
+        run: npm run validate:runtime-package
+
       - name: Validate public launch gate remains fail-closed
         run: npm run validate:launch-gate
 
@@ -150,6 +153,9 @@ jobs:
 
       - name: Validate frozen representative performance lab evidence
         run: npm run validate:performance-lab
+
+      - name: Smoke standalone production runtime
+        run: npm run smoke:standalone
 
       - name: Install Chromium for E2E
         run: npx playwright install --with-deps chromium

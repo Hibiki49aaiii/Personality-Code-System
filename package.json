@@ -46,7 +46,9 @@
     "validate:model-activation": "node scripts/validate-production-model-activation.mjs",
     "cleanup:diagnostic": "node scripts/cleanup-diagnostic-retention.mjs",
     "test:diagnostic-retention:integration": "node tests/infrastructure/diagnostic-retention.integration.mjs",
-    "validate:diagnostic-retention": "node scripts/validate-diagnostic-retention.mjs"
+    "validate:diagnostic-retention": "node scripts/validate-diagnostic-retention.mjs",
+    "validate:runtime-package": "node scripts/validate-container-runtime.mjs",
+    "smoke:standalone": "node scripts/smoke-standalone-runtime.mjs"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",

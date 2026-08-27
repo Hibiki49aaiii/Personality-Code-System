@@ -1,0 +1,14 @@
+node_modules
+.next
+.git
+.github
+.tmp-tests
+test-results
+playwright-report
+artifacts
+coverage
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store

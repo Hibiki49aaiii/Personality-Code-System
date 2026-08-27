@@ -1,0 +1,40 @@
+{
+  "runtime_package_version": "container-runtime-v0.1-dev",
+  "status": "repository-build-foundation",
+  "production_deployment_proven": false,
+  "base_runtime": "node:22-alpine",
+  "next_output": "standalone",
+  "process_user": {
+    "uid": 1001,
+    "name": "nextjs",
+    "root_allowed": false
+  },
+  "port": 3000,
+  "health_path": "/api/health",
+  "required_server_environment": [
+    "DATABASE_URL",
+    "PCS_RATE_LIMIT_SECRET",
+    "PCS_SITE_ORIGIN",
+    "PCS_ASSESSMENT_MODEL_VERSION"
+  ],
+  "forbidden_runtime_credentials": [
+    "OPENAI_API_KEY",
+    "ANTHROPIC_API_KEY",
+    "GOOGLE_GENERATIVE_AI_API_KEY",
+    "COHERE_API_KEY"
+  ],
+  "image_rules": {
+    "secrets_baked_into_image_allowed": false,
+    "source_maps_allowed": false,
+    "non_root_required": true,
+    "immutable_release_identifier_required_for_production": true
+  },
+  "external_evidence_required": [
+    "container-registry-or-platform-artifact-digest",
+    "preview-runtime-smoke",
+    "production-runtime-smoke",
+    "production-domain-tls",
+    "production-secret-store-injection",
+    "deployment-version-correlation"
+  ]
+}
