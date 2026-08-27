@@ -1,7 +1,7 @@
 # Personality Code System — Master Requirements & Delivery Checklist
 
 > Status: authoritative development contract
-> Version: 0.9.0
+> Version: 0.9.1
 > Last updated: 2026-08-27
 
 This file is the single top-level source of truth for PCS scope and delivery status. Detailed requirements live under `docs/requirements/`.
@@ -190,7 +190,7 @@ Detailed requirements: [`docs/requirements/09_SOCIAL_SHARING_AND_ANALYTICS.md`](
 
 ## 11. Testing and QA
 
-- [x] **PCS-QA-001** CI performs requirement-ID validation, development type-catalog reachability validation, Item Bank validation, persistence migration validation, real PostgreSQL/application/domain tests, TypeScript typecheck, production build, and Chromium browser E2E.
+- [x] **PCS-QA-001** CI performs requirement-ID validation, development type-catalog reachability validation, Item Bank validation, analytics/privacy and retention-policy validation, persistence migration validation, real PostgreSQL/application/domain tests, analytics retention dry-run, TypeScript typecheck, production build, and Chromium browser E2E.
 - [x] **PCS-QA-002** Unit tests cover the complete current domain pipeline including interactions, content selection/suppression, confidence/version handling and fail-closed result composition.
 - [x] **PCS-QA-003** Fixed structured-result Golden Snapshot verifies deterministic output and input-order invariance.
 - [x] **PCS-QA-004** Browser E2E covers anonymous start → back/edit → 147 answers → private result/reload → explicit public share → cookie-free public view → deterministic OG/portrait cards → revocation and public-link invalidation.
@@ -204,7 +204,7 @@ Detailed requirements: [`docs/requirements/10_TESTING_QA.md`](docs/requirements/
 
 - [ ] **PCS-OPS-001** Separate development/preview/production environments.
 - [ ] **PCS-OPS-002** Secrets never committed; production has no AI API key requirement.
-- [ ] **PCS-OPS-003** Error monitoring/health checks.
+- [ ] **PCS-OPS-003** Error monitoring/health checks. *(Development foundation now includes fixed-category first-party client error telemetry, bucket-only Web Vitals, and a minimal DB readiness endpoint verified in Chromium/API CI; production external monitoring, server/API rate visibility and alerting remain.)*
 - [ ] **PCS-OPS-004** Documented production rollback.
 - [ ] **PCS-OPS-005** Assessment/model release requires explicit version freeze/migration review.
 - [ ] **PCS-OPS-006** Public launch gate complete before announcing v1.0.
@@ -226,7 +226,7 @@ Detailed requirements: [`docs/requirements/11_RELEASE_OPERATIONS.md`](docs/requi
 - [ ] Phase 3A — public Core Type/content catalog. *(ACTIVE: non-public C01D 64-code reachability/provenance foundation complete; naming/editorial/public promotion remain.)*
 - [ ] Phase 3B — illustrations.
 - [ ] Phase 4A — social sharing/OG. *(4A-1 sanitized sharing foundation complete; final curated-art/public-name presentation remains pending.)*
-- [ ] Phase 4B — analytics/monitoring. *(ACTIVE: 4B-1 first-party privacy-bounded funnel telemetry verified; scoped observed-distribution foundation verified; retention enforcement, environment separation, monitoring and consented calibration export remain.)*
+- [ ] Phase 4B — analytics/monitoring. *(ACTIVE: privacy-bounded funnel telemetry, scoped observed-distribution, versioned 30/90-day retention cleanup, fixed-category client error telemetry, bucket-only Web Vitals and DB readiness health foundation are verified; production scheduling/environment separation/alerting and consented calibration export remain.)*
 - [ ] Phase 5A — closed beta/calibration collection.
 - [ ] Phase 5B — statistical review/pruning/retest.
 - [ ] Phase 5C — production assessment/public code model v1.0 freeze.
