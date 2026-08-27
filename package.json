@@ -22,7 +22,8 @@
     "db:migrate": "drizzle-kit migrate",
     "validate:analytics": "node scripts/validate-analytics-events.mjs",
     "cleanup:analytics": "node scripts/cleanup-analytics-retention.mjs",
-    "audit:prod": "npm audit --omit=dev --audit-level=high"
+    "audit:prod": "npm audit --omit=dev --audit-level=high",
+    "validate:security": "node scripts/validate-security-baseline.mjs"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",
