@@ -44,10 +44,13 @@ for (const fragment of [
   "DUPLICATE_RESPONSE",
   "buildCalibrationExportManifestV01",
   "MIXED_EXPORT_SCOPE",
-  "EMPTY_EXPORT"
+  "EMPTY_EXPORT",
+  "validateCalibrationRecordAgainstExpectedItemsV01",
+  "OFF_MODEL_RESPONSE",
+  "MISSING_REQUIRED_RESPONSE"
 ]) if (!source.includes(fragment)) errors.push(`calibration export domain validator missing ${fragment}`);
 
-for (const fragment of ['sessionId','accessTokenHash','coreCode','retestLinkId','responseMs','MIXED_EXPORT_SCOPE','rowCount: 2']) {
+for (const fragment of ['sessionId','accessTokenHash','coreCode','retestLinkId','responseMs','MIXED_EXPORT_SCOPE','rowCount: 2','OFF_MODEL_RESPONSE','MISSING_REQUIRED_RESPONSE']) {
   if (!tests.includes(fragment)) errors.push(`calibration export adversarial test missing ${fragment}`);
 }
 
