@@ -10,6 +10,7 @@ const launch=JSON.parse(fs.readFileSync('data/release/public-launch-gate-v0.1-de
 const activation=JSON.parse(fs.readFileSync('data/release/production-model-activation-gate-v0.1-dev.json','utf8'));
 const evidence=JSON.parse(fs.readFileSync('data/release/production-evidence-registry-v0.1-dev.json','utf8'));
 const illustrations=JSON.parse(fs.readFileSync('data/illustration/v0.1-dev/asset-production-registry.json','utf8'));
+const editorialReview=JSON.parse(fs.readFileSync('data/type-catalog/v0.1-dev/editorial-review-ledger.ja.json','utf8'));
 const requirements=fs.readFileSync('REQUIREMENTS.md','utf8');
 
 const sha=(bytes)=>crypto.createHash('sha256').update(bytes).digest('hex');
@@ -35,6 +36,18 @@ if (!/^[a-f0-9]{40}$/i.test(sourceCommit)) throw new Error('release evidence sou
 const requirementsVersion=requirements.match(/^> Version:\s*([^\s]+)$/m)?.[1];
 if (!requirementsVersion) throw new Error('REQUIREMENTS version missing');
 
+const requirementLines=requirements.split('\n');
+const masterChecked=(id)=>{
+  const line=requirementLines.find((value)=>value.includes(`**${id}**`));
+  return Boolean(line?.startsWith('- [x]'));
+};
+const phaseChecked=(label)=>{
+  const line=requirementLines.find((value)=>value.startsWith('- [')&&value.includes(label));
+  return Boolean(line?.startsWith('- [x]'));
+};
+const incompleteMasterRequirements=launch.required_master_requirements.filter((id)=>!masterChecked(id));
+const incompletePhaseGates=launch.required_phase_gates.filter((label)=>!phaseChecked(label));
+
 const illustrationProductionCounts=Object.fromEntries(
   contract.status
     ? ['unproduced','draft','review-required','approved','rejected','superseded'].map((status)=>[
@@ -58,6 +71,17 @@ const pack={
   public_launch_ready:launch.public_launch_ready,
   production_activation_allowed:activation.production_activation_allowed,
   pending_production_evidence:evidence.entries.filter((entry)=>entry.status!=='complete').map((entry)=>entry.evidence_id),
+  incomplete_master_requirements:incompleteMasterRequirements,
+  incomplete_phase_gates:incompletePhaseGates,
+  canonical_evidence_status_counts:{
+    pending:evidence.entries.filter((entry)=>entry.status==='pending').length,
+    complete:evidence.entries.filter((entry)=>entry.status==='complete').length
+  },
+  editorial_review_counts:{
+    pending:editorialReview.entries.filter((entry)=>entry.status==='pending').length,
+    approved:editorialReview.entries.filter((entry)=>entry.status==='approved').length,
+    changes_required:editorialReview.entries.filter((entry)=>entry.status==='changes-required').length
+  },
   illustration_production_counts:illustrationProductionCounts,
   identity_files:identityFiles,
   migration_set:{
