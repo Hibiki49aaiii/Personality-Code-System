@@ -324,12 +324,20 @@ Calibration export is intentionally not implemented before consent/governance pr
 
 ## Phase 5 — Closed beta and calibration
 
-### 5A Closed beta — PENDING
+### 5A Closed beta — PRE-COLLECTION FOUNDATION COMPLETE / COLLECTION PENDING
+- [x] versioned draft calibration purpose/consent identity exists separately from ordinary product analytics;
+- [x] separate consent receipt persistence binds exact session model/locale and supports withdrawal + owner-session deletion;
+- [x] normal runtime role has zero access to consent receipt storage before activation;
+- [x] machine prerequisite-status ledger keeps collection/export/public validation claims fail-closed;
+- [ ] final consent text/legal/privacy approval;
+- [ ] calibration retention/deletion policy and operator authorization/audit;
+- [ ] pre-registered sample/analysis plan and frozen wave version scope;
 - [ ] varied beta sample;
-- [ ] completion/drop-off measurement;
-- [ ] privacy/consent basis for calibration evidence;
+- [ ] completion/drop-off measurement for the consented beta wave;
 - [ ] retest subset;
 - [ ] ambiguity feedback.
+
+No checked item above means calibration data are being collected. There is still no runtime calibration API/export job or answer-level calibration dataset.
 
 ### 5B Statistical review — PENDING
 - [ ] item distributions;
