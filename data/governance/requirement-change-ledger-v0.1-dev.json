@@ -394,6 +394,38 @@
         "threat-model external evidence bindings",
         "public launch remains fail-closed"
       ]
+    },
+    {
+      "change_id": "2026-08-29-calibration-consent-storage-foundation",
+      "date": "2026-08-29",
+      "requirements_version_after": "0.11.7",
+      "affected_requirement_ids": [
+        "PCS-ANA-003",
+        "PCS-LEGAL-001",
+        "PCS-QA-007"
+      ],
+      "change": "Add a separate versioned calibration consent-purpose contract and consent receipt persistence while keeping runtime collection/export disabled and denying the normal runtime DB role all consent-table privileges.",
+      "rationale": "Advance closed-beta research governance without turning ordinary diagnosis/product analytics into psychometric research data or silently collecting answer-level calibration data.",
+      "impacted_files": [
+        "data/calibration/consent-purpose-v0.1-dev.json",
+        "data/calibration/beta-protocol-v0.1-dev.json",
+        "drizzle/0008_calibration_consent_receipts.sql",
+        "src/infrastructure/persistence/calibrationSchema.ts",
+        "data/privacy/data-inventory-v0.1-dev.json",
+        "data/security/database-role-policy-v0.1-dev.json",
+        "tests/infrastructure/calibration-consent-persistence.integration.mjs"
+      ],
+      "assessment_model_impact": "none-current-assessment-dev-v0.3-remains-beta-and-collection-disabled",
+      "code_schema_impact": "none-C01D-remains-public_use_false",
+      "content_impact": "legal-and-research-disclosure-draft-only-no-result-content-change",
+      "data_migration_impact": "0008-calibration-consent-receipts-additive-table-with-session-cascade-and-withdrawal-guard",
+      "compatibility_impact": "no-current-runtime-collection-surface; future activation requires explicit DB-role/API/policy version change",
+      "evidence": [
+        "calibration protocol validator",
+        "PostgreSQL calibration consent persistence integration",
+        "database least-privilege integration proving zero runtime table access",
+        "owner deletion integration proving receipt cascade"
+      ]
     }
   ]
 }
