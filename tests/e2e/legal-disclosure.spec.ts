@@ -12,6 +12,7 @@ test('pre-launch legal/privacy drafts are reachable, explicit and non-indexable'
   await expect(page.getByText(/匿名診断データの自己削除/)).toBeVisible();
   await expect(page.getByText(/放棄session 30日、completed raw answers 90日/)).toBeVisible();
   await expect(page.getByText(/production証拠は未完/)).toBeVisible();
+  await expect(page.getByText(/consent receipt.*runtime role/s)).toBeVisible();
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/i);
 
   await page.getByRole('link', { name: '利用条件・診断上の制約ドラフト →' }).click();
