@@ -43,6 +43,10 @@ for (const table of inventoriedTables) {
   if (!actualTables.includes(table)) errors.push(`privacy inventory references unknown database table: ${table}`);
 }
 
+const calibrationClass = inventory.classes.find((entry) => entry.id === 'calibration-consent-receipts');
+if (!calibrationClass) errors.push('calibration consent privacy class missing');
+else if (calibrationClass.collection_enabled !== false) errors.push('calibration consent collection must remain disabled before activation');
+
 for (const entry of inventory.classes ?? []) {
   if (!entry.id || !entry.purpose || !entry.retention) {
     errors.push(`privacy class is missing id/purpose/retention: ${JSON.stringify(entry)}`);
