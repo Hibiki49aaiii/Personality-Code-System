@@ -222,6 +222,38 @@
         "PNG/WebP/SVG metadata parser tests",
         "all 64 current slots explicitly unproduced"
       ]
+    },
+    {
+      "change_id": "2026-08-28-production-evidence-registry",
+      "date": "2026-08-28",
+      "requirements_version_after": "0.11.7",
+      "affected_requirement_ids": [
+        "PCS-OPS-005",
+        "PCS-OPS-006",
+        "PCS-QA-005",
+        "PCS-QA-007",
+        "PCS-PERF-001",
+        "PCS-LEGAL-001"
+      ],
+      "change": "Introduce a canonical 16-record production evidence registry that exactly binds every public-launch and production-model activation external/manual evidence key.",
+      "rationale": "Prevent release gate status from advancing through unsupported pending-to-complete string edits without inspectable evidence metadata.",
+      "impacted_files": [
+        "data/release/production-evidence-registry-v0.1-dev.json",
+        "scripts/validate-production-evidence-registry.mjs",
+        "docs/operations/PRODUCTION_EVIDENCE_REGISTRY_v0.1.md",
+        ".github/workflows/ci.yml"
+      ],
+      "assessment_model_impact": "none-current-candidate-remains-assessment-dev-v0.3",
+      "code_schema_impact": "none-C01D-remains-public_use_false",
+      "content_impact": "none",
+      "data_migration_impact": "none",
+      "compatibility_impact": "future-release-evidence-completion-now-requires-canonical-inspectable-record",
+      "evidence": [
+        "production evidence registry validator",
+        "exact public-launch key coverage",
+        "exact production-activation key coverage",
+        "all current canonical evidence explicitly pending"
+      ]
     }
   ]
 }
