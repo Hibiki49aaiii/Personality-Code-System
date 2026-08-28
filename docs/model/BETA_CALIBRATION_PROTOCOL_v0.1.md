@@ -26,6 +26,20 @@ Phase 5A collection cannot start until all of the following exist and are review
 
 Until then, `collection_enabled=false` and `export_enabled=false` are machine-enforced.
 
+### Consent persistence foundation
+
+The repository now contains a **storage-only** consent receipt foundation without activating collection:
+
+- `data/calibration/consent-purpose-v0.1-dev.json` defines one versioned draft purpose/consent identity and explicitly keeps legal/collection/export authorization false;
+- `calibration_consent_receipts` stores only purpose/version/model/locale/status/timestamps, not answer-level calibration data;
+- the receipt is bound by PostgreSQL trigger to the owning session's exact model + locale;
+- receipt identity is immutable; the only supported update is `granted -> withdrawn`;
+- owner-session deletion cascades the receipt;
+- the normal application runtime database role has **zero SELECT/INSERT/UPDATE/DELETE privileges** on the table before activation;
+- no `/api/calibration` runtime route and no calibration export job exist.
+
+This completes engineering groundwork for a future explicit consent state while deliberately refusing to collect anything yet.
+
 ## Version scope
 
 Every beta wave must identify the exact:
