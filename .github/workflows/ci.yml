@@ -200,7 +200,7 @@ jobs:
         run: npm run evidence:release-candidate
 
       - name: Upload release candidate evidence pack
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: pcs-release-evidence-${{ github.sha }}
           path: artifacts/release-evidence/release-candidate-evidence.json
