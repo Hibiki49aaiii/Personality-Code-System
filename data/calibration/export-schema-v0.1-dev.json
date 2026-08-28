@@ -1,0 +1,85 @@
+{
+  "export_schema_version": "calibration-export-record-v0.1-dev",
+  "status": "schema-only-runtime-export-disabled",
+  "runtime_export_enabled": false,
+  "third_party_auto_upload_allowed": false,
+  "consent_required": true,
+  "row_identity": "random-calibration-record-id-unrelated-to-session-or-share-capability",
+  "exact_scope_fields": [
+    "waveId",
+    "consentVersion",
+    "purposeId",
+    "assessmentModelVersion",
+    "itemBankVersion",
+    "scoringVersion",
+    "traitDictionaryVersion",
+    "locale"
+  ],
+  "row_fields": [
+    "schemaVersion",
+    "calibrationRecordId",
+    "waveId",
+    "consentVersion",
+    "purposeId",
+    "assessmentModelVersion",
+    "itemBankVersion",
+    "scoringVersion",
+    "traitDictionaryVersion",
+    "locale",
+    "responses"
+  ],
+  "response_fields": [
+    "itemId",
+    "itemRevision",
+    "value"
+  ],
+  "response_value_range": [
+    1,
+    5
+  ],
+  "max_responses_per_record": 500,
+  "retest_linkage_in_v0_1": false,
+  "demographic_fields_in_v0_1": false,
+  "timing_fields_in_v0_1": false,
+  "derived_scores_or_codes_in_v0_1": false,
+  "forbidden_fields": [
+    "sessionId",
+    "privateToken",
+    "accessToken",
+    "accessTokenHash",
+    "publicToken",
+    "publicTokenHash",
+    "ipAddress",
+    "preciseLocation",
+    "email",
+    "realName",
+    "traitScores",
+    "traitVector",
+    "coreCode",
+    "extendedCode",
+    "responseQuality",
+    "interactionActiveIds",
+    "resultProse",
+    "productAnalytics",
+    "operationalLogs",
+    "freeText",
+    "retestLinkId"
+  ],
+  "manifest_requirements": [
+    "exportSchemaVersion",
+    "waveId",
+    "consentVersion",
+    "purposeId",
+    "assessmentModelVersion",
+    "itemBankVersion",
+    "scoringVersion",
+    "traitDictionaryVersion",
+    "locale",
+    "rowCount"
+  ],
+  "notes": [
+    "This schema is an offline/domain contract only; it does not authorize or implement a runtime export endpoint/job.",
+    "Records may only be materialized after separate consent/legal/governance activation.",
+    "Retest linkage, demographics and timing require a new reviewed schema version instead of silent field expansion."
+  ]
+}
