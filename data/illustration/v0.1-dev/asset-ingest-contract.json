@@ -1,0 +1,86 @@
+{
+  "asset_ingest_contract_version": "illustration-asset-ingest-v0.1-dev",
+  "illustration_system_version": "illustration-system-v0.1-dev",
+  "brief_system_version": "illustration-brief-system-v0.1-dev",
+  "catalog_version": "type-catalog-v0.1-dev",
+  "code_schema_version": "core-code-v0.1-dev",
+  "status": "production-ingest-foundation",
+  "public_use": false,
+  "runtime_generation": false,
+  "allowed_statuses": [
+    "unproduced",
+    "draft",
+    "review-required",
+    "approved",
+    "rejected",
+    "superseded"
+  ],
+  "master": {
+    "required_for_statuses": [
+      "draft",
+      "review-required",
+      "approved",
+      "rejected",
+      "superseded"
+    ],
+    "path_prefix": "artwork/illustration/masters/",
+    "allowed_media_types": [
+      "image/png",
+      "image/webp",
+      "image/svg+xml"
+    ],
+    "raster_min_width": 1600,
+    "raster_min_height": 1600,
+    "sha256_pattern": "^[a-f0-9]{64}$",
+    "immutable_after_approval": true
+  },
+  "variants": {
+    "required_for_approved": [
+      "result-portrait",
+      "og-landscape",
+      "share-portrait"
+    ],
+    "path_prefix": "public/assets/illustration/",
+    "source_master_link_required": true,
+    "sha256_pattern": "^[a-f0-9]{64}$",
+    "targets": {
+      "result-portrait": {
+        "width": 960,
+        "height": 1200
+      },
+      "og-landscape": {
+        "width": 1200,
+        "height": 630
+      },
+      "share-portrait": {
+        "width": 1080,
+        "height": 1350
+      }
+    }
+  },
+  "provenance": {
+    "required_for_non_unproduced": true,
+    "production_methods": [
+      "hand-authored",
+      "commissioned",
+      "licensed-source",
+      "generative-development-curated"
+    ],
+    "required_fields": [
+      "production_method",
+      "creator_or_source",
+      "license_or_usage_basis",
+      "human_curated"
+    ],
+    "generative_development_requires_human_curated": true,
+    "production_runtime_generation_allowed": false
+  },
+  "approval": {
+    "required_for_approved": true,
+    "reviewer_required": true,
+    "reviewed_at_iso8601_required": true,
+    "all_brief_review_checks_required": true,
+    "owner_art_direction_approval_required_before_public_release": true,
+    "public_schema_required_before_public_release": true
+  }
+}

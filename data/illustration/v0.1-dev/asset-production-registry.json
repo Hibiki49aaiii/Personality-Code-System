@@ -1,0 +1,1868 @@
+{
+  "asset_registry_version": "illustration-asset-registry-v0.1-dev",
+  "asset_ingest_contract_version": "illustration-asset-ingest-v0.1-dev",
+  "illustration_system_version": "illustration-system-v0.1-dev",
+  "catalog_version": "type-catalog-v0.1-dev",
+  "code_schema_version": "core-code-v0.1-dev",
+  "status": "all-slots-unproduced",
+  "public_use": false,
+  "entry_count": 64,
+  "entries": [
+    {
+      "core_code": "LTGPFB",
+      "asset_id": "ILL-C01D-LTGPFB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "LTGPFD",
+      "asset_id": "ILL-C01D-LTGPFD-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "LTGPNB",
+      "asset_id": "ILL-C01D-LTGPNB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "LTGPND",
+      "asset_id": "ILL-C01D-LTGPND-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "LTGEFB",
+      "asset_id": "ILL-C01D-LTGEFB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "LTGEFD",
+      "asset_id": "ILL-C01D-LTGEFD-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "LTGENB",
+      "asset_id": "ILL-C01D-LTGENB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "LTGEND",
+      "asset_id": "ILL-C01D-LTGEND-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "LTAPFB",
+      "asset_id": "ILL-C01D-LTAPFB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "LTAPFD",
+      "asset_id": "ILL-C01D-LTAPFD-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "LTAPNB",
+      "asset_id": "ILL-C01D-LTAPNB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "LTAPND",
+      "asset_id": "ILL-C01D-LTAPND-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "LTAEFB",
+      "asset_id": "ILL-C01D-LTAEFB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "LTAEFD",
+      "asset_id": "ILL-C01D-LTAEFD-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "LTAENB",
+      "asset_id": "ILL-C01D-LTAENB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "LTAEND",
+      "asset_id": "ILL-C01D-LTAEND-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "LVGPFB",
+      "asset_id": "ILL-C01D-LVGPFB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "LVGPFD",
+      "asset_id": "ILL-C01D-LVGPFD-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "LVGPNB",
+      "asset_id": "ILL-C01D-LVGPNB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "LVGPND",
+      "asset_id": "ILL-C01D-LVGPND-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "LVGEFB",
+      "asset_id": "ILL-C01D-LVGEFB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "LVGEFD",
+      "asset_id": "ILL-C01D-LVGEFD-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "LVGENB",
+      "asset_id": "ILL-C01D-LVGENB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "LVGEND",
+      "asset_id": "ILL-C01D-LVGEND-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "LVAPFB",
+      "asset_id": "ILL-C01D-LVAPFB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "LVAPFD",
+      "asset_id": "ILL-C01D-LVAPFD-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "LVAPNB",
+      "asset_id": "ILL-C01D-LVAPNB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "LVAPND",
+      "asset_id": "ILL-C01D-LVAPND-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "LVAEFB",
+      "asset_id": "ILL-C01D-LVAEFB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "LVAEFD",
+      "asset_id": "ILL-C01D-LVAEFD-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "LVAENB",
+      "asset_id": "ILL-C01D-LVAENB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "LVAEND",
+      "asset_id": "ILL-C01D-LVAEND-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "STGPFB",
+      "asset_id": "ILL-C01D-STGPFB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "STGPFD",
+      "asset_id": "ILL-C01D-STGPFD-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "STGPNB",
+      "asset_id": "ILL-C01D-STGPNB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "STGPND",
+      "asset_id": "ILL-C01D-STGPND-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "STGEFB",
+      "asset_id": "ILL-C01D-STGEFB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "STGEFD",
+      "asset_id": "ILL-C01D-STGEFD-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "STGENB",
+      "asset_id": "ILL-C01D-STGENB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "STGEND",
+      "asset_id": "ILL-C01D-STGEND-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "STAPFB",
+      "asset_id": "ILL-C01D-STAPFB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "STAPFD",
+      "asset_id": "ILL-C01D-STAPFD-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "STAPNB",
+      "asset_id": "ILL-C01D-STAPNB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "STAPND",
+      "asset_id": "ILL-C01D-STAPND-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "STAEFB",
+      "asset_id": "ILL-C01D-STAEFB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "STAEFD",
+      "asset_id": "ILL-C01D-STAEFD-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "STAENB",
+      "asset_id": "ILL-C01D-STAENB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "STAEND",
+      "asset_id": "ILL-C01D-STAEND-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "SVGPFB",
+      "asset_id": "ILL-C01D-SVGPFB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "SVGPFD",
+      "asset_id": "ILL-C01D-SVGPFD-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "SVGPNB",
+      "asset_id": "ILL-C01D-SVGPNB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "SVGPND",
+      "asset_id": "ILL-C01D-SVGPND-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "SVGEFB",
+      "asset_id": "ILL-C01D-SVGEFB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "SVGEFD",
+      "asset_id": "ILL-C01D-SVGEFD-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "SVGENB",
+      "asset_id": "ILL-C01D-SVGENB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "SVGEND",
+      "asset_id": "ILL-C01D-SVGEND-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "SVAPFB",
+      "asset_id": "ILL-C01D-SVAPFB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "SVAPFD",
+      "asset_id": "ILL-C01D-SVAPFD-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "SVAPNB",
+      "asset_id": "ILL-C01D-SVAPNB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "SVAPND",
+      "asset_id": "ILL-C01D-SVAPND-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "SVAEFB",
+      "asset_id": "ILL-C01D-SVAEFB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "SVAEFD",
+      "asset_id": "ILL-C01D-SVAEFD-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "SVAENB",
+      "asset_id": "ILL-C01D-SVAENB-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    },
+    {
+      "core_code": "SVAEND",
+      "asset_id": "ILL-C01D-SVAEND-HERO-v01",
+      "status": "unproduced",
+      "public_use": false,
+      "master": null,
+      "variants": {
+        "result-portrait": null,
+        "og-landscape": null,
+        "share-portrait": null
+      },
+      "provenance": null,
+      "approval": {
+        "reviewer": null,
+        "reviewed_at": null,
+        "checks": {
+          "motif-mapping": false,
+          "style-consistency": false,
+          "anatomy-geometry": false,
+          "no-prestige-hierarchy": false,
+          "no-diagnostic-stereotype": false,
+          "result-crop": false,
+          "og-crop": false,
+          "share-crop": false,
+          "license-source-provenance": false
+        },
+        "notes": null
+      }
+    }
+  ]
+}
