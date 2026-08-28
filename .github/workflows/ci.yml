@@ -142,6 +142,9 @@ jobs:
       - name: Validate security threat model and evidence bindings
         run: npm run validate:threat-model
 
+      - name: Validate CodeQL workflow contract
+        run: npm run validate:codeql
+
       - name: Validate manual accessibility release review remains fail-closed
         run: npm run validate:a11y-release
 
