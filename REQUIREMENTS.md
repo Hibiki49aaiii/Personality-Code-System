@@ -2,7 +2,7 @@
 
 > Status: authoritative development contract
 > Version: 0.11.7
-> Last updated: 2026-08-28
+> Last updated: 2026-08-29
 
 This file is the single top-level source of truth for PCS scope and delivery status. Detailed requirements live under `docs/requirements/`.
 
@@ -184,7 +184,7 @@ Detailed requirements: [`docs/requirements/08_PRIVACY_SECURITY.md`](docs/require
 - [x] **PCS-SOC-003** Correct Open Graph metadata/card for shareable result pages. *(Development fallback OG card is deterministic, versioned, sanitized and linked through dynamic share-page metadata; final curated illustration treatment remains PCS-SOC-001/Phase 3B.)*
 - [x] **PCS-ANA-001** Funnel analytics tracks start/progression/completion/result/share without exporting raw answers. *(First-party event dictionary + server-derived session metadata + client network/DB E2E verified in CI Run 238 / `33036549731`; answer interactions contain position/state only.)*
 - [ ] **PCS-ANA-002** Observed type distributions labeled by model/sample/time/scope. *(Aggregation foundation plus a fail-closed publication policy now require a `published` model, `public_use=true` code schema, minimum scope sample, minimum per-code cell count, one-decimal display, exact model/locale/time/sample wording, and `populationClaimAllowed=false`. Current C01D therefore cannot publish a rarity/distribution statistic; final production public model/data evidence remains required.)*
-- [ ] **PCS-ANA-003** Privacy-preserving calibration-data export path exists. *(Design gate is documented; implementation is intentionally blocked until explicit calibration consent/governance exists.)*
+- [ ] **PCS-ANA-003** Privacy-preserving calibration-data export path exists. *(Pre-collection engineering now includes a separate versioned consent-purpose contract and `calibration_consent_receipts` persistence with exact session model/locale binding, immutable identity, withdrawal-only mutation and owner-deletion cascade. The normal runtime DB role has zero access, no `/api/calibration` route/export job/answer-level calibration dataset exists, and consent/legal/retention/operator/sample-plan/version-scope/environment prerequisites remain open; export therefore stays intentionally disabled.)*
 
 Detailed requirements: [`docs/requirements/09_SOCIAL_SHARING_AND_ANALYTICS.md`](docs/requirements/09_SOCIAL_SHARING_AND_ANALYTICS.md)
 
@@ -227,7 +227,7 @@ Detailed requirements: [`docs/requirements/11_RELEASE_OPERATIONS.md`](docs/requi
 - [ ] Phase 3B — illustrations. *(ACTIVE: slot grammar, 64 production briefs, production registry, provenance/hash/dimension/variant lineage and approval validation are implemented; real curated hero production/art-direction approval remain.)*
 - [x] Phase 4A — social sharing/OG. *(Development implementation complete: explicit sanitized sharing/revocation, X/LINE/Web Share/copy, deterministic OG/portrait images, immutable result→share artwork lineage, and a curated versioned fallback asset. Final type-specific artwork/public taxonomy remain Phase 3A/3B gates rather than sharing-engine blockers.)*
 - [ ] Phase 4B — analytics/monitoring. *(ACTIVE: privacy-bounded funnel telemetry, scoped observed-distribution, analytics/rate-limit cleanup, executable 30/90/180-day diagnostic retention with dry-run+integration proof, fixed-category error telemetry, bucket-only Web Vitals, DB readiness and observability contracts are verified; deployed scheduling/environment separation/independent alerting and consented calibration export remain.)*
-- [ ] Phase 5A — closed beta/calibration collection.
+- [ ] Phase 5A — closed beta/calibration collection. *(PLANNING FOUNDATION: consent receipt persistence and exact prerequisite-status ledger now exist while runtime collection/export remain disabled; actual approved consent, sample plan, closed-beta participants, retest cohort and ambiguity feedback remain uncollected.)*
 - [ ] Phase 5B — statistical review/pruning/retest.
 - [ ] Phase 5C — production assessment/public code model v1.0 freeze.
 - [ ] Phase 6 — public web launch.
