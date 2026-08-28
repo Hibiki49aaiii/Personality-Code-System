@@ -4,12 +4,14 @@ import * as assessmentSchema from './schema';
 import * as sharingSchema from './sharingSchema';
 import * as analyticsSchema from './analyticsSchema';
 import * as securitySchema from './securitySchema';
+import * as calibrationSchema from './calibrationSchema';
 
 const schema = {
   ...assessmentSchema,
   ...sharingSchema,
   ...analyticsSchema,
-  ...securitySchema
+  ...securitySchema,
+  ...calibrationSchema
 };
 
 export type PcsDatabase = PostgresJsDatabase<typeof schema>;
