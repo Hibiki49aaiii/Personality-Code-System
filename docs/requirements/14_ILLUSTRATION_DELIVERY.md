@@ -150,12 +150,14 @@ The chosen approach must have a regression test proving that publishing a newer 
 
 ## 9. Current state
 
-Current repository state intentionally satisfies only the **engineering slot foundation**:
+Current repository state now includes both the **engineering slot/brief foundation** and a fail-closed **production ingest registry**:
 
-- `data/illustration/v0.1-dev/system.json` defines the grammar;
-- `scripts/materialize-illustration-slots.mjs` generates the 64 slots;
-- `scripts/validate-illustration-slots.mjs` verifies mappings;
-- all slots are `unproduced` and contain no master or web-variant path;
-- no released web page depends on an image-generation runtime.
+- `data/illustration/v0.1-dev/system.json` defines the 64-slot grammar;
+- `scripts/materialize-illustration-slots.mjs` and `materialize-illustration-briefs.mjs` generate the slot/brief contracts;
+- `data/illustration/v0.1-dev/asset-ingest-contract.json` defines master/variant/provenance/approval requirements;
+- `data/illustration/v0.1-dev/asset-production-registry.json` tracks all 64 exact asset IDs;
+- `scripts/validate-illustration-asset-registry.mjs` rejects missing bytes, digest/path/dimension/provenance/review drift once an entry leaves `unproduced`;
+- all 64 type-specific slots are still deliberately `unproduced`;
+- current runtime continues to use only the separate versioned development fallback; no released web page depends on an image-generation runtime.
 
-Therefore Phase 3B overall remains **in progress**, not complete.
+Therefore Phase 3B production mechanics are substantially prepared, but **PCS-ART-002 remains open until real curated hero assets exist and are reviewed**.
