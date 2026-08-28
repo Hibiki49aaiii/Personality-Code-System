@@ -38,7 +38,7 @@ for (const fragment of [
   '診断を完了しただけでは結果は公開されません',
   '第三者analyticsへの診断データexportは標準で無効',
   '匿名診断データの自己削除を実行できます',
-  'calibration exportは、明示的な参加/同意',
+  '回答レベルのcalibration collection/exportは',
   'consent receipt保存構造',
   '法的助言または公開可能な最終約款を意味しません'
 ]) {
