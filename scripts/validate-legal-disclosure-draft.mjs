@@ -6,6 +6,7 @@ const analytics=JSON.parse(fs.readFileSync('data/analytics/retention-policy-v0.1
 const retention=fs.readFileSync('docs/model/PERSISTENCE_RETENTION_BASELINE_v0.1.md','utf8');
 const draft=fs.readFileSync('docs/legal/PUBLIC_LEGAL_DISCLOSURE_DRAFT_v0.1.md','utf8');
 const deletion=JSON.parse(fs.readFileSync('data/privacy/user-deletion-v0.1-dev.json','utf8'));
+const calibrationConsent=JSON.parse(fs.readFileSync('data/calibration/consent-purpose-v0.1-dev.json','utf8'));
 const deletionRoute=fs.readFileSync('src/app/api/assessment/data/route.ts','utf8');
 const privacyPage=fs.readFileSync('src/app/privacy/page.tsx','utf8');
 const termsPage=fs.readFileSync('src/app/terms/page.tsx','utf8');
@@ -23,6 +24,9 @@ if (contract.current_engineering_retention.product_events_session_bound_days !==
 if (contract.anonymous_diagnostic_self_deletion_available !== true) errors.push('legal contract must disclose implemented anonymous self-deletion');
 if (contract.anonymous_diagnostic_self_deletion_authentication !== deletion.ownership) errors.push('self-deletion ownership disclosure drift');
 if (contract.anonymous_diagnostic_self_deletion_clears_cookie !== deletion.cookie_cleared_on_success) errors.push('self-deletion cookie-clearing disclosure drift');
+if (!contract.anonymous_diagnostic_self_deletion_scope.includes('calibration-consent-receipts-if-present')) errors.push('legal deletion scope must include calibration consent receipt if present');
+if (calibrationConsent.legal_approved !== false || calibrationConsent.collection_authorized !== false || calibrationConsent.export_authorized !== false) errors.push('legal draft must not imply calibration authorization');
+if (calibrationConsent.current_runtime_collection_endpoint_exists !== false || calibrationConsent.current_runtime_export_job_exists !== false) errors.push('calibration runtime surface must remain absent');
 if (!deletionRoute.includes('deleteAnonymousAssessmentDataByToken')) errors.push('self-deletion route implementation missing');
 
 for (const [days,label] of [[30,'30 days'],[90,'90 days'],[180,'180 days']]) {
@@ -35,6 +39,7 @@ for (const fragment of [
   '第三者analyticsへの診断データexportは標準で無効',
   '匿名診断データの自己削除を実行できます',
   'calibration exportは、明示的な参加/同意',
+  'consent receipt保存構造',
   '法的助言または公開可能な最終約款を意味しません'
 ]) {
   if (!draft.includes(fragment)) errors.push(`legal draft missing required boundary: ${fragment}`);
@@ -42,7 +47,7 @@ for (const fragment of [
 
 if (JSON.stringify(contract.prelaunch_draft_routes_available)!==JSON.stringify(['/privacy','/terms'])) errors.push('prelaunch legal draft route contract drift');
 if (contract.prelaunch_draft_routes_noindex_required !== true) errors.push('prelaunch legal draft routes must remain noindex');
-for (const fragment of ['PRE-LAUNCH DRAFT','匿名診断データの自己削除','30日','90日','180日','production証拠は未完']) if (!privacyPage.includes(fragment)) errors.push(`privacy draft page missing ${fragment}`);
+for (const fragment of ['PRE-LAUNCH DRAFT','匿名診断データの自己削除','30日','90日','180日','production証拠は未完','consent receipt','runtime role']) if (!privacyPage.includes(fragment)) errors.push(`privacy draft page missing ${fragment}`);
 for (const fragment of ['PRE-LAUNCH DRAFT','医療・臨床診断ではありません','public_use=false','64種類の自然な人格類型が実証されたという意味ではありません']) if (!termsPage.includes(fragment)) errors.push(`terms/limitations draft page missing ${fragment}`);
 if (!privacyPage.includes('robots: { index: false, follow: false, nocache: true }') || !termsPage.includes('robots: { index: false, follow: false, nocache: true }')) errors.push('prelaunch legal draft routes must explicitly noindex');
 if (!landing.includes('href="/privacy"') || !landing.includes('href="/terms"')) errors.push('landing must expose legal/privacy draft routes');
