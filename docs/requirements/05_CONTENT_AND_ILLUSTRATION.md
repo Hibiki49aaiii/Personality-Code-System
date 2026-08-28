@@ -82,7 +82,7 @@ The visual family SHOULD feel authored and collectible, not like unrelated promp
 
 ## Asset production
 
-Current Phase 3B preparation additionally materializes 64 production briefs from the illustration slot grammar. The briefs freeze motif, style, crop, prohibited-trope, non-diagnostic representation, and review-check requirements while keeping every actual asset path/status unproduced. This is preparation evidence only and does not satisfy the hero-asset requirement.
+Current Phase 3B preparation additionally materializes 64 production briefs from the illustration slot grammar and a 64-entry production registry. The briefs freeze motif/style/crop/prohibited-trope/non-diagnostic representation/review requirements; `asset-production-registry.json` now makes master path, committed-byte SHA-256, dimensions, provenance, derived-variant lineage and human approval mandatory before a slot can become approved. Every actual C01D type asset remains unproduced, so this still does not satisfy the hero-asset requirement.
 
 - **PCS-ART-010** One approved hero illustration per published Core Type.
 - **PCS-ART-011** Source/master asset retained outside runtime optimization pipeline where practical.
