@@ -189,3 +189,60 @@ export function buildCalibrationExportManifestV01(
     rowCount: records.length
   };
 }
+
+export interface CalibrationExpectedItemV01 {
+  itemId: string;
+  itemRevision: string;
+  required: boolean;
+}
+
+export function validateCalibrationRecordAgainstExpectedItemsV01(
+  value: unknown,
+  expectedItems: readonly CalibrationExpectedItemV01[]
+): CalibrationExportRecordV01 {
+  const record = validateCalibrationExportRecordV01(value);
+
+  if (expectedItems.length === 0) {
+    throw new CalibrationExportRecordValidationError(
+      'EMPTY_EXPECTED_ITEM_SET',
+      'wave/model expected item set must not be empty'
+    );
+  }
+
+  const expected = new Map<string, CalibrationExpectedItemV01>();
+  for (const item of expectedItems) {
+    const itemId = requireIdentifier(item.itemId, 'expectedItems.itemId');
+    const itemRevision = requireIdentifier(item.itemRevision, 'expectedItems.itemRevision');
+    const identity = `${itemId}@@${itemRevision}`;
+    if (expected.has(identity)) {
+      throw new CalibrationExportRecordValidationError(
+        'DUPLICATE_EXPECTED_ITEM',
+        `duplicate expected item/revision ${identity}`
+      );
+    }
+    expected.set(identity, { itemId, itemRevision, required: item.required === true });
+  }
+
+  const observed = new Set<string>();
+  for (const response of record.responses) {
+    const identity = `${response.itemId}@@${response.itemRevision}`;
+    if (!expected.has(identity)) {
+      throw new CalibrationExportRecordValidationError(
+        'OFF_MODEL_RESPONSE',
+        `response ${identity} is not part of the frozen wave/model item set`
+      );
+    }
+    observed.add(identity);
+  }
+
+  for (const [identity,item] of expected) {
+    if (item.required && !observed.has(identity)) {
+      throw new CalibrationExportRecordValidationError(
+        'MISSING_REQUIRED_RESPONSE',
+        `required wave/model response missing for ${identity}`
+      );
+    }
+  }
+
+  return record;
+}
