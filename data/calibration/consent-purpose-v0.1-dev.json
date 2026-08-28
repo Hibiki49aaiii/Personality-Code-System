@@ -1,0 +1,47 @@
+{
+  "consent_contract_version": "calibration-consent-contract-v0.1-dev",
+  "consent_version": "calibration-consent-ja-v0.1-dev",
+  "purpose_id": "psychometric-calibration-v0.1",
+  "locale": "ja-JP",
+  "status": "draft-review-only",
+  "legal_approved": false,
+  "collection_authorized": false,
+  "export_authorized": false,
+  "ordinary_product_analytics_is_consent": false,
+  "affirmative_action_required": true,
+  "separate_receipt_required": true,
+  "withdrawal_supported": true,
+  "current_runtime_collection_endpoint_exists": false,
+  "current_runtime_export_job_exists": false,
+  "draft_disclosure": {
+    "purpose": "PCSの項目・Trait構造・再検査安定性などを閉鎖betaで検討するための心理測定calibration研究。",
+    "optionality": "通常の診断利用とは別の任意参加であり、参加しなくても通常診断の利用可否や結果内容を変えない。",
+    "candidate_data_classes": [
+      "item-response-values",
+      "exact-assessment-item-scoring-version-scope",
+      "purpose-specific-retest-linkage-when-separately-enabled"
+    ],
+    "excluded_by_default": [
+      "private-session-bearer-or-hash",
+      "public-share-token-or-hash",
+      "ip-address",
+      "precise-location",
+      "email-or-real-name",
+      "ordinary-product-analytics-history",
+      "result-prose",
+      "operational-logs",
+      "free-text"
+    ],
+    "retention": "pending-final-legal-and-beta-protocol-approval",
+    "withdrawal": "withdrawal mechanics and deletion/re-generation obligations must be frozen before collection starts"
+  },
+  "activation_blockers": [
+    "final-consent-copy-review",
+    "legal-privacy-approval",
+    "calibration-retention-deletion-policy",
+    "operator-authorization-audit",
+    "pre-registered-sample-plan",
+    "frozen-analysis-version-scope",
+    "production-environment-separation"
+  ]
+}
