@@ -195,6 +195,33 @@
         "legal-disclosure Chromium E2E",
         "controlled visual baseline refresh"
       ]
+    },
+    {
+      "change_id": "2026-08-28-illustration-production-registry",
+      "date": "2026-08-28",
+      "requirements_version_after": "0.11.7",
+      "affected_requirement_ids": [
+        "PCS-ART-002"
+      ],
+      "change": "Add a 64-slot production asset registry and ingest validator requiring committed byte identity, real image dimensions, provenance, deterministic variant lineage and human approval checks before a type hero can be approved.",
+      "rationale": "Turn illustration production from a brief-only process into an auditable asset lifecycle without pretending unproduced C01D heroes exist.",
+      "impacted_files": [
+        "data/illustration/v0.1-dev/asset-ingest-contract.json",
+        "data/illustration/v0.1-dev/asset-production-registry.json",
+        "scripts/validate-illustration-asset-registry.mjs",
+        "scripts/lib/image-metadata.mjs",
+        "tests/infrastructure/image-metadata.test.mjs"
+      ],
+      "assessment_model_impact": "none",
+      "code_schema_impact": "none-C01D-remains-public_use_false",
+      "content_impact": "none",
+      "data_migration_impact": "none",
+      "compatibility_impact": "future-approved-art-must-use-versioned-committed-byte-contract",
+      "evidence": [
+        "illustration asset registry validator",
+        "PNG/WebP/SVG metadata parser tests",
+        "all 64 current slots explicitly unproduced"
+      ]
     }
   ]
 }
