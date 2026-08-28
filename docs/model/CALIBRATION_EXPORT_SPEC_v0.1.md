@@ -26,6 +26,8 @@ No calibration export may execute until all of these exist:
 
 Until then, the correct runtime behavior is: **no calibration export endpoint/job exists**.
 
+Consent receipt infrastructure now exists separately from answer-level research data, but that does not satisfy the activation prerequisites by itself. The runtime role is intentionally denied all access to `calibration_consent_receipts`, the consent copy remains draft/not legally approved, and no answer-level calibration table/export path has been added.
+
 ## Candidate export fields after activation
 
 A future version MAY include only consented records and fields such as:
