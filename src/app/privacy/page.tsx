@@ -85,7 +85,7 @@ export default function PrivacyDraftPage() {
         <section className={styles.section}>
           <h2>07 — Calibration</h2>
           <div className={styles.body}>
-            <p>通常のproduct analyticsを心理測定のcalibration datasetとして流用しません。calibration collection/exportは明示的同意、目的、環境分離、retention、operator authorization等が確定するまで無効です。</p>
+            <p>通常のproduct analyticsを心理測定のcalibration datasetとして流用しません。将来の明示的参加を通常診断と分離するため、purpose/version付きconsent receiptの保存構造だけは用意していますが、現在のruntime roleにはそのtableへのアクセス権がなく、collection/export endpoint・jobも存在しません。calibration collection/exportは法務承認、最終同意文、retention、operator authorization、sample plan、version scope、環境分離等が確定するまで無効です。</p>
           </div>
         </section>
 
