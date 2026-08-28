@@ -126,3 +126,66 @@ export function validateCalibrationExportRecordV01(value: unknown): CalibrationE
     responses
   };
 }
+
+export interface CalibrationExportManifestV01 {
+  exportSchemaVersion: typeof CALIBRATION_EXPORT_SCHEMA_VERSION;
+  waveId: string;
+  consentVersion: string;
+  purposeId: string;
+  assessmentModelVersion: string;
+  itemBankVersion: string;
+  scoringVersion: string;
+  traitDictionaryVersion: string;
+  locale: string;
+  rowCount: number;
+}
+
+const EXPORT_SCOPE_KEYS = [
+  'waveId',
+  'consentVersion',
+  'purposeId',
+  'assessmentModelVersion',
+  'itemBankVersion',
+  'scoringVersion',
+  'traitDictionaryVersion',
+  'locale'
+] as const;
+
+export function buildCalibrationExportManifestV01(
+  values: readonly unknown[]
+): CalibrationExportManifestV01 {
+  if (values.length === 0) {
+    throw new CalibrationExportRecordValidationError(
+      'EMPTY_EXPORT',
+      'calibration export manifest requires at least one validated record'
+    );
+  }
+
+  const records = values.map((value) => validateCalibrationExportRecordV01(value));
+  const first = records[0];
+
+  for (let index = 1; index < records.length; index += 1) {
+    const record = records[index];
+    for (const key of EXPORT_SCOPE_KEYS) {
+      if (record[key] !== first[key]) {
+        throw new CalibrationExportRecordValidationError(
+          'MIXED_EXPORT_SCOPE',
+          `record ${index} differs on export scope field ${key}`
+        );
+      }
+    }
+  }
+
+  return {
+    exportSchemaVersion: CALIBRATION_EXPORT_SCHEMA_VERSION,
+    waveId: first.waveId,
+    consentVersion: first.consentVersion,
+    purposeId: first.purposeId,
+    assessmentModelVersion: first.assessmentModelVersion,
+    itemBankVersion: first.itemBankVersion,
+    scoringVersion: first.scoringVersion,
+    traitDictionaryVersion: first.traitDictionaryVersion,
+    locale: first.locale,
+    rowCount: records.length
+  };
+}
