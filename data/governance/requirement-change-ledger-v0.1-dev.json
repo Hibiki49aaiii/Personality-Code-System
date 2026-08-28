@@ -426,6 +426,35 @@
         "database least-privilege integration proving zero runtime table access",
         "owner deletion integration proving receipt cascade"
       ]
+    },
+    {
+      "change_id": "2026-08-29-calibration-offline-export-schema",
+      "date": "2026-08-29",
+      "requirements_version_after": "0.11.7",
+      "affected_requirement_ids": [
+        "PCS-ANA-003",
+        "PCS-QA-007"
+      ],
+      "change": "Add a strict offline calibration export record/manifest schema and pure-domain validator that rejects unknown/private fields and mixed model/wave scopes without creating any runtime export route or job.",
+      "rationale": "Freeze the minimum research-data shape before activation so future calibration cannot ad hoc export session capabilities, derived results, timing, demographics, linkage or analytics data.",
+      "impacted_files": [
+        "data/calibration/export-schema-v0.1-dev.json",
+        "src/domain/calibration/exportRecord.ts",
+        "tests/domain/calibration-export-record.test.ts",
+        "scripts/validate-calibration-export-schema.mjs",
+        "data/calibration/beta-protocol-v0.1-dev.json"
+      ],
+      "assessment_model_impact": "none-current-assessment-dev-v0.3-remains-beta-and-no-calibration-data-is-materialized",
+      "code_schema_impact": "none",
+      "content_impact": "none-diagnostic-result-content-unchanged",
+      "data_migration_impact": "none-export-schema-is-offline-domain-contract-only",
+      "compatibility_impact": "future-added-export-fields-require-new-reviewed-schema-version; no-runtime-surface-added",
+      "evidence": [
+        "calibration export schema validator",
+        "calibration export adversarial domain tests",
+        "mixed-scope manifest test",
+        "calibration protocol validator"
+      ]
     }
   ]
 }
