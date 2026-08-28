@@ -58,7 +58,9 @@
     "validate:change-ledger": "node scripts/validate-requirement-change-ledger.mjs",
     "validate:production-evidence": "node scripts/validate-production-evidence-registry.mjs",
     "probe:deployment": "node scripts/probe-deployment.mjs",
-    "test:deployment-probe": "node --test tests/infrastructure/deployment-probe.test.mjs"
+    "test:deployment-probe": "node --test tests/infrastructure/deployment-probe.test.mjs",
+    "validate:release-evidence": "node scripts/validate-release-evidence-pack.mjs",
+    "evidence:release-candidate": "node scripts/generate-release-evidence-pack.mjs"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",
