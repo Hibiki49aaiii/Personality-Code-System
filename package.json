@@ -56,7 +56,9 @@
     "test:backup-restore:integration": "node tests/infrastructure/backup-restore-rehearsal.integration.mjs",
     "validate:runtime-log-privacy": "node scripts/validate-runtime-log-privacy.mjs",
     "validate:change-ledger": "node scripts/validate-requirement-change-ledger.mjs",
-    "validate:production-evidence": "node scripts/validate-production-evidence-registry.mjs"
+    "validate:production-evidence": "node scripts/validate-production-evidence-registry.mjs",
+    "probe:deployment": "node scripts/probe-deployment.mjs",
+    "test:deployment-probe": "node --test tests/infrastructure/deployment-probe.test.mjs"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",
