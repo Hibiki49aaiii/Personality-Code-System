@@ -340,6 +340,32 @@
         "canonical production evidence ID cross-check",
         "QA-007 forced open while external review pending"
       ]
+    },
+    {
+      "change_id": "2026-08-28-codeql-security-scanning",
+      "date": "2026-08-28",
+      "requirements_version_after": "0.11.7",
+      "affected_requirement_ids": [
+        "PCS-QA-007",
+        "PCS-QA-001"
+      ],
+      "change": "Add GitHub CodeQL JavaScript/TypeScript security-extended analysis on main pushes, pull requests and weekly schedule, plus a normal-CI contract preventing silent workflow removal.",
+      "rationale": "Supplement project-specific security validators with independent static code analysis while keeping external security review as a separate unresolved gate.",
+      "impacted_files": [
+        ".github/workflows/codeql.yml",
+        "scripts/validate-codeql-workflow.mjs",
+        ".github/workflows/ci.yml"
+      ],
+      "assessment_model_impact": "none",
+      "code_schema_impact": "none",
+      "content_impact": "none",
+      "data_migration_impact": "none",
+      "compatibility_impact": "none-security-analysis-only",
+      "evidence": [
+        "CodeQL workflow",
+        "CodeQL workflow contract validator",
+        "security-extended query suite configuration"
+      ]
     }
   ]
 }
