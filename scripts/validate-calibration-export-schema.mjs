@@ -41,10 +41,13 @@ for (const fragment of [
   "entry.value as number) < 1",
   "entry.value as number) > 5",
   "UNKNOWN_FIELD",
-  "DUPLICATE_RESPONSE"
+  "DUPLICATE_RESPONSE",
+  "buildCalibrationExportManifestV01",
+  "MIXED_EXPORT_SCOPE",
+  "EMPTY_EXPORT"
 ]) if (!source.includes(fragment)) errors.push(`calibration export domain validator missing ${fragment}`);
 
-for (const fragment of ['sessionId','accessTokenHash','coreCode','retestLinkId','responseMs']) {
+for (const fragment of ['sessionId','accessTokenHash','coreCode','retestLinkId','responseMs','MIXED_EXPORT_SCOPE','rowCount: 2']) {
   if (!tests.includes(fragment)) errors.push(`calibration export adversarial test missing ${fragment}`);
 }
 
