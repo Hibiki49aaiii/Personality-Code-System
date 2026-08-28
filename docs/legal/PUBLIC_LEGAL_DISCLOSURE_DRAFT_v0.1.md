@@ -61,7 +61,7 @@ Web Vitalsは現在、LCP / INP / CLS / TTFB の種類と good / needs-improveme
 
 ## 8. Calibration / research use
 
-心理測定上のcalibrationは通常のproduct analyticsとは分離します。回答レベルのcalibration exportは、明示的な参加/同意、保存・削除方針、operator authorization、legal/privacy review等が成立するまで実装・有効化しない方針です。
+心理測定上のcalibrationは通常のproduct analyticsとは分離します。将来の参加状態を通常診断と分けるためのversion/purpose付きconsent receipt保存構造は用意されていますが、現在のapplication runtime roleはそのtableへアクセスできず、回答レベルのcalibration dataset、collection endpoint、export jobはいずれも存在しません。回答レベルのcalibration collection/exportは、最終同意文、明示的参加、保存・削除方針、operator authorization、sample/analysis plan、frozen version scope、legal/privacy review、実環境分離等が成立するまで有効化しない方針です。
 
 ## 9. 削除・失効
 
