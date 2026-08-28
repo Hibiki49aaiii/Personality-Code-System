@@ -242,3 +242,28 @@ test('core landing and assessment remain usable under 200% root text scaling', a
   await expect(page.getByText('QUESTION 002')).toBeVisible();
   await expectNoHorizontalOverflow(page);
 });
+
+
+test('pre-launch legal drafts remain readable, scalable and axe-clean', async ({ page }) => {
+  for (const route of ['/privacy', '/terms']) {
+    for (const viewport of [
+      { width: 320, height: 844 },
+      { width: 390, height: 844 },
+      { width: 1440, height: 900 }
+    ]) {
+      await page.setViewportSize(viewport);
+      await page.goto(route);
+      await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+      await expectNoHorizontalOverflow(page);
+    }
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(route);
+    await page.evaluate(() => {
+      document.documentElement.style.fontSize = '200%';
+    });
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+    await expectNoHorizontalOverflow(page);
+    await expectNoA11yViolations(page);
+  }
+});
