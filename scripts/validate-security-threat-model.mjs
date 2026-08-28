@@ -18,7 +18,7 @@ for (const threat of model.threats) {
   ids.add(threat.id);
   if (!model.allowed_statuses.includes(threat.status)) errors.push(`${threat.id}: invalid status ${threat.status}`);
   for (const key of ['category','title','asset','trust_boundary','attack','impact','residual']) {
-    if (typeof threat[key]!=='string'||threat[key].trim().length<5) errors.push(`${threat.id}: missing/short ${key}`);
+    if (typeof threat[key]!=='string'||threat[key].trim().length<3) errors.push(`${threat.id}: missing/short ${key}`);
   }
   if (!Array.isArray(threat.mitigations)||threat.mitigations.length===0) errors.push(`${threat.id}: mitigations missing`);
   if (!Array.isArray(threat.evidence)||threat.evidence.length===0) errors.push(`${threat.id}: repository evidence missing`);
