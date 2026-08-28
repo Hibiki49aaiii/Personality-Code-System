@@ -62,7 +62,8 @@
     "validate:release-evidence": "node scripts/validate-release-evidence-pack.mjs",
     "evidence:release-candidate": "node scripts/generate-release-evidence-pack.mjs",
     "validate:threat-model": "node scripts/validate-security-threat-model.mjs",
-    "validate:codeql": "node scripts/validate-codeql-workflow.mjs"
+    "validate:codeql": "node scripts/validate-codeql-workflow.mjs",
+    "test:calibration-consent:integration": "node tests/infrastructure/calibration-consent-persistence.integration.mjs"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",
