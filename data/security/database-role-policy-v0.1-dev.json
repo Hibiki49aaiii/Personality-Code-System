@@ -71,7 +71,8 @@
       "INSERT",
       "UPDATE",
       "DELETE"
-    ]
+    ],
+    "calibration_consent_receipts": []
   },
   "prohibited_runtime_capabilities": [
     "CREATE-on-public-schema",
@@ -81,7 +82,8 @@
     "CREATE-ROLE",
     "ALTER-ROLE",
     "CREATE-EXTENSION",
-    "WRITE-versioned-definition-tables"
+    "WRITE-versioned-definition-tables",
+    "WRITE-calibration-consent-before-activation"
   ],
   "ci_contract_tested": true,
   "production_role_evidence_complete": false,
@@ -91,5 +93,8 @@
     "production-runtime-grant-dump",
     "production-runtime-denied-ddl-proof",
     "credential-rotation-or-role-recreation-procedure"
+  ],
+  "runtime_no_access_tables": [
+    "calibration_consent_receipts"
   ]
 }
