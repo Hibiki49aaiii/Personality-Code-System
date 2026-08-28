@@ -64,5 +64,21 @@
     "overlap-discriminant-report",
     "item-change-ledger",
     "limitations-report"
-  ]
+  ],
+  "prerequisite_engineering_status": {
+    "explicit-calibration-consent-state": "foundation-ready-runtime-write-disabled",
+    "versioned-consent-purpose": "draft-contract-ready-not-approved",
+    "legal-privacy-approval": "pending-external",
+    "production-environment-separation": "pending-external",
+    "retention-deletion-policy": "pending-governance",
+    "operator-authorization-audit": "pending-governance",
+    "pre-registered-sample-plan": "pending-research-plan",
+    "frozen-analysis-version-scope": "pending-wave-definition"
+  },
+  "consent_storage_foundation": {
+    "table": "calibration_consent_receipts",
+    "runtime_role_access_allowed": false,
+    "owner_session_cascade_delete": true,
+    "answer_level_calibration_rows_exist": false
+  }
 }
