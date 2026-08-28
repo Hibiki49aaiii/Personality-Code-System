@@ -1,0 +1,400 @@
+{
+  "threat_model_version": "security-threat-model-v0.1-dev",
+  "status": "repository-threat-review-external-review-pending",
+  "scope": [
+    "anonymous-assessment",
+    "private-result",
+    "public-share",
+    "analytics",
+    "database",
+    "backup-restore",
+    "runtime-logging",
+    "release-deployment",
+    "illustration-and-ai-boundary"
+  ],
+  "methodology": "asset-and-trust-boundary-abuse-case-review",
+  "external_security_review_complete": false,
+  "allowed_statuses": [
+    "mitigated-repository",
+    "partial-external",
+    "deferred-fail-closed"
+  ],
+  "threat_count": 16,
+  "threats": [
+    {
+      "id": "TM-001",
+      "category": "capability-confidentiality",
+      "title": "Private assessment bearer capability leakage",
+      "asset": "private-session-capability",
+      "trust_boundary": "browser-to-server",
+      "attack": "Capability appears in URL, client-readable storage, logs, analytics, or public share output.",
+      "impact": "Unauthorized access to private diagnostic result or destructive owner actions.",
+      "status": "mitigated-repository",
+      "mitigations": [
+        "HttpOnly SameSite cookie transport",
+        "SHA-256 hash-only DB token storage",
+        "private token absent from URLs/public snapshots",
+        "fixed-schema runtime logging",
+        "client artifact/privacy validators"
+      ],
+      "evidence": [
+        "session-token tests",
+        "private-result fresh-browser isolation E2E",
+        "runtime log privacy validator",
+        "production client artifact audit"
+      ],
+      "residual": "Browser/device compromise remains outside application guarantees.",
+      "external_evidence_ids": []
+    },
+    {
+      "id": "TM-002",
+      "category": "capability-guessing",
+      "title": "Public share capability enumeration",
+      "asset": "sanitized-public-share",
+      "trust_boundary": "public-internet-to-share-route",
+      "attack": "Attacker guesses or enumerates public share URLs.",
+      "impact": "Unauthorized discovery of intentionally shared but capability-scoped result pages.",
+      "status": "mitigated-repository",
+      "mitigations": [
+        "256-bit opaque public token",
+        "SHA-256 hash-only DB storage",
+        "no sequential/public IDs",
+        "revocation lifecycle"
+      ],
+      "evidence": [
+        "public-share-token tests",
+        "share repository integration",
+        "revoked-route E2E"
+      ],
+      "residual": "Anyone possessing a valid share URL can view that intentionally public snapshot.",
+      "external_evidence_ids": []
+    },
+    {
+      "id": "TM-003",
+      "category": "csrf",
+      "title": "Cross-site mutation of answers/shares/deletion",
+      "asset": "owner-mutation-actions",
+      "trust_boundary": "browser-origin-to-mutation-api",
+      "attack": "Third-party site causes authenticated browser to save/complete/share/revoke/delete.",
+      "impact": "Result corruption, unwanted publication, or deletion.",
+      "status": "mitigated-repository",
+      "mitigations": [
+        "same-site mutation request validation",
+        "SameSite cookie",
+        "method-specific APIs"
+      ],
+      "evidence": [
+        "request security tests",
+        "hostile cross-site mutation E2E"
+      ],
+      "residual": "Compromised same-origin script remains an application/XSS concern.",
+      "external_evidence_ids": []
+    },
+    {
+      "id": "TM-004",
+      "category": "proxy-spoofing",
+      "title": "Spoofed forwarded client IP defeats IP rate-limit principal",
+      "asset": "public-rate-limit-boundary",
+      "trust_boundary": "edge-to-application",
+      "attack": "Client supplies forwarded headers that application mistakes for trusted edge metadata.",
+      "impact": "Assessment-session creation rate-limit bypass or bucket manipulation.",
+      "status": "partial-external",
+      "mitigations": [
+        "production selects one explicit PCS_CLIENT_IP_HEADER",
+        "unselected/malformed headers fail closed",
+        "edge overwrite/sanitization required"
+      ],
+      "evidence": [
+        "client-address domain tests",
+        "environment contract"
+      ],
+      "residual": "Repository cannot prove the deployed edge overwrites the selected header.",
+      "external_evidence_ids": [
+        "trusted-proxy-configuration"
+      ]
+    },
+    {
+      "id": "TM-005",
+      "category": "privacy-export",
+      "title": "Raw diagnostic data leaks through analytics/telemetry",
+      "asset": "answers-and-trait-vector",
+      "trust_boundary": "application-to-analytics-store",
+      "attack": "Answer values, full Trait vector, Extended Code, prose or bearer capabilities are added to telemetry.",
+      "impact": "Creation of an unintended diagnostic dataset or third-party exposure.",
+      "status": "mitigated-repository",
+      "mitigations": [
+        "allowlisted first-party event dictionary",
+        "forbidden diagnostic property keys",
+        "DB constraints",
+        "fixed-category client errors",
+        "fixed-schema server faults",
+        "third-party export disabled"
+      ],
+      "evidence": [
+        "analytics domain/DB tests",
+        "browser network payload assertions",
+        "runtime log privacy validator"
+      ],
+      "residual": "Production log/hosting provider enrichment still needs deployed review.",
+      "external_evidence_ids": [
+        "production-observability"
+      ]
+    },
+    {
+      "id": "TM-006",
+      "category": "public-export",
+      "title": "Private diagnostic fields enter public share snapshot",
+      "asset": "private-result-snapshot",
+      "trust_boundary": "private-result-to-public-export",
+      "attack": "Share export accidentally includes raw answers, Trait Scores, Extended Code, response quality or private IDs.",
+      "impact": "Sensitive diagnostic disclosure to anyone with public share URL.",
+      "status": "mitigated-repository",
+      "mitigations": [
+        "separate sanitized share schema",
+        "DB prohibited-field guard",
+        "version/source linkage",
+        "public page reads sanitized table only"
+      ],
+      "evidence": [
+        "share-snapshot domain tests",
+        "PostgreSQL adversarial insert tests",
+        "cookie-free public-share E2E"
+      ],
+      "residual": "Future share-schema changes must preserve the sanitizer/DB guard.",
+      "external_evidence_ids": []
+    },
+    {
+      "id": "TM-007",
+      "category": "integrity",
+      "title": "Published diagnostic history is silently rewritten",
+      "asset": "model-content-result-history",
+      "trust_boundary": "runtime/admin-to-versioned-database",
+      "attack": "Existing published item/model/content/result rows are updated in place.",
+      "impact": "Historical results become irreproducible or change meaning without version evidence.",
+      "status": "mitigated-repository",
+      "mitigations": [
+        "DB immutability triggers",
+        "exact version tuples",
+        "immutable Result Snapshots",
+        "release/change ledger"
+      ],
+      "evidence": [
+        "PostgreSQL immutability integration",
+        "Golden snapshots",
+        "release operations validator"
+      ],
+      "residual": "Actual production admin/migration role separation still requires deployment evidence.",
+      "external_evidence_ids": [
+        "production-db-least-privilege"
+      ]
+    },
+    {
+      "id": "TM-008",
+      "category": "database-privilege",
+      "title": "Runtime database credential can perform DDL/admin changes",
+      "asset": "production-database",
+      "trust_boundary": "application-runtime-to-database",
+      "attack": "Compromised app runtime uses overly privileged DB credential to alter schema/versioned definitions.",
+      "impact": "Data/model integrity loss and broader compromise.",
+      "status": "partial-external",
+      "mitigations": [
+        "per-table least-privilege runtime role policy",
+        "CI restricted PostgreSQL role proves representative DML without DDL/definition writes"
+      ],
+      "evidence": [
+        "database-role-policy validator",
+        "database least-privilege integration"
+      ],
+      "residual": "Actual production role identity/grants and migration-admin separation are not repository-provable.",
+      "external_evidence_ids": [
+        "production-db-least-privilege"
+      ]
+    },
+    {
+      "id": "TM-009",
+      "category": "backup-privacy",
+      "title": "Restore resurrects later-deleted diagnostic/share data",
+      "asset": "deleted-user-data",
+      "trust_boundary": "backup-provider-to-restored-production",
+      "attack": "Older backup is restored after user deletion/revocation and public traffic resumes without deletion replay.",
+      "impact": "Deleted private data or revoked public share becomes available again.",
+      "status": "partial-external",
+      "mitigations": [
+        "restore quarantine",
+        "CI logical restore rehearsal",
+        "post-restore retention requirement",
+        "deletion replay/non-resurrection requirement"
+      ],
+      "evidence": [
+        "backup/restore policy validator",
+        "logical PostgreSQL restore rehearsal"
+      ],
+      "residual": "Independently durable deletion journal/equivalent and provider-level rehearsal are not yet implemented/proven.",
+      "external_evidence_ids": [
+        "backup-restore-privacy-rehearsal"
+      ]
+    },
+    {
+      "id": "TM-010",
+      "category": "logging",
+      "title": "Exception/request objects expose diagnostics or capabilities in logs",
+      "asset": "runtime-operational-logs",
+      "trust_boundary": "application-to-log-sink",
+      "attack": "Unexpected Error/request/token/result object is serialized by console logging.",
+      "impact": "Bearer capability or diagnostic data enters operational log storage.",
+      "status": "partial-external",
+      "mitigations": [
+        "three-field server fault schema",
+        "runtime direct console.error bypass prohibited by CI"
+      ],
+      "evidence": [
+        "runtime-log privacy validator"
+      ],
+      "residual": "Hosting/log provider retention/access/enrichment must be reviewed in production.",
+      "external_evidence_ids": [
+        "production-observability"
+      ]
+    },
+    {
+      "id": "TM-011",
+      "category": "dependency-supply-chain",
+      "title": "Known vulnerable or tampered production dependency",
+      "asset": "application-runtime",
+      "trust_boundary": "dependency-registry-to-build",
+      "attack": "Build consumes vulnerable dependency or unreviewed drift.",
+      "impact": "Application compromise or data exposure.",
+      "status": "mitigated-repository",
+      "mitigations": [
+        "committed lockfile",
+        "npm production vulnerability audit",
+        "Dependabot",
+        "container build from reviewed source"
+      ],
+      "evidence": [
+        "npm audit CI step",
+        "dependency update automation",
+        "Container Package workflow"
+      ],
+      "residual": "Registry/account compromise and zero-day risk remain operational concerns.",
+      "external_evidence_ids": [
+        "external-security-review"
+      ]
+    },
+    {
+      "id": "TM-012",
+      "category": "secret-exposure",
+      "title": "Secrets or AI credentials enter repository/client artifact",
+      "asset": "production-secrets",
+      "trust_boundary": "build-configuration-to-client/runtime",
+      "attack": "Secret is committed, advertised through public env, or bundled into browser artifact.",
+      "impact": "Credential compromise or unreviewed runtime data export.",
+      "status": "partial-external",
+      "mitigations": [
+        "blank-secret env template",
+        "server-only configuration contract",
+        "forbidden AI runtime credentials",
+        "post-build client artifact leakage audit"
+      ],
+      "evidence": [
+        "release-security validator",
+        "production build audit"
+      ],
+      "residual": "Actual production secret store/access/rotation remains external.",
+      "external_evidence_ids": [
+        "deployment-secret-store-rotation"
+      ]
+    },
+    {
+      "id": "TM-013",
+      "category": "runtime-ai-boundary",
+      "title": "Runtime generative service changes diagnostic/result behavior or exports data",
+      "asset": "deterministic-diagnosis",
+      "trust_boundary": "application-to-external-AI-provider",
+      "attack": "Production code introduces LLM/image API dependency or sends diagnostic data to a generative service.",
+      "impact": "Non-reproducible output, privacy export, secret requirement and model drift.",
+      "status": "mitigated-repository",
+      "mitigations": [
+        "runtime AI prohibition",
+        "forbidden credential audit",
+        "deterministic scoring/content/art contracts"
+      ],
+      "evidence": [
+        "release-security audit",
+        "illustration/runtime validators",
+        "domain Golden tests"
+      ],
+      "residual": "Future dependency/code changes remain subject to CI governance.",
+      "external_evidence_ids": []
+    },
+    {
+      "id": "TM-014",
+      "category": "crawler-privacy",
+      "title": "Pre-launch/beta routes become indexed unintentionally",
+      "asset": "development-taxonomy-and-shares",
+      "trust_boundary": "public-web-to-crawlers",
+      "attack": "Deployment exposes development model pages to search indexing before launch approval.",
+      "impact": "Unapproved taxonomy/claims become publicly discoverable.",
+      "status": "partial-external",
+      "mitigations": [
+        "global noindex/nofollow",
+        "robots disallow-all",
+        "runtime launch gate",
+        "deployment probe prelaunch mode"
+      ],
+      "evidence": [
+        "launch-gate E2E",
+        "runtime launch validator",
+        "deployment probe tests"
+      ],
+      "residual": "Actual deployed crawler/CDN behavior must be observed.",
+      "external_evidence_ids": [
+        "production-tls-domain"
+      ]
+    },
+    {
+      "id": "TM-015",
+      "category": "calibration-consent",
+      "title": "Ordinary product analytics becomes calibration research data without consent",
+      "asset": "calibration-dataset",
+      "trust_boundary": "product-analytics-to-research-pipeline",
+      "attack": "Existing events/results are exported/reused for psychometric analysis without explicit governance.",
+      "impact": "Privacy/consent violation and invalid evidence lineage.",
+      "status": "deferred-fail-closed",
+      "mitigations": [
+        "calibration export absent",
+        "collection/export flags false",
+        "pre-registered consent/environment/operator prerequisites"
+      ],
+      "evidence": [
+        "calibration protocol validator",
+        "CALIBRATION_EXPORT_SPEC"
+      ],
+      "residual": "Implementation stays intentionally blocked until prerequisites exist.",
+      "external_evidence_ids": [
+        "phase5-beta-calibration"
+      ]
+    },
+    {
+      "id": "TM-016",
+      "category": "container-privilege",
+      "title": "Packaged application runs as root",
+      "asset": "application-container",
+      "trust_boundary": "container-runtime",
+      "attack": "Application compromise inherits unnecessary OS privilege.",
+      "impact": "Larger container/host blast radius.",
+      "status": "mitigated-repository",
+      "mitigations": [
+        "multi-stage standalone image",
+        "fixed non-root nextjs runtime user",
+        "container workflow verifies image Config.User"
+      ],
+      "evidence": [
+        "Container Package workflow"
+      ],
+      "residual": "Actual orchestrator/container securityContext remains deployment-specific.",
+      "external_evidence_ids": [
+        "production-environment-separation"
+      ]
+    }
+  ]
+}
