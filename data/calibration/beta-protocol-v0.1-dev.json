@@ -72,8 +72,8 @@
     "production-environment-separation": "pending-external",
     "retention-deletion-policy": "pending-governance",
     "operator-authorization-audit": "pending-governance",
-    "pre-registered-sample-plan": "pending-research-plan",
-    "frozen-analysis-version-scope": "pending-wave-definition"
+    "pre-registered-sample-plan": "draft-template-ready-not-preregistered",
+    "frozen-analysis-version-scope": "draft-candidate-scope-ready-not-frozen"
   },
   "consent_storage_foundation": {
     "table": "calibration_consent_receipts",
@@ -90,5 +90,13 @@
     "demographic_fields_included": false,
     "timing_fields_included": false,
     "derived_scores_or_codes_included": false
+  },
+  "wave_plan_foundation": {
+    "plan_ref": "data/calibration/beta-wave-ja-01-draft.json",
+    "wave_id": "beta-ja-wave-01-draft",
+    "candidate_assessment_model_version": "assessment-dev-v0.3",
+    "preregistered": false,
+    "version_scope_frozen": false,
+    "collection_start_allowed": false
   }
 }
