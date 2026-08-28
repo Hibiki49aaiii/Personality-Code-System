@@ -28,6 +28,7 @@ try {
   await admin.unsafe('REVOKE CREATE ON SCHEMA public FROM pcs_runtime_ci');
 
   for (const [table,privileges] of Object.entries(policy.runtime_table_privileges)) {
+    if (privileges.length === 0) continue;
     await admin.unsafe(`GRANT ${privileges.join(', ')} ON TABLE "${table}" TO pcs_runtime_ci`);
   }
 
@@ -106,6 +107,15 @@ try {
     await runtime`DELETE FROM rate_limit_buckets WHERE bucket_hash=${bucketHash}`;
 
     await expectDenied(
+      'calibration consent read before activation',
+      ()=>runtime`SELECT count(*) FROM calibration_consent_receipts`
+    );
+    await expectDenied(
+      'calibration consent write before activation',
+      ()=>runtime.unsafe("INSERT INTO calibration_consent_receipts (session_id,assessment_model_version,consent_version,purpose_id,locale) VALUES ('00000000-0000-0000-0000-000000000000','assessment-dev-v0.1','calibration-consent-ja-v0.1-dev','psychometric-calibration-v0.1','ja-JP')")
+    );
+
+    await expectDenied(
       'create table',
       ()=>runtime.unsafe('CREATE TABLE pcs_runtime_forbidden(id integer)')
     );
@@ -122,7 +132,7 @@ try {
       ()=>runtime`DELETE FROM assessment_model_releases WHERE model_version='assessment-dev-v0.1'`
     );
 
-    console.log('Database least-privilege integration passed: runtime role can perform required representative DML/read operations but cannot create/alter schema objects or write versioned definitions.');
+    console.log('Database least-privilege integration passed: runtime role can perform required representative DML/read operations, has zero access to pre-activation calibration consent storage, and cannot create/alter schema objects or write versioned definitions.');
   } finally {
     await runtime.end({timeout:3});
   }
