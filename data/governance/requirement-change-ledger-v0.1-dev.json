@@ -312,6 +312,34 @@
         "SHA-256 identity generation",
         "explicit production/scientific/public-taxonomy non-claims"
       ]
+    },
+    {
+      "change_id": "2026-08-28-security-threat-model",
+      "date": "2026-08-28",
+      "requirements_version_after": "0.11.7",
+      "affected_requirement_ids": [
+        "PCS-QA-007",
+        "PCS-SEC-001",
+        "PCS-OPS-006"
+      ],
+      "change": "Add a 16-threat asset/trust-boundary threat model with repository mitigations, test evidence, residual risk and canonical external-evidence bindings.",
+      "rationale": "Prepare external security review from an inspectable model and ensure partially mitigated production risks cannot be mislabeled complete without the corresponding deployment/manual evidence.",
+      "impacted_files": [
+        "data/security/threat-model-v0.1-dev.json",
+        "scripts/validate-security-threat-model.mjs",
+        "docs/security/SECURITY_THREAT_MODEL_v0.1.md",
+        ".github/workflows/ci.yml"
+      ],
+      "assessment_model_impact": "none",
+      "code_schema_impact": "none",
+      "content_impact": "none",
+      "data_migration_impact": "none",
+      "compatibility_impact": "none-security-review-governance-only",
+      "evidence": [
+        "threat-model validator",
+        "canonical production evidence ID cross-check",
+        "QA-007 forced open while external review pending"
+      ]
     }
   ]
 }
