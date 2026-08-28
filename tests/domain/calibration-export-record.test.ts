@@ -4,7 +4,8 @@ import {
   CALIBRATION_EXPORT_SCHEMA_VERSION,
   CalibrationExportRecordValidationError,
   buildCalibrationExportManifestV01,
-  validateCalibrationExportRecordV01
+  validateCalibrationExportRecordV01,
+  validateCalibrationRecordAgainstExpectedItemsV01
 } from '../../src/domain/calibration/exportRecord';
 
 function validRecord() {
@@ -109,5 +110,46 @@ test('builds one exact-scope manifest and rejects mixed model/wave records', () 
     (error: unknown) =>
       error instanceof CalibrationExportRecordValidationError &&
       error.code === 'EMPTY_EXPORT'
+  );
+});
+
+test('binds calibration responses to the frozen wave/model item revisions', () => {
+  const expectedItems = [
+    { itemId: 'PCS-SYS-001', itemRevision: 'r1', required: true },
+    { itemId: 'PCS-SYS-002', itemRevision: 'r1', required: true }
+  ];
+
+  assert.deepEqual(
+    validateCalibrationRecordAgainstExpectedItemsV01(validRecord(), expectedItems),
+    validRecord()
+  );
+
+  assert.throws(
+    () => validateCalibrationRecordAgainstExpectedItemsV01(
+      {
+        ...validRecord(),
+        responses: [
+          { itemId: 'PCS-SYS-001', itemRevision: 'r1', value: 3 },
+          { itemId: 'PCS-SYS-999', itemRevision: 'r1', value: 5 }
+        ]
+      },
+      expectedItems
+    ),
+    (error: unknown) =>
+      error instanceof CalibrationExportRecordValidationError &&
+      error.code === 'OFF_MODEL_RESPONSE'
+  );
+
+  assert.throws(
+    () => validateCalibrationRecordAgainstExpectedItemsV01(
+      {
+        ...validRecord(),
+        responses: [{ itemId: 'PCS-SYS-001', itemRevision: 'r1', value: 3 }]
+      },
+      expectedItems
+    ),
+    (error: unknown) =>
+      error instanceof CalibrationExportRecordValidationError &&
+      error.code === 'MISSING_REQUIRED_RESPONSE'
   );
 });
