@@ -1,0 +1,255 @@
+{
+  "evidence_registry_version": "production-evidence-registry-v0.1-dev",
+  "status": "all-required-evidence-pending",
+  "public_launch_ready": false,
+  "candidate_model_version": "assessment-dev-v0.3",
+  "completion_contract": {
+    "required_fields": [
+      "artifact_ref",
+      "observed_at",
+      "reviewer",
+      "environment",
+      "notes"
+    ],
+    "allowed_environments": [
+      "preview",
+      "production",
+      "cross-environment",
+      "manual-offline",
+      "research"
+    ],
+    "artifact_ref_must_be_inspectable": true,
+    "placeholder_values_prohibited": [
+      "todo",
+      "tbd",
+      "pending",
+      "n/a",
+      "none",
+      "example"
+    ],
+    "completion_requires_gate_review": true
+  },
+  "entry_count": 16,
+  "entries": [
+    {
+      "evidence_id": "production-environment-separation",
+      "evidence_type": "external",
+      "description": "Separate deployed preview/production identities, databases and configuration.",
+      "status": "pending",
+      "gate_bindings": {
+        "public_launch_keys": [
+          "production_environment_separation"
+        ],
+        "production_activation_keys": [
+          "production_environment_separation"
+        ]
+      },
+      "evidence": null
+    },
+    {
+      "evidence_id": "production-tls-domain",
+      "evidence_type": "external",
+      "description": "Observed production HTTPS/domain/TLS/HSTS behavior.",
+      "status": "pending",
+      "gate_bindings": {
+        "public_launch_keys": [
+          "production_tls_domain"
+        ],
+        "production_activation_keys": []
+      },
+      "evidence": null
+    },
+    {
+      "evidence_id": "deployment-secret-store-rotation",
+      "evidence_type": "external",
+      "description": "Production secret-store injection/access/rotation evidence.",
+      "status": "pending",
+      "gate_bindings": {
+        "public_launch_keys": [
+          "deployment_secret_store_and_rotation"
+        ],
+        "production_activation_keys": []
+      },
+      "evidence": null
+    },
+    {
+      "evidence_id": "production-db-least-privilege",
+      "evidence_type": "external",
+      "description": "Actual production runtime/admin roles and grant evidence.",
+      "status": "pending",
+      "gate_bindings": {
+        "public_launch_keys": [
+          "production_db_least_privilege"
+        ],
+        "production_activation_keys": []
+      },
+      "evidence": null
+    },
+    {
+      "evidence_id": "trusted-proxy-configuration",
+      "evidence_type": "external",
+      "description": "Edge-owned client address header overwrite/sanitization evidence.",
+      "status": "pending",
+      "gate_bindings": {
+        "public_launch_keys": [
+          "trusted_proxy_configuration"
+        ],
+        "production_activation_keys": []
+      },
+      "evidence": null
+    },
+    {
+      "evidence_id": "backup-restore-privacy-rehearsal",
+      "evidence_type": "external",
+      "description": "Production-equivalent restore plus deletion replay/non-resurrection evidence.",
+      "status": "pending",
+      "gate_bindings": {
+        "public_launch_keys": [
+          "backup_restore_rehearsal"
+        ],
+        "production_activation_keys": []
+      },
+      "evidence": null
+    },
+    {
+      "evidence_id": "production-observability",
+      "evidence_type": "external",
+      "description": "Independent monitoring, alert routing, deployment correlation and drill evidence.",
+      "status": "pending",
+      "gate_bindings": {
+        "public_launch_keys": [
+          "external_or_independent_monitoring"
+        ],
+        "production_activation_keys": [
+          "production_observability"
+        ]
+      },
+      "evidence": null
+    },
+    {
+      "evidence_id": "manual-accessibility",
+      "evidence_type": "manual",
+      "description": "Real assistive-technology/device/zoom walkthrough evidence.",
+      "status": "pending",
+      "gate_bindings": {
+        "public_launch_keys": [
+          "manual_accessibility_walkthrough"
+        ],
+        "production_activation_keys": [
+          "manual_accessibility_review"
+        ]
+      },
+      "evidence": null
+    },
+    {
+      "evidence_id": "external-security-review",
+      "evidence_type": "external",
+      "description": "Independent/external security and privacy review evidence.",
+      "status": "pending",
+      "gate_bindings": {
+        "public_launch_keys": [
+          "external_security_review"
+        ],
+        "production_activation_keys": [
+          "production_security_privacy_review"
+        ]
+      },
+      "evidence": null
+    },
+    {
+      "evidence_id": "final-legal-privacy-review",
+      "evidence_type": "manual",
+      "description": "Final jurisdiction/operator/contact/consent/privacy publication review.",
+      "status": "pending",
+      "gate_bindings": {
+        "public_launch_keys": [
+          "legal_publication_review"
+        ],
+        "production_activation_keys": [
+          "final_legal_privacy_review"
+        ]
+      },
+      "evidence": null
+    },
+    {
+      "evidence_id": "representative-field-performance",
+      "evidence_type": "external",
+      "description": "Representative field p75 Core Web Vitals/release review.",
+      "status": "pending",
+      "gate_bindings": {
+        "public_launch_keys": [
+          "representative_cwv_evidence"
+        ],
+        "production_activation_keys": [
+          "representative_field_performance_review"
+        ]
+      },
+      "evidence": null
+    },
+    {
+      "evidence_id": "public-code-schema",
+      "evidence_type": "release",
+      "description": "Evidence-backed public Core Code schema selected and frozen.",
+      "status": "pending",
+      "gate_bindings": {
+        "public_launch_keys": [],
+        "production_activation_keys": [
+          "public_code_schema"
+        ]
+      },
+      "evidence": null
+    },
+    {
+      "evidence_id": "phase5-beta-calibration",
+      "evidence_type": "research",
+      "description": "Consented beta/calibration/statistical review evidence.",
+      "status": "pending",
+      "gate_bindings": {
+        "public_launch_keys": [],
+        "production_activation_keys": [
+          "phase5_beta_calibration_evidence"
+        ]
+      },
+      "evidence": null
+    },
+    {
+      "evidence_id": "production-migration-rehearsal",
+      "evidence_type": "external",
+      "description": "Production-equivalent migration rehearsal for target release.",
+      "status": "pending",
+      "gate_bindings": {
+        "public_launch_keys": [],
+        "production_activation_keys": [
+          "production_migration_rehearsal"
+        ]
+      },
+      "evidence": null
+    },
+    {
+      "evidence_id": "public-editorial-catalog",
+      "evidence_type": "manual",
+      "description": "Human-approved public editorial catalog for all reachable public codes.",
+      "status": "pending",
+      "gate_bindings": {
+        "public_launch_keys": [],
+        "production_activation_keys": [
+          "public_editorial_catalog"
+        ]
+      },
+      "evidence": null
+    },
+    {
+      "evidence_id": "approved-public-art-mapping",
+      "evidence_type": "manual",
+      "description": "Approved type-specific/public artwork mapping for every reachable public type.",
+      "status": "pending",
+      "gate_bindings": {
+        "public_launch_keys": [],
+        "production_activation_keys": [
+          "type_specific_or_approved_public_art_mapping"
+        ]
+      },
+      "evidence": null
+    }
+  ]
+}
