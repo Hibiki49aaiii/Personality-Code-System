@@ -283,6 +283,35 @@
         "production mode requires HTTPS and HSTS",
         "prelaunch/public crawler modes are distinct"
       ]
+    },
+    {
+      "change_id": "2026-08-28-post-e2e-release-evidence-pack",
+      "date": "2026-08-28",
+      "requirements_version_after": "0.11.7",
+      "affected_requirement_ids": [
+        "PCS-OPS-005",
+        "PCS-QA-001"
+      ],
+      "change": "Generate and upload a release-candidate evidence pack only after full browser E2E, freezing Git SHA, Requirements version, exact model tuple, critical file hashes, migration-set hash, art-production state and canonical pending production evidence.",
+      "rationale": "A green badge alone does not identify the exact source/model/migration state that passed release-grade CI; the pack makes that state inspectable without including secrets or claiming production/validation.",
+      "impacted_files": [
+        "data/release/release-evidence-contract-v0.1-dev.json",
+        "scripts/generate-release-evidence-pack.mjs",
+        "scripts/validate-release-evidence-pack.mjs",
+        ".github/workflows/ci.yml",
+        "docs/operations/RELEASE_EVIDENCE_PACK_v0.1.md"
+      ],
+      "assessment_model_impact": "none-current-candidate-identity-only",
+      "code_schema_impact": "none",
+      "content_impact": "none",
+      "data_migration_impact": "none-pack-hashes-current-ordered-migrations",
+      "compatibility_impact": "normal-CI-now-uploads-30-day-release-evidence-artifact-after-E2E",
+      "evidence": [
+        "release evidence contract validator",
+        "post-E2E workflow ordering check",
+        "SHA-256 identity generation",
+        "explicit production/scientific/public-taxonomy non-claims"
+      ]
     }
   ]
 }
