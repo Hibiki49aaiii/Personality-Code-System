@@ -18,7 +18,8 @@
     "data/release/production-evidence-registry-v0.1-dev.json",
     "data/code-schema/v0.1-dev.json",
     "data/content/dev-v0.3.json",
-    "data/illustration/v0.1-dev/asset-production-registry.json"
+    "data/illustration/v0.1-dev/asset-production-registry.json",
+    "data/type-catalog/v0.1-dev/editorial-review-ledger.ja.json"
   ],
   "migration_glob": "drizzle/*.sql",
   "required_summary_fields": [
@@ -32,6 +33,10 @@
     "pending_production_evidence",
     "illustration_production_counts",
     "identity_files",
-    "migration_set"
+    "migration_set",
+    "incomplete_master_requirements",
+    "incomplete_phase_gates",
+    "canonical_evidence_status_counts",
+    "editorial_review_counts"
   ]
 }
