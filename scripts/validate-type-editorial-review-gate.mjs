@@ -2,12 +2,13 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
 const readJson = async (path) => JSON.parse(await readFile(path, 'utf8'));
-const [ledger, gate, reachability, codeSchema, manifest] = await Promise.all([
+const [ledger, gate, reachability, codeSchema, manifest, assetRegistry] = await Promise.all([
   readJson('data/type-catalog/v0.1-dev/editorial-review-ledger.ja.json'),
   readJson('data/type-catalog/v0.1-dev/publication-gate.json'),
   readJson('data/type-catalog/v0.1-dev/reachability.json'),
   readJson('data/code-schema/v0.1-dev.json'),
-  readJson('data/type-catalog/v0.1-dev/editorial-catalog-manifest.ja.json')
+  readJson('data/type-catalog/v0.1-dev/editorial-catalog-manifest.ja.json'),
+  readJson('data/illustration/v0.1-dev/asset-production-registry.json')
 ]);
 
 const dimensions = [
@@ -48,6 +49,15 @@ const allApproved = ledger.entries.every((entry) =>
   entry.status === 'approved' && Object.values(entry.dimensions).every((state) => state === 'approved')
 );
 const noOpenIssues = ledger.entries.every((entry) => Array.isArray(entry.issue_refs) && entry.issue_refs.length === 0);
+const allIllustrationsApproved =
+  assetRegistry.entries.length === reachability.core_codes.length &&
+  assetRegistry.entries.every((entry, index) =>
+    entry.core_code === reachability.core_codes[index] &&
+    entry.status === 'approved' &&
+    entry.master !== null &&
+    Object.values(entry.variants ?? {}).every((value) => value !== null) &&
+    Object.values(entry.approval?.checks ?? {}).every((value) => value === true)
+  );
 
 assert.equal(gate.publication_gate_version, 'type-catalog-publication-gate-v0.1-dev');
 assert.equal(gate.requirements.code_schema_public_use_true, codeSchema.public_use === true);
@@ -55,10 +65,11 @@ assert.equal(gate.requirements.editorial_catalog_public_use_true, manifest.publi
 assert.equal(gate.requirements.all_reachable_codes_present, ledger.entries.length === reachability.core_codes.length);
 assert.equal(gate.requirements.all_review_dimensions_approved, allApproved);
 assert.equal(gate.requirements.no_open_editorial_issues, noOpenIssues && allApproved);
+assert.equal(gate.requirements.illustration_mapping_approved, allIllustrationsApproved);
 
-if (codeSchema.public_use !== true || manifest.public_use !== true || !allApproved) {
+if (codeSchema.public_use !== true || manifest.public_use !== true || !allApproved || !allIllustrationsApproved) {
   assert.equal(gate.public_catalog_ready, false);
   assert.equal(gate.status, 'blocked');
 }
 
-console.log(`Type editorial review gate validation passed: ${ledger.entries.length} reachable codes are explicitly review-tracked; approved=${ledger.entries.filter((entry)=>entry.status==='approved').length}; public catalog remains fail-closed.`);
+console.log(`Type editorial review gate validation passed: ${ledger.entries.length} reachable codes are explicitly review-tracked; editorial-approved=${ledger.entries.filter((entry)=>entry.status==='approved').length}; illustration-approved=${assetRegistry.entries.filter((entry)=>entry.status==='approved').length}; public catalog remains fail-closed.`);
