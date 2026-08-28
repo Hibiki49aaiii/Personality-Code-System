@@ -15,7 +15,8 @@
     "assessment_answers",
     "assessment_trait_scores",
     "result_snapshots",
-    "product_events-session-bound"
+    "product_events-session-bound",
+    "calibration_consent_receipts"
   ],
   "directly_deleted_tables": [
     "public_share_snapshots"
