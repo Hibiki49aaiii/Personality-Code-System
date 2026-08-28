@@ -1,6 +1,6 @@
 # Calibration Export Specification v0.1
 
-> Status: design gate only; export is intentionally disabled until consent/legal and beta-governance prerequisites exist.
+> Status: design + strict offline schema foundation; runtime export is intentionally disabled until consent/legal and beta-governance prerequisites exist.
 > Date: 2026-08-27
 
 ## Separation from product analytics
@@ -27,6 +27,22 @@ No calibration export may execute until all of these exist:
 Until then, the correct runtime behavior is: **no calibration export endpoint/job exists**.
 
 Consent receipt infrastructure now exists separately from answer-level research data, but that does not satisfy the activation prerequisites by itself. The runtime role is intentionally denied all access to `calibration_consent_receipts`, the consent copy remains draft/not legally approved, and no answer-level calibration table/export path has been added.
+
+## Current offline schema foundation
+
+`data/calibration/export-schema-v0.1-dev.json` and `src/domain/calibration/exportRecord.ts` now freeze the **minimum allowed record shape** before any runtime export exists.
+
+v0.1 permits only:
+
+- random `calibrationRecordId` unrelated to session/share capabilities;
+- one exact wave / consent / purpose / model / item-bank / scoring / Trait Dictionary / locale scope;
+- item ID + revision + 1–5 response values.
+
+The pure-domain validator rejects unknown fields instead of silently dropping them. A manifest builder also rejects records from mixed model/version/wave scopes.
+
+v0.1 deliberately excludes retest linkage, demographics, timing, derived Trait Scores/codes, result prose, session/public capabilities, IP/location, product analytics and logs. Adding any of those requires a new reviewed export-schema version and the relevant consent/governance justification.
+
+This schema is **not** an export job, endpoint, authorization, or dataset.
 
 ## Candidate export fields after activation
 
@@ -67,6 +83,6 @@ A future export job must:
 
 ## Current decision
 
-PCS deliberately leaves `PCS-ANA-003` open. Building a raw-answer export before the consent/governance layer would contradict the privacy requirements rather than advance them.
+PCS deliberately leaves `PCS-ANA-003` open. A strict offline allowlist/manifest contract now exists so a future consented export cannot invent its data shape ad hoc, but no database-to-export materializer, runtime endpoint/job, operator authorization path, or answer-level calibration dataset exists.
 
 The companion `BETA_CALIBRATION_PROTOCOL_v0.1.md` now freezes the pre-collection analysis/governance contract while keeping both collection and export disabled. This means Phase 5 planning can progress without weakening the privacy boundary.
