@@ -32,7 +32,9 @@
       "retention": "abandoned-30-days-engineering-baseline",
       "public_by_default": false,
       "third_party_export_default": false,
-      "tables": ["anonymous_sessions"]
+      "tables": [
+        "anonymous_sessions"
+      ]
     },
     {
       "id": "anonymous-diagnostic-answers",
@@ -41,7 +43,9 @@
       "retention": "completed-90-days-engineering-baseline",
       "public_by_default": false,
       "third_party_export_default": false,
-      "tables": ["assessment_answers"]
+      "tables": [
+        "assessment_answers"
+      ]
     },
     {
       "id": "derived-private-diagnostic-result",
@@ -50,7 +54,10 @@
       "retention": "private-result-180-days-engineering-baseline",
       "public_by_default": false,
       "third_party_export_default": false,
-      "tables": ["assessment_trait_scores", "result_snapshots"]
+      "tables": [
+        "assessment_trait_scores",
+        "result_snapshots"
+      ]
     },
     {
       "id": "explicit-public-share",
@@ -60,7 +67,9 @@
       "public_by_default": false,
       "public_after_explicit_action": true,
       "third_party_export_default": false,
-      "tables": ["public_share_snapshots"]
+      "tables": [
+        "public_share_snapshots"
+      ]
     },
     {
       "id": "first-party-product-analytics",
@@ -69,7 +78,9 @@
       "retention": "30-days-unscoped-90-days-session-bound",
       "public_by_default": false,
       "third_party_export_default": false,
-      "tables": ["product_events"]
+      "tables": [
+        "product_events"
+      ]
     },
     {
       "id": "security-abuse-prevention",
@@ -78,7 +89,21 @@
       "retention": "short-fixed-window-plus-cleanup",
       "public_by_default": false,
       "third_party_export_default": false,
-      "tables": ["rate_limit_buckets"]
+      "tables": [
+        "rate_limit_buckets"
+      ]
+    },
+    {
+      "id": "calibration-consent-receipts",
+      "personal_data": true,
+      "purpose": "Represent explicit purpose-specific psychometric calibration participation consent separately from ordinary diagnosis/product analytics after future activation.",
+      "retention": "not-collected-currently-future-calibration-policy-required",
+      "public_by_default": false,
+      "third_party_export_default": false,
+      "collection_enabled": false,
+      "tables": [
+        "calibration_consent_receipts"
+      ]
     }
   ],
   "prohibited_default_collection": [
