@@ -61,7 +61,8 @@
     "test:deployment-probe": "node --test tests/infrastructure/deployment-probe.test.mjs",
     "validate:release-evidence": "node scripts/validate-release-evidence-pack.mjs",
     "evidence:release-candidate": "node scripts/generate-release-evidence-pack.mjs",
-    "validate:threat-model": "node scripts/validate-security-threat-model.mjs"
+    "validate:threat-model": "node scripts/validate-security-threat-model.mjs",
+    "validate:codeql": "node scripts/validate-codeql-workflow.mjs"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",
