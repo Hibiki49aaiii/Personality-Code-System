@@ -21,6 +21,7 @@
 | Published model/item/code/content metadata | Indefinite while any historical result may reference it | Not personality data for one user; required for reproducibility. |
 | Operational application logs | 30 days | Raw answers, full Trait vectors and bearer tokens excluded by default. |
 | Database backups | 35 days | Subject to deployment-provider recovery design. |
+| Calibration consent receipt | Not collected by runtime | Storage-only schema exists for a future explicit purpose/version receipt; runtime role has zero access until activation. If present through controlled testing/future activation, it cascades with owner-session deletion. |
 | Calibration dataset | Not created by default | Requires a separate consent/basis, extraction schema and governance decision. |
 | Public share result | Until revoked / source privacy deletion / later public policy | Phase 4 creates explicit sanitized snapshots. User revocation disables active links; bearer-owned full diagnostic deletion physically deletes shares derived from the private result. |
 
