@@ -29,7 +29,7 @@
     ],
     "completion_requires_gate_review": true
   },
-  "entry_count": 16,
+  "entry_count": 18,
   "entries": [
     {
       "evidence_id": "production-environment-separation",
@@ -248,6 +248,32 @@
         "production_activation_keys": [
           "type_specific_or_approved_public_art_mapping"
         ]
+      },
+      "evidence": null
+    },
+    {
+      "evidence_id": "production-retention-scheduler",
+      "evidence_type": "external",
+      "description": "Scheduled production execution/evidence for analytics and diagnostic retention cleanup.",
+      "status": "pending",
+      "gate_bindings": {
+        "public_launch_keys": [
+          "production_retention_scheduler"
+        ],
+        "production_activation_keys": []
+      },
+      "evidence": null
+    },
+    {
+      "evidence_id": "production-log-provider-privacy",
+      "evidence_type": "external",
+      "description": "Production log sink/provider retention, access, enrichment and payload review proving diagnostic capabilities/data are not exported.",
+      "status": "pending",
+      "gate_bindings": {
+        "public_launch_keys": [
+          "production_log_privacy_review"
+        ],
+        "production_activation_keys": []
       },
       "evidence": null
     }

@@ -8,7 +8,7 @@ const errors=[];
 
 if (registry.evidence_registry_version!=='production-evidence-registry-v0.1-dev') errors.push('unexpected production evidence registry version');
 if (registry.candidate_model_version!==activation.candidate_model_version) errors.push('evidence registry/candidate model mismatch');
-if (registry.entry_count!==registry.entries.length || registry.entries.length<16) errors.push('evidence registry entry count incomplete');
+if (registry.entry_count!==registry.entries.length || registry.entries.length<18) errors.push('evidence registry entry count incomplete');
 if (registry.public_launch_ready!==launch.public_launch_ready) errors.push('evidence registry/public launch readiness mismatch');
 
 const launchKeys=new Set(Object.keys(launch.external_manual_evidence));

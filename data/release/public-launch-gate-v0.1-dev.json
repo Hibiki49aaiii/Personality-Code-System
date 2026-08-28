@@ -44,7 +44,9 @@
     "manual_accessibility_walkthrough": "pending",
     "external_security_review": "pending",
     "legal_publication_review": "pending",
-    "representative_cwv_evidence": "pending"
+    "representative_cwv_evidence": "pending",
+    "production_retention_scheduler": "pending",
+    "production_log_privacy_review": "pending"
   },
   "launch_actions": {
     "announce_v1_allowed": false,

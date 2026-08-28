@@ -137,7 +137,8 @@
       ],
       "residual": "Production log/hosting provider enrichment still needs deployed review.",
       "external_evidence_ids": [
-        "production-observability"
+        "production-observability",
+        "production-log-provider-privacy"
       ]
     },
     {
@@ -252,7 +253,7 @@
       ],
       "residual": "Hosting/log provider retention/access/enrichment must be reviewed in production.",
       "external_evidence_ids": [
-        "production-observability"
+        "production-log-provider-privacy"
       ]
     },
     {

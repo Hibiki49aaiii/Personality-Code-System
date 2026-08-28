@@ -366,6 +366,34 @@
         "CodeQL workflow contract validator",
         "security-extended query suite configuration"
       ]
+    },
+    {
+      "change_id": "2026-08-28-retention-and-log-evidence-blockers",
+      "date": "2026-08-28",
+      "requirements_version_after": "0.11.7",
+      "affected_requirement_ids": [
+        "PCS-OPS-003",
+        "PCS-OPS-006",
+        "PCS-QA-007",
+        "PCS-LEGAL-001"
+      ],
+      "change": "Promote production retention scheduler evidence and production log-provider privacy review to explicit canonical public-launch blockers.",
+      "rationale": "Repository cleanup/logging implementations do not prove their scheduled production execution or hosting-provider log retention/access/enrichment behavior; those properties must not be hidden inside generic monitoring/QA completion.",
+      "impacted_files": [
+        "data/release/public-launch-gate-v0.1-dev.json",
+        "data/release/production-evidence-registry-v0.1-dev.json",
+        "data/security/threat-model-v0.1-dev.json"
+      ],
+      "assessment_model_impact": "none",
+      "code_schema_impact": "none",
+      "content_impact": "none",
+      "data_migration_impact": "none",
+      "compatibility_impact": "public-launch-now-requires-two-additional-explicit-production-evidence-records",
+      "evidence": [
+        "production evidence registry exact-key validator",
+        "threat-model external evidence bindings",
+        "public launch remains fail-closed"
+      ]
     }
   ]
 }
