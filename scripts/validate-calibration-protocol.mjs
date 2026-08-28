@@ -49,6 +49,24 @@ for (const item of requiredPrerequisites) {
   if (!protocol.activation_prerequisites.includes(item)) errors.push(`missing activation prerequisite ${item}`);
 }
 
+const expectedPrerequisiteStatus = {
+  'explicit-calibration-consent-state': 'foundation-ready-runtime-write-disabled',
+  'versioned-consent-purpose': 'draft-contract-ready-not-approved',
+  'legal-privacy-approval': 'pending-external',
+  'production-environment-separation': 'pending-external',
+  'retention-deletion-policy': 'pending-governance',
+  'operator-authorization-audit': 'pending-governance',
+  'pre-registered-sample-plan': 'pending-research-plan',
+  'frozen-analysis-version-scope': 'pending-wave-definition'
+};
+for (const [key,value] of Object.entries(expectedPrerequisiteStatus)) {
+  if (protocol.prerequisite_engineering_status?.[key] !== value) errors.push(`prerequisite status drift for ${key}`);
+}
+if (protocol.consent_storage_foundation?.table !== 'calibration_consent_receipts') errors.push('calibration consent storage table status missing');
+if (protocol.consent_storage_foundation?.runtime_role_access_allowed !== false) errors.push('runtime consent access must remain disabled');
+if (protocol.consent_storage_foundation?.owner_session_cascade_delete !== true) errors.push('consent receipt must remain owner-session deletable');
+if (protocol.consent_storage_foundation?.answer_level_calibration_rows_exist !== false) errors.push('answer-level calibration dataset must not exist before activation');
+
 const requiredAnalyses = [
   'item-distributions-floor-ceiling',
   'item-total-scale-behavior',
