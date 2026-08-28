@@ -254,6 +254,35 @@
         "exact production-activation key coverage",
         "all current canonical evidence explicitly pending"
       ]
+    },
+    {
+      "change_id": "2026-08-28-provider-independent-deployment-probe",
+      "date": "2026-08-28",
+      "requirements_version_after": "0.11.7",
+      "affected_requirement_ids": [
+        "PCS-OPS-001",
+        "PCS-OPS-003",
+        "PCS-QA-007"
+      ],
+      "change": "Add a provider-independent operator probe for HTTPS, health, security headers, HSTS, robots and noindex/indexability state with pure pass/fail evaluator tests.",
+      "rationale": "Turn several production deployment observations into repeatable JSON evidence without falsely proving environment separation, proxy ownership, secrets, database grants or monitoring provider configuration.",
+      "impacted_files": [
+        "scripts/lib/deployment-probe.mjs",
+        "scripts/probe-deployment.mjs",
+        "tests/infrastructure/deployment-probe.test.mjs",
+        "docs/operations/DEPLOYMENT_PROBE_v0.1.md"
+      ],
+      "assessment_model_impact": "none",
+      "code_schema_impact": "none",
+      "content_impact": "none",
+      "data_migration_impact": "none",
+      "compatibility_impact": "none-operator-tool-only",
+      "evidence": [
+        "deployment probe evaluator unit tests",
+        "manual CLI emits privacy-bounded JSON report",
+        "production mode requires HTTPS and HSTS",
+        "prelaunch/public crawler modes are distinct"
+      ]
     }
   ]
 }
