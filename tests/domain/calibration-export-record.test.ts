@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {
   CALIBRATION_EXPORT_SCHEMA_VERSION,
   CalibrationExportRecordValidationError,
+  buildCalibrationExportManifestV01,
   validateCalibrationExportRecordV01
 } from '../../src/domain/calibration/exportRecord';
 
@@ -70,5 +71,43 @@ test('rejects duplicate item revisions', () => {
       ]
     }),
     (error: unknown) => error instanceof CalibrationExportRecordValidationError && error.code === 'DUPLICATE_RESPONSE'
+  );
+});
+
+test('builds one exact-scope manifest and rejects mixed model/wave records', () => {
+  const first = validRecord();
+  const second = {
+    ...validRecord(),
+    calibrationRecordId: '223e4567-e89b-42d3-a456-426614174000'
+  };
+
+  assert.deepEqual(buildCalibrationExportManifestV01([first, second]), {
+    exportSchemaVersion: CALIBRATION_EXPORT_SCHEMA_VERSION,
+    waveId: 'beta-wave-ja-v0.1-dev',
+    consentVersion: 'calibration-consent-ja-v0.1-dev',
+    purposeId: 'psychometric-calibration-v0.1',
+    assessmentModelVersion: 'assessment-dev-v0.3',
+    itemBankVersion: 'item-bank-v0.2',
+    scoringVersion: 'scoring-v0.1-dev',
+    traitDictionaryVersion: 'trait-dictionary-v0.2',
+    locale: 'ja-JP',
+    rowCount: 2
+  });
+
+  assert.throws(
+    () => buildCalibrationExportManifestV01([
+      first,
+      { ...second, assessmentModelVersion: 'assessment-dev-v0.2' }
+    ]),
+    (error: unknown) =>
+      error instanceof CalibrationExportRecordValidationError &&
+      error.code === 'MIXED_EXPORT_SCOPE'
+  );
+
+  assert.throws(
+    () => buildCalibrationExportManifestV01([]),
+    (error: unknown) =>
+      error instanceof CalibrationExportRecordValidationError &&
+      error.code === 'EMPTY_EXPORT'
   );
 });
