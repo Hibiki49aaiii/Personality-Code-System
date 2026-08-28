@@ -124,6 +124,9 @@ jobs:
       - name: Validate canonical production evidence registry
         run: npm run validate:production-evidence
 
+      - name: Test deployment evidence probe evaluator
+        run: npm run test:deployment-probe
+
       - name: Validate runtime public-launch enforcement
         run: npm run validate:runtime-launch-gate
 
