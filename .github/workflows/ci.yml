@@ -121,6 +121,9 @@ jobs:
       - name: Validate public launch gate remains fail-closed
         run: npm run validate:launch-gate
 
+      - name: Validate canonical production evidence registry
+        run: npm run validate:production-evidence
+
       - name: Validate runtime public-launch enforcement
         run: npm run validate:runtime-launch-gate
 
