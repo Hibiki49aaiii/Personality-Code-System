@@ -80,5 +80,15 @@
     "runtime_role_access_allowed": false,
     "owner_session_cascade_delete": true,
     "answer_level_calibration_rows_exist": false
+  },
+  "export_schema_foundation": {
+    "export_schema_version": "calibration-export-record-v0.1-dev",
+    "runtime_export_enabled": false,
+    "strict_allowlist": true,
+    "exact_scope_manifest": true,
+    "retest_linkage_included": false,
+    "demographic_fields_included": false,
+    "timing_fields_included": false,
+    "derived_scores_or_codes_included": false
   }
 }
