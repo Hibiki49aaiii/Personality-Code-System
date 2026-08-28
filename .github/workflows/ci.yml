@@ -172,6 +172,9 @@ jobs:
       - name: Reviewed development model seed integration
         run: npm run test:seed:dev
 
+      - name: Calibration consent persistence integration
+        run: npm run test:calibration-consent:integration
+
       - name: Logical backup/restore rehearsal
         run: npm run test:backup-restore:integration
 
