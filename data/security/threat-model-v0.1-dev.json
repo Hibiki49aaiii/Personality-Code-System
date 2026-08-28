@@ -364,13 +364,19 @@
       "mitigations": [
         "calibration export absent",
         "collection/export flags false",
-        "pre-registered consent/environment/operator prerequisites"
+        "pre-registered consent/environment/operator prerequisites",
+        "separate versioned calibration consent receipt schema",
+        "runtime DB role has zero access to consent receipt table before activation",
+        "owner-session deletion cascades consent receipt if present"
       ],
       "evidence": [
         "calibration protocol validator",
-        "CALIBRATION_EXPORT_SPEC"
+        "CALIBRATION_EXPORT_SPEC",
+        "calibration consent persistence integration",
+        "database least-privilege integration",
+        "user deletion integration"
       ],
-      "residual": "Implementation stays intentionally blocked until prerequisites exist.",
+      "residual": "Consent storage mechanics exist, but no runtime collection/export path is authorized; legal/privacy, retention, operator, sample-plan, wave-scope and deployed-environment prerequisites remain unresolved.",
       "external_evidence_ids": [
         "phase5-beta-calibration"
       ]
