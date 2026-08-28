@@ -67,6 +67,13 @@ if (protocol.consent_storage_foundation?.runtime_role_access_allowed !== false) 
 if (protocol.consent_storage_foundation?.owner_session_cascade_delete !== true) errors.push('consent receipt must remain owner-session deletable');
 if (protocol.consent_storage_foundation?.answer_level_calibration_rows_exist !== false) errors.push('answer-level calibration dataset must not exist before activation');
 
+if (protocol.export_schema_foundation?.export_schema_version !== 'calibration-export-record-v0.1-dev') errors.push('offline calibration export schema foundation missing');
+if (protocol.export_schema_foundation?.runtime_export_enabled !== false) errors.push('runtime export must remain disabled in protocol');
+if (protocol.export_schema_foundation?.strict_allowlist !== true || protocol.export_schema_foundation?.exact_scope_manifest !== true) errors.push('calibration export schema must retain strict allowlist and exact-scope manifest');
+for (const key of ['retest_linkage_included','demographic_fields_included','timing_fields_included','derived_scores_or_codes_included']) {
+  if (protocol.export_schema_foundation?.[key] !== false) errors.push(`calibration export v0.1 must keep ${key}=false`);
+}
+
 const requiredAnalyses = [
   'item-distributions-floor-ceiling',
   'item-total-scale-behavior',
