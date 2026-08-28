@@ -49,9 +49,11 @@ for (const fragment of ['診断データを削除','削除を確定','この操�
 if (!e2e.includes("getByRole('button', { name: '削除を確定' })")) errors.push('browser deletion confirmation test missing');
 if (!e2e.includes("toHaveURL('http://localhost:3000/')")) errors.push('browser deletion cookie/session invalidation assertion missing');
 if (!csrf.includes("request.delete('/api/assessment/data'")) errors.push('cross-site deletion rejection test missing');
-for (const fragment of ['deletedPublicShareCount','assessmentAnswers','assessmentTraitScores','resultSnapshots','productEvents']) {
+for (const fragment of ['deletedPublicShareCount','assessmentAnswers','assessmentTraitScores','resultSnapshots','productEvents','calibrationConsentReceipts']) {
   if (!integration.includes(fragment)) errors.push(`deletion integration evidence missing ${fragment}`);
 }
+
+if (!contract.owner_session_cascade_tables.includes('calibration_consent_receipts')) errors.push('calibration consent receipt must be part of bearer-owned session cascade');
 
 if (!Array.isArray(contract.remaining_public_policy_blockers) || contract.remaining_public_policy_blockers.length < 4) {
   errors.push('launch blockers must remain explicit');
@@ -62,4 +64,4 @@ if (errors.length) {
   for (const error of errors) console.error(`- ${error}`);
   process.exit(1);
 }
-console.log('Anonymous diagnostic deletion validation passed: bearer-owned destructive path, CSRF/rate-limit/cookie clearing, cascade semantics, public-share cleanup and launch blockers are explicit.');
+console.log('Anonymous diagnostic deletion validation passed: bearer-owned destructive path, CSRF/rate-limit/cookie clearing, public-share cleanup and session cascade now also cover separately scoped calibration consent receipts; launch blockers remain explicit.');
