@@ -37,7 +37,8 @@ const requiredTables = [
   'result_snapshots',
   'public_share_snapshots',
   'product_events',
-  'rate_limit_buckets'
+  'rate_limit_buckets',
+  'calibration_consent_receipts'
 ];
 
 for (const table of requiredTables) {
@@ -76,7 +77,10 @@ const requiredFragments = [
   ['rate limit HMAC bucket hash', /bucket_hash\s+char\(64\)/i],
   ['rate limit count check', /request_count\s+integer\s+NOT NULL[\s\S]*request_count\s+>=\s+1/i],
   ['rate limit expiry index', /CREATE INDEX\s+rate_limit_buckets_expires_idx/i],
-  ['completed raw-answer retention window guard', /session_completed_at\s*<=\s*now\(\)\s*-\s*interval\s*'90 days'/i]
+  ['completed raw-answer retention window guard', /session_completed_at\s*<=\s*now\(\)\s*-\s*interval\s*'90 days'/i],
+  ['calibration consent receipt guard', /CREATE TRIGGER\s+calibration_consent_receipts_guard/i],
+  ['calibration consent session-model guard', /calibration consent receipt model\/locale must match owning session/i],
+  ['calibration consent withdrawal-only update guard', /update may only withdraw consent/i]
 ];
 
 for (const [label, pattern] of requiredFragments) {
