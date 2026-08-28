@@ -42,5 +42,5 @@ TO pcs_runtime;
 -- No CREATE/ALTER/DROP/ROLE/EXTENSION grants belong to the runtime role.
 -- Versioned product/model/content definition tables are read-only at runtime.
 
--- calibration_consent_receipts is intentionally omitted: collection is not activated,
+-- The calibration-consent receipt table is intentionally omitted: collection is not activated,
 -- and the application runtime role must have zero access until consent/legal/governance gates change.
