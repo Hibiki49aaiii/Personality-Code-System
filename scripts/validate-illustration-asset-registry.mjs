@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { materializeIllustrationBriefs } from './materialize-illustration-briefs.mjs';
+import { inspectImageBytes } from './lib/image-metadata.mjs';
 
 const readJson=(p)=>JSON.parse(fs.readFileSync(p,'utf8'));
 const contract=readJson('data/illustration/v0.1-dev/asset-ingest-contract.json');
@@ -55,6 +56,20 @@ function validateFileRef(ref,label,{variant=false,target=null}={}) {
     const bytes=fs.readFileSync(ref.path);
     const digest=crypto.createHash('sha256').update(bytes).digest('hex');
     if (digest!==ref.sha256) errors.push(`${label}: committed file SHA-256 mismatch`);
+
+    try {
+      const actual=inspectImageBytes(bytes,ref.media_type);
+      if (ref.width!==undefined && actual.width!==ref.width) errors.push(`${label}: declared width ${ref.width} != byte width ${actual.width}`);
+      if (ref.height!==undefined && actual.height!==ref.height) errors.push(`${label}: declared height ${ref.height} != byte height ${actual.height}`);
+      if (variant && target && (actual.width!==target.width||actual.height!==target.height)) {
+        errors.push(`${label}: committed byte dimensions must be ${target.width}x${target.height}`);
+      }
+      if (!variant && ref.media_type!=='image/svg+xml' && (actual.width<contract.master.raster_min_width||actual.height<contract.master.raster_min_height)) {
+        errors.push(`${label}: committed master bytes below minimum dimensions`);
+      }
+    } catch (error) {
+      errors.push(`${label}: image-byte metadata invalid: ${error instanceof Error ? error.message : String(error)}`);
+    }
   } else if (ref.path) {
     errors.push(`${label}: referenced file does not exist in repository`);
   }
