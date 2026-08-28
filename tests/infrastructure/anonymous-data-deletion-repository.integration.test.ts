@@ -25,6 +25,7 @@ import {
 } from '../../src/infrastructure/persistence/schema';
 import { publicShareSnapshots } from '../../src/infrastructure/persistence/sharingSchema';
 import { productEvents } from '../../src/infrastructure/persistence/analyticsSchema';
+import { calibrationConsentReceipts } from '../../src/infrastructure/persistence/calibrationSchema';
 
 function oneTraitResult(): StructuredAssessmentResult {
   return {
@@ -126,6 +127,14 @@ test('bearer-owned deletion removes diagnostic rows, session analytics, and all 
       propertiesJson: {}
     });
 
+    await connection.db.insert(calibrationConsentReceipts).values({
+      sessionId: session.sessionId,
+      assessmentModelVersion: 'assessment-dev-v0.1',
+      consentVersion: 'calibration-consent-ja-v0.1-dev',
+      purposeId: 'psychometric-calibration-v0.1',
+      locale: 'ja-JP'
+    });
+
     const deletion = await deleteAnonymousAssessmentDataByToken(connection.db, session.token);
     assert.equal(deletion.sessionId, session.sessionId);
     assert.equal(deletion.deletedPublicShareCount, 2);
@@ -135,13 +144,14 @@ test('bearer-owned deletion removes diagnostic rows, session analytics, and all 
     assert.equal(await getPublicShareByToken(connection.db, firstShare.token), null);
     assert.equal(await getPublicShareByToken(connection.db, secondShare.token), null);
 
-    const [sessions, answers, scores, results, shares, analytics] = await Promise.all([
+    const [sessions, answers, scores, results, shares, analytics, calibrationConsents] = await Promise.all([
       connection.db.select().from(anonymousSessions).where(eq(anonymousSessions.sessionId, session.sessionId)),
       connection.db.select().from(assessmentAnswers).where(eq(assessmentAnswers.sessionId, session.sessionId)),
       connection.db.select().from(assessmentTraitScores).where(eq(assessmentTraitScores.sessionId, session.sessionId)),
       connection.db.select().from(resultSnapshots).where(eq(resultSnapshots.sessionId, session.sessionId)),
       connection.db.select().from(publicShareSnapshots).where(eq(publicShareSnapshots.shareSnapshotId, firstShare.shareSnapshotId)),
-      connection.db.select().from(productEvents).where(eq(productEvents.sessionId, session.sessionId))
+      connection.db.select().from(productEvents).where(eq(productEvents.sessionId, session.sessionId)),
+      connection.db.select().from(calibrationConsentReceipts).where(eq(calibrationConsentReceipts.sessionId, session.sessionId))
     ]);
 
     assert.equal(sessions.length, 0);
@@ -150,6 +160,7 @@ test('bearer-owned deletion removes diagnostic rows, session analytics, and all 
     assert.equal(results.length, 0);
     assert.equal(shares.length, 0);
     assert.equal(analytics.length, 0);
+    assert.equal(calibrationConsents.length, 0);
   } finally {
     await connection.close();
   }
