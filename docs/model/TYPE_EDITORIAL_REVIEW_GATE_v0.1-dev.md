@@ -34,7 +34,7 @@ The publication gate also requires:
 - a code schema with `public_use=true`;
 - the editorial catalog itself promoted to public use;
 - no open editorial issues;
-- approved illustration mapping;
+- approved illustration mapping backed by all reachable entries in `asset-production-registry.json` being `approved`, with non-null master/variants and all review checks true;
 - Phase 5C production public-model freeze.
 
 Therefore C01D can be fully reviewed internally without being misrepresented as a validated/public taxonomy.
@@ -53,4 +53,5 @@ A review entry may only become approved when reviewer identity, review date and 
 - reviewer/date evidence for approved entries;
 - code/catalog public-use consistency;
 - fail-closed publication state while C01D remains non-public;
-- publication gate blockers match actual repository state.
+- publication gate blockers match actual repository state;
+- `illustration_mapping_approved` is derived from the 64-entry production asset registry rather than manually asserted.
