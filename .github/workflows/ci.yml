@@ -97,6 +97,9 @@ jobs:
       - name: Validate release and rollback operations contract
         run: npm run validate:release-operations
 
+      - name: Validate release candidate evidence pack contract
+        run: npm run validate:release-evidence
+
       - name: Validate backup/restore privacy and quarantine policy
         run: npm run validate:backup-restore
 
@@ -192,3 +195,13 @@ jobs:
 
       - name: Browser E2E — 147 items to private result
         run: npm run test:e2e
+
+      - name: Freeze release candidate evidence pack
+        run: npm run evidence:release-candidate
+
+      - name: Upload release candidate evidence pack
+        uses: actions/upload-artifact@v4
+        with:
+          name: pcs-release-evidence-${{ github.sha }}
+          path: artifacts/release-evidence/release-candidate-evidence.json
+          retention-days: 30
