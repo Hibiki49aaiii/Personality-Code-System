@@ -18,7 +18,9 @@ The pack records:
 - exact assessment model version tuple;
 - code-schema public-use state;
 - public-launch / production-activation state;
-- canonical pending production evidence IDs;
+- canonical pending production evidence IDs and pending/complete counts;
+- exact incomplete Master Requirement IDs and delivery phase gates from the current launch gate;
+- human editorial review status counts;
 - current 64-art production status counts;
 - SHA-256 + byte length for release-critical source/config manifests;
 - every ordered SQL migration plus an aggregate migration-set SHA-256;
