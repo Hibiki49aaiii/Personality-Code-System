@@ -23,8 +23,10 @@ const owner=postgres(databaseUrl,{
 
 const AUTH_ROLE='pcs_calibration_auth';
 const ADMIN_ROLE='pcs_calibration_admin';
+const CONTROL_ROLE='pcs_calibration_export_control';
 const AUTH_PASSWORD='pcs-calibration-auth-ci-only';
 const ADMIN_PASSWORD='pcs-calibration-admin-ci-only';
+const CONTROL_PASSWORD='pcs-calibration-control-ci-only';
 const ADMIN_ACK='calibration-operator-admin-v0.1-dev';
 
 function roleDatabaseUrl(role,password) {
@@ -36,6 +38,7 @@ function roleDatabaseUrl(role,password) {
 
 const authDatabaseUrl=roleDatabaseUrl(AUTH_ROLE,AUTH_PASSWORD);
 const adminDatabaseUrl=roleDatabaseUrl(ADMIN_ROLE,ADMIN_PASSWORD);
+const controlDatabaseUrl=roleDatabaseUrl(CONTROL_ROLE,CONTROL_PASSWORD);
 
 async function roleExists(role) {
   const rows=await owner`
@@ -73,6 +76,7 @@ function cleanCliEnv(extra={}) {
   delete env.PCS_CALIBRATION_AUTH_DATABASE_URL;
   delete env.PCS_CALIBRATION_OPERATOR_TOKEN;
   delete env.PCS_CALIBRATION_OPERATOR_ADMIN_ACK;
+  delete env.PCS_CALIBRATION_EXPORT_CONTROL_DATABASE_URL;
   return {...env,...extra};
 }
 
@@ -116,12 +120,16 @@ function assertNoSecretLeak(result,secrets) {
 try {
   await dropRoleIfExists(AUTH_ROLE);
   await dropRoleIfExists(ADMIN_ROLE);
+  await dropRoleIfExists(CONTROL_ROLE);
 
   await owner.unsafe(
     `CREATE ROLE ${AUTH_ROLE} LOGIN PASSWORD '${AUTH_PASSWORD}'`
   );
   await owner.unsafe(
     `CREATE ROLE ${ADMIN_ROLE} LOGIN PASSWORD '${ADMIN_PASSWORD}'`
+  );
+  await owner.unsafe(
+    `CREATE ROLE ${CONTROL_ROLE} LOGIN PASSWORD '${CONTROL_PASSWORD}'`
   );
 
   const dbName=decodeURIComponent(new URL(databaseUrl).pathname.replace(/^\//,''));
@@ -139,18 +147,18 @@ try {
   `;
   const tableNames=tables.map((row)=>row.table_name);
 
-  const expectedAuth={
-    calibration_operators:new Set(['SELECT']),
-    calibration_operator_roles:new Set(['SELECT'])
-  };
+  const expectedAuth={};
   const expectedAdmin={
     calibration_operators:new Set(['SELECT','INSERT','UPDATE']),
     calibration_operator_roles:new Set(['SELECT','INSERT','DELETE'])
   };
 
+  const expectedControl={};
+
   for (const [role,expected] of [
     [AUTH_ROLE,expectedAuth],
-    [ADMIN_ROLE,expectedAdmin]
+    [ADMIN_ROLE,expectedAdmin],
+    [CONTROL_ROLE,expectedControl]
   ]) {
     for (const table of tableNames) {
       for (const privilege of ['SELECT','INSERT','UPDATE','DELETE']) {
@@ -181,6 +189,7 @@ try {
 
   const authSql=postgres(authDatabaseUrl,{max:1,connect_timeout:10,idle_timeout:5});
   const adminSql=postgres(adminDatabaseUrl,{max:1,connect_timeout:10,idle_timeout:5});
+  const controlSql=postgres(controlDatabaseUrl,{max:1,connect_timeout:10,idle_timeout:5});
   try {
     await expectDbDenied(
       'auth role operator write',
@@ -189,6 +198,41 @@ try {
         VALUES (${'a'.repeat(64)})
       `
     );
+    await expectDbDenied(
+      'auth role operator hash read',
+      ()=>authSql`SELECT credential_hash FROM calibration_operators LIMIT 1`
+    );
+    await expectDbDenied(
+      'control role operator hash read',
+      ()=>controlSql`SELECT credential_hash FROM calibration_operators LIMIT 1`
+    );
+
+    const helperFunction='public.pcs_require_active_calibration_operator_role(uuid,text)';
+    const authFunction='public.pcs_authenticate_calibration_operator(text)';
+    const requestFunction='public.pcs_request_calibration_export(text,text,text,text,text,text,text,text,text,text)';
+    const reviewFunction='public.pcs_review_calibration_export_request(text,uuid)';
+    const decideFunction='public.pcs_decide_calibration_export_request(text,uuid,text)';
+    const functionMatrix=[
+      [AUTH_ROLE,helperFunction,false],
+      [ADMIN_ROLE,helperFunction,false],
+      [CONTROL_ROLE,helperFunction,false],
+      [AUTH_ROLE,authFunction,true],
+      [AUTH_ROLE,requestFunction,false],
+      [AUTH_ROLE,reviewFunction,false],
+      [AUTH_ROLE,decideFunction,false],
+      [ADMIN_ROLE,authFunction,false],
+      [ADMIN_ROLE,requestFunction,false],
+      [CONTROL_ROLE,authFunction,true],
+      [CONTROL_ROLE,requestFunction,true],
+      [CONTROL_ROLE,reviewFunction,true],
+      [CONTROL_ROLE,decideFunction,true]
+    ];
+    for (const [role,signature,expected] of functionMatrix) {
+      const [row]=await owner`
+        SELECT has_function_privilege(${role},${signature},'EXECUTE') AS allowed
+      `;
+      assert.equal(row.allowed,expected,`${role} EXECUTE ${signature} privilege drift`);
+    }
     await expectDbDenied(
       'auth role ordinary session read',
       ()=>authSql`SELECT count(*) FROM anonymous_sessions`
@@ -213,9 +257,14 @@ try {
       'admin role DDL',
       ()=>adminSql.unsafe('CREATE TABLE pcs_calibration_admin_forbidden(id integer)')
     );
+    await expectDbDenied(
+      'control role DDL',
+      ()=>controlSql.unsafe('CREATE TABLE pcs_calibration_control_forbidden(id integer)')
+    );
   } finally {
     await authSql.end({timeout:5});
     await adminSql.end({timeout:5});
+    await controlSql.end({timeout:5});
   }
 
   const dir=mkdtempSync(join(tmpdir(),'pcs-calibration-auth-integration-'));
@@ -285,7 +334,7 @@ try {
     assert.equal(stored.credential_hash,expectedHash);
     assert.equal(stored.status,'active');
     assert.notEqual(stored.credential_hash,rawToken);
-    assertNoSecretLeak(issueResult,[rawToken,expectedHash,AUTH_PASSWORD,ADMIN_PASSWORD]);
+    assertNoSecretLeak(issueResult,[rawToken,expectedHash,AUTH_PASSWORD,ADMIN_PASSWORD,CONTROL_PASSWORD]);
 
     const authEnv=cleanCliEnv({
       PCS_CALIBRATION_AUTH_DATABASE_URL:authDatabaseUrl,
@@ -301,7 +350,7 @@ try {
       status:'active',
       roles:['calibration-export-requester','calibration-reviewer']
     });
-    assertNoSecretLeak(whoamiResult,[rawToken,expectedHash,AUTH_PASSWORD,ADMIN_PASSWORD]);
+    assertNoSecretLeak(whoamiResult,[rawToken,expectedHash,AUTH_PASSWORD,ADMIN_PASSWORD,CONTROL_PASSWORD]);
 
     const grantResult=runCli(
       [
@@ -428,7 +477,7 @@ try {
       grantAfterRevocation,
       wronglyPrivilegedIssue
     ]) {
-      assertNoSecretLeak(result,[rawToken,expectedHash,AUTH_PASSWORD,ADMIN_PASSWORD]);
+      assertNoSecretLeak(result,[rawToken,expectedHash,AUTH_PASSWORD,ADMIN_PASSWORD,CONTROL_PASSWORD]);
     }
 
     const missingAck=runCli(
@@ -461,5 +510,6 @@ try {
 } finally {
   await dropRoleIfExists(AUTH_ROLE);
   await dropRoleIfExists(ADMIN_ROLE);
+  await dropRoleIfExists(CONTROL_ROLE);
   await owner.end({timeout:5});
 }

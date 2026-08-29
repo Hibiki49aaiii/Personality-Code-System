@@ -375,9 +375,13 @@
         "ordinary runtime DB role has zero access to all calibration consent/operator-plane tables",
         "offline calibration operator issue/whoami/grant/revoke CLI with raw token excluded from argv/stdout",
         "exclusive 0600 one-time credential file",
-        "dedicated pcs_calibration_auth SELECT-only operator identity/role DB role",
         "dedicated pcs_calibration_admin limited to operator/role lifecycle tables",
-        "Wave JA-01 repository candidate scope frozen by ordered canonical-file SHA-256 identities"
+        "Wave JA-01 repository candidate scope frozen by ordered canonical-file SHA-256 identities",
+        "execute-only pcs_calibration_auth with zero direct operator-table privileges",
+        "execute-only pcs_calibration_export_control with zero direct table privileges",
+        "SECURITY DEFINER control functions use pg_catalog search_path and public-qualified application objects",
+        "DB-enforced frozen Wave JA-01 scope for export requests",
+        "atomic two-person approve/reject plus append-only bounded audit event"
       ],
       "evidence": [
         "calibration protocol validator",
@@ -392,9 +396,13 @@
         "calibration operator authentication PostgreSQL integration",
         "calibration operator DB-role exact privilege matrix",
         "beta wave scope-freeze validator",
-        "scope-freeze SHA-256 adversarial tests"
+        "scope-freeze SHA-256 adversarial tests",
+        "calibration export control CLI unit tests",
+        "calibration export control PostgreSQL integration",
+        "execute-only auth/control function privilege matrix",
+        "direct-table and alternate-scope adversarial denial tests"
       ],
-      "residual": "Consent, operator-plane audit/linkage, offline operator authentication and repository-frozen Wave JA-01 scope exist, but no runtime collection/export path is authorized. Production operator provisioning, raw materialization/offline purge, external preregistration, legal/privacy approval and deployed-environment prerequisites remain unresolved.",
+      "residual": "Consent, operator-plane audit/linkage, execute-only operator authentication/export-control tooling and repository-frozen Wave JA-01 scope exist, but no runtime collection or raw materialization path is authorized. Production operator/control-role provisioning, raw materialization/offline purge, external preregistration, legal/privacy approval and deployed-environment prerequisites remain unresolved.",
       "external_evidence_ids": [
         "phase5-beta-calibration"
       ]

@@ -1,0 +1,42 @@
+{
+  "export_control_policy_version": "calibration-export-control-policy-v0.1-dev",
+  "status": "engineering-implemented-runtime-materializer-disabled",
+  "runtime_web_surface_enabled": false,
+  "raw_export_materializer_enabled": false,
+  "collection_enabled": false,
+  "export_enabled": false,
+  "database_role": "pcs_calibration_export_control",
+  "environments": {
+    "database_url": "PCS_CALIBRATION_EXPORT_CONTROL_DATABASE_URL",
+    "operator_token": "PCS_CALIBRATION_OPERATOR_TOKEN"
+  },
+  "commands": [
+    "request",
+    "review",
+    "approve",
+    "reject"
+  ],
+  "scope_sources": {
+    "wave": "data/calibration/beta-wave-ja-01-draft.json",
+    "freeze": "data/calibration/beta-wave-ja-01-scope-freeze-v0.1-dev.json",
+    "consent": "data/calibration/consent-purpose-v0.1-dev.json",
+    "export_schema": "data/calibration/export-schema-v0.1-dev.json"
+  },
+  "scope_argv_allowed": false,
+  "token_argv_allowed": false,
+  "direct_table_access_allowed": false,
+  "request_requires_role": "calibration-export-requester",
+  "review_roles": [
+    "calibration-export-approver",
+    "calibration-reviewer"
+  ],
+  "decision_requires_role": "calibration-export-approver",
+  "requester_may_approve_own_request": false,
+  "decision_audit_required": true,
+  "production_provisioning_complete": false,
+  "notes": [
+    "The export control CLI governs request/review/approve/reject only; it does not materialize calibration records or artifacts.",
+    "The frozen Wave JA-01 scope is loaded from repository contracts and independently enforced in PostgreSQL migration 0010.",
+    "Actual production control-role provisioning remains external evidence."
+  ]
+}

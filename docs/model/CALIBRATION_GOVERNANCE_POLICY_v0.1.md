@@ -76,7 +76,7 @@ After withdrawal/self-deletion:
 3. the next analysis/export materialization must exclude them;
 4. restored backups must not reactivate them into active research use without withdrawal/deletion replay.
 
-The repository now implements pseudonymous record linkage plus an append-only withdrawal/session-deletion journal. Raw calibration export remains blocked even though offline operator credential/authentication tooling now exists, because production operator provisioning, raw export materialization/artifact handling and offline artifact purge/regeneration remain absent.
+The repository now implements pseudonymous record linkage plus an append-only withdrawal/session-deletion journal. Raw calibration export remains blocked even though offline operator credential/authentication and execute-only request/review/approve/reject control now exist, because production operator provisioning, raw export materialization/artifact handling and offline artifact purge/regeneration remain absent.
 
 ## 6. Aggregate / reproducibility artifacts
 
@@ -197,7 +197,8 @@ Implemented repository foundations:
 - pseudonymous calibration-record links bound to consent receipts;
 - append-only withdrawal/owner-session deletion journal that survives active-link deletion;
 - offline operator credential issuance/authentication/role-management/revocation CLI;
-- dedicated least-privilege pcs_calibration_auth and pcs_calibration_admin DB role contracts.
+- execute-only `pcs_calibration_auth` and `pcs_calibration_export_control` DB role contracts plus narrowly writable `pcs_calibration_admin`;
+- SECURITY DEFINER request/review/approve/reject functions with DB-enforced frozen Wave JA-01 scope and two-person decision.
 
 Still intentionally **not implemented/deployed**:
 - production operator DB-role/credential provisioning evidence;

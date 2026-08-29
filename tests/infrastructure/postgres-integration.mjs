@@ -40,7 +40,8 @@ async function applyMigrations() {
     '0006_privacy_delete_cascade_guards.sql',
     '0007_diagnostic_retention_answer_guard.sql',
     '0008_calibration_consent_receipts.sql',
-    '0009_calibration_operator_plane.sql'
+    '0009_calibration_operator_plane.sql',
+    '0010_calibration_export_control.sql'
   ]);
 
   for (const file of files) {

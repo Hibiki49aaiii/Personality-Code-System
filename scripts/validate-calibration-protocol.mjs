@@ -77,7 +77,7 @@ const expectedPrerequisiteStatus = {
   'legal-privacy-approval': 'pending-external',
   'production-environment-separation': 'pending-external',
   'retention-deletion-policy': 'policy-and-deletion-journal-ready-purge-executor-pending',
-  'operator-authorization-audit': 'engineering-implemented-runtime-disabled-production-provisioning-pending',
+  'operator-authorization-audit': 'control-workflow-implemented-runtime-disabled-production-provisioning-pending',
   'pre-registered-sample-plan': 'registration-ready-candidate-not-preregistered',
   'frozen-analysis-version-scope': 'repository-frozen-not-preregistered'
 };
@@ -129,6 +129,8 @@ if (protocol.governance_policy_foundation?.operator_authentication_implemented !
 if (protocol.governance_policy_foundation?.production_operator_provisioning_complete !== false) errors.push('production operator provisioning must remain pending');
 if (protocol.governance_policy_foundation?.operator_auth_policy_ref !== 'data/calibration/operator-auth-policy-v0.1-dev.json') errors.push('operator auth policy reference missing from protocol foundation');
 if (protocol.governance_policy_foundation?.operator_audit_storage_implemented !== true) errors.push('operator audit storage foundation missing');
+if (protocol.governance_policy_foundation?.export_control_workflow_implemented !== true) errors.push('offline export control workflow foundation missing');
+if (protocol.governance_policy_foundation?.export_control_policy_ref !== 'data/calibration/export-control-policy-v0.1-dev.json') errors.push('export control policy reference missing from protocol foundation');
 if (protocol.governance_policy_foundation?.raw_export_materializer_implemented !== false) errors.push('raw export materializer must remain pending');
 if (protocol.governance_policy_foundation?.targeted_calibration_record_linkage_and_journal_implemented !== true) errors.push('targeted record linkage/deletion journal foundation missing');
 if (protocol.governance_policy_foundation?.targeted_calibration_record_deletion_implemented !== false) errors.push('offline artifact purge executor must remain pending');

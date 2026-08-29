@@ -56,9 +56,9 @@ Current engineering decisions:
 - operator audit metadata uses a bounded allowlist and must not contain raw diagnostic/participant payload;
 - operator audit metadata uses a 365-day engineering baseline.
 
-Repository persistence implements hash-only operator identities, explicit role bindings, two-person export-request state, append-only bounded audit storage, pseudonymous calibration-record links and withdrawal/session-deletion events. Offline operator issuance/authentication/role-management/revocation tooling is also implemented with separate least-privilege `pcs_calibration_auth` and `pcs_calibration_admin` DB role contracts. The ordinary application runtime role still has zero privileges on all calibration operator-plane tables.
+Repository persistence implements hash-only operator identities, explicit role bindings, two-person export-request state, append-only bounded audit storage, pseudonymous calibration-record links and withdrawal/session-deletion events. Offline operator issuance/authentication/role-management/revocation plus request/review/approve/reject control tooling is implemented. `pcs_calibration_auth` and `pcs_calibration_export_control` are execute-only with zero direct table privileges; `pcs_calibration_admin` remains narrowly writable for credential/role lifecycle. The ordinary application runtime role still has zero privileges on all calibration operator-plane tables.
 
-The remaining operator-plane blockers are production operator provisioning evidence, raw export materialization/artifact handling and offline purge/regeneration. Collection/export therefore stay disabled. The 180/365-day values are engineering baselines, not final legal promises.
+The remaining operator-plane blockers are production operator provisioning evidence, raw export materialization/artifact handling and offline purge/regeneration; request/approval control itself is repository-implemented. Collection/export therefore stay disabled. The 180/365-day values are engineering baselines, not final legal promises.
 
 ## Version scope
 

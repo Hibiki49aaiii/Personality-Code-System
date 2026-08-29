@@ -44,12 +44,15 @@
   ],
   "database_roles": {
     "auth_role": "pcs_calibration_auth",
-    "admin_role": "pcs_calibration_admin"
+    "admin_role": "pcs_calibration_admin",
+    "auth_access_mode": "execute-only-security-definer",
+    "export_control_role": "pcs_calibration_export_control"
   },
   "production_provisioning_complete": false,
   "notes": [
     "This policy enables only offline operator credential/authentication tooling.",
     "It does not authorize raw calibration materialization, collection or export.",
-    "Actual production DB roles/operator credentials remain deployment evidence."
+    "Actual production DB roles/operator credentials remain deployment evidence.",
+    "The auth role has zero direct table privileges and authenticates only through pcs_authenticate_calibration_operator."
   ]
 }
