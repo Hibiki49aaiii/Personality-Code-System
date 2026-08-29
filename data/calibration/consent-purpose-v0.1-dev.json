@@ -32,7 +32,7 @@
       "operational-logs",
       "free-text"
     ],
-    "retention": "pending-final-legal-and-beta-protocol-approval",
+    "retention": "Engineering candidate: future row-level calibration artifacts are capped at 180 days after wave close, with earlier withdrawal/self-deletion taking precedence. Operator audit metadata uses a 365-day engineering baseline. Final legal/privacy approval remains pending and may require a new version.",
     "withdrawal": "withdrawal mechanics and deletion/re-generation obligations must be frozen before collection starts"
   },
   "activation_blockers": [
@@ -43,5 +43,6 @@
     "pre-registered-sample-plan",
     "frozen-analysis-version-scope",
     "production-environment-separation"
-  ]
+  ],
+  "governance_policy_ref": "data/calibration/governance-policy-v0.1-dev.json"
 }
