@@ -27,11 +27,22 @@ if (!migration.includes('calibration consent receipt model/locale must match own
 if (!migration.includes('calibration consent receipt identity is immutable')) errors.push('calibration receipt immutable identity guard missing');
 if (!migration.includes('update may only withdraw consent')) errors.push('calibration receipt withdrawal-only update guard missing');
 
-if (JSON.stringify(dbRole.runtime_no_access_tables ?? []) !== JSON.stringify(['calibration_consent_receipts'])) {
-  errors.push('runtime database role must explicitly classify calibration consent storage as no-access before activation');
-}
-if ((dbRole.runtime_table_privileges.calibration_consent_receipts ?? []).length !== 0) {
-  errors.push('runtime database role must have zero calibration consent table privileges before activation');
+const expectedCalibrationNoAccess=[
+  'calibration_consent_receipts',
+  'calibration_operators',
+  'calibration_operator_roles',
+  'calibration_export_requests',
+  'calibration_operator_audit_events',
+  'calibration_record_links',
+  'calibration_deletion_events'
+];
+for (const table of expectedCalibrationNoAccess) {
+  if (!(dbRole.runtime_no_access_tables ?? []).includes(table)) {
+    errors.push(`runtime database role must classify ${table} as no-access before activation`);
+  }
+  if ((dbRole.runtime_table_privileges?.[table] ?? []).length !== 0) {
+    errors.push(`runtime database role must have zero privileges on ${table} before activation`);
+  }
 }
 if (fs.existsSync('src/app/api/calibration')) errors.push('runtime calibration API route must not exist before activation');
 
