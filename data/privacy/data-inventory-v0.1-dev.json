@@ -105,6 +105,34 @@
         "calibration_consent_receipts"
       ],
       "governance_policy_ref": "data/calibration/governance-policy-v0.1-dev.json"
+    },
+    {
+      "id": "calibration-operator-governance",
+      "personal_data": true,
+      "purpose": "Authenticate pseudonymous calibration operators, bind least-privilege research roles, record two-person export decisions and retain bounded append-only operator accountability metadata.",
+      "retention": "operator-credential-until-revoked-or-governed-cleanup; operator-audit-365-days-engineering-baseline",
+      "public_by_default": false,
+      "third_party_export_default": false,
+      "collection_enabled": false,
+      "tables": [
+        "calibration_operators",
+        "calibration_operator_roles",
+        "calibration_export_requests",
+        "calibration_operator_audit_events"
+      ]
+    },
+    {
+      "id": "calibration-withdrawal-deletion-control",
+      "personal_data": true,
+      "purpose": "Maintain a pseudonymous calibration-record deletion target while consent is active and retain bounded append-only withdrawal/deletion events after the active link disappears.",
+      "retention": "active-record-link-owner-consent-bound; deletion-journal-retained-as-privacy-control-evidence-under-calibration-governance-policy",
+      "public_by_default": false,
+      "third_party_export_default": false,
+      "collection_enabled": false,
+      "tables": [
+        "calibration_record_links",
+        "calibration_deletion_events"
+      ]
     }
   ],
   "prohibited_default_collection": [
