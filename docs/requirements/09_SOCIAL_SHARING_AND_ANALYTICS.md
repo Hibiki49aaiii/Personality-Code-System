@@ -152,7 +152,7 @@ Production scheduling, independently durable monitoring/alerting and environment
 
 ### Calibration export gate
 
-Calibration is still deliberately separate from ordinary analytics. `docs/model/CALIBRATION_EXPORT_SPEC_v0.1.md` defines the future consent/governance prerequisites. No raw-answer calibration export endpoint/job is shipped before those prerequisites exist.
+Calibration is still deliberately separate from ordinary analytics. `docs/model/CALIBRATION_EXPORT_SPEC_v0.1.md` and `docs/model/CALIBRATION_GOVERNANCE_POLICY_v0.1.md` define the consent/governance prerequisites. Repository persistence now includes hash-only calibration operators, explicit roles, two-person export-request state, append-only bounded audit events, pseudonymous record links and withdrawal/deletion events; the ordinary runtime role has zero access to that plane. No raw-answer calibration export endpoint/job/materializer is shipped before the remaining prerequisites exist.
 
 ## Analytics events
 
