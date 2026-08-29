@@ -40,6 +40,24 @@ The repository now contains a **storage-only** consent receipt foundation withou
 
 This completes engineering groundwork for a future explicit consent state while deliberately refusing to collect anything yet.
 
+### Retention / operator governance foundation
+
+The repository now also contains a **policy-only** calibration governance contract:
+
+- `data/calibration/governance-policy-v0.1-dev.json`;
+- `docs/model/CALIBRATION_GOVERNANCE_POLICY_v0.1.md`;
+- `scripts/validate-calibration-governance.mjs`.
+
+Current engineering decisions:
+- future row-level calibration artifacts are capped at 180 days after wave close;
+- withdrawal/self-deletion overrides time-based retention;
+- withdrawn records must be purged/regenerated before further analysis;
+- raw export requires requester + different approver;
+- operator audit metadata uses a bounded allowlist and must not contain raw diagnostic/participant payload;
+- operator audit metadata uses a 365-day engineering baseline.
+
+This advances the two governance prerequisites to **policy-ready / implementation-pending** only. Operator authentication, append-only audit storage, raw export materialization and targeted deletion linkage remain absent and continue to block activation. The 180/365-day values are engineering baselines, not final legal promises.
+
 ## Version scope
 
 Every beta wave must identify the exact:
