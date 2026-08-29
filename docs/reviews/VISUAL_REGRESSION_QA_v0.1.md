@@ -73,7 +73,12 @@ It:
 5. installs the pinned Playwright Chromium dependency;
 6. runs only `visual-regression.spec.ts` with `--update-snapshots`;
 7. commits the generated baseline PNGs and `package-lock.json` when changed;
-8. uploads the same files as a short-lived Actions artifact for independent inspection.
+8. writes that commit back only to the branch that triggered the workflow;
+9. uploads the same files as a short-lived Actions artifact for independent inspection.
+
+The writeback step is fail-closed: it requires a branch ref and refuses tag/detached/unresolved targets. It never force-pushes. A branch movement or rebase conflict must stop the job instead of overwriting another branch.
+
+For an intentional feature-branch visual change, use an `issue-*` branch and change the visual-regression spec (normally an explicit baseline-refresh marker) or the baseline workflow itself. Those path-limited changes may trigger the dedicated baseline workflow on that issue branch. Generated PNGs remain reviewable in the PR before they can reach `main`.
 
 The normal CI MUST NOT use `--update-snapshots`.
 
