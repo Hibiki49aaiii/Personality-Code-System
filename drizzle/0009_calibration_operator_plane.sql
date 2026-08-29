@@ -163,11 +163,11 @@ BEFORE UPDATE ON calibration_operators
 FOR EACH ROW EXECUTE FUNCTION pcs_validate_calibration_operator_update();
 
 CREATE OR REPLACE FUNCTION pcs_reject_calibration_operator_delete()
-RETURNS trigger LANGUAGE plpgsql AS $
+RETURNS trigger LANGUAGE plpgsql AS $$
 BEGIN
   RAISE EXCEPTION 'calibration operators must be revoked, not deleted';
 END;
-$;
+$$;
 
 CREATE TRIGGER calibration_operators_delete_guard
 BEFORE DELETE ON calibration_operators
@@ -177,7 +177,7 @@ CREATE OR REPLACE FUNCTION pcs_require_active_calibration_operator_role(
   target_operator_id uuid,
   required_role text
 )
-RETURNS void LANGUAGE plpgsql AS $
+RETURNS void LANGUAGE plpgsql AS $$
 DECLARE
   operator_status text;
   role_exists boolean;
@@ -203,10 +203,10 @@ BEGIN
     RAISE EXCEPTION 'calibration operator lacks required role %', required_role;
   END IF;
 END;
-$;
+$$;
 
 CREATE OR REPLACE FUNCTION pcs_validate_calibration_export_request_insert()
-RETURNS trigger LANGUAGE plpgsql AS $
+RETURNS trigger LANGUAGE plpgsql AS $$
 BEGIN
   PERFORM pcs_require_active_calibration_operator_role(
     NEW.requester_operator_id,
@@ -214,14 +214,14 @@ BEGIN
   );
   RETURN NEW;
 END;
-$;
+$$;
 
 CREATE TRIGGER calibration_export_requests_insert_guard
 BEFORE INSERT ON calibration_export_requests
 FOR EACH ROW EXECUTE FUNCTION pcs_validate_calibration_export_request_insert();
 
 CREATE OR REPLACE FUNCTION pcs_validate_calibration_export_request_update()
-RETURNS trigger LANGUAGE plpgsql AS $
+RETURNS trigger LANGUAGE plpgsql AS $$
 BEGIN
   IF NEW.request_id <> OLD.request_id
      OR NEW.requester_operator_id <> OLD.requester_operator_id
@@ -260,25 +260,25 @@ BEGIN
 
   RETURN NEW;
 END;
-$;
+$$;
 
 CREATE TRIGGER calibration_export_requests_update_guard
 BEFORE UPDATE ON calibration_export_requests
 FOR EACH ROW EXECUTE FUNCTION pcs_validate_calibration_export_request_update();
 
 CREATE OR REPLACE FUNCTION pcs_reject_calibration_export_request_delete()
-RETURNS trigger LANGUAGE plpgsql AS $
+RETURNS trigger LANGUAGE plpgsql AS $$
 BEGIN
   RAISE EXCEPTION 'calibration export requests are retained governance records';
 END;
-$;
+$$;
 
 CREATE TRIGGER calibration_export_requests_delete_guard
 BEFORE DELETE ON calibration_export_requests
 FOR EACH ROW EXECUTE FUNCTION pcs_reject_calibration_export_request_delete();
 
 CREATE OR REPLACE FUNCTION pcs_validate_calibration_audit_insert()
-RETURNS trigger LANGUAGE plpgsql AS $
+RETURNS trigger LANGUAGE plpgsql AS $$
 BEGIN
   IF NEW.action IN ('export-approved','export-rejected') THEN
     PERFORM pcs_require_active_calibration_operator_role(
@@ -302,14 +302,14 @@ BEGIN
 
   RETURN NEW;
 END;
-$;
+$$;
 
 CREATE TRIGGER calibration_operator_audit_events_insert_guard
 BEFORE INSERT ON calibration_operator_audit_events
 FOR EACH ROW EXECUTE FUNCTION pcs_validate_calibration_audit_insert();
 
 CREATE OR REPLACE FUNCTION pcs_reject_calibration_audit_mutation()
-RETURNS trigger LANGUAGE plpgsql AS $
+RETURNS trigger LANGUAGE plpgsql AS $$
 BEGIN
   RAISE EXCEPTION 'calibration operator audit events are append-only';
 END;
@@ -320,7 +320,7 @@ BEFORE UPDATE OR DELETE ON calibration_operator_audit_events
 FOR EACH ROW EXECUTE FUNCTION pcs_reject_calibration_audit_mutation();
 
 CREATE OR REPLACE FUNCTION pcs_validate_calibration_record_link_insert()
-RETURNS trigger LANGUAGE plpgsql AS $
+RETURNS trigger LANGUAGE plpgsql AS $$
 DECLARE
   consent_status text;
 BEGIN
@@ -335,25 +335,25 @@ BEGIN
 
   RETURN NEW;
 END;
-$;
+$$;
 
 CREATE TRIGGER calibration_record_links_insert_guard
 BEFORE INSERT ON calibration_record_links
 FOR EACH ROW EXECUTE FUNCTION pcs_validate_calibration_record_link_insert();
 
 CREATE OR REPLACE FUNCTION pcs_reject_calibration_record_link_update()
-RETURNS trigger LANGUAGE plpgsql AS $
+RETURNS trigger LANGUAGE plpgsql AS $$
 BEGIN
   RAISE EXCEPTION 'calibration record links are immutable';
 END;
-$;
+$$;
 
 CREATE TRIGGER calibration_record_links_immutable_update
 BEFORE UPDATE ON calibration_record_links
 FOR EACH ROW EXECUTE FUNCTION pcs_reject_calibration_record_link_update();
 
 CREATE OR REPLACE FUNCTION pcs_validate_calibration_record_link_delete()
-RETURNS trigger LANGUAGE plpgsql AS $
+RETURNS trigger LANGUAGE plpgsql AS $$
 DECLARE
   parent_exists boolean;
 BEGIN
@@ -369,7 +369,7 @@ BEGIN
 
   RETURN OLD;
 END;
-$;
+$$;
 
 CREATE TRIGGER calibration_record_links_delete_guard
 BEFORE DELETE ON calibration_record_links
@@ -406,7 +406,7 @@ AFTER UPDATE OF status ON calibration_consent_receipts
 FOR EACH ROW EXECUTE FUNCTION pcs_record_calibration_consent_withdrawal();
 
 CREATE OR REPLACE FUNCTION pcs_record_calibration_consent_delete()
-RETURNS trigger LANGUAGE plpgsql AS $
+RETURNS trigger LANGUAGE plpgsql AS $$
 DECLARE
   owner_session_exists boolean;
 BEGIN
@@ -428,7 +428,7 @@ BEGIN
 
   RETURN OLD;
 END;
-$;
+$$;
 
 CREATE TRIGGER calibration_consent_delete_deletion_event
 BEFORE DELETE ON calibration_consent_receipts
