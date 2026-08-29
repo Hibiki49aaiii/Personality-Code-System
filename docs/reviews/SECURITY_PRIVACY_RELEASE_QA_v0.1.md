@@ -12,7 +12,7 @@ The current repository already blocks or tests:
 - obvious committed secrets/private keys and sensitive public environment names;
 - production client bundle leakage/source maps;
 - required security headers;
-- cross-site state-changing requests through Origin / Fetch Metadata guards;
+- cross-site state-changing requests through Origin / Fetch Metadata guards, including session creation/resume and first-party client analytics ingestion; the security baseline validator freezes guard coverage for the current mutation-route inventory;
 - privacy-safe rate-limit and rejection responses;
 - production client-address resolution is fail-closed unless an explicit `PCS_CLIENT_IP_HEADER` is selected from the versioned allowlist; arbitrary/non-IP-shaped header values are rejected;
 - `database-role-policy-v0.1-dev` exactly covers every current runtime table with table-specific privileges, and CI creates a real restricted PostgreSQL login proving representative runtime DML works while CREATE/ALTER and definition writes are denied;
