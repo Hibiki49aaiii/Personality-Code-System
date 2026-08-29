@@ -92,7 +92,6 @@ jobs:
         run: npm run validate:diagnostic-retention
 
       - name: Validate beta calibration protocol remains gated
-        continue-on-error: true # TEMP issue #5 verification only; reverted after downstream checks
         run: npm run validate:calibration
 
       - name: Validate release and rollback operations contract
