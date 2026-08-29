@@ -37,7 +37,7 @@ The registration candidate is bound to:
 | Item count | 147 |
 | Direct Trait count | 21 |
 
-This scope is an exact **candidate** scope and remains `version_scope_frozen=false` until the preregistration/governance review explicitly freezes it.
+This scope is now repository-frozen with `version_scope_frozen=true`. The byte-level identity is recorded in `data/calibration/beta-wave-ja-01-scope-freeze-v0.1-dev.json` (ordered canonical files + SHA-256 aggregate). This does **not** mean the wave is externally preregistered.
 
 A semantic item/scoring/version change after external preregistration requires a documented amendment or a new wave/version. The old registered wave must not be silently rewritten.
 
@@ -370,11 +370,11 @@ This draft remains blocked on:
 - calibration retention/deletion policy;
 - production operator provisioning evidence;
 - retest linkage schema/consent if retest is activated;
-- explicit version-scope freeze.
+- repository-frozen version scope identity (satisfied in repository; external preregistration still pending).
 
 Until those are resolved:
 - `preregistered=false`;
-- `version_scope_frozen=false`;
+- `version_scope_frozen=true`; // repository freeze only
 - `collection_enabled=false`;
 - `export_enabled=false`;
 - `collection_start_allowed=false`.
