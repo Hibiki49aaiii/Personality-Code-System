@@ -1,6 +1,11 @@
 import { expect, test } from '@playwright/test';
 
 test('cookie-authenticated mutations reject cross-site browser origins without leaking internals', async ({ request }) => {
+  const hostileHeaders = {
+    origin: 'https://attacker.example',
+    'sec-fetch-site': 'cross-site'
+  };
+
   const hostileSession = await request.post('/api/assessment/session', {
     headers: hostileHeaders
   });
@@ -27,11 +32,6 @@ test('cookie-authenticated mutations reject cross-site browser origins without l
     items: Array<{ id: string }>;
   };
   expect(state.items.length).toBeGreaterThan(0);
-
-  const hostileHeaders = {
-    origin: 'https://attacker.example',
-    'sec-fetch-site': 'cross-site'
-  };
 
   const answer = await request.put('/api/assessment/answer', {
     headers: hostileHeaders,
