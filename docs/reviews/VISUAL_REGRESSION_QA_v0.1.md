@@ -122,8 +122,10 @@ Master `PCS-QA-006` is verified for the current development application:
 - 16 baseline PNGs are committed under `tests/e2e/visual-regression.spec.ts-snapshots/`;
 - `package-lock.json` is committed so CI/browser dependencies resolve reproducibly;
 - normal CI sets `PCS_VISUAL_REGRESSION=1` and compares without `--update-snapshots`;
-- CI Run 343 (`33047133202`) and Run 344 (`33047140525`) passed the committed visual comparison suite;
-- dedicated Visual Baseline Run 7 reproduced the same baselines from `npm ci` without requiring a new baseline commit.
+- the original enforced baseline was proven by CI Run 343 (`33047133202`) and Run 344 (`33047140525`), with Visual Baseline Run 7 reproducing that historical set from `npm ci`;
+- PR #11 intentionally refreshed the six landing screenshots for the editorial landing revision;
+- current normal comparison is green in CI Run 762 (`33240042395`) and remains green after the branch-safe baseline workflow change in CI Run 764 (`33240600043`);
+- current Visual Baseline Run 18 (`33240600054`) reproduced all committed baselines without requiring a new baseline commit.
 
 Future intentional visual changes must follow the baseline-change rule above.
 

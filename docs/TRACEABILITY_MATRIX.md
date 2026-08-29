@@ -74,7 +74,7 @@ A checkbox in `REQUIREMENTS.md` is marked complete only when inspectable specifi
 | PCS-OPS-006 | fail-closed runtime gate + canonical evidence governance / launch blocked | launch/activation gates + 18-record production evidence registry | all gate keys exactly bound; retention scheduler and log-provider privacy now explicit launch blockers; unsupported completion fails CI | launch/runtime/evidence/threat validators + browser/domain evidence | all production/manual/research evidence remains pending |
 | PCS-QA-004 | complete through Phase 4A-1 journey | E2E path contract | Playwright Chromium flow | start → back/edit → 147 answers → private result → explicit public share → cookie-free view/cards → revoke/404 |
 | PCS-QA-005 | advanced partial | automated axe + keyboard/touch/mobile + 200% scaling evidence; manual AT release record defined | `responsive-accessibility.spec.ts`, `MANUAL_ACCESSIBILITY_RELEASE_QA_v0.1.md` | current CI after large-text test | human assistive-tech/real zoom walkthrough remains NOT RUN |
-| PCS-QA-006 | complete (current development application) | `visual-regression.spec.ts` + 16 committed Linux/Chromium baselines + controlled update workflow | normal CI comparison mode; Runs 343/344 green | landing/assessment six widths + result/public-share 390/1440; baseline updates require review |
+| PCS-QA-006 | complete (current development application) | `visual-regression.spec.ts` + 16 committed Linux/Chromium baselines + controlled branch-safe update workflow | current normal comparison: CI Run 762 (`33240042395`) + Run 764 (`33240600043`); Visual Baseline Run 18 (`33240600054`) reproduces committed set | landing/assessment six widths + result/public-share 390/1440; PR #11 intentionally refreshed landing baselines; baseline updates require review |
 | PCS-QA-007 | advanced automated threat/security foundation / external review gate open | security/privacy QA + threat model + CodeQL + production evidence registry | 16 threat records; CodeQL JS/TS security-extended on main/PR/weekly; proxy/DB/backup/log controls machine-tested | threat-model/release-security/CodeQL-contract/DB-role/backup/log/privacy validators + CodeQL workflow | external security review and production edge/roles/TLS/secrets/logs/backup/deletion-replay remain |
 
 ## Requirement governance evidence
@@ -158,7 +158,7 @@ This is engineering completeness evidence only. It does not complete the publish
 - Dependency reproducibility: committed `package-lock.json`; normal/visual jobs use `npm ci`.
 - Baseline scope: landing + assessment at 320/390/768/1024/1280/1440; completed private result + sanitized public share at 390/1440.
 - Normal CI sets `PCS_VISUAL_REGRESSION=1` and compares without `--update-snapshots`.
-- Evidence: CI Run 343 (`33047133202`) and Run 344 (`33047140525`) passed the committed baseline comparison; Visual Baseline Run 7 reproduced the same snapshots from the lockfile.
+- Historical establishment evidence: CI Run 343 (`33047133202`) and Run 344 (`33047140525`) passed the original committed baseline comparison; Visual Baseline Run 7 reproduced that historical set from the lockfile. Current landing baselines were intentionally refreshed by PR #11; current comparison is green in CI Run 762 (`33240042395`) and Run 764 (`33240600043`), and Visual Baseline Run 18 (`33240600054`) reproduces the current 16-screenshot set without drift.
 
 ## Security baseline evidence
 
