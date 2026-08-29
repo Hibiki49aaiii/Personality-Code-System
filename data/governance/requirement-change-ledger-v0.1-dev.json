@@ -589,6 +589,39 @@
         "self-approval/repeat-decision/alternate-scope/revoked-token adversarial tests",
         "CodeQL"
       ]
+    },
+    {
+      "change_id": "2026-08-29-calibration-answer-storage-foundation",
+      "date": "2026-08-29",
+      "requirements_version_after": "0.11.7",
+      "affected_requirement_ids": [
+        "PCS-ANA-003",
+        "PCS-SEC-001",
+        "PCS-QA-007"
+      ],
+      "change": "Add purpose-separated normalized calibration_records and calibration_item_responses tables under existing pseudonymous calibration_record_links, with exact Wave JA-01/model/item constraints, 147-response finalization, immutable item rows and zero runtime/operator privileges.",
+      "rationale": "A real closed-beta pipeline needs answer-level psychometric data, but reusing diagnostic assessment_answers would collapse purpose/retention boundaries. A dedicated fail-closed schema establishes integrity and deletion semantics before any runtime ingest or export materializer is authorized.",
+      "impacted_files": [
+        "drizzle/0011_calibration_answer_storage.sql",
+        "src/infrastructure/persistence/calibrationSchema.ts",
+        "tests/infrastructure/calibration-answer-storage.integration.mjs",
+        "data/security/database-role-policy-v0.1-dev.json",
+        "data/privacy/data-inventory-v0.1-dev.json",
+        "data/calibration/beta-protocol-v0.1-dev.json",
+        "data/calibration/governance-policy-v0.1-dev.json"
+      ],
+      "assessment_model_impact": "none-assessment-dev-v0.3 remains beta; storage schema is fixed to its frozen Wave JA-01 tuple but no calibration rows are collected",
+      "code_schema_impact": "none-C01D remains public_use=false and derived codes are prohibited from calibration answer storage",
+      "content_impact": "none",
+      "data_migration_impact": "0011 adds normalized calibration record/item-response tables and DB validation/finalization triggers/functions; no ingest role or runtime route is added",
+      "compatibility_impact": "ordinary diagnostic persistence remains unchanged; future calibration ingest/purge/retest/materializer work must use the separate pseudonymous tables and cannot silently reuse assessment_answers",
+      "evidence": [
+        "calibration answer storage validator",
+        "real PostgreSQL exact-scope/147-response finalization integration",
+        "withdrawal journal plus owner-session cascade test",
+        "runtime/auth/admin/control zero-access privilege tests",
+        "CodeQL"
+      ]
     }
   ]
 }
