@@ -44,6 +44,7 @@ const requiredTables = [
   'calibration_export_requests',
   'calibration_operator_audit_events',
   'calibration_record_links',
+  'calibration_retest_linkages',
   'calibration_deletion_events'
 ];
 
@@ -103,6 +104,12 @@ const requiredFragments = [
   ['calibration consent withdrawal deletion journal trigger', /CREATE TRIGGER\s+calibration_consent_withdrawal_deletion_event/i],
   ['calibration consent delete deletion journal trigger', /CREATE TRIGGER\s+calibration_consent_delete_deletion_event/i],
   ['calibration deletion journal append-only guard', /CREATE TRIGGER\s+calibration_deletion_events_append_only/i],
+  ['calibration retest hash-only claim credential', /claim_token_hash\s+char\(64\)\s+NOT NULL/i],
+  ['calibration retest linkage insert guard', /CREATE TRIGGER\s+calibration_retest_linkages_insert_guard/i],
+  ['calibration retest linkage update guard', /CREATE TRIGGER\s+calibration_retest_linkages_update_guard/i],
+  ['calibration retest withdrawal invalidation', /CREATE TRIGGER\s+calibration_retest_consent_withdrawal_invalidation/i],
+  ['calibration retest record-link deletion journal', /CREATE TRIGGER\s+calibration_retest_record_link_delete_journal/i],
+  ['calibration retest deletion reason', /retest-pair-invalidated/i],
   ['calibration auth security definer function', /CREATE OR REPLACE FUNCTION\s+public\.pcs_authenticate_calibration_operator[\s\S]*SECURITY DEFINER[\s\S]*SET search_path = pg_catalog/i],
   ['calibration export request security definer function', /CREATE OR REPLACE FUNCTION\s+public\.pcs_request_calibration_export[\s\S]*SECURITY DEFINER[\s\S]*SET search_path = pg_catalog/i],
   ['calibration export review security definer function', /CREATE OR REPLACE FUNCTION\s+public\.pcs_review_calibration_export_request[\s\S]*SECURITY DEFINER[\s\S]*SET search_path = pg_catalog/i],
