@@ -77,7 +77,7 @@ After withdrawal/self-deletion:
 3. the next analysis/export materialization must exclude them;
 4. restored backups must not reactivate them into active research use without withdrawal/deletion replay.
 
-Until the linkage/deletion mechanism exists, raw calibration export remains blocked.
+The repository now implements pseudonymous record linkage plus an append-only withdrawal/session-deletion journal. Raw calibration export remains blocked because no operator-facing authentication command, raw export materializer, or offline artifact purge executor exists.
 
 ## 6. Aggregate / reproducibility artifacts
 
@@ -126,7 +126,7 @@ The ordinary production application runtime DB role must not receive raw-export 
 
 ## 9. Operator audit contract
 
-Every future operator action affecting calibration export/privacy must produce a bounded audit event.
+The repository now provides append-only bounded audit-event storage. Every future operator command affecting calibration export/privacy must write one of these bounded audit events.
 
 Required metadata includes:
 - audit event ID;
@@ -187,15 +187,23 @@ A restored calibration artifact or research datastore must be treated as quarant
 
 Restore is not permission to resurrect withdrawn participant data into active analysis.
 
-## 14. Current implementation gaps
+## 14. Current implementation state
 
-The following are intentionally **not implemented** yet:
-- operator authentication/role binding;
-- operator audit storage;
-- raw export materializer;
-- targeted row-level calibration deletion linkage/queue.
+Implemented repository foundations:
+- hash-only calibration operator identity storage;
+- explicit operator role bindings;
+- DB-enforced active requester/approver roles and requester != approver;
+- immutable export-request scope with requested → approved/rejected transition;
+- append-only bounded operator audit storage;
+- pseudonymous calibration-record links bound to consent receipts;
+- append-only withdrawal/owner-session deletion journal that survives active-link deletion.
 
-These remain activation blockers.
+Still intentionally **not implemented**:
+- operator-facing authentication/authorization command or service;
+- raw export materializer/artifact storage;
+- offline artifact purge/regeneration executor.
+
+Those remaining pieces continue to block activation.
 
 ## 15. Activation boundary
 

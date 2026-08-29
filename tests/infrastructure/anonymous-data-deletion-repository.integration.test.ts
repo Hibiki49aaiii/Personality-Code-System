@@ -25,7 +25,11 @@ import {
 } from '../../src/infrastructure/persistence/schema';
 import { publicShareSnapshots } from '../../src/infrastructure/persistence/sharingSchema';
 import { productEvents } from '../../src/infrastructure/persistence/analyticsSchema';
-import { calibrationConsentReceipts } from '../../src/infrastructure/persistence/calibrationSchema';
+import {
+  calibrationConsentReceipts,
+  calibrationDeletionEvents,
+  calibrationRecordLinks
+} from '../../src/infrastructure/persistence/calibrationSchema';
 
 function oneTraitResult(): StructuredAssessmentResult {
   return {
@@ -127,13 +131,17 @@ test('bearer-owned deletion removes diagnostic rows, session analytics, and all 
       propertiesJson: {}
     });
 
-    await connection.db.insert(calibrationConsentReceipts).values({
+    const [calibrationConsent] = await connection.db.insert(calibrationConsentReceipts).values({
       sessionId: session.sessionId,
       assessmentModelVersion: 'assessment-dev-v0.1',
       consentVersion: 'calibration-consent-ja-v0.1-dev',
       purposeId: 'psychometric-calibration-v0.1',
       locale: 'ja-JP'
-    });
+    }).returning({ consentReceiptId: calibrationConsentReceipts.consentReceiptId });
+
+    const [calibrationLink] = await connection.db.insert(calibrationRecordLinks).values({
+      consentReceiptId: calibrationConsent.consentReceiptId
+    }).returning({ calibrationRecordId: calibrationRecordLinks.calibrationRecordId });
 
     const deletion = await deleteAnonymousAssessmentDataByToken(connection.db, session.token);
     assert.equal(deletion.sessionId, session.sessionId);
@@ -144,14 +152,16 @@ test('bearer-owned deletion removes diagnostic rows, session analytics, and all 
     assert.equal(await getPublicShareByToken(connection.db, firstShare.token), null);
     assert.equal(await getPublicShareByToken(connection.db, secondShare.token), null);
 
-    const [sessions, answers, scores, results, shares, analytics, calibrationConsents] = await Promise.all([
+    const [sessions, answers, scores, results, shares, analytics, calibrationConsents, calibrationLinks, deletionEvents] = await Promise.all([
       connection.db.select().from(anonymousSessions).where(eq(anonymousSessions.sessionId, session.sessionId)),
       connection.db.select().from(assessmentAnswers).where(eq(assessmentAnswers.sessionId, session.sessionId)),
       connection.db.select().from(assessmentTraitScores).where(eq(assessmentTraitScores.sessionId, session.sessionId)),
       connection.db.select().from(resultSnapshots).where(eq(resultSnapshots.sessionId, session.sessionId)),
       connection.db.select().from(publicShareSnapshots).where(eq(publicShareSnapshots.shareSnapshotId, firstShare.shareSnapshotId)),
       connection.db.select().from(productEvents).where(eq(productEvents.sessionId, session.sessionId)),
-      connection.db.select().from(calibrationConsentReceipts).where(eq(calibrationConsentReceipts.sessionId, session.sessionId))
+      connection.db.select().from(calibrationConsentReceipts).where(eq(calibrationConsentReceipts.sessionId, session.sessionId)),
+      connection.db.select().from(calibrationRecordLinks).where(eq(calibrationRecordLinks.calibrationRecordId, calibrationLink.calibrationRecordId)),
+      connection.db.select().from(calibrationDeletionEvents).where(eq(calibrationDeletionEvents.calibrationRecordId, calibrationLink.calibrationRecordId))
     ]);
 
     assert.equal(sessions.length, 0);
@@ -161,6 +171,8 @@ test('bearer-owned deletion removes diagnostic rows, session analytics, and all 
     assert.equal(shares.length, 0);
     assert.equal(analytics.length, 0);
     assert.equal(calibrationConsents.length, 0);
+    assert.equal(calibrationLinks.length, 0);
+    assert.deepEqual(deletionEvents.map((event) => event.reason), ['owner-session-deleted']);
   } finally {
     await connection.close();
   }

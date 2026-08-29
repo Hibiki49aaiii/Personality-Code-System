@@ -23,7 +23,7 @@
 | Database backups | 35 days | Subject to deployment-provider recovery design. |
 | Calibration consent receipt | Owner-session-bound engineering behavior | Storage-only schema exists for a future explicit purpose/version receipt; runtime role has zero access until activation. If present through controlled testing/future activation, withdrawal is recorded and owner-session deletion cascades the receipt. Final legal retention promise remains pending. |
 | Calibration row-level research artifact | Max 180 days after wave close (engineering candidate) | Not created by default. Withdrawal/self-deletion overrides time retention; active offline artifacts must be purged/regenerated before further use. Final legal approval and implementation remain pending. |
-| Calibration operator audit metadata | 365 days (engineering candidate) | Future bounded operational accountability metadata only; raw responses/participant diagnostic payload are prohibited. Audit storage is not implemented yet. |
+| Calibration operator audit metadata | 365 days (engineering candidate) | Append-only bounded accountability storage now exists; raw responses/participant diagnostic payload are prohibited. Operator-facing auth/materialization tooling remains disabled. |
 | Public share result | Until revoked / source privacy deletion / later public policy | Phase 4 creates explicit sanitized snapshots. User revocation disables active links; bearer-owned full diagnostic deletion physically deletes shares derived from the private result. |
 
 ## Cleanup behavior

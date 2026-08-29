@@ -16,7 +16,8 @@
     "assessment_trait_scores",
     "result_snapshots",
     "product_events-session-bound",
-    "calibration_consent_receipts"
+    "calibration_consent_receipts",
+    "calibration_record_links"
   ],
   "directly_deleted_tables": [
     "public_share_snapshots"
@@ -37,13 +38,18 @@
     {
       "data": "database backups",
       "reason": "production backup deletion/restore behavior remains a launch-time legal/operations gate"
+    },
+    {
+      "data": "calibration deletion journal events",
+      "reason": "append-only pseudonymous calibrationRecordId + bounded deletion reason/time must survive active-link deletion so future offline research artifacts can be purged without retaining the private session capability"
     }
   ],
   "required_evidence": [
     "repository integration proves child/session/public-share removal",
     "database triggers permit owner-session cascade but reject direct completed child mutation",
     "browser E2E proves user control and cookie invalidation",
-    "hostile cross-site DELETE rejected before mutation"
+    "hostile cross-site DELETE rejected before mutation",
+    "calibration record link is removed while pseudonymous deletion journal survives owner deletion"
   ],
   "public_policy_ready": false,
   "remaining_public_policy_blockers": [

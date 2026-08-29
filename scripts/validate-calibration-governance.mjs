@@ -45,7 +45,7 @@ if (policy.authorization?.application_runtime_db_role_may_export !== false) erro
 if (policy.authorization?.approval_before_materialization_required !== true) errors.push('raw export approval must precede materialization');
 
 const audit=policy.audit_contract;
-if (audit?.storage_implemented !== false) errors.push('audit storage must not be falsely marked implemented');
+if (audit?.storage_implemented !== true) errors.push('append-only calibration operator audit storage must be implemented');
 if (audit?.append_only_required !== true) errors.push('future audit storage must be append-only');
 if (audit?.artifact_digest_algorithm !== 'sha256') errors.push('calibration artifact digest must be SHA-256');
 const requiredAuditFields=[
@@ -63,7 +63,8 @@ for (const field of requiredForbidden) if (!audit?.forbidden_fields?.includes(fi
 if (audit?.free_form_participant_data_allowed !== false) errors.push('free-form participant data must not enter audit');
 
 const withdrawal=policy.withdrawal_and_deletion;
-if (withdrawal?.deletion_queue_implemented !== false) errors.push('deletion queue must not be falsely marked implemented');
+if (withdrawal?.deletion_queue_implemented !== false) errors.push('offline artifact deletion/purge executor must remain unimplemented');
+if (withdrawal?.record_linkage_and_deletion_journal_implemented !== true) errors.push('pseudonymous calibration record linkage/deletion journal must be implemented');
 if (withdrawal?.export_regeneration_or_purge_required !== true) errors.push('withdrawal must require export purge/regeneration');
 if (withdrawal?.active_analysis_use_blocked_until_purge !== true) errors.push('active analysis use must block until withdrawal purge');
 if (withdrawal?.owner_session_deletion_must_remove_consent_receipt !== true) errors.push('owner deletion must remove consent receipt');
@@ -72,24 +73,33 @@ if (withdrawal?.restore_must_not_reactivate_withdrawn_records !== true) errors.p
 
 const impl=policy.implementation_status;
 if (impl?.retention_policy_ready !== true || impl?.operator_authorization_policy_ready !== true) errors.push('governance policy readiness flags incomplete');
-for (const key of ['operator_authentication_implemented','operator_audit_storage_implemented','raw_export_materializer_implemented','targeted_calibration_record_deletion_implemented']) {
-  if (impl?.[key] !== false) errors.push(`implementation must remain pending before separate implementation issue: ${key}`);
-}
+if (impl?.operator_authentication_implemented !== false) errors.push('operator-facing authentication must remain pending');
+if (impl?.operator_audit_storage_implemented !== true) errors.push('append-only operator audit storage implementation missing');
+if (impl?.raw_export_materializer_implemented !== false) errors.push('raw export materializer must remain pending');
+if (impl?.targeted_calibration_record_linkage_and_journal_implemented !== true) errors.push('targeted calibration record linkage/deletion journal foundation missing');
+if (impl?.targeted_calibration_record_deletion_implemented !== false) errors.push('offline artifact targeted purge executor must remain pending');
 
-if (protocol.prerequisite_engineering_status?.['retention-deletion-policy'] !== 'engineering-policy-ready-implementation-pending') {
+if (protocol.prerequisite_engineering_status?.['retention-deletion-policy'] !== 'policy-and-deletion-journal-ready-purge-executor-pending') {
   errors.push('beta protocol retention/deletion prerequisite status drift');
 }
-if (protocol.prerequisite_engineering_status?.['operator-authorization-audit'] !== 'engineering-policy-ready-implementation-pending') {
+if (protocol.prerequisite_engineering_status?.['operator-authorization-audit'] !== 'policy-and-append-only-storage-ready-auth-command-pending') {
   errors.push('beta protocol operator authorization/audit prerequisite status drift');
 }
 if (consent.legal_approved !== false || consent.collection_authorized !== false || consent.export_authorized !== false) {
   errors.push('consent contract must remain non-authorizing');
 }
-if (dbRole.runtime_no_access_tables?.includes('calibration_consent_receipts') !== true) {
-  errors.push('runtime role must retain no access to calibration consent receipts');
-}
-if ((dbRole.runtime_table_privileges?.calibration_consent_receipts ?? []).length !== 0) {
-  errors.push('runtime calibration consent privileges must remain empty');
+const operatorPlaneTables=[
+  'calibration_consent_receipts',
+  'calibration_operators',
+  'calibration_operator_roles',
+  'calibration_export_requests',
+  'calibration_operator_audit_events',
+  'calibration_record_links',
+  'calibration_deletion_events'
+];
+for (const table of operatorPlaneTables) {
+  if (dbRole.runtime_no_access_tables?.includes(table) !== true) errors.push(`runtime role no-access classification missing for ${table}`);
+  if ((dbRole.runtime_table_privileges?.[table] ?? []).length !== 0) errors.push(`runtime privileges must remain empty for ${table}`);
 }
 if (fs.existsSync('src/app/api/calibration')) errors.push('runtime calibration API route must not exist while governance implementation is pending');
 
@@ -100,4 +110,4 @@ if (errors.length) {
   for (const error of errors) console.error(`- ${error}`);
   process.exit(1);
 }
-console.log('Calibration governance validation passed: retention/deletion and two-person operator/audit policy are concrete, while legal approval, runtime export, audit storage and targeted deletion remain fail-closed.');
+console.log('Calibration governance validation passed: retention/deletion and two-person operator/audit policy are concrete, while legal approval, operator-facing authentication, raw export materialization and offline artifact purge remain fail-closed.');

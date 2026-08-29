@@ -47,7 +47,7 @@
     "approval_before_materialization_required": true
   },
   "audit_contract": {
-    "storage_implemented": false,
+    "storage_implemented": true,
     "append_only_required": true,
     "artifact_digest_algorithm": "sha256",
     "required_fields": [
@@ -97,29 +97,32 @@
     "active_analysis_use_blocked_until_purge": true,
     "owner_session_deletion_must_remove_consent_receipt": true,
     "future_row_level_linkage_must_support_targeted_deletion": true,
-    "restore_must_not_reactivate_withdrawn_records": true
+    "restore_must_not_reactivate_withdrawn_records": true,
+    "record_linkage_and_deletion_journal_implemented": true
   },
   "implementation_status": {
     "retention_policy_ready": true,
     "operator_authorization_policy_ready": true,
     "operator_authentication_implemented": false,
-    "operator_audit_storage_implemented": false,
+    "operator_audit_storage_implemented": true,
     "raw_export_materializer_implemented": false,
-    "targeted_calibration_record_deletion_implemented": false
+    "targeted_calibration_record_deletion_implemented": false,
+    "targeted_calibration_record_linkage_and_journal_implemented": true
   },
   "activation_blockers": [
     "final-legal-privacy-approval",
-    "operator-authentication-and-role-binding",
-    "operator-audit-storage",
     "raw-export-materializer",
-    "withdrawal-targeted-deletion-linkage",
     "production-environment-separation",
     "external-preregistration-record",
-    "frozen-version-scope"
+    "frozen-version-scope",
+    "operator-authentication-command-and-role-binding",
+    "withdrawal-offline-artifact-purge-executor"
   ],
   "notes": [
     "This is an engineering governance baseline, not a final legal/privacy promise.",
     "Policy-ready does not mean implementation-ready or activation-ready.",
-    "No runtime calibration collection/export surface is authorized by this policy."
+    "No runtime calibration collection/export surface is authorized by this policy.",
+    "Repository persistence now provides hash-only operator identities, role bindings, two-person export-request state, append-only operator audit storage, pseudonymous record linkage and append-only withdrawal/deletion events.",
+    "Operator-facing authentication commands and offline artifact purge/materialization remain unimplemented, so activation stays blocked."
   ]
 }

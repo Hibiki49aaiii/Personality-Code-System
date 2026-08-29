@@ -78,8 +78,8 @@
     "versioned-consent-purpose": "draft-contract-ready-not-approved",
     "legal-privacy-approval": "pending-external",
     "production-environment-separation": "pending-external",
-    "retention-deletion-policy": "engineering-policy-ready-implementation-pending",
-    "operator-authorization-audit": "engineering-policy-ready-implementation-pending",
+    "retention-deletion-policy": "policy-and-deletion-journal-ready-purge-executor-pending",
+    "operator-authorization-audit": "policy-and-append-only-storage-ready-auth-command-pending",
     "pre-registered-sample-plan": "registration-ready-candidate-not-preregistered",
     "frozen-analysis-version-scope": "exact-candidate-scope-ready-not-frozen"
   },
@@ -114,8 +114,9 @@
     "operator_authorization_policy_ready": true,
     "legal_approved": false,
     "operator_authentication_implemented": false,
-    "operator_audit_storage_implemented": false,
+    "operator_audit_storage_implemented": true,
     "raw_export_materializer_implemented": false,
-    "targeted_calibration_record_deletion_implemented": false
+    "targeted_calibration_record_deletion_implemented": false,
+    "targeted_calibration_record_linkage_and_journal_implemented": true
   }
 }

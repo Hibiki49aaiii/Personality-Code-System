@@ -27,11 +27,22 @@ if (!migration.includes('calibration consent receipt model/locale must match own
 if (!migration.includes('calibration consent receipt identity is immutable')) errors.push('calibration receipt immutable identity guard missing');
 if (!migration.includes('update may only withdraw consent')) errors.push('calibration receipt withdrawal-only update guard missing');
 
-if (JSON.stringify(dbRole.runtime_no_access_tables ?? []) !== JSON.stringify(['calibration_consent_receipts'])) {
-  errors.push('runtime database role must explicitly classify calibration consent storage as no-access before activation');
-}
-if ((dbRole.runtime_table_privileges.calibration_consent_receipts ?? []).length !== 0) {
-  errors.push('runtime database role must have zero calibration consent table privileges before activation');
+const expectedCalibrationNoAccess=[
+  'calibration_consent_receipts',
+  'calibration_operators',
+  'calibration_operator_roles',
+  'calibration_export_requests',
+  'calibration_operator_audit_events',
+  'calibration_record_links',
+  'calibration_deletion_events'
+];
+for (const table of expectedCalibrationNoAccess) {
+  if (!(dbRole.runtime_no_access_tables ?? []).includes(table)) {
+    errors.push(`runtime database role must classify ${table} as no-access before activation`);
+  }
+  if ((dbRole.runtime_table_privileges?.[table] ?? []).length !== 0) {
+    errors.push(`runtime database role must have zero privileges on ${table} before activation`);
+  }
 }
 if (fs.existsSync('src/app/api/calibration')) errors.push('runtime calibration API route must not exist before activation');
 
@@ -54,8 +65,8 @@ const expectedPrerequisiteStatus = {
   'versioned-consent-purpose': 'draft-contract-ready-not-approved',
   'legal-privacy-approval': 'pending-external',
   'production-environment-separation': 'pending-external',
-  'retention-deletion-policy': 'engineering-policy-ready-implementation-pending',
-  'operator-authorization-audit': 'engineering-policy-ready-implementation-pending',
+  'retention-deletion-policy': 'policy-and-deletion-journal-ready-purge-executor-pending',
+  'operator-authorization-audit': 'policy-and-append-only-storage-ready-auth-command-pending',
   'pre-registered-sample-plan': 'registration-ready-candidate-not-preregistered',
   'frozen-analysis-version-scope': 'exact-candidate-scope-ready-not-frozen'
 };
@@ -94,9 +105,12 @@ if (protocol.governance_policy_foundation?.retention_policy_ready !== true
   || protocol.governance_policy_foundation?.operator_authorization_policy_ready !== true) {
   errors.push('calibration governance policy readiness summary incomplete');
 }
-for (const key of ['legal_approved','operator_authentication_implemented','operator_audit_storage_implemented','raw_export_materializer_implemented','targeted_calibration_record_deletion_implemented']) {
-  if (protocol.governance_policy_foundation?.[key] !== false) errors.push(`calibration governance implementation/approval must remain pending: ${key}`);
-}
+if (protocol.governance_policy_foundation?.legal_approved !== false) errors.push('calibration legal approval must remain pending');
+if (protocol.governance_policy_foundation?.operator_authentication_implemented !== false) errors.push('operator-facing authentication must remain pending');
+if (protocol.governance_policy_foundation?.operator_audit_storage_implemented !== true) errors.push('operator audit storage foundation missing');
+if (protocol.governance_policy_foundation?.raw_export_materializer_implemented !== false) errors.push('raw export materializer must remain pending');
+if (protocol.governance_policy_foundation?.targeted_calibration_record_linkage_and_journal_implemented !== true) errors.push('targeted record linkage/deletion journal foundation missing');
+if (protocol.governance_policy_foundation?.targeted_calibration_record_deletion_implemented !== false) errors.push('offline artifact purge executor must remain pending');
 
 if (protocol.consent_storage_foundation?.table !== 'calibration_consent_receipts') errors.push('calibration consent storage table status missing');
 if (protocol.consent_storage_foundation?.runtime_role_access_allowed !== false) errors.push('runtime consent access must remain disabled');
