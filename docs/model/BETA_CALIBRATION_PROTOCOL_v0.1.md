@@ -42,7 +42,7 @@ This completes engineering groundwork for a future explicit consent state while 
 
 ### Retention / operator governance foundation
 
-The repository now also contains a **policy-only** calibration governance contract:
+The repository now contains a calibration governance contract plus a **fail-closed operator-plane persistence foundation**:
 
 - `data/calibration/governance-policy-v0.1-dev.json`;
 - `docs/model/CALIBRATION_GOVERNANCE_POLICY_v0.1.md`;
@@ -56,7 +56,9 @@ Current engineering decisions:
 - operator audit metadata uses a bounded allowlist and must not contain raw diagnostic/participant payload;
 - operator audit metadata uses a 365-day engineering baseline.
 
-This advances the two governance prerequisites to **policy-ready / implementation-pending** only. Operator authentication, append-only audit storage, raw export materialization and targeted deletion linkage remain absent and continue to block activation. The 180/365-day values are engineering baselines, not final legal promises.
+Repository persistence now implements hash-only operator identities, explicit role bindings, two-person export-request state, append-only bounded audit storage, pseudonymous calibration-record links and withdrawal/session-deletion events. The ordinary application runtime role has zero privileges on all of these tables.
+
+The remaining blockers are operator-facing authentication tooling, raw export materialization/artifact handling and offline purge/regeneration. Collection/export therefore stay disabled. The 180/365-day values are engineering baselines, not final legal promises.
 
 ## Version scope
 
