@@ -1,6 +1,6 @@
 # BETA_CALIBRATION_PROTOCOL_v0.1
 
-> Status: planning-only / no calibration collection enabled
+> Status: planning-only / Wave JA-01 registration-ready candidate / no calibration collection enabled
 > Protocol: `beta-calibration-protocol-v0.1-dev`
 > Locale scope: `ja-JP`
 > Date: 2026-08-27
@@ -52,6 +52,22 @@ Every beta wave must identify the exact:
 
 Data from incompatible versions must not be silently pooled for confirmatory claims.
 
+## Wave JA-01 registration-ready candidate
+
+The machine-readable Wave JA-01 plan is no longer an empty template. It now freezes the **candidate decisions** required for external preregistration review while deliberately keeping all activation flags false.
+
+Candidate decisions include:
+- adult Japanese-reading volunteer population and non-probability recruitment boundary;
+- exact `assessment-dev-v0.3` / item-bank / scoring / Trait Dictionary / locale tuple;
+- N=1000 target, N=800 primary structural-bundle minimum and a result-independent 56-day stop rule;
+- deterministic 70/30 development/holdout split from the random calibration record ID hash;
+- narrow primary exclusions plus response-style sensitivity analyses rather than ad-hoc deletion;
+- 14–21 day retest, target N=200 and low-precision downgrade below N=150;
+- ordinal/polychoric structural analysis, omega/ICC and pre-specified review triggers;
+- no Wave 01 demographic/DIF inference because the current export schema deliberately contains no demographic fields.
+
+This state is **registration-ready, not preregistered**. The external registration reference remains null, version scope remains unfrozen, and collection/export remain disabled.
+
 ## Planned analysis bundle
 
 ### Item behavior
@@ -98,7 +114,7 @@ DIF and measurement-invariance work is conditional on adequate subgroup sample s
 
 The protocol intentionally contains **no universal numeric minimum N**.
 
-Before activation, the analysis plan must justify sample size against:
+Before activation, each wave analysis plan must justify sample size against:
 
 - item/model dimensionality;
 - precision/uncertainty targets;
@@ -106,7 +122,18 @@ Before activation, the analysis plan must justify sample size against:
 - expected retest attrition;
 - any subgroup/DIF scope.
 
+Wave JA-01 now has a registration-ready **wave-specific** candidate:
+- target eligible complete baseline N = 1000;
+- minimum N = 800 for the planned primary structural bundle;
+- stop at N=1000 eligible completes or 56 days after activation, whichever comes first;
+- N<800 downgrades the wave to pilot/descriptive evidence rather than silently relaxing the confirmation plan.
+
+These values are operational preregistration decisions for the 147-item/21-Trait candidate and deterministic holdout design. They are not a general participants-per-item rule and do not override model convergence, uncertainty, communalities, holdout adequacy or limitations.
+
 The justification must be written before using the final confirmation dataset where practical.
+
+Human-readable candidate:
+`docs/model/BETA_WAVE_JA_01_PREREGISTRATION_DRAFT.md`.
 
 ## Model-change ledger
 
