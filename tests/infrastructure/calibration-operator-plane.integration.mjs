@@ -114,6 +114,18 @@ try {
   assert.ok(approved.decided_at);
 
   await expectDbFailure(
+    'export request delete',
+    ()=>sql`DELETE FROM calibration_export_requests WHERE request_id=${request.request_id}`,
+    /retained governance records/i
+  );
+
+  await expectDbFailure(
+    'operator physical delete',
+    ()=>sql`DELETE FROM calibration_operators WHERE operator_id=${unprivileged.operator_id}`,
+    /must be revoked, not deleted/i
+  );
+
+  await expectDbFailure(
     'decided export request mutation',
     ()=>sql`
       UPDATE calibration_export_requests
@@ -167,6 +179,18 @@ try {
     RETURNING calibration_record_id
   `;
   assert.ok(link.calibration_record_id);
+
+  await expectDbFailure(
+    'active record link direct delete',
+    ()=>sql`DELETE FROM calibration_record_links WHERE calibration_record_id=${link.calibration_record_id}`,
+    /may only delete with its consent receipt/i
+  );
+
+  await expectDbFailure(
+    'consent receipt direct delete',
+    ()=>sql`DELETE FROM calibration_consent_receipts WHERE consent_receipt_id=${receipt.consent_receipt_id}`,
+    /may only delete with owner session/i
+  );
 
   await expectDbFailure(
     'record link mutation',
