@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 const visualEnabled = process.env.PCS_VISUAL_REGRESSION === '1';
+// Intentional baseline refresh trigger: Issue #9 public landing editorial refresh.
 // Intentional baseline refresh trigger: landing claim-review copy/sample alignment v0.1.
 // Intentional baseline refresh trigger: versioned curated fallback artwork + result snapshot v0.2.
 // Intentional baseline refresh trigger: owner data-deletion panel on private result.
