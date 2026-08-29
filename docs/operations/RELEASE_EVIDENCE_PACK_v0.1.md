@@ -16,6 +16,7 @@ The pack records:
 - full source commit SHA;
 - Master Requirements version;
 - exact assessment model version tuple;
+- Wave JA-01 repository scope-freeze manifest identity, including its ordered canonical-file SHA-256 aggregate;
 - code-schema public-use state;
 - public-launch / production-activation state;
 - canonical pending production evidence IDs and pending/complete counts;
