@@ -181,6 +181,7 @@ try {
   }
 
   const signatures={
+    helper:'public.pcs_require_active_calibration_operator_role(uuid,text)',
     auth:'public.pcs_authenticate_calibration_operator(text)',
     request:'public.pcs_request_calibration_export(text,text,text,text,text,text,text,text,text,text)',
     review:'public.pcs_review_calibration_export_request(text,uuid)',
