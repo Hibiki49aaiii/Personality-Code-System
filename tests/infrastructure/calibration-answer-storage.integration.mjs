@@ -291,7 +291,7 @@ try {
       DELETE FROM calibration_records
       WHERE calibration_record_id=${primary.calibrationRecordId}
     `,
-    /may only delete with its parent record link/i
+    /requires a privacy deletion event or parent-link cascade/i
   );
 
   await sql`
@@ -315,6 +315,47 @@ try {
   `;
   assert.equal(stillStored.record_count,1,'withdrawal must journal deletion but not pretend offline purge exists');
   assert.equal(stillStored.response_count,147);
+
+  const journalAuthorizedDelete=await sql`
+    DELETE FROM calibration_records
+    WHERE calibration_record_id=${primary.calibrationRecordId}
+    RETURNING calibration_record_id
+  `;
+  assert.equal(
+    journalAuthorizedDelete.length,
+    1,
+    'privacy journal must permit a future controlled purge to remove the record'
+  );
+  const [afterJournalDelete]=await sql`
+    SELECT count(*)::int AS response_count
+    FROM calibration_item_responses
+    WHERE calibration_record_id=${primary.calibrationRecordId}
+  `;
+  assert.equal(afterJournalDelete.response_count,0,'record-level privacy deletion must cascade item responses');
+
+  const withdrawnDraft=await createConsentBoundRecordLink();
+  await insertExactRecord(withdrawnDraft.calibrationRecordId);
+  await sql`
+    UPDATE calibration_consent_receipts
+    SET status='withdrawn',withdrawn_at=now(),updated_at=now()
+    WHERE consent_receipt_id=${withdrawnDraft.consentReceiptId}
+  `;
+  await expectDbFailure(
+    'withdrawn consent blocks further response insert',
+    ()=>sql`
+      INSERT INTO calibration_item_responses
+        (calibration_record_id,item_id,item_revision,locale,value)
+      VALUES
+        (
+          ${withdrawnDraft.calibrationRecordId},
+          ${first.item_id},
+          ${first.item_revision},
+          ${first.locale},
+          3
+        )
+    `,
+    /requires granted consent/i
+  );
 
   const withdrawnBeforeRecord=await createConsentBoundRecordLink();
   await sql`
@@ -350,6 +391,7 @@ try {
   );
 
   await sql`DELETE FROM anonymous_sessions WHERE session_id=${incomplete.sessionId}`;
+  await sql`DELETE FROM anonymous_sessions WHERE session_id=${withdrawnDraft.sessionId}`;
   await sql`DELETE FROM anonymous_sessions WHERE session_id=${withdrawnBeforeRecord.sessionId}`;
 
   console.log('Calibration answer storage integration passed: exact Wave JA-01 consent/model/item constraints, 147-response finalization, immutability, withdrawal journaling and parent privacy cascade are enforced while no runtime ingest path exists.');
