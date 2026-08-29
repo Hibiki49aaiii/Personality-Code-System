@@ -114,10 +114,13 @@ CREATE INDEX calibration_operator_audit_events_occurred_idx
 
 CREATE TABLE calibration_record_links (
   calibration_record_id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  consent_receipt_id uuid NOT NULL UNIQUE
+  consent_receipt_id uuid NOT NULL
     REFERENCES calibration_consent_receipts(consent_receipt_id) ON DELETE CASCADE,
   created_at timestamptz NOT NULL DEFAULT now()
 );
+
+CREATE UNIQUE INDEX calibration_record_links_consent_receipt_uq
+  ON calibration_record_links(consent_receipt_id);
 
 CREATE TABLE calibration_deletion_events (
   deletion_event_id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
