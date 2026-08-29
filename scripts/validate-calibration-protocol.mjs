@@ -54,8 +54,8 @@ const expectedPrerequisiteStatus = {
   'versioned-consent-purpose': 'draft-contract-ready-not-approved',
   'legal-privacy-approval': 'pending-external',
   'production-environment-separation': 'pending-external',
-  'retention-deletion-policy': 'pending-governance',
-  'operator-authorization-audit': 'pending-governance',
+  'retention-deletion-policy': 'engineering-policy-ready-implementation-pending',
+  'operator-authorization-audit': 'engineering-policy-ready-implementation-pending',
   'pre-registered-sample-plan': 'registration-ready-candidate-not-preregistered',
   'frozen-analysis-version-scope': 'exact-candidate-scope-ready-not-frozen'
 };
@@ -89,6 +89,15 @@ if (waveFoundation?.plan_ref !== expectedWavePlanRef) {
     errors.push('beta protocol/wave collection start must remain disabled');
   }
 }
+if (protocol.governance_policy_foundation?.policy_ref !== 'data/calibration/governance-policy-v0.1-dev.json') errors.push('calibration governance policy reference missing');
+if (protocol.governance_policy_foundation?.retention_policy_ready !== true
+  || protocol.governance_policy_foundation?.operator_authorization_policy_ready !== true) {
+  errors.push('calibration governance policy readiness summary incomplete');
+}
+for (const key of ['legal_approved','operator_authentication_implemented','operator_audit_storage_implemented','raw_export_materializer_implemented','targeted_calibration_record_deletion_implemented']) {
+  if (protocol.governance_policy_foundation?.[key] !== false) errors.push(`calibration governance implementation/approval must remain pending: ${key}`);
+}
+
 if (protocol.consent_storage_foundation?.table !== 'calibration_consent_receipts') errors.push('calibration consent storage table status missing');
 if (protocol.consent_storage_foundation?.runtime_role_access_allowed !== false) errors.push('runtime consent access must remain disabled');
 if (protocol.consent_storage_foundation?.owner_session_cascade_delete !== true) errors.push('consent receipt must remain owner-session deletable');
