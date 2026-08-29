@@ -78,8 +78,8 @@
     "versioned-consent-purpose": "draft-contract-ready-not-approved",
     "legal-privacy-approval": "pending-external",
     "production-environment-separation": "pending-external",
-    "retention-deletion-policy": "pending-governance",
-    "operator-authorization-audit": "pending-governance",
+    "retention-deletion-policy": "engineering-policy-ready-implementation-pending",
+    "operator-authorization-audit": "engineering-policy-ready-implementation-pending",
     "pre-registered-sample-plan": "registration-ready-candidate-not-preregistered",
     "frozen-analysis-version-scope": "exact-candidate-scope-ready-not-frozen"
   },
@@ -107,5 +107,15 @@
     "preregistered": false,
     "version_scope_frozen": false,
     "collection_start_allowed": false
+  },
+  "governance_policy_foundation": {
+    "policy_ref": "data/calibration/governance-policy-v0.1-dev.json",
+    "retention_policy_ready": true,
+    "operator_authorization_policy_ready": true,
+    "legal_approved": false,
+    "operator_authentication_implemented": false,
+    "operator_audit_storage_implemented": false,
+    "raw_export_materializer_implemented": false,
+    "targeted_calibration_record_deletion_implemented": false
   }
 }
