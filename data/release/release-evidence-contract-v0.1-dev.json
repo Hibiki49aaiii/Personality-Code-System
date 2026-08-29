@@ -22,7 +22,10 @@
     "data/code-schema/v0.1-dev.json",
     "data/content/dev-v0.3.json",
     "data/illustration/v0.1-dev/asset-production-registry.json",
-    "data/type-catalog/v0.1-dev/editorial-review-ledger.ja.json"
+    "data/type-catalog/v0.1-dev/editorial-review-ledger.ja.json",
+    "drizzle/0011_calibration_answer_storage.sql",
+    "data/security/database-role-policy-v0.1-dev.json",
+    "data/privacy/data-inventory-v0.1-dev.json"
   ],
   "migration_glob": "drizzle/*.sql",
   "required_summary_fields": [
