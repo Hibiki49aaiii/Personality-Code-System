@@ -101,6 +101,26 @@ try {
   assert.equal(modelItems.length,147,'Wave JA-01 storage contract requires exact 147-item model');
 
   await expectDbFailure(
+    'beta assessment model demotion',
+    ()=>sql`
+      UPDATE assessment_model_releases
+      SET status='draft'
+      WHERE model_version='assessment-dev-v0.3'
+    `,
+    /may only transition to published or retired/i
+  );
+
+  await expectDbFailure(
+    'beta assessment model tuple mutation',
+    ()=>sql`
+      UPDATE assessment_model_releases
+      SET scoring_version='scoring-v0.1-dev-drift-fixture'
+      WHERE model_version='assessment-dev-v0.3'
+    `,
+    /immutable version tuple/i
+  );
+
+  await expectDbFailure(
     'beta assessment model mapping mutation',
     ()=>sql`
       UPDATE assessment_model_items
@@ -258,21 +278,53 @@ try {
     /incomplete|missing model responses/i
   );
 
-  await sql`
-    UPDATE assessment_model_releases
-    SET scoring_version='scoring-v0.1-dev-drift-fixture'
+  let rollbackFixtureSeen=false;
+  try {
+    await sql.begin(async (tx)=>{
+      await tx`
+        UPDATE assessment_model_releases
+        SET status='retired'
+        WHERE model_version='assessment-dev-v0.3'
+      `;
+
+      await expectDbFailure(
+        'retired assessment model mapping mutation',
+        ()=>tx`
+          UPDATE assessment_model_items
+          SET weight_milli=weight_milli+1
+          WHERE model_version='assessment-dev-v0.3'
+            AND position=1
+        `,
+        /items belonging to a retired assessment model are immutable/i
+      );
+
+      await expectDbFailure(
+        'finalize after beta release retirement',
+        ()=>tx`SELECT public.pcs_finalize_calibration_record(${primary.calibrationRecordId})`,
+        /completion release tuple mismatch/i
+      );
+
+      throw new Error('ROLLBACK_RELEASE_RETIREMENT_FIXTURE');
+    });
+  } catch (error) {
+    assert.equal(
+      error instanceof Error ? error.message : String(error),
+      'ROLLBACK_RELEASE_RETIREMENT_FIXTURE'
+    );
+    rollbackFixtureSeen=true;
+  }
+  assert.equal(rollbackFixtureSeen,true);
+
+  const [restoredRelease]=await sql`
+    SELECT status,scoring_version
+    FROM assessment_model_releases
     WHERE model_version='assessment-dev-v0.3'
   `;
-  await expectDbFailure(
-    'finalize after beta release tuple drift',
-    ()=>sql`SELECT public.pcs_finalize_calibration_record(${primary.calibrationRecordId})`,
-    /completion release tuple mismatch/i
+  assert.deepEqual(
+    restoredRelease,
+    {status:'beta',scoring_version:'scoring-v0.1-dev'},
+    'retirement fixture must rollback completely'
   );
-  await sql`
-    UPDATE assessment_model_releases
-    SET scoring_version='scoring-v0.1-dev'
-    WHERE model_version='assessment-dev-v0.3'
-  `;
 
   await sql`SELECT public.pcs_finalize_calibration_record(${primary.calibrationRecordId})`;
 
