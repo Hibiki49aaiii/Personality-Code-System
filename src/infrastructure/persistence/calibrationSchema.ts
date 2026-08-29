@@ -164,7 +164,9 @@ export const calibrationOperatorAuditEvents = pgTable(
     waveId: text('wave_id').notNull(),
     exportSchemaVersion: text('export_schema_version').notNull(),
     consentVersion: text('consent_version').notNull(),
-    assessmentModelVersion: text('assessment_model_version').notNull(),
+    assessmentModelVersion: text('assessment_model_version')
+      .notNull()
+      .references(() => assessmentModelReleases.modelVersion, { onDelete: 'restrict' }),
     itemBankVersion: text('item_bank_version').notNull(),
     scoringVersion: text('scoring_version').notNull(),
     traitDictionaryVersion: text('trait_dictionary_version').notNull(),
