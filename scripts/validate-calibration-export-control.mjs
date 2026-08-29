@@ -108,12 +108,17 @@ for (const fragment of [
   'calibration self approval forbidden',
   'FOR UPDATE',
   'INSERT INTO public.calibration_operator_audit_events',
-  "REVOKE ALL ON FUNCTION public.pcs_decide_calibration_export_request(text,uuid,text) FROM PUBLIC"
+  "REVOKE ALL ON FUNCTION public.pcs_decide_calibration_export_request(text,uuid,text) FROM PUBLIC",
+  "CREATE OR REPLACE FUNCTION public.pcs_require_active_calibration_operator_role",
+  "FROM public.calibration_operators o",
+  "FROM public.calibration_operator_roles r",
+  "PERFORM public.pcs_require_active_calibration_operator_role",
+  "REVOKE ALL ON FUNCTION public.pcs_require_active_calibration_operator_role(uuid,text) FROM PUBLIC"
 ]) {
   if (!migration.includes(fragment)) errors.push(`export control migration missing ${fragment}`);
 }
 if ((migration.match(/SECURITY DEFINER/g) ?? []).length!==4) errors.push('all four export-control DB functions must be SECURITY DEFINER');
-if ((migration.match(/SET search_path = pg_catalog/g) ?? []).length!==4) errors.push('all four export-control DB functions must lock search_path');
+if ((migration.match(/SET search_path = pg_catalog/g) ?? []).length!==8) errors.push('four control functions plus four hardened trigger/helper functions must lock search_path');
 if (/\bFROM\s+calibration_/i.test(migration) || /\bINTO\s+calibration_/i.test(migration) || /\bUPDATE\s+calibration_/i.test(migration)) {
   errors.push('SECURITY DEFINER migration must schema-qualify calibration tables');
 }
