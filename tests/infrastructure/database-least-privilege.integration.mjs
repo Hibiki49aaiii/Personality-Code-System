@@ -106,10 +106,12 @@ try {
     `;
     await runtime`DELETE FROM rate_limit_buckets WHERE bucket_hash=${bucketHash}`;
 
-    await expectDenied(
-      'calibration consent read before activation',
-      ()=>runtime`SELECT count(*) FROM calibration_consent_receipts`
-    );
+    for (const table of policy.runtime_no_access_tables) {
+      await expectDenied(
+        `no-access table read ${table}`,
+        ()=>runtime.unsafe(`SELECT count(*) FROM "${table}"`)
+      );
+    }
     await expectDenied(
       'calibration consent write before activation',
       ()=>runtime.unsafe("INSERT INTO calibration_consent_receipts (session_id,assessment_model_version,consent_version,purpose_id,locale) VALUES ('00000000-0000-0000-0000-000000000000','assessment-dev-v0.1','calibration-consent-ja-v0.1-dev','psychometric-calibration-v0.1','ja-JP')")
@@ -132,7 +134,7 @@ try {
       ()=>runtime`DELETE FROM assessment_model_releases WHERE model_version='assessment-dev-v0.1'`
     );
 
-    console.log('Database least-privilege integration passed: runtime role can perform required representative DML/read operations, has zero access to pre-activation calibration consent storage, and cannot create/alter schema objects or write versioned definitions.');
+    console.log('Database least-privilege integration passed: runtime role can perform required representative DML/read operations, has zero access to pre-activation calibration consent/operator-plane storage, and cannot create/alter schema objects or write versioned definitions.');
   } finally {
     await runtime.end({timeout:3});
   }
