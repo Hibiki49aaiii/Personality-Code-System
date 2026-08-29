@@ -47,7 +47,9 @@
     "approval_before_materialization_required": true,
     "operator_auth_surface": "offline-cli-only",
     "operator_auth_policy_ref": "data/calibration/operator-auth-policy-v0.1-dev.json",
-    "operator_db_role_policy_ref": "data/security/calibration-operator-db-role-policy-v0.1-dev.json"
+    "operator_db_role_policy_ref": "data/security/calibration-operator-db-role-policy-v0.1-dev.json",
+    "export_control_surface": "offline-cli-execute-only-db-api",
+    "export_control_policy_ref": "data/calibration/export-control-policy-v0.1-dev.json"
   },
   "audit_contract": {
     "storage_implemented": true,
@@ -111,7 +113,8 @@
     "raw_export_materializer_implemented": false,
     "targeted_calibration_record_deletion_implemented": false,
     "targeted_calibration_record_linkage_and_journal_implemented": true,
-    "production_operator_provisioning_complete": false
+    "production_operator_provisioning_complete": false,
+    "export_control_workflow_implemented": true
   },
   "activation_blockers": [
     "final-legal-privacy-approval",
@@ -128,7 +131,8 @@
     "Repository persistence now provides hash-only operator identities, role bindings, two-person export-request state, append-only operator audit storage, pseudonymous record linkage and append-only withdrawal/deletion events.",
     "Offline operator credential issuance/authentication/revocation and role-management tooling is implemented with separate least-privilege auth/admin DB role contracts.",
     "Actual production operator DB roles and credentials are not provisioned; production provisioning evidence remains an activation blocker.",
-    "Wave JA-01 candidate version scope is repository-frozen by SHA-256 identities, without claiming external preregistration."
+    "Wave JA-01 candidate version scope is repository-frozen by SHA-256 identities, without claiming external preregistration.",
+    "Offline export request/review/approve/reject control is implemented through execute-only SECURITY DEFINER functions; no raw materializer exists."
   ],
   "version_scope_freeze": {
     "implemented": true,
