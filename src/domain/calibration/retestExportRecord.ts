@@ -130,6 +130,27 @@ export function validateCalibrationRetestExportRecordV02(
     );
   }
 
+  const expectedConsent =
+    value.measurementOccasion === 'baseline'
+      ? {
+          consentVersion: 'calibration-consent-ja-v0.1-dev',
+          purposeId: 'psychometric-calibration-v0.1'
+        }
+      : {
+          consentVersion: 'calibration-retest-consent-ja-v0.1-dev',
+          purposeId: 'psychometric-calibration-retest-v0.1'
+        };
+
+  if (
+    value.consentVersion !== expectedConsent.consentVersion
+    || value.purposeId !== expectedConsent.purposeId
+  ) {
+    throw new CalibrationRetestExportValidationError(
+      'CONSENT_OCCASION_MISMATCH',
+      'measurement occasion does not match the required consent/purpose identity'
+    );
+  }
+
   let base;
   try {
     base = validateCalibrationExportRecordV01(asV01Candidate(value));
