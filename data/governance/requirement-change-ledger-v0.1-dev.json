@@ -455,6 +455,40 @@
         "mixed-scope manifest test",
         "calibration protocol validator"
       ]
+    },
+    {
+      "change_id": "2026-08-29-calibration-operator-plane-persistence",
+      "date": "2026-08-29",
+      "requirements_version_after": "0.11.7",
+      "affected_requirement_ids": [
+        "PCS-ANA-003",
+        "PCS-LEGAL-001",
+        "PCS-SEC-001",
+        "PCS-QA-007"
+      ],
+      "change": "Add a fail-closed calibration research operator persistence plane with hash-only operator credentials, explicit roles, two-person export-request state, append-only bounded audit storage, pseudonymous calibration record linkage and append-only withdrawal/session-deletion events.",
+      "rationale": "Calibration raw-export tooling must not be implemented before privileged operator separation, accountability and withdrawal-targeted deletion invariants exist at the database layer.",
+      "impacted_files": [
+        "drizzle/0009_calibration_operator_plane.sql",
+        "src/infrastructure/persistence/calibrationSchema.ts",
+        "src/infrastructure/persistence/calibrationOperatorCredential.ts",
+        "data/calibration/governance-policy-v0.1-dev.json",
+        "data/security/database-role-policy-v0.1-dev.json",
+        "data/privacy/data-inventory-v0.1-dev.json",
+        "tests/infrastructure/calibration-operator-plane.integration.mjs"
+      ],
+      "assessment_model_impact": "none-assessment-dev-v0.3-remains-beta-and-calibration-collection-disabled",
+      "code_schema_impact": "none-C01D-remains-public_use_false",
+      "content_impact": "none-diagnostic-result-content-unchanged",
+      "data_migration_impact": "0009-calibration-operator-plane-additive-privileged-governance-tables-and-withdrawal-journal-triggers",
+      "compatibility_impact": "ordinary-application-runtime-retains-zero-access; no-public-or-runtime-calibration-API-added",
+      "evidence": [
+        "persistence schema validator",
+        "calibration operator credential unit tests",
+        "calibration operator-plane PostgreSQL integration",
+        "database least-privilege integration",
+        "calibration governance validator"
+      ]
     }
   ]
 }
