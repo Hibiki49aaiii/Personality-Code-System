@@ -58,12 +58,13 @@ Selected option: normalized calibration record + item response tables under exis
    - no off-model/mismatched response;
    - sets status complete + completed_at.
 
-4. Mutability:
+4. Mutability / privacy deletion:
    - record scope cannot change;
    - complete record cannot change;
    - response rows cannot update;
    - response rows cannot be directly deleted;
-   - privacy deletion occurs only by deleting parent `calibration_record_links`, which cascades record and responses.
+   - owner-session deletion through parent `calibration_record_links` cascades record and responses;
+   - a future controlled purge may delete a `calibration_records` row only after an append-only privacy deletion event exists; no role/executor receives that capability in this Issue.
 
 ## Security boundary
 
@@ -123,6 +124,8 @@ Update:
 - direct answer delete rejected;
 - completed record mutation rejected;
 - parent link deletion cascades storage;
+- withdrawal immediately blocks further draft-response inserts;
+- a deletion-journal event makes record-level purge structurally possible for a future controlled executor while no executor is granted here;
 - existing deletion journal remains inspectable.
 
 ### Privilege regression
