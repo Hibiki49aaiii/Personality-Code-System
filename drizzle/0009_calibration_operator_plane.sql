@@ -159,8 +159,55 @@ CREATE TRIGGER calibration_operators_update_guard
 BEFORE UPDATE ON calibration_operators
 FOR EACH ROW EXECUTE FUNCTION pcs_validate_calibration_operator_update();
 
+CREATE OR REPLACE FUNCTION pcs_require_active_calibration_operator_role(
+  target_operator_id uuid,
+  required_role text
+)
+RETURNS void LANGUAGE plpgsql AS $
+DECLARE
+  operator_status text;
+  role_exists boolean;
+BEGIN
+  SELECT status
+    INTO operator_status
+  FROM calibration_operators
+  WHERE operator_id = target_operator_id;
+
+  IF operator_status IS DISTINCT FROM 'active' THEN
+    RAISE EXCEPTION 'calibration operator must be active';
+  END IF;
+
+  SELECT EXISTS (
+    SELECT 1
+    FROM calibration_operator_roles
+    WHERE operator_id = target_operator_id
+      AND role = required_role
+  )
+  INTO role_exists;
+
+  IF role_exists IS NOT TRUE THEN
+    RAISE EXCEPTION 'calibration operator lacks required role %', required_role;
+  END IF;
+END;
+$;
+
+CREATE OR REPLACE FUNCTION pcs_validate_calibration_export_request_insert()
+RETURNS trigger LANGUAGE plpgsql AS $
+BEGIN
+  PERFORM pcs_require_active_calibration_operator_role(
+    NEW.requester_operator_id,
+    'calibration-export-requester'
+  );
+  RETURN NEW;
+END;
+$;
+
+CREATE TRIGGER calibration_export_requests_insert_guard
+BEFORE INSERT ON calibration_export_requests
+FOR EACH ROW EXECUTE FUNCTION pcs_validate_calibration_export_request_insert();
+
 CREATE OR REPLACE FUNCTION pcs_validate_calibration_export_request_update()
-RETURNS trigger LANGUAGE plpgsql AS $$
+RETURNS trigger LANGUAGE plpgsql AS $
 BEGIN
   IF NEW.request_id <> OLD.request_id
      OR NEW.requester_operator_id <> OLD.requester_operator_id
@@ -188,16 +235,56 @@ BEGIN
     RAISE EXCEPTION 'calibration export request decision requires a distinct approver';
   END IF;
 
+  PERFORM pcs_require_active_calibration_operator_role(
+    OLD.requester_operator_id,
+    'calibration-export-requester'
+  );
+  PERFORM pcs_require_active_calibration_operator_role(
+    NEW.approver_operator_id,
+    'calibration-export-approver'
+  );
+
   RETURN NEW;
 END;
-$$;
+$;
 
 CREATE TRIGGER calibration_export_requests_update_guard
 BEFORE UPDATE ON calibration_export_requests
 FOR EACH ROW EXECUTE FUNCTION pcs_validate_calibration_export_request_update();
 
+CREATE OR REPLACE FUNCTION pcs_validate_calibration_audit_insert()
+RETURNS trigger LANGUAGE plpgsql AS $
+BEGIN
+  IF NEW.action IN ('export-approved','export-rejected') THEN
+    PERFORM pcs_require_active_calibration_operator_role(
+      NEW.requester_operator_id,
+      'calibration-export-requester'
+    );
+    PERFORM pcs_require_active_calibration_operator_role(
+      NEW.approver_operator_id,
+      'calibration-export-approver'
+    );
+  ELSE
+    PERFORM pcs_require_active_calibration_operator_role(
+      NEW.requester_operator_id,
+      'calibration-privacy-operator'
+    );
+    PERFORM pcs_require_active_calibration_operator_role(
+      NEW.approver_operator_id,
+      'calibration-reviewer'
+    );
+  END IF;
+
+  RETURN NEW;
+END;
+$;
+
+CREATE TRIGGER calibration_operator_audit_events_insert_guard
+BEFORE INSERT ON calibration_operator_audit_events
+FOR EACH ROW EXECUTE FUNCTION pcs_validate_calibration_audit_insert();
+
 CREATE OR REPLACE FUNCTION pcs_reject_calibration_audit_mutation()
-RETURNS trigger LANGUAGE plpgsql AS $$
+RETURNS trigger LANGUAGE plpgsql AS $
 BEGIN
   RAISE EXCEPTION 'calibration operator audit events are append-only';
 END;
