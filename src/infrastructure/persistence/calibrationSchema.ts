@@ -213,6 +213,88 @@ export const calibrationRecordLinks = pgTable(
   ]
 );
 
+export const calibrationRetestLinkages = pgTable(
+  'calibration_retest_linkages',
+  {
+    retestPairId: uuid('retest_pair_id').primaryKey().defaultRandom(),
+    baselineCalibrationRecordId: uuid('baseline_calibration_record_id')
+      .notNull()
+      .references(() => calibrationRecordLinks.calibrationRecordId, { onDelete: 'cascade' }),
+    retestCalibrationRecordId: uuid('retest_calibration_record_id')
+      .references(() => calibrationRecordLinks.calibrationRecordId, { onDelete: 'cascade' }),
+    claimTokenHash: char('claim_token_hash', { length: 64 }).notNull(),
+    waveId: text('wave_id').notNull(),
+    assessmentModelVersion: text('assessment_model_version')
+      .notNull()
+      .references(() => assessmentModelReleases.modelVersion, { onDelete: 'restrict' }),
+    itemBankVersion: text('item_bank_version').notNull(),
+    scoringVersion: text('scoring_version').notNull(),
+    traitDictionaryVersion: text('trait_dictionary_version').notNull(),
+    locale: text('locale').notNull(),
+    eligibleFrom: timestamp('eligible_from', { withTimezone: true, mode: 'date' }).notNull(),
+    eligibleUntil: timestamp('eligible_until', { withTimezone: true, mode: 'date' }).notNull(),
+    status: text('status').notNull().default('issued'),
+    issuedAt: timestamp('issued_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow(),
+    claimedAt: timestamp('claimed_at', { withTimezone: true, mode: 'date' }),
+    invalidatedAt: timestamp('invalidated_at', { withTimezone: true, mode: 'date' })
+  },
+  (table) => [
+    uniqueIndex('calibration_retest_linkages_baseline_uq').on(table.baselineCalibrationRecordId),
+    uniqueIndex('calibration_retest_linkages_retest_uq').on(table.retestCalibrationRecordId),
+    uniqueIndex('calibration_retest_linkages_claim_token_hash_uq').on(table.claimTokenHash),
+    index('calibration_retest_linkages_status_window_idx').on(table.status, table.eligibleFrom, table.eligibleUntil),
+    check('calibration_retest_claim_token_hash_chk', sql`${table.claimTokenHash} ~ '^[a-f0-9]{64}
+  {
+    deletionEventId: uuid('deletion_event_id').primaryKey().defaultRandom(),
+    calibrationRecordId: uuid('calibration_record_id').notNull(),
+    reason: text('reason').notNull(),
+    occurredAt: timestamp('occurred_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow()
+  },
+  (table) => [
+    uniqueIndex('calibration_deletion_events_record_reason_uq').on(table.calibrationRecordId, table.reason),
+    index('calibration_deletion_events_occurred_idx').on(table.occurredAt),
+    check(
+      'calibration_deletion_event_reason_chk',
+      sql`${table.reason} in ('consent-withdrawn','owner-session-deleted','privacy-operator-purge','retest-pair-invalidated')`
+    )
+  ]
+);
+`),
+    check('calibration_retest_status_chk', sql`${table.status} in ('issued','claimed','invalidated')`),
+    check(
+      'calibration_retest_distinct_records_chk',
+      sql`${table.retestCalibrationRecordId} is null or ${table.retestCalibrationRecordId} <> ${table.baselineCalibrationRecordId}`
+    ),
+    check(
+      'calibration_retest_window_chk',
+      sql`${table.eligibleUntil} = ${table.eligibleFrom} + interval '7 days' and ${table.eligibleUntil} > ${table.eligibleFrom}`
+    ),
+    check(
+      'calibration_retest_state_chk',
+      sql`(
+        (
+          ${table.status} = 'issued'
+          and ${table.retestCalibrationRecordId} is null
+          and ${table.claimedAt} is null
+          and ${table.invalidatedAt} is null
+        )
+        or
+        (
+          ${table.status} = 'claimed'
+          and ${table.retestCalibrationRecordId} is not null
+          and ${table.claimedAt} is not null
+          and ${table.invalidatedAt} is null
+        )
+        or
+        (
+          ${table.status} = 'invalidated'
+          and ${table.invalidatedAt} is not null
+        )
+      )`
+    )
+  ]
+);
+
 export const calibrationDeletionEvents = pgTable(
   'calibration_deletion_events',
   {
