@@ -118,6 +118,16 @@ if (
 ) {
   errors.push('candidate retest export schema activation boundary drift');
 }
+const expectedConsentContract={
+  baseline_consent_version:'calibration-consent-ja-v0.1-dev',
+  baseline_purpose_id:'psychometric-calibration-v0.1',
+  retest_consent_version:'calibration-retest-consent-ja-v0.1-dev',
+  retest_purpose_id:'psychometric-calibration-retest-v0.1',
+  measurement_occasion_must_match_consent_purpose:true
+};
+if (JSON.stringify(schema.consent_contract)!==JSON.stringify(expectedConsentContract)) {
+  errors.push('candidate retest baseline/retest consent contract drift');
+}
 if (baselineSchema.export_schema_version!=='calibration-export-record-v0.1-dev' || baselineSchema.runtime_export_enabled!==false) {
   errors.push('baseline export v0.1 identity/disabled state drift');
 }
@@ -184,7 +194,8 @@ for (const fragment of [
   'PAIR_OCCASIONS',
   'MIXED_RETEST_PAIR',
   'PAIR_RECORD_ID_COLLISION',
-  'MIXED_EXPORT_SCOPE'
+  'MIXED_EXPORT_SCOPE',
+  'CONSENT_OCCASION_MISMATCH'
 ]) {
   if (!domain.includes(fragment)) errors.push(`candidate retest domain validator missing ${fragment}`);
 }
