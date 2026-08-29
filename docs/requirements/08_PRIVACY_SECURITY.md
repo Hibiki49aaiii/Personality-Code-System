@@ -79,8 +79,9 @@ The development application now also provides:
 - `poweredByHeader: false` suppresses the default Next.js framework disclosure and production browser source maps remain disabled;
 - `scripts/validate-release-security.mjs` rejects runtime AI/LLM dependencies/imports, sensitive `NEXT_PUBLIC_*` names, obvious committed credentials/private keys, unsafe dynamic HTML/code execution primitives, and server-only environment references from Client Components;
 - `scripts/audit-production-build.mjs` scans production client artifacts for source maps and configured/server-only secret identifiers or values;
-- `assertTrustedMutationRequest()` rejects cross-site state-changing requests before rate-limit/DB mutation work, and Chromium E2E verifies hostile Origin/Sec-Fetch-Site requests cannot save answers, complete assessments, create/revoke shares, or delete diagnostic data;
-- rejected mutation/error responses are checked for absence of attacker-controlled origins, secrets, stack details, and hash-like internal identifiers.
+- `assertTrustedMutationRequest()` rejects cross-site state-changing requests before rate-limit/DB mutation work, including anonymous session creation/resume and first-party client analytics ingestion; Chromium E2E verifies hostile Origin/Sec-Fetch-Site requests cannot create a diagnostic session, ingest client analytics, save answers, complete assessments, create/revoke shares, or delete diagnostic data;
+- rejected mutation/error responses are checked for absence of attacker-controlled origins, secrets, stack details, and hash-like internal identifiers;
+- `scripts/validate-security-baseline.mjs` freezes the current browser-facing mutation-route inventory and requires one trusted-mutation guard call per state-changing handler so CSRF coverage cannot silently drift.
 
 Verification evidence includes CI Run `33038326772` (Run 304) for the earlier rate-limit/security-header baseline and CI Run 373 (`33050505946`) for the current privacy inventory, release-security audit, typecheck/build, production-artifact audit, and Chromium security regression suite.
 

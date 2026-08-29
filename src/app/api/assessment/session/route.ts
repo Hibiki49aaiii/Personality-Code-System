@@ -6,6 +6,7 @@ import {
 import { withPcsDatabase } from '../../../../server/assessmentRuntime';
 import { recordServerProductEventBestEffort } from '../../../../server/productAnalytics';
 import { applyRateLimit } from '../../../../server/rateLimit';
+import { assertTrustedMutationRequest } from '../../../../server/requestSecurity';
 import {
   assessmentApiError,
   getAssessmentToken,
@@ -42,6 +43,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    assertTrustedMutationRequest(request);
     const resumed = await withPcsDatabase(async (db) => {
       await applyRateLimit(db, request, 'assessment-session-create');
       const outcome = await startOrResumeAnonymousAssessment(db, getAssessmentToken(request));

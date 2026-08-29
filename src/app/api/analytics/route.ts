@@ -10,6 +10,10 @@ import { withPcsDatabase } from '../../../server/assessmentRuntime';
 import { applyRateLimit, RateLimitExceededError } from '../../../server/rateLimit';
 import { logPrivacySafeServerFault } from '../../../server/privacySafeLog';
 import {
+  assertTrustedMutationRequest,
+  CrossSiteMutationError
+} from '../../../server/requestSecurity';
+import {
   getAssessmentToken,
   noStoreJson,
   rateLimitApiResponse
@@ -19,6 +23,22 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export async function POST(request: NextRequest) {
+  try {
+    assertTrustedMutationRequest(request);
+  } catch (error) {
+    if (error instanceof CrossSiteMutationError) {
+      return noStoreJson(
+        { error: 'CROSS_SITE_MUTATION_REJECTED', message: 'この操作は同一サイトから実行してください。' },
+        { status: 403 }
+      );
+    }
+    logPrivacySafeServerFault({ surface: 'analytics', category: 'unexpected' });
+    return noStoreJson(
+      { error: 'INTERNAL_ERROR', message: 'Analytics event could not be recorded.' },
+      { status: 500 }
+    );
+  }
+
   let body: { name?: unknown; properties?: unknown };
   try {
     body = await request.json() as { name?: unknown; properties?: unknown };
