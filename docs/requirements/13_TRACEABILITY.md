@@ -134,7 +134,7 @@ Before checking a milestone complete:
 | PCS-A11Y-001 | verified | real keyboard focus traversal through all 147 questions + finalization | Run 329; `responsive-accessibility.spec.ts` | app/a11y | Tab/Shift+Tab/Space/Enter only |
 | PCS-A11Y-002 | in-progress | semantic progress/radiogroup/error/meters, accessible palette, focus/reduced-motion/touch checks, axe scans | Run 329 | app/a11y | real assistive-tech/text zoom/final production review remains |
 | PCS-QA-005 | in-progress | automated axe + keyboard/touch/mobile coverage | Run 329 + `RESPONSIVE_ACCESSIBILITY_QA_v0.1.md` | QA/a11y | human assistive-tech/zoom/manual release review remains |
-| PCS-QA-006 | verified current development application | 16 committed Linux/Chromium screenshot baselines + normal CI comparison mode | CI Runs 343/344; `VISUAL_REGRESSION_QA_v0.1.md` | QA/visual | future production art/copy changes require reviewed baseline updates |
+| PCS-QA-006 | verified current development application | 16 committed Linux/Chromium screenshot baselines + normal CI comparison mode + branch-safe controlled refresh | CI Run 762 (`33240042395`), Run 764 (`33240600043`), Visual Baseline Run 18 (`33240600054`); `VISUAL_REGRESSION_QA_v0.1.md` | QA/visual | PR #11 refreshed landing baselines intentionally; future production art/copy changes require reviewed baseline updates |
 | PCS-QA-001 | verified | `.github/workflows/ci.yml` | validators + dependency audit + PostgreSQL/app/domain + typecheck/build + expanded Chromium E2E | app/QA | current CI includes responsive/keyboard/touch/axe/security/telemetry gates |
 | PCS-GOV-001..010 | verified as governance decisions | `REQUIREMENTS.md` + derivative requirement set | requirement-ID validator | governance | master meanings remain authoritative |
 | PCS-SCORE-001..006 | verified as development model engineering | reviewed Item Bank + scoring domain | Item Bank validators, scoring Golden tests | assessment | statistical calibration remains Phase 5 |
@@ -268,7 +268,7 @@ The public share is a deliberate sanitized export. It is not a different view ov
 - Change: freeze 16 Linux/Chromium screenshots covering landing/assessment at six mandatory widths plus completed private result/public share at mobile/desktop; add controlled baseline workflow and normal-CI comparison mode.
 - Reason: detect unintended visual drift separately from functional responsive assertions.
 - Versions: app/QA only; assessment/scoring/code/content semantics unchanged.
-- Evidence: baselines committed by Visual Baseline workflow; CI Runs 343/344 pass comparison without `--update-snapshots`; Visual Baseline Run 7 reproduces from committed lockfile.
+- Evidence at baseline establishment: baselines committed by Visual Baseline workflow; CI Runs 343/344 passed comparison without `--update-snapshots`; Visual Baseline Run 7 reproduced the historical set from the committed lockfile. Current evidence after the PR #11 landing refresh is CI Run 762 (`33240042395`) / Run 764 (`33240600043`) plus Visual Baseline Run 18 (`33240600054`).
 - Remaining: final production illustrations/type copy will intentionally require reviewed baseline updates.
 
 ## Material change records
