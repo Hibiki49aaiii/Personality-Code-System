@@ -5,6 +5,7 @@ const protocol=JSON.parse(fs.readFileSync('data/calibration/beta-protocol-v0.1-d
 const consent=JSON.parse(fs.readFileSync('data/calibration/consent-purpose-v0.1-dev.json','utf8'));
 const exportSchema=JSON.parse(fs.readFileSync('data/calibration/export-schema-v0.1-dev.json','utf8'));
 const dbRole=JSON.parse(fs.readFileSync('data/security/database-role-policy-v0.1-dev.json','utf8'));
+const operatorAuth=JSON.parse(fs.readFileSync('data/calibration/operator-auth-policy-v0.1-dev.json','utf8'));
 const errors=[];
 
 if (policy.governance_policy_version !== 'calibration-governance-policy-v0.1-dev') errors.push('unexpected calibration governance policy version');
@@ -73,7 +74,8 @@ if (withdrawal?.restore_must_not_reactivate_withdrawn_records !== true) errors.p
 
 const impl=policy.implementation_status;
 if (impl?.retention_policy_ready !== true || impl?.operator_authorization_policy_ready !== true) errors.push('governance policy readiness flags incomplete');
-if (impl?.operator_authentication_implemented !== false) errors.push('operator-facing authentication must remain pending');
+if (impl?.operator_authentication_implemented !== true) errors.push('offline operator authentication tooling implementation missing');
+if (impl?.production_operator_provisioning_complete !== false) errors.push('production operator provisioning must remain pending');
 if (impl?.operator_audit_storage_implemented !== true) errors.push('append-only operator audit storage implementation missing');
 if (impl?.raw_export_materializer_implemented !== false) errors.push('raw export materializer must remain pending');
 if (impl?.targeted_calibration_record_linkage_and_journal_implemented !== true) errors.push('targeted calibration record linkage/deletion journal foundation missing');
@@ -82,11 +84,29 @@ if (impl?.targeted_calibration_record_deletion_implemented !== false) errors.pus
 if (protocol.prerequisite_engineering_status?.['retention-deletion-policy'] !== 'policy-and-deletion-journal-ready-purge-executor-pending') {
   errors.push('beta protocol retention/deletion prerequisite status drift');
 }
-if (protocol.prerequisite_engineering_status?.['operator-authorization-audit'] !== 'policy-and-append-only-storage-ready-auth-command-pending') {
+if (protocol.prerequisite_engineering_status?.['operator-authorization-audit'] !== 'engineering-implemented-runtime-disabled-production-provisioning-pending') {
   errors.push('beta protocol operator authorization/audit prerequisite status drift');
 }
 if (consent.legal_approved !== false || consent.collection_authorized !== false || consent.export_authorized !== false) {
   errors.push('consent contract must remain non-authorizing');
+}
+if (operatorAuth.operator_auth_policy_version !== 'calibration-operator-auth-policy-v0.1-dev') {
+  errors.push('operator auth policy reference invalid');
+}
+if (operatorAuth.production_provisioning_complete !== false) {
+  errors.push('operator auth policy must not claim production provisioning complete');
+}
+if (policy.authorization?.operator_auth_surface !== 'offline-cli-only') {
+  errors.push('calibration operator authentication surface must remain offline CLI only');
+}
+if (policy.authorization?.operator_auth_policy_ref !== 'data/calibration/operator-auth-policy-v0.1-dev.json') {
+  errors.push('calibration operator auth policy reference missing');
+}
+if (policy.activation_blockers?.includes('operator-authentication-command-and-role-binding')) {
+  errors.push('obsolete operator authentication implementation blocker must be removed');
+}
+if (!policy.activation_blockers?.includes('operator-production-provisioning-evidence')) {
+  errors.push('production operator provisioning evidence blocker missing');
 }
 const operatorPlaneTables=[
   'calibration_consent_receipts',
@@ -110,4 +130,4 @@ if (errors.length) {
   for (const error of errors) console.error(`- ${error}`);
   process.exit(1);
 }
-console.log('Calibration governance validation passed: retention/deletion and two-person operator/audit policy are concrete, while legal approval, operator-facing authentication, raw export materialization and offline artifact purge remain fail-closed.');
+console.log('Calibration governance validation passed: retention/deletion and two-person operator/audit policy are concrete, while legal approval, production operator provisioning, raw export materialization and offline artifact purge remain fail-closed.');
