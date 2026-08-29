@@ -133,6 +133,19 @@
         "calibration_record_links",
         "calibration_deletion_events"
       ]
+    },
+    {
+      "id": "calibration-retest-linkage",
+      "personal_data": true,
+      "purpose": "Link one baseline and one retest calibration record through a random research pair ID and hash-only one-time claim credential without storing identity/contact/session capabilities.",
+      "retention": "active-linkage-consent-lineage-bound; invalidated on linked withdrawal/deletion; row-level research retention remains governed by calibration-governance-policy-v0.1-dev",
+      "public_by_default": false,
+      "third_party_export_default": false,
+      "collection_enabled": false,
+      "tables": [
+        "calibration_retest_linkages"
+      ],
+      "linkage_policy_ref": "data/calibration/retest-linkage-policy-v0.1-dev.json"
     }
   ],
   "prohibited_default_collection": [
