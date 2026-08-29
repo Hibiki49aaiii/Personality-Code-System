@@ -13,6 +13,8 @@ const governance=JSON.parse(
 const cli=fs.readFileSync('scripts/calibration-operator.mjs','utf8');
 const lib=fs.readFileSync('scripts/lib/calibration-operator-cli.mjs','utf8');
 const grants=fs.readFileSync('ops/sql/calibration-operator-role-grants.sql','utf8');
+const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
+const ci=fs.readFileSync('.github/workflows/ci.yml','utf8');
 const errors=[];
 
 if (authPolicy.operator_auth_policy_version!=='calibration-operator-auth-policy-v0.1-dev') {
@@ -93,6 +95,15 @@ if (authPolicy.database_roles?.admin_role!=='pcs_calibration_admin') errors.push
 if (authPolicy.production_provisioning_complete!==false) {
   errors.push('production operator provisioning must remain pending');
 }
+if (governance.implementation_status?.operator_authentication_implemented!==true) {
+  errors.push('calibration governance must record implemented offline operator authentication tooling');
+}
+if (governance.implementation_status?.production_operator_provisioning_complete!==false) {
+  errors.push('calibration governance must keep production operator provisioning pending');
+}
+if (!governance.activation_blockers?.includes('operator-production-provisioning-evidence')) {
+  errors.push('calibration governance production operator provisioning blocker missing');
+}
 
 if (dbPolicy.calibration_operator_db_role_policy_version!=='calibration-operator-db-role-policy-v0.1-dev') {
   errors.push('unexpected calibration operator DB role policy version');
@@ -172,6 +183,25 @@ if (/process\.argv[^\n]*token/i.test(cli)) errors.push('operator CLI appears to 
 if (/console\.log\s*\(/.test(cli)) errors.push('operator CLI must use bounded JSON writer instead of console.log');
 if (fs.existsSync(path.join('src','app','api','calibration'))) {
   errors.push('runtime calibration API must remain absent');
+}
+if (!fs.existsSync('docs/operations/CALIBRATION_OPERATOR_CLI_v0.1.md')) {
+  errors.push('calibration operator CLI runbook missing');
+}
+if (pkg.scripts?.['operator:calibration']!=='node scripts/calibration-operator.mjs') {
+  errors.push('calibration operator npm command missing');
+}
+if (pkg.scripts?.['test:calibration-operator-auth:integration']!=='node tests/infrastructure/calibration-operator-auth.integration.mjs') {
+  errors.push('calibration operator auth integration npm command missing');
+}
+if (!pkg.scripts?.['test:domain']?.includes('tests/infrastructure/calibration-operator-cli.test.mjs')) {
+  errors.push('calibration operator CLI unit test is not wired into domain/infrastructure tests');
+}
+if (!ci.includes('Calibration operator authentication integration')
+  || !ci.includes('npm run test:calibration-operator-auth:integration')) {
+  errors.push('CI calibration operator auth integration step missing');
+}
+if (ci.includes('PCS_CALIBRATION_OPERATOR_TOKEN:')) {
+  errors.push('CI workflow must not define a persistent/global calibration operator raw token');
 }
 
 if (errors.length) {
