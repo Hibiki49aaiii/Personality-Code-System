@@ -205,10 +205,12 @@ export const calibrationRecordLinks = pgTable(
     calibrationRecordId: uuid('calibration_record_id').primaryKey().defaultRandom(),
     consentReceiptId: uuid('consent_receipt_id')
       .notNull()
-      .unique()
       .references(() => calibrationConsentReceipts.consentReceiptId, { onDelete: 'cascade' }),
     createdAt: createdAt()
-  }
+  },
+  (table) => [
+    uniqueIndex('calibration_record_links_consent_receipt_uq').on(table.consentReceiptId)
+  ]
 );
 
 export const calibrationDeletionEvents = pgTable(
