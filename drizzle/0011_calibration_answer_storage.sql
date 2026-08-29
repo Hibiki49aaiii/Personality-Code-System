@@ -53,7 +53,7 @@ CREATE OR REPLACE FUNCTION public.pcs_protect_published_model_items()
 RETURNS trigger
 LANGUAGE plpgsql
 SET search_path = pg_catalog
-AS $
+AS $$
 DECLARE
   old_model_status text;
   new_model_status text;
@@ -90,7 +90,7 @@ BEGIN
 
   RETURN CASE WHEN TG_OP = 'DELETE' THEN OLD ELSE NEW END;
 END;
-$;
+$$;
 
 CREATE OR REPLACE FUNCTION public.pcs_validate_calibration_record_insert()
 RETURNS trigger
