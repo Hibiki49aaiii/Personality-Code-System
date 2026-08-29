@@ -1,0 +1,60 @@
+{
+  "calibration_operator_db_role_policy_version": "calibration-operator-db-role-policy-v0.1-dev",
+  "status": "repository-contract-tested-production-evidence-pending",
+  "migration_admin_separation_required": true,
+  "production_role_evidence_complete": false,
+  "roles": {
+    "pcs_calibration_auth": {
+      "schema_privileges": [
+        "USAGE"
+      ],
+      "schema_create_allowed": false,
+      "table_privileges": {
+        "calibration_operators": [
+          "SELECT"
+        ],
+        "calibration_operator_roles": [
+          "SELECT"
+        ]
+      }
+    },
+    "pcs_calibration_admin": {
+      "schema_privileges": [
+        "USAGE"
+      ],
+      "schema_create_allowed": false,
+      "table_privileges": {
+        "calibration_operators": [
+          "SELECT",
+          "INSERT",
+          "UPDATE"
+        ],
+        "calibration_operator_roles": [
+          "SELECT",
+          "INSERT",
+          "DELETE"
+        ]
+      }
+    }
+  },
+  "prohibited_capabilities": [
+    "ordinary-runtime-role-reuse",
+    "schema-create",
+    "ddl",
+    "participant-session-read",
+    "answer-read",
+    "consent-read",
+    "export-request-read-write",
+    "operator-audit-read-write",
+    "record-link-read-write",
+    "deletion-journal-read-write",
+    "raw-export-materialization"
+  ],
+  "external_evidence_required": [
+    "production-calibration-auth-role-identity",
+    "production-calibration-admin-role-identity",
+    "production-calibration-role-grant-dump",
+    "production-operator-credential-provisioning-record",
+    "production-operator-credential-revocation-procedure"
+  ]
+}
