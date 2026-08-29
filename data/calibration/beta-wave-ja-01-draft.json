@@ -14,7 +14,7 @@
     "scoring_version": "scoring-v0.1-dev",
     "trait_dictionary_version": "trait-dictionary-v0.2"
   },
-  "version_scope_frozen": false,
+  "version_scope_frozen": true,
   "recruitment_plan": {
     "population_description": "18歳以上で、ja-JP版PCSの説明と同意文を日本語で理解し、自発的に閉鎖betaへ参加できるオンライン成人ボランティア。確率標本ではなく、一般人口代表性を主張しない。",
     "recruitment_channels": [
@@ -111,8 +111,7 @@
     "production-environment-separation-evidence",
     "calibration-retention-deletion-policy",
     "operator-production-provisioning-evidence",
-    "retest-linkage-schema-and-consent",
-    "frozen-version-scope"
+    "retest-linkage-schema-and-consent"
   ],
   "notes": [
     "This is a registration-ready candidate, not an externally preregistered study.",
@@ -120,7 +119,8 @@
     "Target N=1000 and minimum N=800 are Wave 01 operational decisions, not universal sample-size rules.",
     "Wave 01 does not collect demographics and therefore does not support DIF/invariance inference.",
     "Any post-registration change to sample, exclusion, holdout, retest or version scope requires a documented amendment/new wave decision.",
-    "Operator authentication/role-management tooling is repository-implemented, but production operator provisioning evidence remains absent."
+    "Operator authentication/role-management tooling is repository-implemented, but production operator provisioning evidence remains absent.",
+    "Repository candidate version scope is frozen by SHA-256 identity manifest; this is not external preregistration."
   ],
   "registration_ready": true,
   "analysis_decision_policy": {
@@ -154,5 +154,7 @@
     "demographic_fields_collected": false,
     "dif_invariance_inferential_objective": false,
     "rule": "Do not add demographic fields solely to satisfy a validation checklist. DIF/invariance requires a separately justified consent/export schema, adequate subgroup sample, and a new or amended preregistration."
-  }
+  },
+  "scope_freeze_ref": "data/calibration/beta-wave-ja-01-scope-freeze-v0.1-dev.json",
+  "scope_freeze_aggregate_sha256": "570daf8d9bd216088803e84bf7b08d8144c7daf4aaf4b3267823eec52b78949b"
 }
