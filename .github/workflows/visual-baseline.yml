@@ -3,7 +3,9 @@ name: Visual Baseline
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches:
+      - main
+      - 'issue-*'
     paths:
       - '.github/workflows/visual-baseline.yml'
       - 'tests/e2e/visual-regression.spec.ts'
@@ -68,6 +70,17 @@ jobs:
 
       - name: Commit visual baselines and lockfile
         run: |
+          if [ "${GITHUB_REF_TYPE}" != "branch" ]; then
+            echo "Visual baseline writeback requires a branch ref, got: ${GITHUB_REF_TYPE:-unknown}"
+            exit 1
+          fi
+
+          TARGET_BRANCH="${GITHUB_REF_NAME}"
+          if [ -z "$TARGET_BRANCH" ] || [ "$TARGET_BRANCH" = "HEAD" ]; then
+            echo "Unable to resolve a writable target branch for visual baseline refresh."
+            exit 1
+          fi
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add package-lock.json tests/e2e/visual-regression.spec.ts-snapshots/
@@ -76,8 +89,8 @@ jobs:
           else
             git commit -m "test: freeze visual regression baselines"
             git reset --hard HEAD
-            git pull --rebase origin main
-            git push origin HEAD:main
+            git pull --rebase origin "$TARGET_BRANCH"
+            git push origin "HEAD:$TARGET_BRANCH"
           fi
 
       - name: Upload baseline artifact
