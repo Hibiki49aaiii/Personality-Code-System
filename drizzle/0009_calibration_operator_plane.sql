@@ -79,7 +79,7 @@ CREATE TABLE calibration_operator_audit_events (
   wave_id text NOT NULL,
   export_schema_version text NOT NULL,
   consent_version text NOT NULL,
-  assessment_model_version text NOT NULL,
+  assessment_model_version text NOT NULL REFERENCES assessment_model_releases(model_version) ON DELETE RESTRICT,
   item_bank_version text NOT NULL,
   scoring_version text NOT NULL,
   trait_dictionary_version text NOT NULL,
@@ -158,6 +158,17 @@ $$;
 CREATE TRIGGER calibration_operators_update_guard
 BEFORE UPDATE ON calibration_operators
 FOR EACH ROW EXECUTE FUNCTION pcs_validate_calibration_operator_update();
+
+CREATE OR REPLACE FUNCTION pcs_reject_calibration_operator_delete()
+RETURNS trigger LANGUAGE plpgsql AS $
+BEGIN
+  RAISE EXCEPTION 'calibration operators must be revoked, not deleted';
+END;
+$;
+
+CREATE TRIGGER calibration_operators_delete_guard
+BEFORE DELETE ON calibration_operators
+FOR EACH ROW EXECUTE FUNCTION pcs_reject_calibration_operator_delete();
 
 CREATE OR REPLACE FUNCTION pcs_require_active_calibration_operator_role(
   target_operator_id uuid,
@@ -252,6 +263,17 @@ CREATE TRIGGER calibration_export_requests_update_guard
 BEFORE UPDATE ON calibration_export_requests
 FOR EACH ROW EXECUTE FUNCTION pcs_validate_calibration_export_request_update();
 
+CREATE OR REPLACE FUNCTION pcs_reject_calibration_export_request_delete()
+RETURNS trigger LANGUAGE plpgsql AS $
+BEGIN
+  RAISE EXCEPTION 'calibration export requests are retained governance records';
+END;
+$;
+
+CREATE TRIGGER calibration_export_requests_delete_guard
+BEFORE DELETE ON calibration_export_requests
+FOR EACH ROW EXECUTE FUNCTION pcs_reject_calibration_export_request_delete();
+
 CREATE OR REPLACE FUNCTION pcs_validate_calibration_audit_insert()
 RETURNS trigger LANGUAGE plpgsql AS $
 BEGIN
@@ -294,16 +316,61 @@ CREATE TRIGGER calibration_operator_audit_events_append_only
 BEFORE UPDATE OR DELETE ON calibration_operator_audit_events
 FOR EACH ROW EXECUTE FUNCTION pcs_reject_calibration_audit_mutation();
 
+CREATE OR REPLACE FUNCTION pcs_validate_calibration_record_link_insert()
+RETURNS trigger LANGUAGE plpgsql AS $
+DECLARE
+  consent_status text;
+BEGIN
+  SELECT status
+    INTO consent_status
+  FROM calibration_consent_receipts
+  WHERE consent_receipt_id = NEW.consent_receipt_id;
+
+  IF consent_status IS DISTINCT FROM 'granted' THEN
+    RAISE EXCEPTION 'calibration record link requires granted consent';
+  END IF;
+
+  RETURN NEW;
+END;
+$;
+
+CREATE TRIGGER calibration_record_links_insert_guard
+BEFORE INSERT ON calibration_record_links
+FOR EACH ROW EXECUTE FUNCTION pcs_validate_calibration_record_link_insert();
+
 CREATE OR REPLACE FUNCTION pcs_reject_calibration_record_link_update()
-RETURNS trigger LANGUAGE plpgsql AS $$
+RETURNS trigger LANGUAGE plpgsql AS $
 BEGIN
   RAISE EXCEPTION 'calibration record links are immutable';
 END;
-$$;
+$;
 
 CREATE TRIGGER calibration_record_links_immutable_update
 BEFORE UPDATE ON calibration_record_links
 FOR EACH ROW EXECUTE FUNCTION pcs_reject_calibration_record_link_update();
+
+CREATE OR REPLACE FUNCTION pcs_validate_calibration_record_link_delete()
+RETURNS trigger LANGUAGE plpgsql AS $
+DECLARE
+  parent_exists boolean;
+BEGIN
+  SELECT EXISTS (
+    SELECT 1 FROM calibration_consent_receipts
+    WHERE consent_receipt_id = OLD.consent_receipt_id
+  )
+  INTO parent_exists;
+
+  IF parent_exists THEN
+    RAISE EXCEPTION 'calibration record link may only delete with its consent receipt';
+  END IF;
+
+  RETURN OLD;
+END;
+$;
+
+CREATE TRIGGER calibration_record_links_delete_guard
+BEFORE DELETE ON calibration_record_links
+FOR EACH ROW EXECUTE FUNCTION pcs_validate_calibration_record_link_delete();
 
 CREATE OR REPLACE FUNCTION pcs_reject_calibration_deletion_event_mutation()
 RETURNS trigger LANGUAGE plpgsql AS $$
@@ -336,8 +403,20 @@ AFTER UPDATE OF status ON calibration_consent_receipts
 FOR EACH ROW EXECUTE FUNCTION pcs_record_calibration_consent_withdrawal();
 
 CREATE OR REPLACE FUNCTION pcs_record_calibration_consent_delete()
-RETURNS trigger LANGUAGE plpgsql AS $$
+RETURNS trigger LANGUAGE plpgsql AS $
+DECLARE
+  owner_session_exists boolean;
 BEGIN
+  SELECT EXISTS (
+    SELECT 1 FROM anonymous_sessions
+    WHERE session_id = OLD.session_id
+  )
+  INTO owner_session_exists;
+
+  IF owner_session_exists THEN
+    RAISE EXCEPTION 'calibration consent receipt may only delete with owner session';
+  END IF;
+
   INSERT INTO calibration_deletion_events (calibration_record_id, reason)
   SELECT calibration_record_id, 'owner-session-deleted'
   FROM calibration_record_links
@@ -346,7 +425,7 @@ BEGIN
 
   RETURN OLD;
 END;
-$$;
+$;
 
 CREATE TRIGGER calibration_consent_delete_deletion_event
 BEFORE DELETE ON calibration_consent_receipts
