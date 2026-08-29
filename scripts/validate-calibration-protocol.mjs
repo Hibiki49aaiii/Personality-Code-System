@@ -56,11 +56,35 @@ const expectedPrerequisiteStatus = {
   'production-environment-separation': 'pending-external',
   'retention-deletion-policy': 'pending-governance',
   'operator-authorization-audit': 'pending-governance',
-  'pre-registered-sample-plan': 'pending-research-plan',
-  'frozen-analysis-version-scope': 'pending-wave-definition'
+  'pre-registered-sample-plan': 'draft-template-ready-not-preregistered',
+  'frozen-analysis-version-scope': 'draft-candidate-scope-ready-not-frozen'
 };
 for (const [key,value] of Object.entries(expectedPrerequisiteStatus)) {
   if (protocol.prerequisite_engineering_status?.[key] !== value) errors.push(`prerequisite status drift for ${key}`);
+}
+
+const expectedWavePlanRef = 'data/calibration/beta-wave-ja-01-draft.json';
+const waveFoundation = protocol.wave_plan_foundation;
+if (waveFoundation?.plan_ref !== expectedWavePlanRef) {
+  errors.push('beta protocol wave plan reference drift');
+} else if (!fs.existsSync(expectedWavePlanRef)) {
+  errors.push('beta protocol wave plan reference does not exist');
+} else {
+  const wavePlan = JSON.parse(fs.readFileSync(expectedWavePlanRef, 'utf8'));
+
+  if (waveFoundation.wave_id !== wavePlan.wave_id) errors.push('beta protocol/wave id drift');
+  if (waveFoundation.candidate_assessment_model_version !== wavePlan.version_scope?.assessment_model_version) {
+    errors.push('beta protocol/wave candidate assessment model drift');
+  }
+  if (waveFoundation.preregistered !== false || wavePlan.sample_size_plan?.preregistered !== false) {
+    errors.push('beta protocol/wave must remain not preregistered');
+  }
+  if (waveFoundation.version_scope_frozen !== false || wavePlan.version_scope_frozen !== false) {
+    errors.push('beta protocol/wave version scope must remain unfrozen');
+  }
+  if (waveFoundation.collection_start_allowed !== false || wavePlan.collection_start_allowed !== false) {
+    errors.push('beta protocol/wave collection start must remain disabled');
+  }
 }
 if (protocol.consent_storage_foundation?.table !== 'calibration_consent_receipts') errors.push('calibration consent storage table status missing');
 if (protocol.consent_storage_foundation?.runtime_role_access_allowed !== false) errors.push('runtime consent access must remain disabled');
