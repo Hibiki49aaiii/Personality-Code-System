@@ -20,7 +20,18 @@ if (consent.collection_authorized !== false || consent.export_authorized !== fal
 if (consent.ordinary_product_analytics_is_consent !== false) errors.push('ordinary product analytics must not constitute calibration consent');
 if (consent.affirmative_action_required !== true || consent.separate_receipt_required !== true) errors.push('calibration participation must require separate affirmative consent');
 if (consent.current_runtime_collection_endpoint_exists !== false || consent.current_runtime_export_job_exists !== false) errors.push('calibration runtime collection/export surface must remain absent');
-if (!Array.isArray(consent.activation_blockers) || consent.activation_blockers.length < 7) errors.push('calibration consent activation blockers are incomplete');
+const expectedConsentBlockers=[
+  'final-consent-copy-review',
+  'legal-privacy-approval',
+  'calibration-retention-deletion-policy',
+  'operator-production-provisioning-evidence',
+  'pre-registered-sample-plan',
+  'production-environment-separation'
+];
+for (const blocker of expectedConsentBlockers) {
+  if (!consent.activation_blockers?.includes(blocker)) errors.push(`calibration consent activation blocker missing ${blocker}`);
+}
+if (consent.activation_blockers?.includes('frozen-analysis-version-scope')) errors.push('satisfied consent scope-freeze blocker must be removed');
 
 if (!migration.includes('CREATE TABLE calibration_consent_receipts')) errors.push('separate calibration consent receipt table missing');
 if (!migration.includes('calibration consent receipt model/locale must match owning session')) errors.push('calibration receipt model/locale binding guard missing');
@@ -68,7 +79,7 @@ const expectedPrerequisiteStatus = {
   'retention-deletion-policy': 'policy-and-deletion-journal-ready-purge-executor-pending',
   'operator-authorization-audit': 'engineering-implemented-runtime-disabled-production-provisioning-pending',
   'pre-registered-sample-plan': 'registration-ready-candidate-not-preregistered',
-  'frozen-analysis-version-scope': 'exact-candidate-scope-ready-not-frozen'
+  'frozen-analysis-version-scope': 'repository-frozen-not-preregistered'
 };
 for (const [key,value] of Object.entries(expectedPrerequisiteStatus)) {
   if (protocol.prerequisite_engineering_status?.[key] !== value) errors.push(`prerequisite status drift for ${key}`);
@@ -93,8 +104,16 @@ if (waveFoundation?.plan_ref !== expectedWavePlanRef) {
   if (waveFoundation.preregistered !== false || wavePlan.sample_size_plan?.preregistered !== false) {
     errors.push('beta protocol/wave must remain not preregistered');
   }
-  if (waveFoundation.version_scope_frozen !== false || wavePlan.version_scope_frozen !== false) {
-    errors.push('beta protocol/wave version scope must remain unfrozen');
+  if (waveFoundation.version_scope_frozen !== true || wavePlan.version_scope_frozen !== true) {
+    errors.push('beta protocol/wave repository version scope must remain frozen');
+  }
+  if (waveFoundation.scope_freeze_ref !== 'data/calibration/beta-wave-ja-01-scope-freeze-v0.1-dev.json'
+    || wavePlan.scope_freeze_ref !== waveFoundation.scope_freeze_ref) {
+    errors.push('beta protocol/wave scope-freeze reference drift');
+  }
+  if (waveFoundation.scope_freeze_aggregate_sha256 !== wavePlan.scope_freeze_aggregate_sha256
+    || !/^[a-f0-9]{64}$/.test(waveFoundation.scope_freeze_aggregate_sha256 ?? '')) {
+    errors.push('beta protocol/wave scope-freeze aggregate drift');
   }
   if (waveFoundation.collection_start_allowed !== false || wavePlan.collection_start_allowed !== false) {
     errors.push('beta protocol/wave collection start must remain disabled');
