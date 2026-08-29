@@ -81,7 +81,7 @@
     "retention-deletion-policy": "policy-and-deletion-journal-ready-purge-executor-pending",
     "operator-authorization-audit": "engineering-implemented-runtime-disabled-production-provisioning-pending",
     "pre-registered-sample-plan": "registration-ready-candidate-not-preregistered",
-    "frozen-analysis-version-scope": "exact-candidate-scope-ready-not-frozen"
+    "frozen-analysis-version-scope": "repository-frozen-not-preregistered"
   },
   "consent_storage_foundation": {
     "table": "calibration_consent_receipts",
@@ -105,8 +105,10 @@
     "candidate_assessment_model_version": "assessment-dev-v0.3",
     "registration_ready": true,
     "preregistered": false,
-    "version_scope_frozen": false,
-    "collection_start_allowed": false
+    "version_scope_frozen": true,
+    "collection_start_allowed": false,
+    "scope_freeze_ref": "data/calibration/beta-wave-ja-01-scope-freeze-v0.1-dev.json",
+    "scope_freeze_aggregate_sha256": "570daf8d9bd216088803e84bf7b08d8144c7daf4aaf4b3267823eec52b78949b"
   },
   "governance_policy_foundation": {
     "policy_ref": "data/calibration/governance-policy-v0.1-dev.json",
