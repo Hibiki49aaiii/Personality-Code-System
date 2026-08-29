@@ -37,6 +37,9 @@ for (const fragment of [
   "consent_version IS DISTINCT FROM 'calibration-consent-ja-v0.1-dev'",
   "consent_purpose IS DISTINCT FROM 'psychometric-calibration-v0.1'",
   'FROM public.assessment_model_items m',
+  'calibration responses require granted consent',
+  'FROM public.calibration_deletion_events e',
+  'calibration record deletion requires a privacy deletion event or parent-link cascade',
   'expected_count <> 147'
 ]) {
   if (!migration.includes(fragment)) errors.push(`answer-storage migration missing ${fragment}`);
