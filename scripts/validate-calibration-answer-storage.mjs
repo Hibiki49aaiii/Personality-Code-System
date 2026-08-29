@@ -44,6 +44,9 @@ for (const fragment of [
   'expected_count <> 147',
   'CREATE OR REPLACE FUNCTION public.pcs_protect_published_model_items',
   'items belonging to a beta assessment model are immutable',
+  'items belonging to a retired assessment model are immutable',
+  'beta assessment_model_releases have an immutable version tuple',
+  'beta assessment_model_releases may only transition to published or retired',
   'FOR UPDATE OF c',
   'calibration response release tuple mismatch',
   'calibration record completion release tuple mismatch'
@@ -60,7 +63,8 @@ for (const [label,pattern] of [
   ['record insert release lock', /pcs_validate_calibration_record_insert[\s\S]*FOR SHARE OF m/i],
   ['response insert release recheck', /pcs_validate_calibration_item_response_insert[\s\S]*calibration response release tuple mismatch/i],
   ['finalize release recheck', /pcs_assert_calibration_record_ready_to_complete[\s\S]*calibration record completion release tuple mismatch/i],
-  ['beta mapping lifecycle guard', /pcs_protect_published_model_items[\s\S]*old_model_status = 'beta'[\s\S]*new_model_status = 'beta'/i]
+  ['beta mapping lifecycle guard', /pcs_protect_published_model_items[\s\S]*old_model_status = 'beta'[\s\S]*old_model_status = 'retired'[\s\S]*new_model_status = 'beta'[\s\S]*new_model_status = 'retired'/i],
+  ['irreversible beta release lifecycle', /pcs_protect_published_model_release[\s\S]*OLD\.status = 'beta'[\s\S]*immutable version tuple[\s\S]*NEW\.status NOT IN \('published','retired'\)/i]
 ]) {
   if (!pattern.test(migration)) errors.push(`answer-storage migration missing ${label}`);
 }
