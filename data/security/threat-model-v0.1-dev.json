@@ -381,7 +381,12 @@
         "execute-only pcs_calibration_export_control with zero direct table privileges",
         "SECURITY DEFINER control functions use pg_catalog search_path and public-qualified application objects",
         "DB-enforced frozen Wave JA-01 scope for export requests",
-        "atomic two-person approve/reject plus append-only bounded audit event"
+        "atomic two-person approve/reject plus append-only bounded audit event",
+        "purpose-separated calibration_records and calibration_item_responses schema",
+        "exact Wave JA-01/model/item/revision/locale constraints at the database boundary",
+        "ordinary runtime/auth/admin/export-control roles have zero direct calibration answer-table privileges",
+        "calibration answer rows cannot finalize without all 147 exact-model responses and granted consent",
+        "individual calibration responses are immutable and privacy deletion cascades only through pseudonymous calibration_record_links"
       ],
       "evidence": [
         "calibration protocol validator",
@@ -400,9 +405,13 @@
         "calibration export control CLI unit tests",
         "calibration export control PostgreSQL integration",
         "execute-only auth/control function privilege matrix",
-        "direct-table and alternate-scope adversarial denial tests"
+        "direct-table and alternate-scope adversarial denial tests",
+        "calibration answer storage validator",
+        "calibration answer storage PostgreSQL integration",
+        "147-response finalization and off-model/revision/value adversarial tests",
+        "runtime/operator all-table least-privilege regressions"
       ],
-      "residual": "Consent, operator-plane audit/linkage, execute-only operator authentication/export-control tooling and repository-frozen Wave JA-01 scope exist, but no runtime collection or raw materialization path is authorized. Production operator/control-role provisioning, raw materialization/offline purge, external preregistration, legal/privacy approval and deployed-environment prerequisites remain unresolved.",
+      "residual": "Consent, pseudonymous answer-storage schema, deletion journal, execute-only operator authentication/export-control tooling and repository-frozen Wave JA-01 scope exist, but runtime answer ingest/collection and raw materialization are not authorized. Production operator/control-role provisioning, offline purge, external preregistration, legal/privacy approval and deployed-environment prerequisites remain unresolved.",
       "external_evidence_ids": [
         "phase5-beta-calibration"
       ]
