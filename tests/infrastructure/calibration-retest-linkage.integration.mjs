@@ -157,6 +157,12 @@ try {
     7*24*60*60*1000
   );
 
+  const rawTokenBaseline=await createCompletedCalibrationRecord({
+    label:'baseline-raw-token',
+    consentVersion:'calibration-consent-ja-v0.1-dev',
+    purposeId:'psychometric-calibration-v0.1',
+    completedOffsetDays:-15
+  });
   await expectDbFailure(
     'raw claim token persistence',
     ()=>sql`
@@ -164,13 +170,13 @@ try {
         (baseline_calibration_record_id,claim_token_hash,wave_id,assessment_model_version,
          item_bank_version,scoring_version,trait_dictionary_version,locale,eligible_from,eligible_until)
       VALUES
-        (${baseline.calibrationRecordId},${'A'.repeat(43)},
+        (${rawTokenBaseline.calibrationRecordId},${'A'.repeat(43)},
          'beta-ja-wave-01-draft','assessment-dev-v0.3','item-bank-v0.2',
          'scoring-v0.1-dev','trait-dictionary-v0.2','ja-JP',
-         ${baseline.completedAt}::timestamptz+interval '14 days',
-         ${baseline.completedAt}::timestamptz+interval '21 days')
+         ${rawTokenBaseline.completedAt}::timestamptz+interval '14 days',
+         ${rawTokenBaseline.completedAt}::timestamptz+interval '21 days')
     `,
-    /claim_token_hash|duplicate key|check constraint/i
+    /calibration_retest_claim_token_hash_chk|check constraint/i
   );
 
   await expectDbFailure(
