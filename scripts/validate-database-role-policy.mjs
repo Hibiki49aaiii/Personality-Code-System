@@ -16,7 +16,7 @@ if (policy.production_role_evidence_complete !== false) errors.push('production 
 const migrationDir='drizzle';
 const migrations=readdirSync(migrationDir).filter((file)=>/^\d+_.*\.sql$/i.test(file)).sort();
 const migrationText=migrations.map((file)=>fs.readFileSync(path.join(migrationDir,file),'utf8')).join('\n');
-const created=[...migrationText.matchAll(/CREATE TABLE\s+([a-z0-9_]+)/gi)].map((match)=>match[1]).sort();
+const created=[...migrationText.matchAll(/CREATE TABLE\s+(?:public\.)?([a-z0-9_]+)/gi)].map((match)=>match[1]).sort();
 const policyTables=Object.keys(policy.runtime_table_privileges).sort();
 if (JSON.stringify(created) !== JSON.stringify(policyTables)) {
   errors.push(`runtime privilege table coverage drift: migrations=${created.join(',')} policy=${policyTables.join(',')}`);
@@ -37,7 +37,17 @@ for (const [table,privileges] of Object.entries(policy.runtime_table_privileges)
   for (const privilege of privileges) if (!allowedPrivileges.has(privilege)) errors.push(`${table}: prohibited runtime privilege ${privilege}`);
 }
 
-const expectedCalibrationNoAccess=["calibration_consent_receipts","calibration_deletion_events","calibration_export_requests","calibration_operator_audit_events","calibration_operator_roles","calibration_operators","calibration_record_links"];
+const expectedCalibrationNoAccess=[
+  "calibration_consent_receipts",
+  "calibration_deletion_events",
+  "calibration_export_requests",
+  "calibration_item_responses",
+  "calibration_operator_audit_events",
+  "calibration_operator_roles",
+  "calibration_operators",
+  "calibration_record_links",
+  "calibration_records"
+];
 if (JSON.stringify([...noAccessTables].sort()) !== JSON.stringify(expectedCalibrationNoAccess)) {
   errors.push(`runtime no-access table set drift: ${[...noAccessTables].sort().join(',')}`);
 }
@@ -76,4 +86,4 @@ if (errors.length) {
   for (const error of errors) console.error(`- ${error}`);
   process.exit(1);
 }
-console.log(`Database runtime-role policy validation passed: ${policyTables.length} tables are explicitly classified, including fail-closed zero runtime access to calibration consent/operator-plane tables before activation; production role evidence remains pending.`);
+console.log(`Database runtime-role policy validation passed: ${policyTables.length} tables are explicitly classified, including fail-closed zero runtime access to calibration consent/operator/answer-storage tables before activation; production role evidence remains pending.`);
