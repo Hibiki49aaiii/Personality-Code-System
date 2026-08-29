@@ -37,13 +37,16 @@ for (const [table,privileges] of Object.entries(policy.runtime_table_privileges)
   for (const privilege of privileges) if (!allowedPrivileges.has(privilege)) errors.push(`${table}: prohibited runtime privilege ${privilege}`);
 }
 
-if (JSON.stringify([...noAccessTables].sort()) !== JSON.stringify(['calibration_consent_receipts'])) {
-  errors.push('runtime no-access table set must contain only calibration_consent_receipts before beta activation');
+const expectedCalibrationNoAccess=["calibration_consent_receipts","calibration_deletion_events","calibration_export_requests","calibration_operator_audit_events","calibration_operator_roles","calibration_operators","calibration_record_links"];
+if (JSON.stringify([...noAccessTables].sort()) !== JSON.stringify(expectedCalibrationNoAccess)) {
+  errors.push(`runtime no-access table set drift: ${[...noAccessTables].sort().join(',')}`);
 }
-if ((policy.runtime_table_privileges.calibration_consent_receipts ?? []).length !== 0) {
-  errors.push('runtime role must have zero privileges on calibration_consent_receipts before activation');
+for (const table of expectedCalibrationNoAccess) {
+  if ((policy.runtime_table_privileges[table] ?? []).length !== 0) {
+    errors.push(`runtime role must have zero privileges on ${table} before calibration operator-plane activation`);
+  }
+  if (template.includes(table)) errors.push(`runtime grant template must not grant ${table}`);
 }
-if (template.includes('calibration_consent_receipts')) errors.push('runtime grant template must not grant calibration_consent_receipts before activation');
 
 for (const table of [
   'trait_definitions','trait_definition_revisions','assessment_items','assessment_item_revisions',
@@ -73,4 +76,4 @@ if (errors.length) {
   for (const error of errors) console.error(`- ${error}`);
   process.exit(1);
 }
-console.log(`Database runtime-role policy validation passed: ${policyTables.length} tables are explicitly classified, including fail-closed zero runtime access to calibration consent receipts before activation; production role evidence remains pending.`);
+console.log(`Database runtime-role policy validation passed: ${policyTables.length} tables are explicitly classified, including fail-closed zero runtime access to calibration consent/operator-plane tables before activation; production role evidence remains pending.`);
