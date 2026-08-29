@@ -1,5 +1,133 @@
 BEGIN;
 
+-- Harden the 0009 trigger/helper chain so it remains safe when invoked
+-- from SECURITY DEFINER functions whose search_path is pg_catalog only.
+CREATE OR REPLACE FUNCTION public.pcs_require_active_calibration_operator_role(
+  target_operator_id uuid,
+  required_role text
+)
+RETURNS void
+LANGUAGE plpgsql
+SET search_path = pg_catalog
+AS $$
+DECLARE
+  operator_status text;
+  role_exists boolean;
+BEGIN
+  SELECT o.status
+    INTO operator_status
+  FROM public.calibration_operators o
+  WHERE o.operator_id = target_operator_id;
+
+  IF operator_status IS DISTINCT FROM 'active' THEN
+    RAISE EXCEPTION 'calibration operator must be active';
+  END IF;
+
+  SELECT EXISTS (
+    SELECT 1
+    FROM public.calibration_operator_roles r
+    WHERE r.operator_id = target_operator_id
+      AND r.role = required_role
+  )
+  INTO role_exists;
+
+  IF role_exists IS NOT TRUE THEN
+    RAISE EXCEPTION 'calibration operator lacks required role %', required_role;
+  END IF;
+END;
+$$;
+
+REVOKE ALL ON FUNCTION public.pcs_require_active_calibration_operator_role(uuid,text) FROM PUBLIC;
+
+CREATE OR REPLACE FUNCTION public.pcs_validate_calibration_export_request_insert()
+RETURNS trigger
+LANGUAGE plpgsql
+SET search_path = pg_catalog
+AS $$
+BEGIN
+  PERFORM public.pcs_require_active_calibration_operator_role(
+    NEW.requester_operator_id,
+    'calibration-export-requester'
+  );
+  RETURN NEW;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION public.pcs_validate_calibration_export_request_update()
+RETURNS trigger
+LANGUAGE plpgsql
+SET search_path = pg_catalog
+AS $$
+BEGIN
+  IF NEW.request_id <> OLD.request_id
+     OR NEW.requester_operator_id <> OLD.requester_operator_id
+     OR NEW.purpose_code <> OLD.purpose_code
+     OR NEW.wave_id <> OLD.wave_id
+     OR NEW.export_schema_version <> OLD.export_schema_version
+     OR NEW.consent_version <> OLD.consent_version
+     OR NEW.assessment_model_version <> OLD.assessment_model_version
+     OR NEW.item_bank_version <> OLD.item_bank_version
+     OR NEW.scoring_version <> OLD.scoring_version
+     OR NEW.trait_dictionary_version <> OLD.trait_dictionary_version
+     OR NEW.locale <> OLD.locale
+     OR NEW.requested_at <> OLD.requested_at THEN
+    RAISE EXCEPTION 'calibration export request scope/requester is immutable';
+  END IF;
+
+  IF OLD.status <> 'requested' THEN
+    RAISE EXCEPTION 'decided calibration export request is immutable';
+  END IF;
+
+  IF NEW.status NOT IN ('approved','rejected')
+     OR NEW.approver_operator_id IS NULL
+     OR NEW.approver_operator_id = NEW.requester_operator_id
+     OR NEW.decided_at IS NULL THEN
+    RAISE EXCEPTION 'calibration export request decision requires a distinct approver';
+  END IF;
+
+  PERFORM public.pcs_require_active_calibration_operator_role(
+    OLD.requester_operator_id,
+    'calibration-export-requester'
+  );
+  PERFORM public.pcs_require_active_calibration_operator_role(
+    NEW.approver_operator_id,
+    'calibration-export-approver'
+  );
+
+  RETURN NEW;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION public.pcs_validate_calibration_audit_insert()
+RETURNS trigger
+LANGUAGE plpgsql
+SET search_path = pg_catalog
+AS $$
+BEGIN
+  IF NEW.action IN ('export-approved','export-rejected') THEN
+    PERFORM public.pcs_require_active_calibration_operator_role(
+      NEW.requester_operator_id,
+      'calibration-export-requester'
+    );
+    PERFORM public.pcs_require_active_calibration_operator_role(
+      NEW.approver_operator_id,
+      'calibration-export-approver'
+    );
+  ELSE
+    PERFORM public.pcs_require_active_calibration_operator_role(
+      NEW.requester_operator_id,
+      'calibration-privacy-operator'
+    );
+    PERFORM public.pcs_require_active_calibration_operator_role(
+      NEW.approver_operator_id,
+      'calibration-reviewer'
+    );
+  END IF;
+
+  RETURN NEW;
+END;
+$$;
+
 CREATE OR REPLACE FUNCTION public.pcs_authenticate_calibration_operator(
   p_credential_hash text
 )
