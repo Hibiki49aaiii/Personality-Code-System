@@ -9,14 +9,10 @@
         "USAGE"
       ],
       "schema_create_allowed": false,
-      "table_privileges": {
-        "calibration_operators": [
-          "SELECT"
-        ],
-        "calibration_operator_roles": [
-          "SELECT"
-        ]
-      }
+      "table_privileges": {},
+      "function_execute": [
+        "public.pcs_authenticate_calibration_operator(text)"
+      ]
     },
     "pcs_calibration_admin": {
       "schema_privileges": [
@@ -34,7 +30,21 @@
           "INSERT",
           "DELETE"
         ]
-      }
+      },
+      "function_execute": []
+    },
+    "pcs_calibration_export_control": {
+      "schema_privileges": [
+        "USAGE"
+      ],
+      "schema_create_allowed": false,
+      "table_privileges": {},
+      "function_execute": [
+        "public.pcs_authenticate_calibration_operator(text)",
+        "public.pcs_request_calibration_export(text,text,text,text,text,text,text,text,text,text)",
+        "public.pcs_review_calibration_export_request(text,uuid)",
+        "public.pcs_decide_calibration_export_request(text,uuid,text)"
+      ]
     }
   },
   "prohibited_capabilities": [
@@ -44,17 +54,19 @@
     "participant-session-read",
     "answer-read",
     "consent-read",
-    "export-request-read-write",
     "operator-audit-read-write",
     "record-link-read-write",
     "deletion-journal-read-write",
-    "raw-export-materialization"
+    "raw-export-materialization",
+    "direct-export-request-table-access",
+    "direct-operator-hash-read-by-auth-or-control"
   ],
   "external_evidence_required": [
     "production-calibration-auth-role-identity",
     "production-calibration-admin-role-identity",
     "production-calibration-role-grant-dump",
     "production-operator-credential-provisioning-record",
-    "production-operator-credential-revocation-procedure"
+    "production-operator-credential-revocation-procedure",
+    "production-calibration-export-control-role-identity"
   ]
 }
