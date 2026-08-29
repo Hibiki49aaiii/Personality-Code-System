@@ -26,7 +26,7 @@ No calibration export may execute until all of these exist:
 
 Until then, the correct runtime behavior is: **no calibration export endpoint/job exists**.
 
-Consent receipt infrastructure now exists separately from answer-level research data, but that does not satisfy the activation prerequisites by itself. The runtime role is intentionally denied all access to `calibration_consent_receipts`, the consent copy remains draft/not legally approved, and no answer-level calibration table/export path has been added.
+Consent receipt infrastructure now exists separately from answer-level research data, and a machine-validated engineering governance policy now defines candidate retention/deletion and operator-audit rules. Neither satisfies activation by itself. The runtime role is intentionally denied all access to `calibration_consent_receipts`, the consent copy remains draft/not legally approved, operator authentication/audit storage are not implemented, and no answer-level calibration table/export path has been added.
 
 ## Current offline schema foundation
 
@@ -72,14 +72,19 @@ If retest reliability is studied, linkage must use a purpose-specific pseudonymo
 
 ## Output and audit
 
-A future export job must:
+A future export job must comply with `CALIBRATION_GOVERNANCE_POLICY_v0.1.md` and:
 
 - require an explicit scope (model version, locale, date range, consent version);
+- require a requester plus a **different** approver before raw materialization;
 - write a manifest containing row count and schema version;
-- record who/what requested the export and when;
+- write a bounded operator audit record with the exact wave/version scope and artifact SHA-256;
+- never place raw responses, session capabilities, participant identity/contact/location or free-form participant data in the operator audit record;
 - fail closed if unapproved fields appear;
 - never upload automatically to a third party;
-- support deletion/re-generation when consent is withdrawn where legally/technically required.
+- support targeted deletion plus artifact purge/re-generation when consent is withdrawn where legally/technically required;
+- enforce the engineering 180-day row-level artifact ceiling unless a later reviewed policy version changes it.
+
+Operator audit storage and targeted deletion linkage are intentionally not implemented yet, so raw export remains blocked.
 
 ## Current decision
 
