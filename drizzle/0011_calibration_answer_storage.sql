@@ -46,6 +46,52 @@ CREATE TABLE public.calibration_item_responses (
 CREATE INDEX calibration_item_responses_item_idx
   ON public.calibration_item_responses(item_id, item_revision);
 
+-- A model's item mapping is editable only while the release is draft.
+-- Once the release enters beta, the repository-frozen mapping must not drift;
+-- later revisions require a new assessment model version.
+CREATE OR REPLACE FUNCTION public.pcs_protect_published_model_items()
+RETURNS trigger
+LANGUAGE plpgsql
+SET search_path = pg_catalog
+AS $
+DECLARE
+  old_model_status text;
+  new_model_status text;
+BEGIN
+  IF TG_OP <> 'INSERT' THEN
+    SELECT m.status
+      INTO old_model_status
+    FROM public.assessment_model_releases m
+    WHERE m.model_version = OLD.model_version
+    FOR SHARE OF m;
+
+    IF old_model_status = 'published' THEN
+      RAISE EXCEPTION 'items belonging to a published assessment model are immutable';
+    END IF;
+    IF old_model_status = 'beta' THEN
+      RAISE EXCEPTION 'items belonging to a beta assessment model are immutable';
+    END IF;
+  END IF;
+
+  IF TG_OP <> 'DELETE' THEN
+    SELECT m.status
+      INTO new_model_status
+    FROM public.assessment_model_releases m
+    WHERE m.model_version = NEW.model_version
+    FOR SHARE OF m;
+
+    IF new_model_status = 'published' THEN
+      RAISE EXCEPTION 'items belonging to a published assessment model are immutable';
+    END IF;
+    IF new_model_status = 'beta' THEN
+      RAISE EXCEPTION 'items belonging to a beta assessment model are immutable';
+    END IF;
+  END IF;
+
+  RETURN CASE WHEN TG_OP = 'DELETE' THEN OLD ELSE NEW END;
+END;
+$;
+
 CREATE OR REPLACE FUNCTION public.pcs_validate_calibration_record_insert()
 RETURNS trigger
 LANGUAGE plpgsql
@@ -90,7 +136,8 @@ BEGIN
   FROM public.calibration_record_links l
   JOIN public.calibration_consent_receipts c
     ON c.consent_receipt_id = l.consent_receipt_id
-  WHERE l.calibration_record_id = NEW.calibration_record_id;
+  WHERE l.calibration_record_id = NEW.calibration_record_id
+  FOR UPDATE OF c;
 
   IF consent_status IS DISTINCT FROM 'granted'
      OR consent_model IS DISTINCT FROM NEW.assessment_model_version
@@ -112,7 +159,8 @@ BEGIN
     release_locale
   FROM public.assessment_model_releases m
   WHERE m.model_version = NEW.assessment_model_version
-    AND m.status IN ('beta','published');
+    AND m.status IN ('beta','published')
+  FOR SHARE OF m;
 
   IF release_item_bank IS DISTINCT FROM NEW.item_bank_version
      OR release_scoring IS DISTINCT FROM NEW.scoring_version
@@ -139,18 +187,42 @@ AS $$
 DECLARE
   record_status text;
   record_model text;
+  record_item_bank text;
+  record_scoring text;
+  record_trait_dictionary text;
+  record_locale text;
   consent_status text;
+  release_status text;
+  release_item_bank text;
+  release_scoring text;
+  release_trait_dictionary text;
+  release_locale text;
   model_revision text;
   model_locale text;
 BEGIN
-  SELECT r.status, r.assessment_model_version, c.status
-    INTO record_status, record_model, consent_status
+  SELECT
+    r.status,
+    r.assessment_model_version,
+    r.item_bank_version,
+    r.scoring_version,
+    r.trait_dictionary_version,
+    r.locale,
+    c.status
+    INTO
+      record_status,
+      record_model,
+      record_item_bank,
+      record_scoring,
+      record_trait_dictionary,
+      record_locale,
+      consent_status
   FROM public.calibration_records r
   JOIN public.calibration_record_links l
     ON l.calibration_record_id = r.calibration_record_id
   JOIN public.calibration_consent_receipts c
     ON c.consent_receipt_id = l.consent_receipt_id
-  WHERE r.calibration_record_id = NEW.calibration_record_id;
+  WHERE r.calibration_record_id = NEW.calibration_record_id
+  FOR UPDATE OF c;
 
   IF record_status IS DISTINCT FROM 'draft' THEN
     RAISE EXCEPTION 'calibration responses require a draft record';
@@ -158,6 +230,30 @@ BEGIN
 
   IF consent_status IS DISTINCT FROM 'granted' THEN
     RAISE EXCEPTION 'calibration responses require granted consent';
+  END IF;
+
+  SELECT
+    m.status,
+    m.item_bank_version,
+    m.scoring_version,
+    m.trait_dictionary_version,
+    m.locale
+    INTO
+      release_status,
+      release_item_bank,
+      release_scoring,
+      release_trait_dictionary,
+      release_locale
+  FROM public.assessment_model_releases m
+  WHERE m.model_version = record_model
+  FOR SHARE OF m;
+
+  IF release_status NOT IN ('beta','published')
+     OR release_item_bank IS DISTINCT FROM record_item_bank
+     OR release_scoring IS DISTINCT FROM record_scoring
+     OR release_trait_dictionary IS DISTINCT FROM record_trait_dictionary
+     OR release_locale IS DISTINCT FROM record_locale THEN
+    RAISE EXCEPTION 'calibration response release tuple mismatch';
   END IF;
 
   SELECT m.item_revision, m.locale
@@ -197,6 +293,11 @@ DECLARE
   consent_version text;
   consent_purpose text;
   consent_locale text;
+  release_status text;
+  release_item_bank text;
+  release_scoring text;
+  release_trait_dictionary text;
+  release_locale text;
   expected_count integer;
   response_count integer;
 BEGIN
@@ -223,13 +324,38 @@ BEGIN
   FROM public.calibration_record_links l
   JOIN public.calibration_consent_receipts c
     ON c.consent_receipt_id = l.consent_receipt_id
-  WHERE l.calibration_record_id = target_calibration_record_id;
+  WHERE l.calibration_record_id = target_calibration_record_id
+  FOR UPDATE OF c;
 
   IF consent_status IS DISTINCT FROM 'granted'
      OR consent_version IS DISTINCT FROM 'calibration-consent-ja-v0.1-dev'
      OR consent_purpose IS DISTINCT FROM 'psychometric-calibration-v0.1'
      OR consent_locale IS DISTINCT FROM record_row.locale THEN
     RAISE EXCEPTION 'calibration record completion requires matching granted consent';
+  END IF;
+
+  SELECT
+    m.status,
+    m.item_bank_version,
+    m.scoring_version,
+    m.trait_dictionary_version,
+    m.locale
+    INTO
+      release_status,
+      release_item_bank,
+      release_scoring,
+      release_trait_dictionary,
+      release_locale
+  FROM public.assessment_model_releases m
+  WHERE m.model_version = record_row.assessment_model_version
+  FOR SHARE OF m;
+
+  IF release_status NOT IN ('beta','published')
+     OR release_item_bank IS DISTINCT FROM record_row.item_bank_version
+     OR release_scoring IS DISTINCT FROM record_row.scoring_version
+     OR release_trait_dictionary IS DISTINCT FROM record_row.trait_dictionary_version
+     OR release_locale IS DISTINCT FROM record_row.locale THEN
+    RAISE EXCEPTION 'calibration record completion release tuple mismatch';
   END IF;
 
   SELECT COUNT(*)::integer
