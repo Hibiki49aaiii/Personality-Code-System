@@ -207,11 +207,15 @@ try {
       ()=>controlSql`SELECT credential_hash FROM calibration_operators LIMIT 1`
     );
 
+    const helperFunction='public.pcs_require_active_calibration_operator_role(uuid,text)';
     const authFunction='public.pcs_authenticate_calibration_operator(text)';
     const requestFunction='public.pcs_request_calibration_export(text,text,text,text,text,text,text,text,text,text)';
     const reviewFunction='public.pcs_review_calibration_export_request(text,uuid)';
     const decideFunction='public.pcs_decide_calibration_export_request(text,uuid,text)';
     const functionMatrix=[
+      [AUTH_ROLE,helperFunction,false],
+      [ADMIN_ROLE,helperFunction,false],
+      [CONTROL_ROLE,helperFunction,false],
       [AUTH_ROLE,authFunction,true],
       [AUTH_ROLE,requestFunction,false],
       [AUTH_ROLE,reviewFunction,false],
