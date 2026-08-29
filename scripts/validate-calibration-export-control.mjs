@@ -114,7 +114,7 @@ for (const fragment of [
 }
 if ((migration.match(/SECURITY DEFINER/g) ?? []).length!==4) errors.push('all four export-control DB functions must be SECURITY DEFINER');
 if ((migration.match(/SET search_path = pg_catalog/g) ?? []).length!==4) errors.push('all four export-control DB functions must lock search_path');
-if (/FROMs+calibration_/i.test(migration) || /INTOs+calibration_/i.test(migration) || /UPDATEs+calibration_/i.test(migration)) {
+if (/\bFROM\s+calibration_/i.test(migration) || /\bINTO\s+calibration_/i.test(migration) || /\bUPDATE\s+calibration_/i.test(migration)) {
   errors.push('SECURITY DEFINER migration must schema-qualify calibration tables');
 }
 
