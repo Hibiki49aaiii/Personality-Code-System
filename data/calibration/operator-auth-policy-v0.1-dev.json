@@ -1,0 +1,55 @@
+{
+  "operator_auth_policy_version": "calibration-operator-auth-policy-v0.1-dev",
+  "status": "engineering-implemented-runtime-disabled",
+  "runtime_web_surface_enabled": false,
+  "raw_export_materializer_enabled": false,
+  "collection_enabled": false,
+  "export_enabled": false,
+  "token": {
+    "entropy_bytes": 32,
+    "encoding": "base64url",
+    "canonical_length": 43,
+    "hash_algorithm": "sha256",
+    "raw_token_database_storage_allowed": false,
+    "raw_token_argv_allowed": false,
+    "raw_token_stdout_allowed": false,
+    "credential_hash_stdout_allowed": false
+  },
+  "environments": {
+    "admin_database_url": "PCS_CALIBRATION_OPERATOR_ADMIN_DATABASE_URL",
+    "auth_database_url": "PCS_CALIBRATION_AUTH_DATABASE_URL",
+    "auth_token": "PCS_CALIBRATION_OPERATOR_TOKEN",
+    "admin_ack": "PCS_CALIBRATION_OPERATOR_ADMIN_ACK",
+    "admin_ack_value": "calibration-operator-admin-v0.1-dev"
+  },
+  "commands": [
+    "issue",
+    "whoami",
+    "grant-role",
+    "revoke-role",
+    "revoke-credential"
+  ],
+  "credential_output": {
+    "explicit_path_required": true,
+    "exclusive_create": true,
+    "file_mode_octal": "0600",
+    "overwrite_allowed": false,
+    "trailing_newline": true
+  },
+  "roles": [
+    "calibration-export-requester",
+    "calibration-export-approver",
+    "calibration-privacy-operator",
+    "calibration-reviewer"
+  ],
+  "database_roles": {
+    "auth_role": "pcs_calibration_auth",
+    "admin_role": "pcs_calibration_admin"
+  },
+  "production_provisioning_complete": false,
+  "notes": [
+    "This policy enables only offline operator credential/authentication tooling.",
+    "It does not authorize raw calibration materialization, collection or export.",
+    "Actual production DB roles/operator credentials remain deployment evidence."
+  ]
+}
