@@ -38,7 +38,13 @@ const requiredTables = [
   'public_share_snapshots',
   'product_events',
   'rate_limit_buckets',
-  'calibration_consent_receipts'
+  'calibration_consent_receipts',
+  'calibration_operators',
+  'calibration_operator_roles',
+  'calibration_export_requests',
+  'calibration_operator_audit_events',
+  'calibration_record_links',
+  'calibration_deletion_events'
 ];
 
 for (const table of requiredTables) {
@@ -80,7 +86,16 @@ const requiredFragments = [
   ['completed raw-answer retention window guard', /session_completed_at\s*<=\s*now\(\)\s*-\s*interval\s*'90 days'/i],
   ['calibration consent receipt guard', /CREATE TRIGGER\s+calibration_consent_receipts_guard/i],
   ['calibration consent session-model guard', /calibration consent receipt model\/locale must match owning session/i],
-  ['calibration consent withdrawal-only update guard', /update may only withdraw consent/i]
+  ['calibration consent withdrawal-only update guard', /update may only withdraw consent/i],
+  ['calibration operator hash-only credential check', /calibration_operator_credential_hash_chk/i],
+  ['calibration operator update guard', /CREATE TRIGGER\s+calibration_operators_update_guard/i],
+  ['calibration export distinct approver check', /calibration_export_request_distinct_operators_chk/i],
+  ['calibration export request update guard', /CREATE TRIGGER\s+calibration_export_requests_update_guard/i],
+  ['calibration operator audit append-only guard', /CREATE TRIGGER\s+calibration_operator_audit_events_append_only/i],
+  ['calibration record link immutable guard', /CREATE TRIGGER\s+calibration_record_links_immutable_update/i],
+  ['calibration consent withdrawal deletion journal trigger', /CREATE TRIGGER\s+calibration_consent_withdrawal_deletion_event/i],
+  ['calibration consent delete deletion journal trigger', /CREATE TRIGGER\s+calibration_consent_delete_deletion_event/i],
+  ['calibration deletion journal append-only guard', /CREATE TRIGGER\s+calibration_deletion_events_append_only/i]
 ];
 
 for (const [label, pattern] of requiredFragments) {
