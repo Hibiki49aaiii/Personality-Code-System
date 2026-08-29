@@ -215,12 +215,8 @@ async function whoAmI() {
   const sql=openDatabase(databaseUrl);
   try {
     const rows=await sql`
-      SELECT o.operator_id,o.status,r.role
-      FROM calibration_operators o
-      LEFT JOIN calibration_operator_roles r
-        ON r.operator_id=o.operator_id
-      WHERE o.credential_hash=${tokenHashHex}
-      ORDER BY r.role ASC NULLS LAST
+      SELECT *
+      FROM public.pcs_authenticate_calibration_operator(${tokenHashHex})
     `;
 
     if (rows.length===0 || rows[0].status!=='active') {
