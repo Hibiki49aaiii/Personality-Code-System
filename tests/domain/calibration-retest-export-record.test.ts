@@ -16,8 +16,8 @@ function record(overrides={}) {
     schemaVersion:CALIBRATION_RETEST_EXPORT_SCHEMA_VERSION,
     calibrationRecordId:baselineId,
     waveId:'beta-ja-wave-01-draft',
-    consentVersion:'calibration-retest-consent-ja-v0.1-dev',
-    purposeId:'psychometric-calibration-retest-v0.1',
+    consentVersion:'calibration-consent-ja-v0.1-dev',
+    purposeId:'psychometric-calibration-v0.1',
     assessmentModelVersion:'assessment-dev-v0.3',
     itemBankVersion:'item-bank-v0.2',
     scoringVersion:'scoring-v0.1-dev',
@@ -66,7 +66,9 @@ test('requires exactly one baseline and one retest under one exact scope',()=>{
   const baseline=record();
   const retest=record({
     calibrationRecordId:retestId,
-    measurementOccasion:'retest'
+    measurementOccasion:'retest',
+    consentVersion:'calibration-retest-consent-ja-v0.1-dev',
+    purposeId:'psychometric-calibration-retest-v0.1'
   });
   const pair=buildCalibrationRetestPairV02([baseline,retest]);
   assert.equal(pair.retestPairId,pairId);
@@ -85,6 +87,8 @@ test('requires exactly one baseline and one retest under one exact scope',()=>{
     ()=>buildCalibrationRetestPairV02([baseline,record({
       calibrationRecordId:retestId,
       measurementOccasion:'retest',
+      consentVersion:'calibration-retest-consent-ja-v0.1-dev',
+      purposeId:'psychometric-calibration-retest-v0.1',
       scoringVersion:'scoring-v999'
     })]),
     (error)=>error instanceof CalibrationRetestExportValidationError && error.code==='MIXED_EXPORT_SCOPE'
@@ -93,7 +97,9 @@ test('requires exactly one baseline and one retest under one exact scope',()=>{
   assert.throws(
     ()=>buildCalibrationRetestPairV02([baseline,record({
       calibrationRecordId:baselineId,
-      measurementOccasion:'retest'
+      measurementOccasion:'retest',
+      consentVersion:'calibration-retest-consent-ja-v0.1-dev',
+      purposeId:'psychometric-calibration-retest-v0.1'
     })]),
     (error)=>error instanceof CalibrationRetestExportValidationError && error.code==='PAIR_RECORD_ID_COLLISION'
   );
