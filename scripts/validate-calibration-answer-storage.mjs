@@ -11,6 +11,7 @@ const runtimeGrants=fs.readFileSync('ops/sql/runtime-role-grants.sql','utf8');
 const operatorGrants=fs.readFileSync('ops/sql/calibration-operator-role-grants.sql','utf8');
 const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
 const ci=fs.readFileSync('.github/workflows/ci.yml','utf8');
+const seed=fs.readFileSync('scripts/seed-development-model.mjs','utf8');
 const errors=[];
 
 for (const fragment of [
@@ -40,9 +41,35 @@ for (const fragment of [
   'calibration responses require granted consent',
   'FROM public.calibration_deletion_events e',
   'calibration record deletion requires a privacy deletion event or parent-link cascade',
-  'expected_count <> 147'
+  'expected_count <> 147',
+  'CREATE OR REPLACE FUNCTION public.pcs_protect_published_model_items',
+  'items belonging to a beta assessment model are immutable',
+  'FOR UPDATE OF c',
+  'calibration response release tuple mismatch',
+  'calibration record completion release tuple mismatch'
 ]) {
   if (!migration.includes(fragment)) errors.push(`answer-storage migration missing ${fragment}`);
+}
+
+const consentLockCount=(migration.match(/FOR UPDATE OF c/g) ?? []).length;
+if (consentLockCount!==3) {
+  errors.push(`answer-storage consent-dependent writes must lock the consent row in exactly three paths; found ${consentLockCount}`);
+}
+
+for (const [label,pattern] of [
+  ['record insert release lock', /pcs_validate_calibration_record_insert[\s\S]*FOR SHARE OF m/i],
+  ['response insert release recheck', /pcs_validate_calibration_item_response_insert[\s\S]*calibration response release tuple mismatch/i],
+  ['finalize release recheck', /pcs_assert_calibration_record_ready_to_complete[\s\S]*calibration record completion release tuple mismatch/i],
+  ['beta mapping lifecycle guard', /pcs_protect_published_model_items[\s\S]*old_model_status = 'beta'[\s\S]*new_model_status = 'beta'/i]
+]) {
+  if (!pattern.test(migration)) errors.push(`answer-storage migration missing ${label}`);
+}
+
+if (!seed.includes("VALUES\n            (${release.modelVersion}, 'draft'")) {
+  errors.push('development seed must create new assessment models as draft before inserting mappings');
+}
+if (!seed.includes("SET status='beta'")) {
+  errors.push('development seed must promote newly mapped models to beta only after mapping insertion');
 }
 
 for (const fragment of [
@@ -150,4 +177,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log('Calibration answer storage validation passed: normalized exact-Wave schema exists with no runtime/operator grants, no derived/identity payload, no ingest API, and collection/export remain disabled.');
+console.log('Calibration answer storage validation passed: normalized exact-Wave schema serializes consent, freezes beta item mappings, rechecks release tuples, keeps operator/runtime access closed, and does not enable collection/export.');
