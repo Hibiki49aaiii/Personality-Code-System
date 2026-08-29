@@ -1,7 +1,7 @@
 {
   "wave_plan_version": "beta-wave-plan-v0.1-dev",
   "wave_id": "beta-ja-wave-01-draft",
-  "status": "draft-not-preregistered",
+  "status": "registration-ready-not-preregistered",
   "collection_enabled": false,
   "export_enabled": false,
   "collection_start_allowed": false,
@@ -16,27 +16,54 @@
   },
   "version_scope_frozen": false,
   "recruitment_plan": {
-    "population_description": null,
-    "recruitment_channels": [],
-    "inclusion_criteria": [],
-    "exclusion_criteria": []
+    "population_description": "18歳以上で、ja-JP版PCSの説明と同意文を日本語で理解し、自発的に閉鎖betaへ参加できるオンライン成人ボランティア。確率標本ではなく、一般人口代表性を主張しない。",
+    "recruitment_channels": [
+      "approved-online-community",
+      "approved-social-media",
+      "participant-referral"
+    ],
+    "inclusion_criteria": [
+      "age-18-or-older",
+      "affirmative-calibration-consent",
+      "can-read-and-answer-ja-JP-instrument",
+      "exact-wave-and-version-scope"
+    ],
+    "exclusion_criteria": [
+      "withdrawn-calibration-consent",
+      "incomplete-assessment",
+      "mixed-or-wrong-version-scope",
+      "corrupt-or-out-of-domain-response",
+      "processing-duplicate-calibration-record"
+    ],
+    "representativeness_claim_allowed": false
   },
   "sample_size_plan": {
     "preregistered": false,
-    "target_n": null,
-    "rationale": null,
-    "uncertainty_or_precision_targets": [],
-    "factor_analysis_complexity_note": null,
-    "expected_retest_attrition": null,
-    "subgroup_or_dif_scope": null
+    "target_n": 1000,
+    "minimum_primary_analysis_n": 800,
+    "recruitment_window_days": 56,
+    "stopping_rule": "Stop Wave 01 recruitment at 1000 eligible complete baseline records or 56 days after collection activation, whichever occurs first. Do not stop early or extend the wave based on favorable/unfavorable psychometric results; any extension requires a documented preregistration amendment/new wave decision.",
+    "shortfall_rule": "If eligible complete baseline N is below 800 at the planned close, treat Wave 01 as pilot/descriptive evidence. Do not claim held-out structural confirmation or stable-model promotion from this wave.",
+    "rationale": "The instrument contains 147 ordinal items across 21 proposed direct Traits. The target is an operationally conservative preregistration choice intended to support item/reliability review plus a deterministic holdout, not a universal participants-per-item rule. Final adequacy is judged from model complexity, communalities, convergence, uncertainty and limitations.",
+    "uncertainty_or_precision_targets": [
+      "report confidence intervals for reliability and retest estimates where estimable",
+      "report structural fit indices together rather than selecting a single favorable metric",
+      "report item/factor estimates with uncertainty or stability diagnostics where feasible"
+    ],
+    "factor_analysis_complexity_note": "All-item structural review spans 147 ordinal items and 21 proposed Traits. Development analyses may use polychoric/ordinal methods with oblique factors; held-out CFA is attempted only when the achieved holdout size and model behavior support estimation.",
+    "expected_retest_attrition": "Plan for 200 completed retests. Recruitment/invitation mechanics may invite more participants, but retest interpretation is downgraded when completed N is below 150.",
+    "subgroup_or_dif_scope": "Wave 01 does not collect demographic fields in calibration export v0.1, so subgroup DIF/measurement-invariance inference is outside Wave 01. A separately reviewed consent/schema version is required before such analyses."
   },
   "retest_plan": {
     "planned": true,
-    "interval_days_min": null,
-    "interval_days_max": null,
-    "attrition_rule": null,
-    "context_change_recording_rule": null,
-    "exact_model_version_required": true
+    "interval_days_min": 14,
+    "interval_days_max": 21,
+    "target_completed_n": 200,
+    "minimum_interpretable_n": 150,
+    "attrition_rule": "Analyze all eligible linked retests completed within the 14–21 day window under the exact same wave/model. Report completion/attrition counts. If completed retest N < 150, treat stability estimates as descriptive/low-precision and do not use them to support stable-model promotion.",
+    "context_change_recording_rule": "Before retest activation, add only a bounded, separately reviewed context-change indicator if justified; no free text. If no approved context-change field exists, report that limitation explicitly rather than inferring unchanged context.",
+    "exact_model_version_required": true,
+    "linkage_status": "planned-not-implemented-requires-reviewed-schema-and-consent"
   },
   "analysis_modules": [
     "item-distributions-floor-ceiling",
@@ -52,28 +79,79 @@
     "item-removal-rewording-ledger"
   ],
   "exclusion_plan": {
-    "status": "must-be-preregistered",
-    "rules": []
+    "status": "registration-ready-not-preregistered",
+    "rules": [
+      "withdrawn-calibration-consent",
+      "incomplete-assessment",
+      "mixed-or-wrong-version-scope",
+      "corrupt-or-out-of-domain-response",
+      "processing-duplicate-calibration-record"
+    ],
+    "response_style_primary_exclusion": false,
+    "sensitivity_flags": [
+      "all-midpoint-response-pattern",
+      "dominant-response-pattern",
+      "extreme-response-concentration"
+    ],
+    "sensitivity_rule": "Response-style flags are analyzed in sensitivity analyses and reported; they do not silently remove participants from the primary dataset."
   },
   "holdout_plan": {
-    "confirmatory_holdout_planned": null,
-    "assignment_rule": null
+    "confirmatory_holdout_planned": true,
+    "development_fraction": 0.7,
+    "holdout_fraction": 0.3,
+    "assignment_rule": "Compute SHA-256 over calibrationRecordId UTF-8 bytes; interpret the first 8 hex digits as an unsigned integer; modulo 100 values 0–69 are development and 70–99 are holdout.",
+    "holdout_access_rule": "Do not inspect holdout psychometric outcomes for model-changing decisions until development-sample item/trait decisions and the item-change ledger are frozen for the wave.",
+    "minimum_total_n_for_confirmatory_use": 800,
+    "shortfall_rule": "If achieved total eligible N < 800 or the holdout model is not estimable, report the limitation and do not reuse the development sample as a confirmatory substitute."
   },
   "preregistration_document_ref": null,
   "activation_blockers": [
+    "external-preregistration-record",
     "final-consent-copy-and-legal-approval",
     "production-environment-separation-evidence",
     "calibration-retention-deletion-policy",
     "operator-authorization-audit",
-    "sample-size-rationale",
-    "recruitment-inclusion-exclusion-plan",
-    "retest-interval-and-attrition-rule",
-    "frozen-version-scope",
-    "preregistration-record"
+    "retest-linkage-schema-and-consent",
+    "frozen-version-scope"
   ],
   "notes": [
-    "This is a candidate engineering wave scope, not a preregistered study.",
+    "This is a registration-ready candidate, not an externally preregistered study.",
     "No participant collection or export is authorized by this file.",
-    "No universal sample-size minimum is encoded; target N requires analysis-specific written justification before activation."
-  ]
+    "Target N=1000 and minimum N=800 are Wave 01 operational decisions, not universal sample-size rules.",
+    "Wave 01 does not collect demographics and therefore does not support DIF/invariance inference.",
+    "Any post-registration change to sample, exclusion, holdout, retest or version scope requires a documented amendment/new wave decision."
+  ],
+  "registration_ready": true,
+  "analysis_decision_policy": {
+    "ordinal_item_method": "Use ordinal-aware/polychoric structural analysis where feasible; do not treat 1–5 responses as automatically interval-normal.",
+    "exploratory_structure": "Use parallel-analysis evidence plus oblique exploratory factor review; also review per-Trait unidimensionality rather than forcing the planned 21-Trait structure.",
+    "held_out_confirmation": "Use the deterministic holdout for CFA/held-out structural review only when sample size/model convergence support it.",
+    "review_triggers": {
+      "item_loading_below": 0.3,
+      "cross_loading_at_or_above": 0.3,
+      "omega_below": 0.7,
+      "omega_above_redundancy_review": 0.95,
+      "absolute_inter_trait_correlation_at_or_above": 0.8,
+      "retest_icc_below": 0.7
+    },
+    "trigger_semantics": "Every numeric threshold is a preregistered review trigger, not an automatic validation/pass/fail rule. Theory, item content, uncertainty, model convergence, confidence intervals and neighboring evidence are reviewed together.",
+    "fit_indices_to_report": [
+      "CFI",
+      "TLI",
+      "RMSEA",
+      "SRMR"
+    ],
+    "retest_statistics": [
+      "absolute-agreement ICC with explicit formula and 95% CI",
+      "rank-order association",
+      "systematic mean shift"
+    ],
+    "single_statistic_can_promote_stage": false,
+    "marketing_type_count_can_override_measurement_evidence": false
+  },
+  "demographic_dif_policy": {
+    "demographic_fields_collected": false,
+    "dif_invariance_inferential_objective": false,
+    "rule": "Do not add demographic fields solely to satisfy a validation checklist. DIF/invariance requires a separately justified consent/export schema, adequate subgroup sample, and a new or amended preregistration."
+  }
 }

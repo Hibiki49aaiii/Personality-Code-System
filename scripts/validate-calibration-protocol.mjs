@@ -56,8 +56,8 @@ const expectedPrerequisiteStatus = {
   'production-environment-separation': 'pending-external',
   'retention-deletion-policy': 'pending-governance',
   'operator-authorization-audit': 'pending-governance',
-  'pre-registered-sample-plan': 'draft-template-ready-not-preregistered',
-  'frozen-analysis-version-scope': 'draft-candidate-scope-ready-not-frozen'
+  'pre-registered-sample-plan': 'registration-ready-candidate-not-preregistered',
+  'frozen-analysis-version-scope': 'exact-candidate-scope-ready-not-frozen'
 };
 for (const [key,value] of Object.entries(expectedPrerequisiteStatus)) {
   if (protocol.prerequisite_engineering_status?.[key] !== value) errors.push(`prerequisite status drift for ${key}`);
@@ -75,6 +75,9 @@ if (waveFoundation?.plan_ref !== expectedWavePlanRef) {
   if (waveFoundation.wave_id !== wavePlan.wave_id) errors.push('beta protocol/wave id drift');
   if (waveFoundation.candidate_assessment_model_version !== wavePlan.version_scope?.assessment_model_version) {
     errors.push('beta protocol/wave candidate assessment model drift');
+  }
+  if (waveFoundation.registration_ready !== true || wavePlan.registration_ready !== true || wavePlan.status !== 'registration-ready-not-preregistered') {
+    errors.push('beta protocol/wave must expose registration-ready candidate state');
   }
   if (waveFoundation.preregistered !== false || wavePlan.sample_size_plan?.preregistered !== false) {
     errors.push('beta protocol/wave must remain not preregistered');
@@ -112,7 +115,21 @@ for (const item of requiredAnalyses) {
 }
 
 if (protocol.sample_plan.fixed_universal_minimum_n !== null) {
-  errors.push('do not encode a universal sample-size magic number before the analysis-specific plan is preregistered');
+  errors.push('do not encode a universal sample-size magic number');
+}
+if (protocol.sample_plan.status !== 'registration-ready-candidate-not-preregistered'
+  || protocol.sample_plan.candidate_target_n !== 1000
+  || protocol.sample_plan.candidate_minimum_primary_analysis_n !== 800
+  || protocol.sample_plan.candidate_recruitment_window_days !== 56) {
+  errors.push('registration-ready Wave 01 sample-plan summary drift');
+}
+if (protocol.retest_plan.status !== 'registration-ready-candidate-not-activated'
+  || protocol.retest_plan.candidate_interval_days_min !== 14
+  || protocol.retest_plan.candidate_interval_days_max !== 21
+  || protocol.retest_plan.candidate_target_completed_n !== 200
+  || protocol.retest_plan.candidate_minimum_interpretable_n !== 150
+  || protocol.retest_plan.linkage_implemented !== false) {
+  errors.push('registration-ready Wave 01 retest-plan summary drift');
 }
 if (protocol.decision_policy.single_statistic_can_promote_stage !== false) {
   errors.push('a single statistic must never promote the evidence stage');

@@ -37,16 +37,24 @@
     "item-removal-rewording-ledger"
   ],
   "sample_plan": {
-    "status": "must-be-pre-registered-before-collection",
+    "status": "registration-ready-candidate-not-preregistered",
     "fixed_universal_minimum_n": null,
-    "rule": "justify sample size per planned analysis complexity, uncertainty target, retest attrition and subgroup/DIF scope before activation"
+    "candidate_target_n": 1000,
+    "candidate_minimum_primary_analysis_n": 800,
+    "candidate_recruitment_window_days": 56,
+    "rule": "Wave-specific sample size is justified from the 147-item/21-Trait ordinal analysis bundle, deterministic holdout, uncertainty targets and retest burden. It is not a universal participants-per-item rule; achieved-N shortfalls downgrade the evidence rather than being hidden."
   },
   "retest_plan": {
-    "status": "must-be-frozen-before-collection",
+    "status": "registration-ready-candidate-not-activated",
     "requires_interval_definition": true,
     "requires_attrition_rule": true,
     "requires_context_change_recording": true,
-    "requires_exact_model_version": true
+    "requires_exact_model_version": true,
+    "candidate_interval_days_min": 14,
+    "candidate_interval_days_max": 21,
+    "candidate_target_completed_n": 200,
+    "candidate_minimum_interpretable_n": 150,
+    "linkage_implemented": false
   },
   "decision_policy": {
     "single_statistic_can_promote_stage": false,
@@ -72,8 +80,8 @@
     "production-environment-separation": "pending-external",
     "retention-deletion-policy": "pending-governance",
     "operator-authorization-audit": "pending-governance",
-    "pre-registered-sample-plan": "draft-template-ready-not-preregistered",
-    "frozen-analysis-version-scope": "draft-candidate-scope-ready-not-frozen"
+    "pre-registered-sample-plan": "registration-ready-candidate-not-preregistered",
+    "frozen-analysis-version-scope": "exact-candidate-scope-ready-not-frozen"
   },
   "consent_storage_foundation": {
     "table": "calibration_consent_receipts",
@@ -95,6 +103,7 @@
     "plan_ref": "data/calibration/beta-wave-ja-01-draft.json",
     "wave_id": "beta-ja-wave-01-draft",
     "candidate_assessment_model_version": "assessment-dev-v0.3",
+    "registration_ready": true,
     "preregistered": false,
     "version_scope_frozen": false,
     "collection_start_allowed": false
