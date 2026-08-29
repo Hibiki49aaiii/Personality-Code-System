@@ -205,6 +205,15 @@ jobs:
       - name: Browser E2E — 147 items to private result
         run: npm run test:e2e
 
+      - name: Upload Playwright visual evidence on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pcs-playwright-failure-${{ github.sha }}
+          path: test-results/
+          if-no-files-found: error
+          retention-days: 1
+
       - name: Freeze release candidate evidence pack
         run: npm run evidence:release-candidate
 
