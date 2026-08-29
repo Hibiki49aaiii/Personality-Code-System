@@ -16,10 +16,27 @@ const domains = [
   ["06", "ストレス", "不確実性や制御不能な状況への反応。"],
 ] as const;
 
+const reportIndex = [
+  ["THINKING", "思考・検証・意思決定"],
+  ["EMOTION", "感情処理・表現・境界"],
+  ["ACTION", "実行・継続・探索"],
+  ["RELATION", "恋愛・親密さ・相互性"],
+  ["WORK", "自律・最適化・リーダーシップ"],
+  ["STRESS", "不確実性・負荷時の反応"],
+] as const;
+
+const principles = [
+  ["NO ACCOUNT", "診断開始に登録は不要。まず測定に集中できます。"],
+  ["DETERMINISTIC", "同じ回答と同じバージョンなら、同じ結果を再現します。"],
+  ["PRIVATE FIRST", "結果は最初から公開されず、共有は明示操作でのみ作成します。"],
+  ["NO RUNTIME AI", "採点・分類・結果文は、実行時の生成AIに依存しません。"],
+] as const;
+
 export default function Home() {
   return (
     <main>
       <LandingAnalytics />
+
       <header className="siteHeader shell">
         <a className="brand" href="#top" aria-label="Personality Code System home">
           <span className="brandMark" aria-hidden="true">PC</span>
@@ -27,15 +44,19 @@ export default function Home() {
         </a>
         <nav className="nav" aria-label="Main navigation">
           <a href="#method">診断設計</a>
+          <a href="#result">結果</a>
           <a href="#domains">分析項目</a>
-          <a href="#share">共有</a>
+          <a href="#principles">方針</a>
         </nav>
         <a className="headerCta" href="/diagnosis">診断を試す</a>
       </header>
 
       <section className="hero shell" id="top">
         <div className="heroCopy">
-          <p className="eyebrow">HIGH-RESOLUTION PERSONALITY ASSESSMENT</p>
+          <div className="heroKicker">
+            <p className="eyebrow">HIGH-RESOLUTION PERSONALITY ASSESSMENT</p>
+            <span>DEVELOPMENT / C01D</span>
+          </div>
           <h1>あなたを、<br />16種類では終わらせない。</h1>
           <p className="heroLead">
             思考、感情、行動、関係性、仕事、ストレスなどの傾向を連続値で測定し、
@@ -45,9 +66,9 @@ export default function Home() {
             <a className="primaryButton" href="/diagnosis">診断プロトタイプへ</a>
             <a className="textLink" href="#method">仕組みを見る <span aria-hidden="true">↘</span></a>
           </div>
-          <dl className="heroFacts">
-            <div><dt>TYPE</dt><dd>多軸・連続値</dd></div>
-            <div><dt>LOGIC</dt><dd>決定論的採点</dd></div>
+          <dl className="heroFacts" aria-label="Current development model facts">
+            <div><dt>MEASURED</dt><dd>21 direct Traits</dd></div>
+            <div><dt>RESULT</dt><dd>18 structured sections</dd></div>
             <div><dt>ACCOUNT</dt><dd>診断時は不要</dd></div>
           </dl>
         </div>
@@ -57,8 +78,13 @@ export default function Home() {
             <span>DEVELOPMENT SAMPLE</span>
             <span>C01D / NON-PUBLIC</span>
           </div>
-          <div className="specimenCode">SVAEND</div>
-          <div className="specimenTitle">VERIFICATION<br />DESIGNER</div>
+          <div className="specimenIdentity">
+            <div>
+              <div className="specimenCode">SVAEND</div>
+              <div className="specimenTitle">VERIFICATION<br />DESIGNER</div>
+            </div>
+            <span className="specimenSeal" aria-hidden="true">PCS<br />01</span>
+          </div>
           <p className="specimenStatement">
             構造と根拠を自分で確かめ、<br />必要なら前提から組み直す。
           </p>
@@ -77,6 +103,14 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="statusBand" aria-label="Product status">
+        <div className="shell statusBandInner">
+          <span>CURRENT DEVELOPMENT MODEL</span>
+          <strong>測定値 → コード → 解説</strong>
+          <span>VERSIONED / REPRODUCIBLE / PRIVATE-FIRST</span>
+        </div>
+      </section>
+
       <section className="manifesto">
         <div className="shell manifestoInner">
           <p className="sectionIndex">00 — PRINCIPLE</p>
@@ -90,33 +124,74 @@ export default function Home() {
       </section>
 
       <section className="section shell" id="method">
-        <div className="sectionHeading">
-          <p className="sectionIndex">01 — METHOD</p>
-          <h2>診断は、3層で構成する。</h2>
+        <div className="sectionHeading splitHeading">
+          <div>
+            <p className="sectionIndex">01 — METHOD</p>
+            <h2>タイプ名より先に、<br />個人差を測る。</h2>
+          </div>
+          <p className="sectionDescription">
+            PCSは一つのラベルだけで人物像を決めません。連続値のTraitを基礎に、
+            理解しやすいCore Typeと、差分を残すExtended Codeへ段階的に圧縮します。
+          </p>
         </div>
+
         <div className="methodGrid">
           <article>
             <span className="methodNumber">A</span>
+            <p className="methodLabel">MEASURE</p>
             <h3>Trait Vector</h3>
             <p>複数の心理特性を0–100の連続値で保持。タイプ名より先に、個人差そのものを測ります。</p>
           </article>
           <article>
             <span className="methodNumber">B</span>
+            <p className="methodLabel">COMPRESS</p>
             <h3>Core Type</h3>
             <p>主要傾向を人間が理解しやすい短いコードへ圧縮。現行コードは開発スキーマで、公開分類としては未確定です。</p>
           </article>
           <article>
             <span className="methodNumber">C</span>
+            <p className="methodLabel">PRESERVE</p>
             <h3>Extended Code</h3>
             <p>同じCore Typeの中にある差を、21 Traitの帯域や補助情報を含むExtended Codeで保持します。</p>
           </article>
         </div>
       </section>
 
+      <section className="resultSection" id="result">
+        <div className="shell resultSectionInner">
+          <div className="resultIntro">
+            <p className="sectionIndex light">02 — RESULT DOSSIER</p>
+            <h2>結果は、点数表ではなく<br />読み解ける人物資料へ。</h2>
+            <p>
+              Core Codeだけで終わらず、複数のTrait・相互作用・測定品質を、
+              役割ごとの文章へ分けて提示します。
+            </p>
+            <a className="resultLink" href="/diagnosis">実際の診断フローを見る <span aria-hidden="true">→</span></a>
+          </div>
+
+          <div className="reportIndex" aria-label="Result dossier index">
+            <div className="reportIndexHead">
+              <span>REPORT INDEX</span>
+              <span>STRUCTURED OUTPUT</span>
+            </div>
+            {reportIndex.map(([label, description], index) => (
+              <div className="reportIndexRow" key={label}>
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <strong>{label}</strong>
+                <p>{description}</p>
+              </div>
+            ))}
+            <div className="reportIndexFoot">
+              <span>+ ADVERSARIAL ANALYSIS / GROWTH / PERSONAL MANUAL</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="section shell" id="domains">
         <div className="sectionHeading splitHeading">
           <div>
-            <p className="sectionIndex">02 — DOMAINS</p>
+            <p className="sectionIndex">03 — DOMAINS</p>
             <h2>一人の中にある、<br />複数の行動傾向を見る。</h2>
           </div>
           <p className="sectionDescription">
@@ -138,7 +213,7 @@ export default function Home() {
       <section className="section shell adversarialSection">
         <div className="adversarialCard">
           <div>
-            <p className="sectionIndex light">03 — ADVERSARIAL VIEW</p>
+            <p className="sectionIndex light">04 — ADVERSARIAL VIEW</p>
             <h2>長所だけでは、<br />性格は分からない。</h2>
           </div>
           <div className="adversarialBody">
@@ -148,19 +223,44 @@ export default function Home() {
             </p>
             <p>
               PCSでは同じ特性を<strong>通常評価と敵対的評価</strong>の両面から解説します。
+              褒めるための診断ではなく、使い方と失敗条件まで読めることを重視します。
             </p>
           </div>
+        </div>
+      </section>
+
+      <section className="section shell" id="principles">
+        <div className="sectionHeading splitHeading">
+          <div>
+            <p className="sectionIndex">05 — PRODUCT PRINCIPLES</p>
+            <h2>診断結果より先に、<br />守るものを決める。</h2>
+          </div>
+          <p className="sectionDescription">
+            個人の診断情報を扱うからこそ、登録・共有・採点・生成の境界をプロダクト仕様として固定しています。
+          </p>
+        </div>
+        <div className="principleGrid">
+          {principles.map(([title, body], index) => (
+            <article key={title}>
+              <div className="principleMeta">
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <strong>{title}</strong>
+              </div>
+              <p>{body}</p>
+            </article>
+          ))}
         </div>
       </section>
 
       <section className="section shell" id="share">
         <div className="sectionHeading splitHeading">
           <div>
-            <p className="sectionIndex">04 — SHARE</p>
-            <h2>結果は、あなたの<br />「取扱説明書」になる。</h2>
+            <p className="sectionIndex">06 — SHARE</p>
+            <h2>共有するのは、<br />結果の要約だけ。</h2>
           </div>
           <p className="sectionDescription">
-            コード、タイプ名、特徴文、主要スコア、専用イラストを1枚にまとめ、SNSで共有できる設計にします。
+            公開リンクは診断完了時に自動作成されません。共有を選んだときだけ、
+            生回答を含まない別の公開スナップショットを作ります。
           </p>
         </div>
         <div className="sharePreview">
@@ -174,10 +274,11 @@ export default function Home() {
           <div className="shareNotes">
             <p className="noteLabel">SHARE DESIGN</p>
             <ul>
-              <li>結果URLをそのまま共有</li>
-              <li>X / LINE / Web Share対応</li>
-              <li>OG画像と縦長SNSカードを自動生成</li>
-              <li>公開時は承認済みタイプ別イラストを表示</li>
+              <li>明示操作で公開共有リンクを作成</li>
+              <li>X / LINE / Web Share / URLコピー対応</li>
+              <li>OG画像と縦長SNSカードを決定論的に生成</li>
+              <li>生回答・非公開Traitベクトルは公開スナップショットから除外</li>
+              <li>公開時は承認済みタイプ別イラストを表示する設計</li>
               <li>現在のタイプ名・コードは開発版で、公開分類ではない</li>
             </ul>
           </div>
@@ -186,9 +287,15 @@ export default function Home() {
 
       <section className="closing">
         <div className="shell closingInner">
-          <p className="sectionIndex light">PERSONALITY CODE SYSTEM</p>
+          <div className="closingTopline">
+            <p className="sectionIndex light">PERSONALITY CODE SYSTEM</p>
+            <span>ANONYMOUS FIRST / DEVELOPMENT MODEL</span>
+          </div>
           <h2>「何タイプ？」から、<br />「どういう人？」へ。</h2>
-          <a className="inverseButton" href="/diagnosis">診断プロトタイプを開く</a>
+          <div className="closingActions">
+            <a className="inverseButton" href="/diagnosis">診断プロトタイプを開く</a>
+            <span>登録不要 · 現在は開発モデル</span>
+          </div>
         </div>
       </section>
 
