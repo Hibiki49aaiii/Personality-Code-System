@@ -102,7 +102,12 @@ const requiredFragments = [
   ['calibration record link immutable guard', /CREATE TRIGGER\s+calibration_record_links_immutable_update/i],
   ['calibration consent withdrawal deletion journal trigger', /CREATE TRIGGER\s+calibration_consent_withdrawal_deletion_event/i],
   ['calibration consent delete deletion journal trigger', /CREATE TRIGGER\s+calibration_consent_delete_deletion_event/i],
-  ['calibration deletion journal append-only guard', /CREATE TRIGGER\s+calibration_deletion_events_append_only/i]
+  ['calibration deletion journal append-only guard', /CREATE TRIGGER\s+calibration_deletion_events_append_only/i],
+  ['calibration auth security definer function', /CREATE OR REPLACE FUNCTION\s+public\.pcs_authenticate_calibration_operator[\s\S]*SECURITY DEFINER[\s\S]*SET search_path = pg_catalog/i],
+  ['calibration export request security definer function', /CREATE OR REPLACE FUNCTION\s+public\.pcs_request_calibration_export[\s\S]*SECURITY DEFINER[\s\S]*SET search_path = pg_catalog/i],
+  ['calibration export review security definer function', /CREATE OR REPLACE FUNCTION\s+public\.pcs_review_calibration_export_request[\s\S]*SECURITY DEFINER[\s\S]*SET search_path = pg_catalog/i],
+  ['calibration export decision security definer function', /CREATE OR REPLACE FUNCTION\s+public\.pcs_decide_calibration_export_request[\s\S]*SECURITY DEFINER[\s\S]*SET search_path = pg_catalog/i],
+  ['calibration control function public execute revoked', /REVOKE ALL ON FUNCTION\s+public\.pcs_decide_calibration_export_request\(text,uuid,text\) FROM PUBLIC/i]
 ];
 
 for (const [label, pattern] of requiredFragments) {
