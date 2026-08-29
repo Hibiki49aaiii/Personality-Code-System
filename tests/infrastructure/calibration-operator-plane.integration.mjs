@@ -36,6 +36,27 @@ try {
   assert.equal(requester.status,'active');
   assert.equal(approver.status,'active');
 
+  const [unprivileged]=await sql`
+    INSERT INTO calibration_operators (credential_hash)
+    VALUES (${'4'.repeat(64)})
+    RETURNING operator_id
+  `;
+
+  await expectDbFailure(
+    'operator without requester role',
+    ()=>sql`
+      INSERT INTO calibration_export_requests
+        (requester_operator_id,purpose_code,wave_id,export_schema_version,consent_version,
+         assessment_model_version,item_bank_version,scoring_version,trait_dictionary_version,locale)
+      VALUES
+        (${unprivileged.operator_id},'wave-analysis',${wave.wave_id},'calibration-export-record-v0.1-dev',
+         ${consent.consent_version},${wave.version_scope.assessment_model_version},
+         ${wave.version_scope.item_bank_version},${wave.version_scope.scoring_version},
+         ${wave.version_scope.trait_dictionary_version},${wave.locale})
+    `,
+    /lacks required role calibration-export-requester/i
+  );
+
   await expectDbFailure(
     'duplicate operator credential hash',
     ()=>sql`INSERT INTO calibration_operators (credential_hash) VALUES (${requesterHash})`,
