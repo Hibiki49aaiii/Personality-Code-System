@@ -150,6 +150,18 @@ for (const p of expectedBasePaths) {
 if (reviewedItemManifest.base_version!=='item-bank-v0.1' || reviewedItemManifest.review_file!=='review.json') {
   errors.push('reviewed item-bank materialization contract drift');
 }
+if (baseItemManifest.expected_total_items!==freeze.measurement_scope.item_count
+  || reviewedItemManifest.expected_total_items!==freeze.measurement_scope.item_count) {
+  errors.push('item-bank/freeze item count drift');
+}
+if (baseItemManifest.expected_trait_count!==freeze.measurement_scope.direct_trait_count
+  || reviewedItemManifest.expected_trait_count!==freeze.measurement_scope.direct_trait_count) {
+  errors.push('item-bank/freeze direct Trait count drift');
+}
+if (reviewedItemManifest.item_bank_version!==freeze.measurement_scope.item_bank_version
+  || reviewedItemManifest.locale!==freeze.measurement_scope.locale) {
+  errors.push('reviewed item-bank/freeze version or locale drift');
+}
 for (const p of ['data/item-bank/v0.1/manifest.json','data/item-bank/v0.2/manifest.json','data/item-bank/v0.2/review.json']) {
   if (!expectedPaths.includes(p)) errors.push(`reviewed item-bank input not frozen: ${p}`);
 }
