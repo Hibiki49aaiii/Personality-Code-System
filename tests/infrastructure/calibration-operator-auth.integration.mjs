@@ -220,8 +220,30 @@ try {
 
   const dir=mkdtempSync(join(tmpdir(),'pcs-calibration-auth-integration-'));
   const credentialPath=join(dir,'operator-token.txt');
+  const failedCredentialPath=join(dir,'failed-operator-token.txt');
 
   try {
+    const wronglyPrivilegedIssue=runCli(
+      [
+        'issue',
+        '--role','calibration-reviewer',
+        '--credential-out',failedCredentialPath
+      ],
+      cleanCliEnv({
+        PCS_CALIBRATION_OPERATOR_ADMIN_DATABASE_URL:authDatabaseUrl,
+        PCS_CALIBRATION_OPERATOR_ADMIN_ACK:ADMIN_ACK
+      })
+    );
+    assert.deepEqual(parseFailure(wronglyPrivilegedIssue),{
+      ok:false,
+      error:'ISSUE_FAILED'
+    });
+    assert.equal(
+      (()=>{ try { statSync(failedCredentialPath); return true; } catch { return false; } })(),
+      false,
+      'credential file must be removed if DB issuance fails'
+    );
+
     const adminEnv=cleanCliEnv({
       PCS_CALIBRATION_OPERATOR_ADMIN_DATABASE_URL:adminDatabaseUrl,
       PCS_CALIBRATION_OPERATOR_ADMIN_ACK:ADMIN_ACK
@@ -369,6 +391,31 @@ try {
       error:'AUTHENTICATION_FAILED'
     });
 
+    const unknownAuth=runCli(
+      ['whoami'],
+      cleanCliEnv({
+        PCS_CALIBRATION_AUTH_DATABASE_URL:authDatabaseUrl,
+        PCS_CALIBRATION_OPERATOR_TOKEN:'A'.repeat(43)
+      })
+    );
+    assert.deepEqual(parseFailure(unknownAuth),{
+      ok:false,
+      error:'AUTHENTICATION_FAILED'
+    });
+
+    const grantAfterRevocation=runCli(
+      [
+        'grant-role',
+        '--operator-id',issued.operatorId,
+        '--role','calibration-reviewer'
+      ],
+      adminEnv
+    );
+    assert.deepEqual(parseFailure(grantAfterRevocation),{
+      ok:false,
+      error:'OPERATOR_NOT_ACTIVE'
+    });
+
     for (const result of [
       grantResult,
       grantAgain,
@@ -376,7 +423,10 @@ try {
       revokeCredentialResult,
       revokeAgain,
       revokedAuth,
-      malformedAuth
+      malformedAuth,
+      unknownAuth,
+      grantAfterRevocation,
+      wronglyPrivilegedIssue
     ]) {
       assertNoSecretLeak(result,[rawToken,expectedHash,AUTH_PASSWORD,ADMIN_PASSWORD]);
     }
