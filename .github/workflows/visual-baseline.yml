@@ -3,7 +3,9 @@ name: Visual Baseline
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches:
+      - main
+      - 'issue-*'
     paths:
       - '.github/workflows/visual-baseline.yml'
       - 'tests/e2e/visual-regression.spec.ts'
