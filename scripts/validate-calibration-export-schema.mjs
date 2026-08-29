@@ -5,6 +5,8 @@ const consent=JSON.parse(fs.readFileSync('data/calibration/consent-purpose-v0.1-
 const source=fs.readFileSync('src/domain/calibration/exportRecord.ts','utf8');
 const tests=fs.readFileSync('tests/domain/calibration-export-record.test.ts','utf8');
 const packageJson=JSON.parse(fs.readFileSync('package.json','utf8'));
+const controlPolicy=JSON.parse(fs.readFileSync('data/calibration/export-control-policy-v0.1-dev.json','utf8'));
+const controlCli=fs.readFileSync('scripts/calibration-export-control.mjs','utf8');
 const errors=[];
 
 if (schema.export_schema_version !== 'calibration-export-record-v0.1-dev') errors.push('unexpected calibration export schema version');
@@ -58,8 +60,42 @@ if (consent.collection_authorized !== false || consent.export_authorized !== fal
 if (consent.current_runtime_export_job_exists !== false) errors.push('consent contract must state no runtime export job exists');
 if (fs.existsSync('src/app/api/calibration')) errors.push('calibration API route must not exist before activation');
 
+const allowedControlOnlyScripts={
+  'operator:calibration-export-control':'node scripts/calibration-export-control.mjs',
+  'test:calibration-export-control:integration':'node tests/infrastructure/calibration-export-control.integration.mjs'
+};
 for (const [name,command] of Object.entries(packageJson.scripts ?? {})) {
-  if (/calibration/i.test(name) && /export/i.test(name)) errors.push(`runtime/tool export script must not exist before activation: ${name}=${command}`);
+  if (!/calibration/i.test(name) || !/export/i.test(name)) continue;
+
+  if (!(name in allowedControlOnlyScripts)) {
+    errors.push(`raw/runtime calibration export script must not exist before activation: ${name}=${command}`);
+    continue;
+  }
+
+  if (command !== allowedControlOnlyScripts[name]) {
+    errors.push(`approved calibration export-control script command drift: ${name}=${command}`);
+  }
+}
+
+if (
+  controlPolicy.export_control_policy_version!=='calibration-export-control-policy-v0.1-dev'
+  || controlPolicy.raw_export_materializer_enabled!==false
+  || controlPolicy.runtime_web_surface_enabled!==false
+  || controlPolicy.collection_enabled!==false
+  || controlPolicy.export_enabled!==false
+) {
+  errors.push('calibration export-control tooling must remain control-only with raw materialization/runtime export disabled');
+}
+for (const forbiddenFragment of [
+  'writeFileSync(',
+  'createWriteStream(',
+  'assessment_answers',
+  'calibration_record_links',
+  'responses:'
+]) {
+  if (controlCli.includes(forbiddenFragment)) {
+    errors.push(`calibration export-control CLI must not materialize/read raw calibration data: ${forbiddenFragment}`);
+  }
 }
 
 if (errors.length) {
@@ -67,4 +103,4 @@ if (errors.length) {
   for (const error of errors) console.error(`- ${error}`);
   process.exit(1);
 }
-console.log('Calibration export schema validation passed: strict offline allowlist is frozen, private/result/linkage fields are rejected, and no runtime export route/job is enabled.');
+console.log('Calibration export schema validation passed: strict offline row allowlist is frozen; approved request/review/decision control tooling is separated from raw materialization, and no runtime export route/job is enabled.');
