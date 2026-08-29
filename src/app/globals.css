@@ -579,6 +579,294 @@ a {
   outline-offset: 4px;
 }
 
+
+.landingPage {
+  overflow: clip;
+}
+
+.heroStatusLine {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.heroStatusLine > span {
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.primaryButtonStack {
+  min-width: 190px;
+  min-height: 60px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.primaryButtonStack small {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  opacity: 0.68;
+}
+
+.heroPrivacyNote {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  align-items: baseline;
+  max-width: 620px;
+  margin-top: 28px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.heroPrivacyNote strong {
+  color: var(--ink);
+  font-size: 9px;
+  letter-spacing: 0.13em;
+}
+
+.specimenFolio {
+  margin-top: 22px;
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.evidenceBand {
+  border-block: 1px solid var(--ink);
+  background: var(--surface);
+}
+
+.evidenceGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.evidenceCell {
+  min-height: 156px;
+  padding: 24px 24px 22px 0;
+  border-right: 1px solid var(--line);
+}
+
+.evidenceCell + .evidenceCell {
+  padding-left: 24px;
+}
+
+.evidenceCell:last-child {
+  border-right: 0;
+}
+
+.evidenceCell strong {
+  display: block;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(28px, 3.2vw, 46px);
+  font-weight: 400;
+  letter-spacing: -0.04em;
+}
+
+.evidenceCell > span {
+  display: block;
+  margin-top: 5px;
+  color: var(--accent);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.evidenceCell p {
+  margin: 24px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.65;
+}
+
+.methodSection,
+.dossierSection {
+  position: relative;
+}
+
+.methodSection::before,
+.dossierSection::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 72px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.methodVerb {
+  margin: 16px 0 0 !important;
+  color: var(--muted);
+  font-size: 9px !important;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.methodGrid .methodVerb + h3 {
+  margin-top: 44px;
+}
+
+.methodFootnote {
+  display: grid;
+  grid-template-columns: auto 1fr auto 1fr auto 1fr;
+  gap: 10px 16px;
+  align-items: center;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--ink);
+  color: var(--muted);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+}
+
+.methodFootnote strong {
+  color: var(--ink);
+  font-size: 10px;
+}
+
+.dossierIntro {
+  display: grid;
+  gap: 20px;
+}
+
+.dossierStats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  color: var(--accent);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.domainTitle {
+  display: grid;
+  gap: 5px;
+}
+
+.domainTitle small {
+  color: var(--muted);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+}
+
+.adversarialPairs {
+  margin: 30px 0;
+  border-top: 1px solid #4a4b44;
+}
+
+.adversarialPairs > div {
+  display: grid;
+  grid-template-columns: 120px 24px 1fr;
+  gap: 10px;
+  align-items: baseline;
+  padding: 15px 0;
+  border-bottom: 1px solid #4a4b44;
+}
+
+.adversarialPairs strong {
+  color: #fffdf6;
+  font-family: Georgia, "Yu Mincho", serif;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.adversarialPairs span {
+  color: var(--accent-soft);
+}
+
+.adversarialPairs p {
+  margin: 0;
+  color: #c7c6bd;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.adversarialNote {
+  font-size: 12px !important;
+  color: #aeadA5 !important;
+}
+
+.privacyBand {
+  border-block: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.privacyInner {
+  padding-block: 112px;
+}
+
+.privacyGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+}
+
+.privacyStep {
+  min-height: 260px;
+  padding: 26px 30px 34px 0;
+  border-right: 1px solid var(--line);
+}
+
+.privacyStep + .privacyStep {
+  padding-left: 30px;
+}
+
+.privacyStep:last-child {
+  border-right: 0;
+}
+
+.privacyStepTop {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.privacyStep h3 {
+  margin: 72px 0 14px;
+  font-family: Georgia, "Yu Mincho", serif;
+  font-size: 25px;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+
+.privacyStep p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.85;
+}
+
+.closingAction {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.closingAction > span {
+  color: #f4cfc5;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+}
+
 @media (max-width: 920px) {
   :root {
     --shell: min(100% - 32px, 760px);
@@ -654,6 +942,51 @@ a {
   .shareNotes {
     max-width: none;
   }
+
+  .evidenceGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .evidenceCell {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .evidenceCell:nth-child(2) {
+    border-right: 0;
+  }
+
+  .evidenceCell:nth-child(3),
+  .evidenceCell:nth-child(4) {
+    border-bottom: 0;
+  }
+
+  .methodFootnote {
+    grid-template-columns: auto 1fr;
+  }
+
+  .privacyInner {
+    padding-block: 86px;
+  }
+
+  .privacyGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .privacyStep,
+  .privacyStep + .privacyStep {
+    min-height: 0;
+    padding: 26px 0 34px;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .privacyStep:last-child {
+    border-bottom: 0;
+  }
+
+  .privacyStep h3 {
+    margin-top: 42px;
+  }
 }
 
 @media (max-width: 640px) {
@@ -692,6 +1025,17 @@ a {
   .heroLead {
     font-size: 15px;
     line-height: 1.85;
+  }
+
+  .heroStatusLine {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .heroPrivacyNote {
+    grid-template-columns: 1fr;
+    gap: 7px;
   }
 
   .heroActions {
@@ -808,6 +1152,70 @@ a {
     justify-content: center;
     align-items: flex-start;
     gap: 7px;
+  }
+
+  .evidenceGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .evidenceCell,
+  .evidenceCell + .evidenceCell {
+    min-height: 142px;
+    padding: 20px 14px;
+  }
+
+  .evidenceCell:nth-child(odd) {
+    padding-left: 0;
+  }
+
+  .evidenceCell:nth-child(even) {
+    padding-right: 0;
+  }
+
+  .evidenceCell strong {
+    font-size: 30px;
+  }
+
+  .evidenceCell p {
+    margin-top: 18px;
+    font-size: 10px;
+  }
+
+  .methodFootnote {
+    gap: 8px 12px;
+    font-size: 8px;
+  }
+
+  .dossierStats {
+    display: grid;
+  }
+
+  .domainTitle small {
+    font-size: 7px;
+  }
+
+  .adversarialPairs > div {
+    grid-template-columns: 1fr 20px;
+  }
+
+  .adversarialPairs p {
+    grid-column: 1 / 3;
+    padding-bottom: 3px;
+  }
+
+  .privacyInner {
+    padding-block: 78px;
+  }
+
+  .privacyStep h3 {
+    margin-top: 34px;
+    font-size: 23px;
+  }
+
+  .closingAction {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
   }
 }
 
