@@ -554,6 +554,41 @@
         "release evidence pack identity inclusion",
         "beta protocol/wave fail-closed validators"
       ]
+    },
+    {
+      "change_id": "2026-08-29-calibration-export-control-plane",
+      "date": "2026-08-29",
+      "requirements_version_after": "0.11.7",
+      "affected_requirement_ids": [
+        "PCS-ANA-003",
+        "PCS-SEC-001",
+        "PCS-QA-007"
+      ],
+      "change": "Add an offline calibration export request/review/approve/reject control plane backed by execute-only SECURITY DEFINER PostgreSQL functions and a dedicated zero-table-privilege pcs_calibration_export_control role; harden pcs_calibration_auth to the same execute-only pattern.",
+      "rationale": "Direct table SELECT/DML for authentication or export control would allow a DB credential to enumerate operator credential hashes or impersonate arbitrary operator IDs. Credential-derived identity, role checks, frozen Wave scope and two-person approval therefore must be enforced inside a bounded DB API before any raw materializer exists.",
+      "impacted_files": [
+        "drizzle/0010_calibration_export_control.sql",
+        "ops/sql/calibration-operator-role-grants.sql",
+        "data/security/calibration-operator-db-role-policy-v0.1-dev.json",
+        "data/calibration/export-control-policy-v0.1-dev.json",
+        "scripts/calibration-export-control.mjs",
+        "scripts/lib/calibration-export-control-cli.mjs",
+        "scripts/calibration-operator.mjs",
+        "tests/infrastructure/calibration-export-control.integration.mjs"
+      ],
+      "assessment_model_impact": "none-assessment-dev-v0.3 remains beta and raw materialization/collection/export stay disabled",
+      "code_schema_impact": "none-C01D remains public_use=false",
+      "content_impact": "none",
+      "data_migration_impact": "0010 adds security-definer control functions only; no participant or answer-level calibration table is added",
+      "compatibility_impact": "whoami changes from direct auth-table SELECT to execute-only DB function; normal pcs_runtime remains zero-access; raw materializer remains absent",
+      "evidence": [
+        "calibration export control validator",
+        "control CLI frozen-scope unit tests",
+        "real PostgreSQL request/review/approve/reject integration",
+        "exact all-table privilege + function execute matrix",
+        "self-approval/repeat-decision/alternate-scope/revoked-token adversarial tests",
+        "CodeQL"
+      ]
     }
   ]
 }
