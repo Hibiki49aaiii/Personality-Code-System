@@ -152,12 +152,15 @@ const requiredBlockers=[
   'final-consent-copy-and-legal-approval',
   'production-environment-separation-evidence',
   'calibration-retention-deletion-policy',
-  'operator-authorization-audit',
+  'operator-production-provisioning-evidence',
   'retest-linkage-schema-and-consent',
   'frozen-version-scope'
 ];
 for (const blocker of requiredBlockers) {
   if (!plan.activation_blockers?.includes(blocker)) errors.push(`missing beta activation blocker ${blocker}`);
+}
+if (plan.activation_blockers?.includes('operator-authorization-audit')) {
+  errors.push('repository-implemented operator auth/audit must not remain as the Wave operator blocker');
 }
 
 const forbiddenDataKeys=new Set([
