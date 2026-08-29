@@ -65,6 +65,17 @@ BEGIN
     RAISE EXCEPTION 'calibration authorization failed';
   END IF;
 
+  IF p_wave_id <> 'beta-ja-wave-01-draft'
+     OR p_export_schema_version <> 'calibration-export-record-v0.1-dev'
+     OR p_consent_version <> 'calibration-consent-ja-v0.1-dev'
+     OR p_assessment_model_version <> 'assessment-dev-v0.3'
+     OR p_item_bank_version <> 'item-bank-v0.2'
+     OR p_scoring_version <> 'scoring-v0.1-dev'
+     OR p_trait_dictionary_version <> 'trait-dictionary-v0.2'
+     OR p_locale <> 'ja-JP' THEN
+    RAISE EXCEPTION 'calibration scope mismatch';
+  END IF;
+
   IF NOT EXISTS (
     SELECT 1
     FROM public.assessment_model_releases m
