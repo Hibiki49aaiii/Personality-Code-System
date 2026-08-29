@@ -132,7 +132,7 @@ try {
       SET purpose_code='changed-purpose'
       WHERE request_id=${request.request_id}
     `,
-    /scope/requester is immutable|decided calibration export request is immutable/i
+    /scope\/requester is immutable|decided calibration export request is immutable/i
   );
 
   const [audit]=await sql`
