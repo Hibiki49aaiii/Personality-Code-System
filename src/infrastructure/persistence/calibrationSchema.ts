@@ -127,7 +127,7 @@ export const calibrationExportRequests = pgTable(
     traitDictionaryVersion: text('trait_dictionary_version').notNull(),
     locale: text('locale').notNull(),
     status: text('status').notNull().default('requested'),
-    requestedAt: createdAt(),
+    requestedAt: timestamp('requested_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow(),
     decidedAt: timestamp('decided_at', { withTimezone: true, mode: 'date' })
   },
   (table) => [
@@ -174,7 +174,7 @@ export const calibrationOperatorAuditEvents = pgTable(
     rowCount: integer('row_count'),
     artifactSha256: char('artifact_sha256', { length: 64 }),
     disposition: text('disposition').notNull(),
-    occurredAt: createdAt()
+    occurredAt: timestamp('occurred_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow()
   },
   (table) => [
     index('calibration_operator_audit_events_occurred_idx').on(table.occurredAt),
@@ -217,7 +217,7 @@ export const calibrationDeletionEvents = pgTable(
     deletionEventId: uuid('deletion_event_id').primaryKey().defaultRandom(),
     calibrationRecordId: uuid('calibration_record_id').notNull(),
     reason: text('reason').notNull(),
-    occurredAt: createdAt()
+    occurredAt: timestamp('occurred_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow()
   },
   (table) => [
     uniqueIndex('calibration_deletion_events_record_reason_uq').on(table.calibrationRecordId, table.reason),
