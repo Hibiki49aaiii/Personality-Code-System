@@ -122,6 +122,9 @@ const requiredFragments = [
   ['calibration finalize public execute revoked', /REVOKE ALL ON FUNCTION\s+public\.pcs_finalize_calibration_record\(uuid\) FROM PUBLIC/i],
   ['calibration exact 147 response completion', /expected_count\s*<>\s*147/i],
   ['beta model item mapping immutability', /items belonging to a beta assessment model are immutable/i],
+  ['retired model item mapping immutability', /items belonging to a retired assessment model are immutable/i],
+  ['irreversible beta model release tuple', /beta assessment_model_releases have an immutable version tuple/i],
+  ['beta release no draft demotion', /beta assessment_model_releases may only transition to published or retired/i],
   ['calibration consent row serialization', /FOR UPDATE OF c/i],
   ['calibration response release tuple recheck', /calibration response release tuple mismatch/i],
   ['calibration finalize release tuple recheck', /calibration record completion release tuple mismatch/i]
