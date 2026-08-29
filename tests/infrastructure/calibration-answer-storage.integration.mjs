@@ -100,6 +100,17 @@ try {
   `;
   assert.equal(modelItems.length,147,'Wave JA-01 storage contract requires exact 147-item model');
 
+  await expectDbFailure(
+    'beta assessment model mapping mutation',
+    ()=>sql`
+      UPDATE assessment_model_items
+      SET weight_milli=weight_milli+1
+      WHERE model_version='assessment-dev-v0.3'
+        AND position=1
+    `,
+    /items belonging to a beta assessment model are immutable/i
+  );
+
   const primary=await createConsentBoundRecordLink();
 
   await expectDbFailure(
@@ -247,6 +258,22 @@ try {
     /incomplete|missing model responses/i
   );
 
+  await sql`
+    UPDATE assessment_model_releases
+    SET scoring_version='scoring-v0.1-dev-drift-fixture'
+    WHERE model_version='assessment-dev-v0.3'
+  `;
+  await expectDbFailure(
+    'finalize after beta release tuple drift',
+    ()=>sql`SELECT public.pcs_finalize_calibration_record(${primary.calibrationRecordId})`,
+    /completion release tuple mismatch/i
+  );
+  await sql`
+    UPDATE assessment_model_releases
+    SET scoring_version='scoring-v0.1-dev'
+    WHERE model_version='assessment-dev-v0.3'
+  `;
+
   await sql`SELECT public.pcs_finalize_calibration_record(${primary.calibrationRecordId})`;
 
   const [complete]=await sql`
@@ -357,6 +384,69 @@ try {
     /require granted consent/i
   );
 
+  const concurrentWithdrawal=await createConsentBoundRecordLink();
+  await insertExactRecord(concurrentWithdrawal.calibrationRecordId);
+
+  const withdrawalSql=postgres(databaseUrl,{max:1,connect_timeout:10,idle_timeout:5});
+  const writerSql=postgres(databaseUrl,{max:1,connect_timeout:10,idle_timeout:5});
+  let pendingWrite;
+  let writerSettled=false;
+  try {
+    await withdrawalSql.begin(async (tx)=>{
+      await tx`
+        UPDATE calibration_consent_receipts
+        SET status='withdrawn',withdrawn_at=now(),updated_at=now()
+        WHERE consent_receipt_id=${concurrentWithdrawal.consentReceiptId}
+      `;
+
+      pendingWrite=writerSql`
+        INSERT INTO calibration_item_responses
+          (calibration_record_id,item_id,item_revision,locale,value)
+        VALUES
+          (
+            ${concurrentWithdrawal.calibrationRecordId},
+            ${first.item_id},
+            ${first.item_revision},
+            ${first.locale},
+            3
+          )
+      `.then(
+        ()=>({ok:true,error:null}),
+        (error)=>({ok:false,error})
+      ).finally(()=>{
+        writerSettled=true;
+      });
+
+      await new Promise((resolve)=>setTimeout(resolve,120));
+      assert.equal(
+        writerSettled,
+        false,
+        'response insert must wait on the consent receipt row while withdrawal is uncommitted'
+      );
+    });
+
+    const writeResult=await pendingWrite;
+    assert.equal(writeResult.ok,false,'writer must fail after concurrent withdrawal commits');
+    assert.match(
+      writeResult.error instanceof Error ? writeResult.error.message : String(writeResult.error),
+      /calibration responses require granted consent/i
+    );
+  } finally {
+    await withdrawalSql.end({timeout:5});
+    await writerSql.end({timeout:5});
+  }
+
+  const [concurrentStored]=await sql`
+    SELECT count(*)::int AS response_count
+    FROM calibration_item_responses
+    WHERE calibration_record_id=${concurrentWithdrawal.calibrationRecordId}
+  `;
+  assert.equal(
+    concurrentStored.response_count,
+    0,
+    'no response may commit after the withdrawal transaction wins the consent-row lock'
+  );
+
   const withdrawnBeforeRecord=await createConsentBoundRecordLink();
   await sql`
     UPDATE calibration_consent_receipts
@@ -408,6 +498,7 @@ try {
   );
 
   await sql`DELETE FROM anonymous_sessions WHERE session_id=${withdrawnDraft.sessionId}`;
+  await sql`DELETE FROM anonymous_sessions WHERE session_id=${concurrentWithdrawal.sessionId}`;
   await sql`DELETE FROM anonymous_sessions WHERE session_id=${withdrawnBeforeRecord.sessionId}`;
 
   console.log('Calibration answer storage integration passed: exact Wave JA-01 consent/model/item constraints, 147-response finalization, immutability, withdrawal journaling and owner-session parent privacy cascade are enforced while no runtime ingest path exists.');
