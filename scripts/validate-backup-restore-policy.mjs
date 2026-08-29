@@ -30,7 +30,7 @@ const migrationText=readdirSync('drizzle')
   .sort()
   .map((file)=>fs.readFileSync(path.join('drizzle',file),'utf8'))
   .join('\n');
-const created=[...migrationText.matchAll(/CREATE TABLE\s+([a-z0-9_]+)/gi)].map((m)=>m[1]).sort();
+const created=[...migrationText.matchAll(/CREATE TABLE\s+(?:public\.)?([a-z0-9_]+)/gi)].map((m)=>m[1]).sort();
 const inventoryTables=inventory.classes.flatMap((row)=>row.tables).sort();
 if (JSON.stringify(created)!==JSON.stringify(inventoryTables)) errors.push('backup policy table scope must stay aligned with privacy inventory');
 
