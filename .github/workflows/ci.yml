@@ -178,6 +178,9 @@ jobs:
       - name: Calibration operator authentication integration
         run: npm run test:calibration-operator-auth:integration
 
+      - name: Calibration export control integration
+        run: npm run test:calibration-export-control:integration
+
       - name: Logical backup/restore rehearsal
         run: npm run test:backup-restore:integration
 
