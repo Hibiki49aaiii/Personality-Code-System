@@ -331,7 +331,8 @@ Calibration export is intentionally not implemented before consent/governance pr
 - [x] machine prerequisite-status ledger keeps collection/export/public validation claims fail-closed;
 - [ ] final consent text/legal/privacy approval;
 - [x] calibration retention/deletion engineering policy + hash-only operator/role/request + append-only audit/deletion-journal persistence foundation + offline credential issuance/authentication/revocation CLI with dedicated least-privilege DB roles; *(production operator provisioning, raw materializer and offline purge executor remain pending)*
-- [ ] pre-registered sample/analysis plan and frozen wave version scope;
+- [x] exact Wave JA-01 repository candidate version scope frozen by ordered SHA-256 file identities;
+- [ ] external preregistration record for the reviewed sample/analysis plan;
 - [ ] varied beta sample;
 - [ ] completion/drop-off measurement for the consented beta wave;
 - [ ] retest subset;

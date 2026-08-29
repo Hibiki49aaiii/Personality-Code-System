@@ -522,6 +522,38 @@
         "exact auth/admin DB privilege matrix integration",
         "CodeQL"
       ]
+    },
+    {
+      "change_id": "2026-08-29-beta-wave-ja-01-scope-freeze",
+      "date": "2026-08-29",
+      "requirements_version_after": "0.11.7",
+      "affected_requirement_ids": [
+        "PCS-ANA-003",
+        "PCS-OPS-005",
+        "PCS-QA-007"
+      ],
+      "change": "Freeze the Wave JA-01 repository candidate measurement scope using an exact version tuple plus ordered SHA-256 identities for 15 canonical assessment/item/scoring/Trait/interaction/code-schema sources.",
+      "rationale": "External preregistration must reference an immutable candidate. Version labels alone cannot detect silent semantic byte changes under the same label, while freezing the entire Git commit would over-couple unrelated repository work.",
+      "impacted_files": [
+        "data/calibration/beta-wave-ja-01-scope-freeze-v0.1-dev.json",
+        "scripts/lib/file-identity.mjs",
+        "scripts/validate-beta-wave-scope-freeze.mjs",
+        "tests/infrastructure/beta-wave-scope-freeze.test.mjs",
+        "data/calibration/beta-wave-ja-01-draft.json",
+        "data/calibration/beta-protocol-v0.1-dev.json",
+        "data/release/release-evidence-contract-v0.1-dev.json"
+      ],
+      "assessment_model_impact": "assessment-dev-v0.3-remains-beta; exact Wave-JA-01 candidate bytes are now repository-frozen without production activation",
+      "code_schema_impact": "core-code-v0.1-dev is frozen only as assessment release context; public_use remains false",
+      "content_impact": "content-dev-v0.3 version identity is release context only; diagnostic content is not scientifically validated by this freeze",
+      "data_migration_impact": "none",
+      "compatibility_impact": "semantic changes to the frozen candidate now require a new freeze version/new wave or documented amendment; unrelated non-frozen repository files remain changeable",
+      "evidence": [
+        "Wave JA-01 scope-freeze validator",
+        "SHA-256 known-vector and adversarial mutation/order/missing-file tests",
+        "release evidence pack identity inclusion",
+        "beta protocol/wave fail-closed validators"
+      ]
     }
   ]
 }

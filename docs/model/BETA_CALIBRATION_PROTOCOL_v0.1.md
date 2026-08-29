@@ -76,7 +76,7 @@ Data from incompatible versions must not be silently pooled for confirmatory cla
 
 The machine-readable Wave JA-01 plan is no longer an empty template. It now freezes the **candidate decisions** required for external preregistration review while deliberately keeping all activation flags false.
 
-Candidate decisions include:
+Candidate decisions and exact repository scope include:
 - adult Japanese-reading volunteer population and non-probability recruitment boundary;
 - exact `assessment-dev-v0.3` / item-bank / scoring / Trait Dictionary / locale tuple;
 - N=1000 target, N=800 primary structural-bundle minimum and a result-independent 56-day stop rule;
@@ -86,7 +86,7 @@ Candidate decisions include:
 - ordinal/polychoric structural analysis, omega/ICC and pre-specified review triggers;
 - no Wave 01 demographic/DIF inference because the current export schema deliberately contains no demographic fields.
 
-This state is **registration-ready, not preregistered**. The external registration reference remains null, version scope remains unfrozen, and collection/export remain disabled.
+This state is **registration-ready, not preregistered**. The external registration reference remains null. The repository candidate version scope is now frozen by `data/calibration/beta-wave-ja-01-scope-freeze-v0.1-dev.json` using ordered SHA-256 file identities; collection/export remain disabled.
 
 ## Planned analysis bundle
 

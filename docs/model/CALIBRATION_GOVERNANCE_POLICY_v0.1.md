@@ -210,7 +210,7 @@ Those remaining pieces continue to block activation.
 
 Calibration collection/export still cannot activate until the wider Phase 5A gates are satisfied, including:
 - external preregistration;
-- explicit frozen version scope;
+- explicit repository-frozen version scope *(implemented for Wave JA-01; external preregistration still pending)*;
 - final consent/legal/privacy approval;
 - production environment separation;
 - production operator provisioning evidence;

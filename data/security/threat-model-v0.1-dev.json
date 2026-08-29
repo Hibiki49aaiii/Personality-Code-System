@@ -376,7 +376,8 @@
         "offline calibration operator issue/whoami/grant/revoke CLI with raw token excluded from argv/stdout",
         "exclusive 0600 one-time credential file",
         "dedicated pcs_calibration_auth SELECT-only operator identity/role DB role",
-        "dedicated pcs_calibration_admin limited to operator/role lifecycle tables"
+        "dedicated pcs_calibration_admin limited to operator/role lifecycle tables",
+        "Wave JA-01 repository candidate scope frozen by ordered canonical-file SHA-256 identities"
       ],
       "evidence": [
         "calibration protocol validator",
@@ -389,9 +390,11 @@
         "calibration governance validator",
         "calibration operator CLI secret-handling tests",
         "calibration operator authentication PostgreSQL integration",
-        "calibration operator DB-role exact privilege matrix"
+        "calibration operator DB-role exact privilege matrix",
+        "beta wave scope-freeze validator",
+        "scope-freeze SHA-256 adversarial tests"
       ],
-      "residual": "Consent, operator-plane audit/linkage and offline operator authentication tooling exist, but no runtime collection/export path is authorized. Production operator provisioning, raw materialization/offline purge, external preregistration, legal/privacy approval, frozen version scope and deployed-environment prerequisites remain unresolved.",
+      "residual": "Consent, operator-plane audit/linkage, offline operator authentication and repository-frozen Wave JA-01 scope exist, but no runtime collection/export path is authorized. Production operator provisioning, raw materialization/offline purge, external preregistration, legal/privacy approval and deployed-environment prerequisites remain unresolved.",
       "external_evidence_ids": [
         "phase5-beta-calibration"
       ]

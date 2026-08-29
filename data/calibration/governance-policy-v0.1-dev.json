@@ -118,7 +118,6 @@
     "raw-export-materializer",
     "production-environment-separation",
     "external-preregistration-record",
-    "frozen-version-scope",
     "withdrawal-offline-artifact-purge-executor",
     "operator-production-provisioning-evidence"
   ],
@@ -128,6 +127,12 @@
     "No runtime calibration collection/export surface is authorized by this policy.",
     "Repository persistence now provides hash-only operator identities, role bindings, two-person export-request state, append-only operator audit storage, pseudonymous record linkage and append-only withdrawal/deletion events.",
     "Offline operator credential issuance/authentication/revocation and role-management tooling is implemented with separate least-privilege auth/admin DB role contracts.",
-    "Actual production operator DB roles and credentials are not provisioned; production provisioning evidence remains an activation blocker."
-  ]
+    "Actual production operator DB roles and credentials are not provisioned; production provisioning evidence remains an activation blocker.",
+    "Wave JA-01 candidate version scope is repository-frozen by SHA-256 identities, without claiming external preregistration."
+  ],
+  "version_scope_freeze": {
+    "implemented": true,
+    "ref": "data/calibration/beta-wave-ja-01-scope-freeze-v0.1-dev.json",
+    "external_preregistration_complete": false
+  }
 }
