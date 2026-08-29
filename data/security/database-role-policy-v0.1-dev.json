@@ -72,7 +72,13 @@
       "UPDATE",
       "DELETE"
     ],
-    "calibration_consent_receipts": []
+    "calibration_consent_receipts": [],
+    "calibration_operators": [],
+    "calibration_operator_roles": [],
+    "calibration_export_requests": [],
+    "calibration_operator_audit_events": [],
+    "calibration_record_links": [],
+    "calibration_deletion_events": []
   },
   "prohibited_runtime_capabilities": [
     "CREATE-on-public-schema",
@@ -83,7 +89,8 @@
     "ALTER-ROLE",
     "CREATE-EXTENSION",
     "WRITE-versioned-definition-tables",
-    "WRITE-calibration-consent-before-activation"
+    "WRITE-calibration-consent-before-activation",
+    "READ-WRITE-calibration-operator-plane"
   ],
   "ci_contract_tested": true,
   "production_role_evidence_complete": false,
@@ -95,6 +102,12 @@
     "credential-rotation-or-role-recreation-procedure"
   ],
   "runtime_no_access_tables": [
-    "calibration_consent_receipts"
+    "calibration_consent_receipts",
+    "calibration_operators",
+    "calibration_operator_roles",
+    "calibration_export_requests",
+    "calibration_operator_audit_events",
+    "calibration_record_links",
+    "calibration_deletion_events"
   ]
 }
