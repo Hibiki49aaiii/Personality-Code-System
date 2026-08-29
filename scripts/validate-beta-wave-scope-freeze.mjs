@@ -12,6 +12,7 @@ const protocol=JSON.parse(fs.readFileSync('data/calibration/beta-protocol-v0.1-d
 const consent=JSON.parse(fs.readFileSync('data/calibration/consent-purpose-v0.1-dev.json','utf8'));
 const release=JSON.parse(fs.readFileSync('data/release/assessment-dev-v0.3.json','utf8'));
 const code=JSON.parse(fs.readFileSync('data/code-schema/v0.1-dev.json','utf8'));
+const releaseEvidence=JSON.parse(fs.readFileSync('data/release/release-evidence-contract-v0.1-dev.json','utf8'));
 const baseItemManifest=JSON.parse(fs.readFileSync('data/item-bank/v0.1/manifest.json','utf8'));
 const reviewedItemManifest=JSON.parse(fs.readFileSync('data/item-bank/v0.2/manifest.json','utf8'));
 const errors=[];
@@ -91,6 +92,8 @@ const waveExpected={
 if (JSON.stringify(wave.version_scope)!==JSON.stringify(waveExpected)) errors.push('wave/freeze measurement tuple drift');
 if (wave.locale!==freeze.measurement_scope.locale) errors.push('wave/freeze locale drift');
 if (wave.version_scope_frozen!==true) errors.push('Wave JA-01 version scope must be frozen');
+if (wave.scope_freeze_ref!=='data/calibration/beta-wave-ja-01-scope-freeze-v0.1-dev.json') errors.push('wave scope-freeze ref drift');
+if (wave.scope_freeze_aggregate_sha256!==freeze.aggregate_sha256) errors.push('wave/freeze aggregate sha256 drift');
 if (
   wave.sample_size_plan?.preregistered!==false
   || wave.preregistration_document_ref!==null
@@ -129,6 +132,15 @@ if (
 }
 if (code.public_use!==false || freeze.release_context.code_schema_public_use!==false) {
   errors.push('development code schema must remain public_use=false');
+}
+if (!releaseEvidence.required_identity_files?.includes('data/calibration/beta-wave-ja-01-scope-freeze-v0.1-dev.json')) {
+  errors.push('release evidence pack must include the beta scope-freeze manifest identity');
+}
+if (consent.scope_freeze_ref!=='data/calibration/beta-wave-ja-01-scope-freeze-v0.1-dev.json') {
+  errors.push('consent contract scope-freeze reference drift');
+}
+if (protocol.wave_plan_foundation?.scope_freeze_aggregate_sha256!==freeze.aggregate_sha256) {
+  errors.push('protocol/freeze aggregate sha256 drift');
 }
 
 const expectedBasePaths=baseItemManifest.files.map((name)=>`data/item-bank/v0.1/${name}`);
