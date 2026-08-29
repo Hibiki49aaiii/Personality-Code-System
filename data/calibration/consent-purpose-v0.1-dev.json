@@ -41,9 +41,9 @@
     "calibration-retention-deletion-policy",
     "operator-production-provisioning-evidence",
     "pre-registered-sample-plan",
-    "frozen-analysis-version-scope",
     "production-environment-separation"
   ],
   "governance_policy_ref": "data/calibration/governance-policy-v0.1-dev.json",
-  "operator_auth_policy_ref": "data/calibration/operator-auth-policy-v0.1-dev.json"
+  "operator_auth_policy_ref": "data/calibration/operator-auth-policy-v0.1-dev.json",
+  "scope_freeze_ref": "data/calibration/beta-wave-ja-01-scope-freeze-v0.1-dev.json"
 }
