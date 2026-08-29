@@ -76,7 +76,7 @@ After withdrawal/self-deletion:
 3. the next analysis/export materialization must exclude them;
 4. restored backups must not reactivate them into active research use without withdrawal/deletion replay.
 
-The repository now implements pseudonymous record linkage plus an append-only withdrawal/session-deletion journal. Raw calibration export remains blocked even though offline operator credential/authentication and execute-only request/review/approve/reject control now exist, because production operator provisioning, raw export materialization/artifact handling and offline artifact purge/regeneration remain absent.
+The repository now implements pseudonymous record linkage, normalized fail-closed calibration record/item-response tables, plus an append-only withdrawal/session-deletion journal. The answer-storage tables have no runtime ingest role or API. Raw calibration export remains blocked even though offline operator credential/authentication and execute-only request/review/approve/reject control now exist, because production operator provisioning, raw export materialization/artifact handling and offline artifact purge/regeneration remain absent.
 
 ## 6. Aggregate / reproducibility artifacts
 
@@ -195,6 +195,7 @@ Implemented repository foundations:
 - immutable export-request scope with requested → approved/rejected transition;
 - append-only bounded operator audit storage;
 - pseudonymous calibration-record links bound to consent receipts;
+- normalized `calibration_records` / `calibration_item_responses` with exact Wave JA-01/model/item guards and 147-response finalization;
 - append-only withdrawal/owner-session deletion journal that survives active-link deletion;
 - offline operator credential issuance/authentication/role-management/revocation CLI;
 - execute-only `pcs_calibration_auth` and `pcs_calibration_export_control` DB role contracts plus narrowly writable `pcs_calibration_admin`;
@@ -202,6 +203,7 @@ Implemented repository foundations:
 
 Still intentionally **not implemented/deployed**:
 - production operator DB-role/credential provisioning evidence;
+- runtime calibration ingest surface/role;
 - raw export materializer/artifact storage;
 - offline artifact purge/regeneration executor.
 
