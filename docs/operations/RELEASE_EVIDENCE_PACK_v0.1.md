@@ -18,6 +18,7 @@ The pack records:
 - exact assessment model version tuple;
 - Wave JA-01 repository scope-freeze manifest identity, including its ordered canonical-file SHA-256 aggregate;
 - calibration export-control and operator DB-role policy identities, so privileged research-control permissions are tied to the same CI evidence pack;
+- calibration answer-storage migration plus runtime DB-role/privacy-inventory identities, so pre-collection row-storage constraints and zero-runtime-access policy are inspectable;
 - code-schema public-use state;
 - public-launch / production-activation state;
 - canonical pending production evidence IDs and pending/complete counts;
