@@ -17,6 +17,8 @@
     "data/release/production-model-activation-gate-v0.1-dev.json",
     "data/release/production-evidence-registry-v0.1-dev.json",
     "data/calibration/beta-wave-ja-01-scope-freeze-v0.1-dev.json",
+    "data/security/calibration-operator-db-role-policy-v0.1-dev.json",
+    "data/calibration/export-control-policy-v0.1-dev.json",
     "data/code-schema/v0.1-dev.json",
     "data/content/dev-v0.3.json",
     "data/illustration/v0.1-dev/asset-production-registry.json",
