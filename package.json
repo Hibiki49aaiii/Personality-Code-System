@@ -29,7 +29,7 @@
     "validate:privacy-data": "node scripts/validate-privacy-data-inventory.mjs",
     "validate:landing-claims": "node scripts/validate-landing-claims.mjs",
     "audit:performance-build": "node scripts/audit-performance-build.mjs",
-    "validate:calibration": "node scripts/validate-calibration-protocol.mjs && node scripts/validate-calibration-export-schema.mjs && node scripts/validate-beta-wave-draft.mjs",
+    "validate:calibration": "node scripts/validate-calibration-protocol.mjs && node scripts/validate-calibration-export-schema.mjs && node scripts/validate-beta-wave-draft.mjs && node scripts/validate-calibration-governance.mjs",
     "validate:release-operations": "node scripts/validate-release-operations.mjs",
     "validate:environment": "node scripts/validate-environment-contract.mjs",
     "validate:launch-gate": "node scripts/validate-public-launch-gate.mjs",

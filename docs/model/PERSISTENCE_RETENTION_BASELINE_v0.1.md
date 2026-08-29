@@ -21,8 +21,9 @@
 | Published model/item/code/content metadata | Indefinite while any historical result may reference it | Not personality data for one user; required for reproducibility. |
 | Operational application logs | 30 days | Raw answers, full Trait vectors and bearer tokens excluded by default. |
 | Database backups | 35 days | Subject to deployment-provider recovery design. |
-| Calibration consent receipt | Not collected by runtime | Storage-only schema exists for a future explicit purpose/version receipt; runtime role has zero access until activation. If present through controlled testing/future activation, it cascades with owner-session deletion. |
-| Calibration dataset | Not created by default | Requires a separate consent/basis, extraction schema and governance decision. |
+| Calibration consent receipt | Owner-session-bound engineering behavior | Storage-only schema exists for a future explicit purpose/version receipt; runtime role has zero access until activation. If present through controlled testing/future activation, withdrawal is recorded and owner-session deletion cascades the receipt. Final legal retention promise remains pending. |
+| Calibration row-level research artifact | Max 180 days after wave close (engineering candidate) | Not created by default. Withdrawal/self-deletion overrides time retention; active offline artifacts must be purged/regenerated before further use. Final legal approval and implementation remain pending. |
+| Calibration operator audit metadata | 365 days (engineering candidate) | Future bounded operational accountability metadata only; raw responses/participant diagnostic payload are prohibited. Audit storage is not implemented yet. |
 | Public share result | Until revoked / source privacy deletion / later public policy | Phase 4 creates explicit sanitized snapshots. User revocation disables active links; bearer-owned full diagnostic deletion physically deletes shares derived from the private result. |
 
 ## Cleanup behavior
@@ -53,6 +54,20 @@ Migration `0007_diagnostic_retention_answer_guard.sql` preserves completed-answe
 CI executes a real PostgreSQL retention integration proving dry-run non-destruction, 30/90/180-day deletion behavior, preserved 91-day private results and automatic public-share revocation/detachment at the 180-day private-result boundary.
 
 This is repository execution tooling, not proof that a production scheduler is actually configured.
+
+## Calibration governance
+
+`data/calibration/governance-policy-v0.1-dev.json` defines the current engineering candidate before any research export implementation exists.
+
+Key rules:
+- row-level calibration artifacts have a 180-day maximum after wave close;
+- consent withdrawal or bearer-owned self-deletion takes precedence over the clock;
+- any offline artifact containing a withdrawn record must be purged or regenerated before further analysis;
+- raw calibration export requires requester + different approver;
+- operator audit metadata is bounded and may not contain raw participant/diagnostic payload;
+- operator audit metadata uses a 365-day engineering baseline.
+
+These values are not final legal/public promises. Operator authentication, audit storage, targeted deletion linkage and raw export materialization remain absent, so collection/export activation stays blocked.
 
 ## Logging exclusions
 

@@ -1,0 +1,125 @@
+{
+  "governance_policy_version": "calibration-governance-policy-v0.1-dev",
+  "status": "engineering-policy-ready-runtime-disabled",
+  "legal_approved": false,
+  "collection_enabled": false,
+  "export_enabled": false,
+  "runtime_operator_surface_enabled": false,
+  "ordinary_application_runtime_role_access_allowed": false,
+  "third_party_auto_upload_allowed": false,
+  "retention": {
+    "consent_receipt": {
+      "storage": "owner-session-bound",
+      "withdrawal_behavior": "receipt transitions to withdrawn; owner-session self-deletion cascades the receipt immediately",
+      "legal_retention_promise_finalized": false
+    },
+    "row_level_calibration_artifact": {
+      "max_days_after_wave_close": 180,
+      "withdrawal_or_self_deletion_overrides_time_retention": true,
+      "next_analysis_requires_withdrawn_records_removed": true,
+      "offline_artifact_regeneration_required_after_withdrawal": true,
+      "backup_restore_requires_withdrawal_replay_before_active_research_use": true
+    },
+    "aggregate_reproducibility_artifact": {
+      "retention": "versioned-as-needed-for-reproducibility",
+      "row_level_responses_allowed": false,
+      "participant_linkage_allowed": false,
+      "reidentification_material_allowed": false
+    },
+    "operator_audit_metadata": {
+      "retention_days": 365,
+      "participant_diagnostic_payload_allowed": false
+    }
+  },
+  "authorization": {
+    "roles": [
+      "calibration-export-requester",
+      "calibration-export-approver",
+      "calibration-privacy-operator",
+      "calibration-reviewer"
+    ],
+    "raw_export_requires_two_person_review": true,
+    "requester_and_approver_must_differ": true,
+    "explicit_scope_tuple_required": true,
+    "purpose_or_reason_code_required": true,
+    "browser_or_public_api_raw_export_allowed": false,
+    "application_runtime_db_role_may_export": false,
+    "approval_before_materialization_required": true
+  },
+  "audit_contract": {
+    "storage_implemented": false,
+    "append_only_required": true,
+    "artifact_digest_algorithm": "sha256",
+    "required_fields": [
+      "auditEventId",
+      "action",
+      "requesterOperatorId",
+      "approverOperatorId",
+      "purposeCode",
+      "waveId",
+      "exportSchemaVersion",
+      "consentVersion",
+      "assessmentModelVersion",
+      "itemBankVersion",
+      "scoringVersion",
+      "traitDictionaryVersion",
+      "locale",
+      "rowCount",
+      "artifactSha256",
+      "occurredAt",
+      "disposition"
+    ],
+    "forbidden_fields": [
+      "responses",
+      "itemResponses",
+      "sessionId",
+      "privateToken",
+      "privateTokenHash",
+      "publicToken",
+      "publicTokenHash",
+      "ipAddress",
+      "preciseLocation",
+      "email",
+      "realName",
+      "traitScores",
+      "traitVector",
+      "coreCode",
+      "extendedCode",
+      "responseQuality",
+      "resultProse",
+      "freeText"
+    ],
+    "free_form_participant_data_allowed": false
+  },
+  "withdrawal_and_deletion": {
+    "deletion_queue_implemented": false,
+    "export_regeneration_or_purge_required": true,
+    "active_analysis_use_blocked_until_purge": true,
+    "owner_session_deletion_must_remove_consent_receipt": true,
+    "future_row_level_linkage_must_support_targeted_deletion": true,
+    "restore_must_not_reactivate_withdrawn_records": true
+  },
+  "implementation_status": {
+    "retention_policy_ready": true,
+    "operator_authorization_policy_ready": true,
+    "operator_authentication_implemented": false,
+    "operator_audit_storage_implemented": false,
+    "raw_export_materializer_implemented": false,
+    "targeted_calibration_record_deletion_implemented": false
+  },
+  "activation_blockers": [
+    "final-legal-privacy-approval",
+    "operator-authentication-and-role-binding",
+    "operator-audit-storage",
+    "raw-export-materializer",
+    "withdrawal-targeted-deletion-linkage",
+    "production-environment-separation",
+    "external-preregistration-record",
+    "frozen-version-scope"
+  ],
+  "notes": [
+    "This is an engineering governance baseline, not a final legal/privacy promise.",
+    "Policy-ready does not mean implementation-ready or activation-ready.",
+    "No runtime calibration collection/export surface is authorized by this policy."
+  ]
+}

@@ -97,13 +97,14 @@
       "id": "calibration-consent-receipts",
       "personal_data": true,
       "purpose": "Represent explicit purpose-specific psychometric calibration participation consent separately from ordinary diagnosis/product analytics after future activation.",
-      "retention": "not-collected-currently-future-calibration-policy-required",
+      "retention": "owner-session-bound-engineering-behavior; future row-level calibration artifacts are governed separately by calibration-governance-policy-v0.1-dev",
       "public_by_default": false,
       "third_party_export_default": false,
       "collection_enabled": false,
       "tables": [
         "calibration_consent_receipts"
-      ]
+      ],
+      "governance_policy_ref": "data/calibration/governance-policy-v0.1-dev.json"
     }
   ],
   "prohibited_default_collection": [
