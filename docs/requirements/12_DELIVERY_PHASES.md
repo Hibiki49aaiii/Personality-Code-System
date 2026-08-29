@@ -330,7 +330,7 @@ Calibration export is intentionally not implemented before consent/governance pr
 - [x] normal runtime role has zero access to consent receipt and calibration operator-plane storage before activation;
 - [x] machine prerequisite-status ledger keeps collection/export/public validation claims fail-closed;
 - [ ] final consent text/legal/privacy approval;
-- [x] calibration retention/deletion engineering policy + hash-only operator/role/request + append-only audit/deletion-journal persistence foundation + offline credential issuance/authentication/revocation and execute-only request/review/approve/reject control CLIs with dedicated least-privilege DB roles; *(production operator provisioning, raw materializer and offline purge executor remain pending)*
+- [x] calibration retention/deletion engineering policy + normalized fail-closed answer-storage schema + hash-only operator/role/request + append-only audit/deletion-journal persistence foundation + offline credential issuance/authentication/revocation and execute-only request/review/approve/reject control CLIs with dedicated least-privilege DB roles; *(production operator provisioning, raw materializer and offline purge executor remain pending)*
 - [x] exact Wave JA-01 repository candidate version scope frozen by ordered SHA-256 file identities;
 - [ ] external preregistration record for the reviewed sample/analysis plan;
 - [ ] varied beta sample;
@@ -338,7 +338,7 @@ Calibration export is intentionally not implemented before consent/governance pr
 - [ ] retest subset;
 - [ ] ambiguity feedback.
 
-No checked item above means calibration data are being collected. There is still no runtime calibration API/export job, raw materializer or answer-level calibration dataset; operator authentication/export control are offline CLI + execute-only DB APIs and production operator provisioning remains pending.
+No checked item above means calibration data are being collected. Dedicated answer-storage tables now exist, but there is still no runtime calibration API/ingest path/export job, no collected calibration rows and no raw materializer; operator authentication/export control are offline CLI + execute-only DB APIs and production operator provisioning remains pending.
 
 ### 5B Statistical review — PENDING
 - [ ] item distributions;
