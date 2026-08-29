@@ -108,6 +108,14 @@ if (policy.activation_blockers?.includes('operator-authentication-command-and-ro
 if (!policy.activation_blockers?.includes('operator-production-provisioning-evidence')) {
   errors.push('production operator provisioning evidence blocker missing');
 }
+if (policy.version_scope_freeze?.implemented !== true
+  || policy.version_scope_freeze?.ref !== 'data/calibration/beta-wave-ja-01-scope-freeze-v0.1-dev.json'
+  || policy.version_scope_freeze?.external_preregistration_complete !== false) {
+  errors.push('repository version-scope freeze governance state drift');
+}
+if (policy.activation_blockers?.includes('frozen-version-scope')) {
+  errors.push('satisfied governance scope-freeze blocker must be removed');
+}
 const operatorPlaneTables=[
   'calibration_consent_receipts',
   'calibration_operators',
