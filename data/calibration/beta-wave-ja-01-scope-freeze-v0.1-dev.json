@@ -1,0 +1,116 @@
+{
+  "scope_freeze_version": "beta-wave-ja-01-scope-freeze-v0.1-dev",
+  "wave_id": "beta-ja-wave-01-draft",
+  "status": "repository-frozen-not-preregistered",
+  "frozen_at_repository_level": true,
+  "external_preregistered": false,
+  "collection_enabled": false,
+  "export_enabled": false,
+  "collection_start_allowed": false,
+  "measurement_scope": {
+    "assessment_model_version": "assessment-dev-v0.3",
+    "item_bank_version": "item-bank-v0.2",
+    "scoring_version": "scoring-v0.1-dev",
+    "trait_dictionary_version": "trait-dictionary-v0.2",
+    "locale": "ja-JP",
+    "item_count": 147,
+    "direct_trait_count": 21
+  },
+  "release_context": {
+    "code_schema_version": "core-code-v0.1-dev",
+    "interaction_version": "trait-interactions-v0.1",
+    "content_version": "content-dev-v0.3",
+    "code_schema_public_use": false
+  },
+  "digest_contract": {
+    "algorithm": "sha256",
+    "entry_encoding": "path + NUL + sha256 + LF",
+    "ordered_entries_required": true,
+    "duplicate_paths_allowed": false
+  },
+  "files": [
+    {
+      "path": "data/release/assessment-dev-v0.3.json",
+      "bytes": 1428,
+      "sha256": "9ddfb25ab336d8b426a84c29849965744e45c065de3d22cbe31aa3c3edc1ae2a"
+    },
+    {
+      "path": "data/item-bank/v0.1/manifest.json",
+      "bytes": 1186,
+      "sha256": "d80b1ab8bd4b0e7e56f12f75c0dd62e407e0ea22d07971f29a780cb9e49b7ad9"
+    },
+    {
+      "path": "data/item-bank/v0.1/cognitive.json",
+      "bytes": 11020,
+      "sha256": "47d290f6e2c9c9c706340ef69de5b894f7ce7c9dea9e76ce6af703960db6e765"
+    },
+    {
+      "path": "data/item-bank/v0.1/affect-relational.json",
+      "bytes": 15536,
+      "sha256": "d11860d7ed54d3ac51a6dae364d78b6072ea0e6462a5de02bca693c787643218"
+    },
+    {
+      "path": "data/item-bank/v0.1/action-risk.json",
+      "bytes": 15256,
+      "sha256": "ec78749f7a3308ebc10d16e4cff60132d77e827e26d997868848a2586f3ed7d9"
+    },
+    {
+      "path": "data/item-bank/v0.1/resilience-creativity.json",
+      "bytes": 4374,
+      "sha256": "df148f394e9d0f314d7c7ed4110230059dec3eed6183e1e490fad7f0db803da1"
+    },
+    {
+      "path": "data/item-bank/v0.2/manifest.json",
+      "bytes": 1320,
+      "sha256": "ed4e3c3a08804d6dd368f69baf1d89b8a883a18bc46df9c1701f5e780f8980c9"
+    },
+    {
+      "path": "data/item-bank/v0.2/review.json",
+      "bytes": 14322,
+      "sha256": "896a20be7f09c720c60c89fd042f50ae859ba160e0fe411e4f99ba5f291f0835"
+    },
+    {
+      "path": "docs/model/TRAIT_DICTIONARY_v0.2.md",
+      "bytes": 39323,
+      "sha256": "4cd306220750079093c4e6e54a5f5617172f4954d9321ebeed5791cc1fc52d0b"
+    },
+    {
+      "path": "docs/model/SCORING_SPEC_v0.1.md",
+      "bytes": 4815,
+      "sha256": "376baea0ccffcfa22ae14e072d00508df9ece044af685b9551291402dd791cdc"
+    },
+    {
+      "path": "src/domain/assessment/scoring.ts",
+      "bytes": 7406,
+      "sha256": "79ed2e25b3f4e20d807bf247a8db7aee3336e42325e06184d743f85a660c643d"
+    },
+    {
+      "path": "data/interactions/v0.1.json",
+      "bytes": 6766,
+      "sha256": "6956353cc3f81ba1575e4b79b7b1a0b5085449c0eca6096fd04a131e02919a14"
+    },
+    {
+      "path": "docs/model/TRAIT_INTERACTIONS_v0.1.md",
+      "bytes": 11427,
+      "sha256": "f8a15d9331c1e4eedc3df782f7049804c6a14db675f8e6bf3832648a6d231055"
+    },
+    {
+      "path": "src/domain/assessment/interactions.ts",
+      "bytes": 5087,
+      "sha256": "076cd520bafb2359134ad43ee042d20e2ae4eb7bfad3b5cf601ee39a8a42dbaf"
+    },
+    {
+      "path": "data/code-schema/v0.1-dev.json",
+      "bytes": 1920,
+      "sha256": "9d52950b32a4a0fecd45beb5f82bfb51349cc638ad50613f9c714a68797de14a"
+    }
+  ],
+  "aggregate_sha256": "570daf8d9bd216088803e84bf7b08d8144c7daf4aaf4b3267823eec52b78949b",
+  "amendment_rule": "Any semantic change to the frozen tuple or file identity set requires a new scope-freeze version or new wave; after external preregistration, a documented amendment/new-wave decision is additionally required.",
+  "non_claims": {
+    "scientific_validation": false,
+    "production_model_approval": false,
+    "public_taxonomy_approval": false,
+    "external_preregistration": false
+  }
+}
