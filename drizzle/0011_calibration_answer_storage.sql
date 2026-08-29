@@ -139,16 +139,25 @@ AS $$
 DECLARE
   record_status text;
   record_model text;
+  consent_status text;
   model_revision text;
   model_locale text;
 BEGIN
-  SELECT r.status, r.assessment_model_version
-    INTO record_status, record_model
+  SELECT r.status, r.assessment_model_version, c.status
+    INTO record_status, record_model, consent_status
   FROM public.calibration_records r
+  JOIN public.calibration_record_links l
+    ON l.calibration_record_id = r.calibration_record_id
+  JOIN public.calibration_consent_receipts c
+    ON c.consent_receipt_id = l.consent_receipt_id
   WHERE r.calibration_record_id = NEW.calibration_record_id;
 
   IF record_status IS DISTINCT FROM 'draft' THEN
     RAISE EXCEPTION 'calibration responses require a draft record';
+  END IF;
+
+  IF consent_status IS DISTINCT FROM 'granted' THEN
+    RAISE EXCEPTION 'calibration responses require granted consent';
   END IF;
 
   SELECT m.item_revision, m.locale
@@ -367,6 +376,7 @@ SET search_path = pg_catalog
 AS $$
 DECLARE
   parent_link_exists boolean;
+  privacy_deletion_authorized boolean;
 BEGIN
   SELECT EXISTS (
     SELECT 1
@@ -375,8 +385,20 @@ BEGIN
   )
   INTO parent_link_exists;
 
-  IF parent_link_exists THEN
-    RAISE EXCEPTION 'calibration record may only delete with its parent record link';
+  SELECT EXISTS (
+    SELECT 1
+    FROM public.calibration_deletion_events e
+    WHERE e.calibration_record_id = OLD.calibration_record_id
+      AND e.reason IN (
+        'consent-withdrawn',
+        'owner-session-deleted',
+        'privacy-operator-purge'
+      )
+  )
+  INTO privacy_deletion_authorized;
+
+  IF parent_link_exists AND privacy_deletion_authorized IS NOT TRUE THEN
+    RAISE EXCEPTION 'calibration record deletion requires a privacy deletion event or parent-link cascade';
   END IF;
 
   RETURN OLD;
