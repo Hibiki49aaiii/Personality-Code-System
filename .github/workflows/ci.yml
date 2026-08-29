@@ -181,6 +181,9 @@ jobs:
       - name: Calibration export control integration
         run: npm run test:calibration-export-control:integration
 
+      - name: Calibration retest linkage integration
+        run: npm run test:calibration-retest-linkage:integration
+
       - name: Logical backup/restore rehearsal
         run: npm run test:backup-restore:integration
 
