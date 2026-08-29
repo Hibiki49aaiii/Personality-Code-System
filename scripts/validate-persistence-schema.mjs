@@ -90,6 +90,8 @@ const requiredFragments = [
   ['calibration operator hash-only credential check', /calibration_operator_credential_hash_chk/i],
   ['calibration operator update guard', /CREATE TRIGGER\s+calibration_operators_update_guard/i],
   ['calibration export distinct approver check', /calibration_export_request_distinct_operators_chk/i],
+  ['calibration export request insert role guard', /CREATE TRIGGER\s+calibration_export_requests_insert_guard/i],
+  ['calibration active operator role function', /pcs_require_active_calibration_operator_role/i],
   ['calibration export request update guard', /CREATE TRIGGER\s+calibration_export_requests_update_guard/i],
   ['calibration operator audit append-only guard', /CREATE TRIGGER\s+calibration_operator_audit_events_append_only/i],
   ['calibration record link immutable guard', /CREATE TRIGGER\s+calibration_record_links_immutable_update/i],
