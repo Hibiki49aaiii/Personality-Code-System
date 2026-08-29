@@ -37,7 +37,7 @@ for (const [table,privileges] of Object.entries(policy.runtime_table_privileges)
   for (const privilege of privileges) if (!allowedPrivileges.has(privilege)) errors.push(`${table}: prohibited runtime privilege ${privilege}`);
 }
 
-const expectedCalibrationNoAccess=["calibration_consent_receipts","calibration_deletion_events","calibration_export_requests","calibration_operator_audit_events","calibration_operator_roles","calibration_operators","calibration_record_links"];
+const expectedCalibrationNoAccess=["calibration_consent_receipts","calibration_deletion_events","calibration_export_requests","calibration_operator_audit_events","calibration_operator_roles","calibration_operators","calibration_record_links","calibration_retest_linkages"];
 if (JSON.stringify([...noAccessTables].sort()) !== JSON.stringify(expectedCalibrationNoAccess)) {
   errors.push(`runtime no-access table set drift: ${[...noAccessTables].sort().join(',')}`);
 }
