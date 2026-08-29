@@ -49,6 +49,55 @@ CREATE INDEX calibration_item_responses_item_idx
 -- A model's item mapping is editable only while the release is draft.
 -- Once the release enters beta, the repository-frozen mapping must not drift;
 -- later revisions require a new assessment model version.
+CREATE OR REPLACE FUNCTION public.pcs_protect_published_model_release()
+RETURNS trigger
+LANGUAGE plpgsql
+SET search_path = pg_catalog
+AS $$
+BEGIN
+  IF OLD.status = 'published' THEN
+    RAISE EXCEPTION 'published assessment_model_releases are immutable';
+  END IF;
+
+  IF OLD.status = 'retired' THEN
+    RAISE EXCEPTION 'retired assessment_model_releases are immutable';
+  END IF;
+
+  IF OLD.status = 'beta' THEN
+    IF TG_OP = 'DELETE' THEN
+      RAISE EXCEPTION 'beta assessment_model_releases cannot be deleted';
+    END IF;
+
+    IF NEW.model_version <> OLD.model_version
+       OR NEW.locale <> OLD.locale
+       OR NEW.trait_dictionary_version <> OLD.trait_dictionary_version
+       OR NEW.item_bank_version <> OLD.item_bank_version
+       OR NEW.scoring_version <> OLD.scoring_version
+       OR NEW.code_schema_version <> OLD.code_schema_version
+       OR NEW.interaction_version <> OLD.interaction_version
+       OR NEW.content_version <> OLD.content_version
+       OR NEW.created_at <> OLD.created_at THEN
+      RAISE EXCEPTION 'beta assessment_model_releases have an immutable version tuple';
+    END IF;
+
+    IF NEW.status NOT IN ('published','retired') THEN
+      RAISE EXCEPTION 'beta assessment_model_releases may only transition to published or retired';
+    END IF;
+
+    IF NEW.status = 'published' AND NEW.published_at IS NULL THEN
+      RAISE EXCEPTION 'published assessment_model_releases require published_at';
+    END IF;
+
+    IF NEW.status = 'retired'
+       AND NEW.published_at IS DISTINCT FROM OLD.published_at THEN
+      RAISE EXCEPTION 'beta retirement may not mutate published_at';
+    END IF;
+  END IF;
+
+  RETURN CASE WHEN TG_OP = 'DELETE' THEN OLD ELSE NEW END;
+END;
+$$;
+
 CREATE OR REPLACE FUNCTION public.pcs_protect_published_model_items()
 RETURNS trigger
 LANGUAGE plpgsql
@@ -71,6 +120,9 @@ BEGIN
     IF old_model_status = 'beta' THEN
       RAISE EXCEPTION 'items belonging to a beta assessment model are immutable';
     END IF;
+    IF old_model_status = 'retired' THEN
+      RAISE EXCEPTION 'items belonging to a retired assessment model are immutable';
+    END IF;
   END IF;
 
   IF TG_OP <> 'DELETE' THEN
@@ -85,6 +137,9 @@ BEGIN
     END IF;
     IF new_model_status = 'beta' THEN
       RAISE EXCEPTION 'items belonging to a beta assessment model are immutable';
+    END IF;
+    IF new_model_status = 'retired' THEN
+      RAISE EXCEPTION 'items belonging to a retired assessment model are immutable';
     END IF;
   END IF;
 
