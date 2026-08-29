@@ -1,0 +1,56 @@
+{
+  "consent_contract_version": "calibration-retest-consent-contract-v0.1-dev",
+  "consent_version": "calibration-retest-consent-ja-v0.1-dev",
+  "purpose_id": "psychometric-calibration-retest-v0.1",
+  "locale": "ja-JP",
+  "status": "draft-review-only",
+  "legal_approved": false,
+  "collection_authorized": false,
+  "export_authorized": false,
+  "affirmative_action_required": true,
+  "separate_receipt_required": true,
+  "ordinary_product_analytics_is_consent": false,
+  "retest_linkage_optional": true,
+  "direct_identity_or_contact_required": false,
+  "eligible_interval_days_min": 14,
+  "eligible_interval_days_max": 21,
+  "draft_disclosure": {
+    "purpose": "Wave JA-01の同一候補モデルを14〜21日後に再回答し、Traitの時間的安定性を検討するため。",
+    "linkage": "baselineとretestは氏名・メールではなく、ランダムなretest pair IDで対応付ける。再検査用の一時credentialはDBに生値保存せずSHA-256 hashのみ保持する。",
+    "optionality": "再検査参加は通常診断およびbaseline calibration参加とは別の任意参加であり、参加しなくても通常診断の結果を変更しない。",
+    "data_classes": [
+      "baseline-and-retest-item-response-values",
+      "random-pseudonymous-retest-pair-id",
+      "measurement-occasion-baseline-or-retest",
+      "exact-wave-and-model-version-scope"
+    ],
+    "excluded_by_default": [
+      "real-name",
+      "email-or-phone",
+      "private-session-bearer-or-hash",
+      "public-share-token-or-hash",
+      "retest-claim-token-or-hash-in-export",
+      "ip-address",
+      "precise-location",
+      "free-text",
+      "ordinary-product-analytics-history",
+      "result-prose",
+      "derived-trait-scores-or-core-codes",
+      "demographics"
+    ],
+    "withdrawal": "either linked consent withdrawal/self-deletion makes the retest pair unusable for active analysis and requires both linked row-level research records to be excluded or purged from later materializations where applicable.",
+    "retention": "row-level retest research material remains subject to the calibration governance 180-day engineering ceiling and earlier withdrawal/self-deletion override; final legal/privacy wording is not approved."
+  },
+  "activation_blockers": [
+    "final-consent-copy-review",
+    "legal-privacy-approval",
+    "external-preregistration-record",
+    "production-environment-separation",
+    "operator-production-provisioning-evidence",
+    "runtime-retest-issue-and-claim-surface",
+    "raw-export-materializer",
+    "withdrawal-offline-artifact-purge-executor"
+  ],
+  "linkage_policy_ref": "data/calibration/retest-linkage-policy-v0.1-dev.json",
+  "governance_policy_ref": "data/calibration/governance-policy-v0.1-dev.json"
+}
