@@ -45,7 +45,8 @@
   "database_roles": {
     "auth_role": "pcs_calibration_auth",
     "admin_role": "pcs_calibration_admin",
-    "auth_access_mode": "execute-only-security-definer"
+    "auth_access_mode": "execute-only-security-definer",
+    "export_control_role": "pcs_calibration_export_control"
   },
   "production_provisioning_complete": false,
   "notes": [
