@@ -367,16 +367,24 @@
         "pre-registered consent/environment/operator prerequisites",
         "separate versioned calibration consent receipt schema",
         "runtime DB role has zero access to consent receipt table before activation",
-        "owner-session deletion cascades consent receipt if present"
+        "owner-session deletion cascades consent receipt if present",
+        "hash-only calibration operator credential storage with explicit role bindings",
+        "DB-enforced distinct requester/approver export decision",
+        "append-only bounded calibration operator audit storage",
+        "pseudonymous calibration record linkage with append-only withdrawal/session-deletion journal",
+        "ordinary runtime DB role has zero access to all calibration consent/operator-plane tables"
       ],
       "evidence": [
         "calibration protocol validator",
         "CALIBRATION_EXPORT_SPEC",
         "calibration consent persistence integration",
         "database least-privilege integration",
-        "user deletion integration"
+        "user deletion integration",
+        "calibration operator credential tests",
+        "calibration operator-plane PostgreSQL integration",
+        "calibration governance validator"
       ],
-      "residual": "Consent storage mechanics exist, but no runtime collection/export path is authorized; legal/privacy, retention, operator, sample-plan, wave-scope and deployed-environment prerequisites remain unresolved.",
+      "residual": "Consent, operator-plane audit/linkage and governance mechanics exist, but no runtime collection/export path is authorized. Operator-facing authentication, raw materialization/offline purge, external preregistration, legal/privacy approval, frozen version scope and deployed-environment prerequisites remain unresolved.",
       "external_evidence_ids": [
         "phase5-beta-calibration"
       ]
