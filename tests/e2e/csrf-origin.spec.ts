@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-test('cookie-authenticated mutations reject cross-site browser origins without leaking internals', async ({ request }) => {
+test('browser-facing mutations reject cross-site origins without leaking internals', async ({ request }) => {
   const hostileHeaders = {
     origin: 'https://attacker.example',
     'sec-fetch-site': 'cross-site'
@@ -52,12 +52,17 @@ test('cookie-authenticated mutations reject cross-site browser origins without l
   });
   expect(share.status()).toBe(403);
 
+  const shareRevocation = await request.delete('/api/share', {
+    headers: hostileHeaders
+  });
+  expect(shareRevocation.status()).toBe(403);
+
   const dataDeletion = await request.delete('/api/assessment/data', {
     headers: hostileHeaders
   });
   expect(dataDeletion.status()).toBe(403);
 
-  for (const response of [hostileSession, hostileAnalytics, answer, complete, share, dataDeletion]) {
+  for (const response of [hostileSession, hostileAnalytics, answer, complete, share, shareRevocation, dataDeletion]) {
     const body = await response.json() as Record<string, unknown>;
     expect(body.error).toBe('CROSS_SITE_MUTATION_REJECTED');
     const serialized = JSON.stringify(body);
