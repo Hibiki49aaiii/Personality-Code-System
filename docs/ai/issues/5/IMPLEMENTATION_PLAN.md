@@ -61,7 +61,7 @@ Every browser-facing state-changing first-party Route Handler in the current API
 
 Read-only GET handlers remain unchanged.
 
-`scripts/validate-security-baseline.mjs` will enforce the current mutation-route inventory and guard presence, providing a fail-fast CI contract when a mutating route is added or loses its guard.
+`scripts/validate-security-baseline.mjs` will recursively discover `src/app/api/**/route.ts` mutation handlers, compare them to the reviewed guarded-route contract, and enforce guard presence. CI therefore fails both when an existing guard disappears and when a new state-changing route is added without explicit security review.
 
 ## Data Flow
 
@@ -181,7 +181,7 @@ Do not echo Origin, URL, cookies, tokens, headers, stack traces or secrets.
 2. Add guard to analytics POST before body parsing and DB work.
 3. Map analytics CrossSiteMutationError to the existing fixed 403 shape.
 4. Extend E2E hostile-origin cases.
-5. Add static route-guard coverage validation.
+5. Add static route discovery + reviewed guard-contract validation.
 6. Synchronize security/privacy docs.
 7. Run targeted verification.
 8. Update Issue #5 with actual changed files/results.
@@ -193,7 +193,7 @@ All runtime changes are local precondition checks with no migration. Rollback is
 ## Known Risks
 
 - A legitimate external caller using cross-origin browser requests would be rejected; current code/docs define analytics and assessment as first-party same-origin only, so this is not an intended supported flow.
-- Overly broad static validation could create false positives. The validator will therefore use an explicit current mutation-route map rather than attempting to infer arbitrary future semantics from syntax.
+- Static discovery intentionally detects only exported POST/PUT/PATCH/DELETE Route Handlers, then requires every discovered mutating file to exist in the explicit reviewed guard map. This avoids silent new-route drift while keeping route semantics reviewable.
 - Base CI is already red because of unrelated calibration prerequisite drift. This issue must not rewrite calibration semantics to make CI green.
 
 # Human Understanding Summary
