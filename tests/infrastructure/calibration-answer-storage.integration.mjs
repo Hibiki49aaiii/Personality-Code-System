@@ -354,7 +354,7 @@ try {
           3
         )
     `,
-    /requires granted consent/i
+    /require granted consent/i
   );
 
   const withdrawnBeforeRecord=await createConsentBoundRecordLink();
@@ -391,10 +391,26 @@ try {
   );
 
   await sql`DELETE FROM anonymous_sessions WHERE session_id=${incomplete.sessionId}`;
+
+  const [incompleteAfterOwnerCascade]=await sql`
+    SELECT
+      (SELECT count(*)::int FROM calibration_record_links WHERE calibration_record_id=${incomplete.calibrationRecordId}) AS link_count,
+      (SELECT count(*)::int FROM calibration_records WHERE calibration_record_id=${incomplete.calibrationRecordId}) AS record_count,
+      (SELECT count(*)::int FROM calibration_item_responses WHERE calibration_record_id=${incomplete.calibrationRecordId}) AS response_count,
+      (SELECT count(*)::int FROM calibration_deletion_events
+        WHERE calibration_record_id=${incomplete.calibrationRecordId}
+          AND reason='owner-session-deleted') AS deletion_event_count
+  `;
+  assert.deepEqual(
+    incompleteAfterOwnerCascade,
+    {link_count:0,record_count:0,response_count:0,deletion_event_count:1},
+    'owner-session deletion must journal then cascade a still-stored calibration record and its response rows'
+  );
+
   await sql`DELETE FROM anonymous_sessions WHERE session_id=${withdrawnDraft.sessionId}`;
   await sql`DELETE FROM anonymous_sessions WHERE session_id=${withdrawnBeforeRecord.sessionId}`;
 
-  console.log('Calibration answer storage integration passed: exact Wave JA-01 consent/model/item constraints, 147-response finalization, immutability, withdrawal journaling and parent privacy cascade are enforced while no runtime ingest path exists.');
+  console.log('Calibration answer storage integration passed: exact Wave JA-01 consent/model/item constraints, 147-response finalization, immutability, withdrawal journaling and owner-session parent privacy cascade are enforced while no runtime ingest path exists.');
 } finally {
   await sql.end({timeout:5});
 }
