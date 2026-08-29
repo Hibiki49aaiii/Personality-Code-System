@@ -32,9 +32,8 @@ Current state:
 “Policy ready” means the implementation contract is concrete enough to build against.
 
 It does **not** mean:
-- operator authentication exists;
-- audit storage exists;
-- deletion queue exists;
+- production operator credentials/DB roles are provisioned;
+- offline artifact purge exists;
 - raw export materializer exists;
 - production activation is allowed.
 
@@ -77,7 +76,7 @@ After withdrawal/self-deletion:
 3. the next analysis/export materialization must exclude them;
 4. restored backups must not reactivate them into active research use without withdrawal/deletion replay.
 
-The repository now implements pseudonymous record linkage plus an append-only withdrawal/session-deletion journal. Raw calibration export remains blocked because no operator-facing authentication command, raw export materializer, or offline artifact purge executor exists.
+The repository now implements pseudonymous record linkage plus an append-only withdrawal/session-deletion journal. Raw calibration export remains blocked even though offline operator credential/authentication tooling now exists, because production operator provisioning, raw export materialization/artifact handling and offline artifact purge/regeneration remain absent.
 
 ## 6. Aggregate / reproducibility artifacts
 
@@ -196,10 +195,12 @@ Implemented repository foundations:
 - immutable export-request scope with requested → approved/rejected transition;
 - append-only bounded operator audit storage;
 - pseudonymous calibration-record links bound to consent receipts;
-- append-only withdrawal/owner-session deletion journal that survives active-link deletion.
+- append-only withdrawal/owner-session deletion journal that survives active-link deletion;
+- offline operator credential issuance/authentication/role-management/revocation CLI;
+- dedicated least-privilege pcs_calibration_auth and pcs_calibration_admin DB role contracts.
 
-Still intentionally **not implemented**:
-- operator-facing authentication/authorization command or service;
+Still intentionally **not implemented/deployed**:
+- production operator DB-role/credential provisioning evidence;
 - raw export materializer/artifact storage;
 - offline artifact purge/regeneration executor.
 
@@ -212,7 +213,7 @@ Calibration collection/export still cannot activate until the wider Phase 5A gat
 - explicit frozen version scope;
 - final consent/legal/privacy approval;
 - production environment separation;
-- operator authentication/audit implementation;
+- production operator provisioning evidence;
 - withdrawal-targeted deletion linkage;
 - approved runtime/materialization implementation.
 
