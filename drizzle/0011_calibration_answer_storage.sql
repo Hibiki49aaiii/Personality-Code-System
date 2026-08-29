@@ -246,7 +246,6 @@ BEGIN
      AND a.item_revision = m.item_revision
      AND a.locale = m.locale
     WHERE m.model_version = record_row.assessment_model_version
-      AND (m.required = true OR true)
       AND a.item_id IS NULL
   ) THEN
     RAISE EXCEPTION 'calibration record is missing model responses';
