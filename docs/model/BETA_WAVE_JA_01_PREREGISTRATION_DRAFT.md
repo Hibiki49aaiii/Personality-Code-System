@@ -368,7 +368,7 @@ This draft remains blocked on:
 - final consent copy/legal/privacy approval;
 - production environment separation evidence;
 - calibration retention/deletion policy;
-- operator authorization/audit;
+- production operator provisioning evidence;
 - retest linkage schema/consent if retest is activated;
 - explicit version-scope freeze.
 

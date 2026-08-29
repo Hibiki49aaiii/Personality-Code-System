@@ -110,7 +110,7 @@
     "final-consent-copy-and-legal-approval",
     "production-environment-separation-evidence",
     "calibration-retention-deletion-policy",
-    "operator-authorization-audit",
+    "operator-production-provisioning-evidence",
     "retest-linkage-schema-and-consent",
     "frozen-version-scope"
   ],
@@ -119,7 +119,8 @@
     "No participant collection or export is authorized by this file.",
     "Target N=1000 and minimum N=800 are Wave 01 operational decisions, not universal sample-size rules.",
     "Wave 01 does not collect demographics and therefore does not support DIF/invariance inference.",
-    "Any post-registration change to sample, exclusion, holdout, retest or version scope requires a documented amendment/new wave decision."
+    "Any post-registration change to sample, exclusion, holdout, retest or version scope requires a documented amendment/new wave decision.",
+    "Operator authentication/role-management tooling is repository-implemented, but production operator provisioning evidence remains absent."
   ],
   "registration_ready": true,
   "analysis_decision_policy": {

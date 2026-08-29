@@ -21,7 +21,7 @@ Current coverage includes:
 - dependency/secret/container exposure;
 - runtime AI prohibition;
 - pre-launch crawler exposure;
-- calibration consent boundary.
+- calibration consent/operator-authentication boundary.
 
 ## Status semantics
 

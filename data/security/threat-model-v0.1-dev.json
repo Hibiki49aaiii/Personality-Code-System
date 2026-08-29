@@ -372,7 +372,11 @@
         "DB-enforced distinct requester/approver export decision",
         "append-only bounded calibration operator audit storage",
         "pseudonymous calibration record linkage with append-only withdrawal/session-deletion journal",
-        "ordinary runtime DB role has zero access to all calibration consent/operator-plane tables"
+        "ordinary runtime DB role has zero access to all calibration consent/operator-plane tables",
+        "offline calibration operator issue/whoami/grant/revoke CLI with raw token excluded from argv/stdout",
+        "exclusive 0600 one-time credential file",
+        "dedicated pcs_calibration_auth SELECT-only operator identity/role DB role",
+        "dedicated pcs_calibration_admin limited to operator/role lifecycle tables"
       ],
       "evidence": [
         "calibration protocol validator",
@@ -382,9 +386,12 @@
         "user deletion integration",
         "calibration operator credential tests",
         "calibration operator-plane PostgreSQL integration",
-        "calibration governance validator"
+        "calibration governance validator",
+        "calibration operator CLI secret-handling tests",
+        "calibration operator authentication PostgreSQL integration",
+        "calibration operator DB-role exact privilege matrix"
       ],
-      "residual": "Consent, operator-plane audit/linkage and governance mechanics exist, but no runtime collection/export path is authorized. Operator-facing authentication, raw materialization/offline purge, external preregistration, legal/privacy approval, frozen version scope and deployed-environment prerequisites remain unresolved.",
+      "residual": "Consent, operator-plane audit/linkage and offline operator authentication tooling exist, but no runtime collection/export path is authorized. Production operator provisioning, raw materialization/offline purge, external preregistration, legal/privacy approval, frozen version scope and deployed-environment prerequisites remain unresolved.",
       "external_evidence_ids": [
         "phase5-beta-calibration"
       ]

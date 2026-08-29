@@ -489,6 +489,39 @@
         "database least-privilege integration",
         "calibration governance validator"
       ]
+    },
+    {
+      "change_id": "2026-08-29-calibration-operator-auth-cli",
+      "date": "2026-08-29",
+      "requirements_version_after": "0.11.7",
+      "affected_requirement_ids": [
+        "PCS-ANA-003",
+        "PCS-SEC-001",
+        "PCS-QA-007"
+      ],
+      "change": "Add an offline calibration operator credential lifecycle CLI with one-time 256-bit token issuance, SHA-256 hash-only DB identity, environment-only authentication, role management/revocation and dedicated least-privilege calibration auth/admin DB role contracts.",
+      "rationale": "Privileged research export tooling must not be built on migration-owner or ordinary runtime credentials, and operator secrets must not leak through argv/stdout/logs.",
+      "impacted_files": [
+        "scripts/calibration-operator.mjs",
+        "scripts/lib/calibration-operator-cli.mjs",
+        "data/calibration/operator-auth-policy-v0.1-dev.json",
+        "data/security/calibration-operator-db-role-policy-v0.1-dev.json",
+        "ops/sql/calibration-operator-role-grants.sql",
+        "tests/infrastructure/calibration-operator-cli.test.mjs",
+        "tests/infrastructure/calibration-operator-auth.integration.mjs"
+      ],
+      "assessment_model_impact": "none-assessment-dev-v0.3-remains-beta-and-collection-export-disabled",
+      "code_schema_impact": "none-C01D-remains-public_use_false",
+      "content_impact": "none-diagnostic-result-content-unchanged",
+      "data_migration_impact": "none-uses-existing-0009-operator-plane-tables-and-reviewed-deployment-grant-template",
+      "compatibility_impact": "ordinary-runtime-role-unchanged; offline-operator-tooling-only; production-operator-provisioning-remains-manual-evidence",
+      "evidence": [
+        "calibration operator auth policy validator",
+        "credential secret-handling unit tests",
+        "real PostgreSQL CLI lifecycle integration",
+        "exact auth/admin DB privilege matrix integration",
+        "CodeQL"
+      ]
     }
   ]
 }

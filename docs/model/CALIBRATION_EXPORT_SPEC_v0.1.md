@@ -26,7 +26,7 @@ No calibration export may execute until all of these exist:
 
 Until then, the correct runtime behavior is: **no calibration export endpoint/job exists**.
 
-Consent receipt infrastructure now exists separately from answer-level research data, and a machine-validated engineering governance policy plus operator-plane persistence foundation now define candidate retention/deletion, role, request, audit and deletion-journal rules. This still does not satisfy activation by itself. The ordinary runtime role is intentionally denied all access to every calibration consent/operator-plane table, the consent copy remains draft/not legally approved, operator-facing authentication and raw export/purge tooling are not implemented, and no answer-level calibration table/export path has been added.
+Consent receipt infrastructure now exists separately from answer-level research data, and a machine-validated engineering governance policy plus operator-plane persistence foundation now define candidate retention/deletion, role, request, audit and deletion-journal rules. This still does not satisfy activation by itself. The ordinary runtime role is intentionally denied all access to every calibration consent/operator-plane table, the consent copy remains draft/not legally approved, offline operator authentication is implemented but production operator provisioning and raw export/purge tooling are not implemented, and no answer-level calibration table/export path has been added.
 
 ## Current offline schema foundation
 
@@ -84,10 +84,10 @@ A future export job must comply with `CALIBRATION_GOVERNANCE_POLICY_v0.1.md` and
 - support targeted deletion plus artifact purge/re-generation when consent is withdrawn where legally/technically required;
 - enforce the engineering 180-day row-level artifact ceiling unless a later reviewed policy version changes it.
 
-Append-only operator audit storage plus pseudonymous targeted-deletion linkage/journal are implemented at the repository persistence layer. Raw export remains blocked because operator-facing authentication, raw materialization/artifact handling and offline purge/regeneration tooling are intentionally absent.
+Append-only operator audit storage plus pseudonymous targeted-deletion linkage/journal are implemented at the repository persistence layer. Raw export remains blocked because production operator provisioning, raw materialization/artifact handling and offline purge/regeneration tooling are intentionally absent.
 
 ## Current decision
 
-PCS deliberately leaves `PCS-ANA-003` open. A strict offline allowlist/manifest contract now exists so a future consented export cannot invent its data shape ad hoc, but no database-to-export materializer, runtime endpoint/job, operator-facing authentication command, offline purge executor, or answer-level calibration dataset exists.
+PCS deliberately leaves `PCS-ANA-003` open. A strict offline allowlist/manifest contract now exists so a future consented export cannot invent its data shape ad hoc, but no database-to-export materializer, runtime endpoint/job, production operator provisioning evidence, offline purge executor, or answer-level calibration dataset exists.
 
 The companion `BETA_CALIBRATION_PROTOCOL_v0.1.md` now freezes the pre-collection analysis/governance contract while keeping both collection and export disabled. This means Phase 5 planning can progress without weakening the privacy boundary.

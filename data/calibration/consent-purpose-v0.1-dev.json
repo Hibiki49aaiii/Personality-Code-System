@@ -39,10 +39,11 @@
     "final-consent-copy-review",
     "legal-privacy-approval",
     "calibration-retention-deletion-policy",
-    "operator-authorization-audit",
+    "operator-production-provisioning-evidence",
     "pre-registered-sample-plan",
     "frozen-analysis-version-scope",
     "production-environment-separation"
   ],
-  "governance_policy_ref": "data/calibration/governance-policy-v0.1-dev.json"
+  "governance_policy_ref": "data/calibration/governance-policy-v0.1-dev.json",
+  "operator_auth_policy_ref": "data/calibration/operator-auth-policy-v0.1-dev.json"
 }

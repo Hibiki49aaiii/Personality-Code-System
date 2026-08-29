@@ -66,7 +66,7 @@ const expectedPrerequisiteStatus = {
   'legal-privacy-approval': 'pending-external',
   'production-environment-separation': 'pending-external',
   'retention-deletion-policy': 'policy-and-deletion-journal-ready-purge-executor-pending',
-  'operator-authorization-audit': 'policy-and-append-only-storage-ready-auth-command-pending',
+  'operator-authorization-audit': 'engineering-implemented-runtime-disabled-production-provisioning-pending',
   'pre-registered-sample-plan': 'registration-ready-candidate-not-preregistered',
   'frozen-analysis-version-scope': 'exact-candidate-scope-ready-not-frozen'
 };
@@ -106,7 +106,9 @@ if (protocol.governance_policy_foundation?.retention_policy_ready !== true
   errors.push('calibration governance policy readiness summary incomplete');
 }
 if (protocol.governance_policy_foundation?.legal_approved !== false) errors.push('calibration legal approval must remain pending');
-if (protocol.governance_policy_foundation?.operator_authentication_implemented !== false) errors.push('operator-facing authentication must remain pending');
+if (protocol.governance_policy_foundation?.operator_authentication_implemented !== true) errors.push('operator-facing authentication tooling implementation missing');
+if (protocol.governance_policy_foundation?.production_operator_provisioning_complete !== false) errors.push('production operator provisioning must remain pending');
+if (protocol.governance_policy_foundation?.operator_auth_policy_ref !== 'data/calibration/operator-auth-policy-v0.1-dev.json') errors.push('operator auth policy reference missing from protocol foundation');
 if (protocol.governance_policy_foundation?.operator_audit_storage_implemented !== true) errors.push('operator audit storage foundation missing');
 if (protocol.governance_policy_foundation?.raw_export_materializer_implemented !== false) errors.push('raw export materializer must remain pending');
 if (protocol.governance_policy_foundation?.targeted_calibration_record_linkage_and_journal_implemented !== true) errors.push('targeted record linkage/deletion journal foundation missing');
@@ -170,4 +172,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log('Beta calibration protocol validation passed: separate consent receipt persistence exists but runtime access/collection/export remain disabled; consent/legal/sample/operator/environment prerequisites and analysis/version rules stay fail-closed.');
+console.log('Beta calibration protocol validation passed: separate consent receipt persistence exists but runtime access/collection/export remain disabled; consent/legal/sample/operator-provisioning/environment prerequisites and analysis/version rules stay fail-closed.');
