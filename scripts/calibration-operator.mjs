@@ -63,8 +63,9 @@ async function issueOperator(args) {
 
   writeCredentialFileExclusive(args.credentialOut,credential.token);
 
-  const sql=openDatabase(databaseUrl);
+  let sql;
   try {
+    sql=openDatabase(databaseUrl);
     const result=await sql.begin(async (tx)=>{
       const [operator]=await tx`
         INSERT INTO calibration_operators (credential_hash)
@@ -95,7 +96,9 @@ async function issueOperator(args) {
     removeCredentialFileBestEffort(args.credentialOut);
     throw new CalibrationOperatorCliError('ISSUE_FAILED');
   } finally {
-    await sql.end({timeout:5});
+    if (sql) {
+      await sql.end({timeout:5});
+    }
   }
 }
 
