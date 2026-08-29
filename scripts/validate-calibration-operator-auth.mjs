@@ -115,10 +115,7 @@ if (dbPolicy.production_role_evidence_complete!==false) {
   errors.push('production calibration DB role evidence must remain pending');
 }
 
-const expectedAuthPrivileges={
-  calibration_operators:['SELECT'],
-  calibration_operator_roles:['SELECT']
-};
+const expectedAuthPrivileges={};
 const expectedAdminPrivileges={
   calibration_operators:['SELECT','INSERT','UPDATE'],
   calibration_operator_roles:['SELECT','INSERT','DELETE']
@@ -131,17 +128,28 @@ if (JSON.stringify(dbPolicy.roles?.pcs_calibration_admin?.table_privileges)!==JS
 }
 if (dbPolicy.roles?.pcs_calibration_auth?.schema_create_allowed!==false) errors.push('auth role schema CREATE must remain denied');
 if (dbPolicy.roles?.pcs_calibration_admin?.schema_create_allowed!==false) errors.push('admin role schema CREATE must remain denied');
+if (authPolicy.database_roles?.auth_access_mode!=='execute-only-security-definer') errors.push('auth DB access mode must remain execute-only');
+if (JSON.stringify(dbPolicy.roles?.pcs_calibration_auth?.function_execute)!==JSON.stringify([
+  'public.pcs_authenticate_calibration_operator(text)'
+])) {
+  errors.push('auth DB function execute allowlist drift');
+}
+if (Object.keys(dbPolicy.roles?.pcs_calibration_export_control?.table_privileges ?? {}).length!==0) {
+  errors.push('export control DB role must have zero direct table privileges');
+}
 
 for (const fragment of [
   'REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM pcs_calibration_auth',
   'REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM pcs_calibration_admin',
-  'GRANT SELECT ON TABLE',
-  'calibration_operators',
-  'calibration_operator_roles',
+  'REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM pcs_calibration_export_control',
+  'GRANT EXECUTE ON FUNCTION public.pcs_authenticate_calibration_operator(text)',
   'TO pcs_calibration_auth',
   'GRANT SELECT, INSERT, UPDATE ON TABLE',
+  'calibration_operators',
   'TO pcs_calibration_admin',
-  'GRANT SELECT, INSERT, DELETE ON TABLE'
+  'GRANT SELECT, INSERT, DELETE ON TABLE',
+  'calibration_operator_roles',
+  'TO pcs_calibration_export_control'
 ]) {
   if (!grants.includes(fragment)) errors.push(`calibration operator grant template missing ${fragment}`);
 }
@@ -173,6 +181,7 @@ for (const fragment of [
   'policy.environments.admin_ack',
   'policy.environments.admin_database_url',
   'policy.environments.auth_database_url',
+  'public.pcs_authenticate_calibration_operator',
   "command:'whoami'",
   "command:'issue'"
 ]) {
@@ -209,4 +218,4 @@ if (errors.length) {
   for (const error of errors) console.error(`- ${error}`);
   process.exit(1);
 }
-console.log('Calibration operator auth validation passed: offline credential lifecycle, secret handling and least-privilege auth/admin DB role contracts are fixed while raw export/runtime activation remain disabled.');
+console.log('Calibration operator auth validation passed: offline credential lifecycle uses execute-only SECURITY DEFINER authentication, admin credential management remains narrowly writable, and raw export/runtime activation remain disabled.');
