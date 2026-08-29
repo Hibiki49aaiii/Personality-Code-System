@@ -13,7 +13,9 @@ if (plan.registration_ready !== true) errors.push('beta wave registration_ready 
 if (plan.collection_enabled !== false || plan.export_enabled !== false || plan.collection_start_allowed !== false) {
   errors.push('beta wave collection/export/start must remain disabled');
 }
-if (plan.version_scope_frozen !== false) errors.push('registration-ready candidate must not falsely claim frozen scope');
+if (plan.version_scope_frozen !== true) errors.push('registration-ready candidate repository scope must be frozen');
+if (plan.scope_freeze_ref !== 'data/calibration/beta-wave-ja-01-scope-freeze-v0.1-dev.json') errors.push('beta wave scope-freeze reference drift');
+if (!/^[a-f0-9]{64}$/.test(plan.scope_freeze_aggregate_sha256 ?? '')) errors.push('beta wave scope-freeze aggregate hash missing');
 
 if (plan.locale !== release.locale) errors.push('wave locale/release locale drift');
 if (plan.version_scope.assessment_model_version !== release.model_version) errors.push('wave assessment model drift');
@@ -153,14 +155,16 @@ const requiredBlockers=[
   'production-environment-separation-evidence',
   'calibration-retention-deletion-policy',
   'operator-production-provisioning-evidence',
-  'retest-linkage-schema-and-consent',
-  'frozen-version-scope'
+  'retest-linkage-schema-and-consent'
 ];
 for (const blocker of requiredBlockers) {
   if (!plan.activation_blockers?.includes(blocker)) errors.push(`missing beta activation blocker ${blocker}`);
 }
 if (plan.activation_blockers?.includes('operator-authorization-audit')) {
   errors.push('repository-implemented operator auth/audit must not remain as the Wave operator blocker');
+}
+if (plan.activation_blockers?.includes('frozen-version-scope')) {
+  errors.push('satisfied repository scope-freeze blocker must be removed');
 }
 
 const forbiddenDataKeys=new Set([
@@ -196,4 +200,4 @@ if (errors.length) {
   for (const error of errors) console.error(`- ${error}`);
   process.exit(1);
 }
-console.log('Beta wave registration-ready validation passed: concrete N/recruitment/exclusion/holdout/retest/analysis rules are frozen as a candidate, while external preregistration, scope freeze, collection and export remain disabled.');
+console.log('Beta wave registration-ready validation passed: concrete N/recruitment/exclusion/holdout/retest/analysis rules are frozen as a candidate, while external preregistration, collection and export remain disabled.');
