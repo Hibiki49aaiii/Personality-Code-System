@@ -43,6 +43,33 @@ for (const scope of Object.keys(policy.scopes ?? {})) {
   if (!(scope in expectedScopes)) errors.push(`unexpected rate limit scope ${scope}`);
 }
 
+const guardedMutationRoutes = {
+  'src/app/api/analytics/route.ts': 1,
+  'src/app/api/assessment/session/route.ts': 1,
+  'src/app/api/assessment/answer/route.ts': 1,
+  'src/app/api/assessment/complete/route.ts': 1,
+  'src/app/api/assessment/data/route.ts': 1,
+  'src/app/api/share/route.ts': 2
+};
+
+for (const [routeFile, expectedMutationCount] of Object.entries(guardedMutationRoutes)) {
+  if (!fs.existsSync(routeFile)) {
+    errors.push(`missing guarded mutation route ${routeFile}`);
+    continue;
+  }
+
+  const routeSource = fs.readFileSync(routeFile, 'utf8');
+  const mutationCount = (routeSource.match(/export async function (?:POST|PUT|PATCH|DELETE)\s*\(/g) ?? []).length;
+  const guardCount = (routeSource.match(/assertTrustedMutationRequest\(request\)/g) ?? []).length;
+
+  if (mutationCount !== expectedMutationCount) {
+    errors.push(`${routeFile}: expected ${expectedMutationCount} state-changing handler(s), found ${mutationCount}; review the CSRF guard contract`);
+  }
+  if (guardCount !== expectedMutationCount) {
+    errors.push(`${routeFile}: expected ${expectedMutationCount} trusted-mutation guard call(s), found ${guardCount}`);
+  }
+}
+
 for (const requiredHeaderFragment of [
   'Content-Security-Policy',
   "default-src 'self'",
@@ -73,4 +100,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`Security baseline validation passed: ${Object.keys(expectedScopes).length} HMAC rate-limit scopes plus CSP/browser hardening headers.`);
+console.log(`Security baseline validation passed: ${Object.keys(expectedScopes).length} HMAC rate-limit scopes, ${Object.keys(guardedMutationRoutes).length} guarded mutation route files, and CSP/browser hardening headers.`);
