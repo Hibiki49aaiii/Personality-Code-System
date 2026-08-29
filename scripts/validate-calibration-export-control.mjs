@@ -117,7 +117,22 @@ for (const fragment of [
 ]) {
   if (!migration.includes(fragment)) errors.push(`export control migration missing ${fragment}`);
 }
-if ((migration.match(/SECURITY DEFINER/g) ?? []).length!==4) errors.push('all four export-control DB functions must be SECURITY DEFINER');
+const securityDefinerFunctions=[
+  'public.pcs_authenticate_calibration_operator',
+  'public.pcs_request_calibration_export',
+  'public.pcs_review_calibration_export_request',
+  'public.pcs_decide_calibration_export_request'
+];
+for (const functionName of securityDefinerFunctions) {
+  const escaped=functionName.replaceAll('.','\\.');
+  const pattern=new RegExp(
+    `CREATE OR REPLACE FUNCTION\\s+${escaped}[\\s\\S]*?SECURITY DEFINER[\\s\\S]*?SET search_path = pg_catalog`,
+    'i'
+  );
+  if (!pattern.test(migration)) {
+    errors.push(`${functionName} must be SECURITY DEFINER with pg_catalog search_path`);
+  }
+}
 if ((migration.match(/SET search_path = pg_catalog/g) ?? []).length!==8) errors.push('four control functions plus four hardened trigger/helper functions must lock search_path');
 if (/\bFROM\s+calibration_/i.test(migration) || /\bINTO\s+calibration_/i.test(migration) || /\bUPDATE\s+calibration_/i.test(migration)) {
   errors.push('SECURITY DEFINER migration must schema-qualify calibration tables');
