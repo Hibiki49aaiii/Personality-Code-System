@@ -214,8 +214,10 @@ export function writeCredentialFileExclusive(path, token) {
   }
 
   let fd;
+  let created=false;
   try {
     fd = openSync(path, 'wx', 0o600);
+    created=true;
     writeFileSync(fd, `${token}\n`, { encoding: 'utf8' });
     fchmodSync(fd, 0o600);
     closeSync(fd);
@@ -223,11 +225,6 @@ export function writeCredentialFileExclusive(path, token) {
 
     const mode = statSync(path).mode & 0o777;
     if (mode !== 0o600) {
-      try {
-        unlinkSync(path);
-      } catch {
-        // Best-effort cleanup; never expose path/token through error detail.
-      }
       throw new CalibrationOperatorCliError('CREDENTIAL_FILE_MODE_INVALID');
     }
   } catch (error) {
@@ -236,6 +233,13 @@ export function writeCredentialFileExclusive(path, token) {
         closeSync(fd);
       } catch {
         // Ignore close cleanup errors.
+      }
+    }
+    if (created) {
+      try {
+        unlinkSync(path);
+      } catch {
+        // Best-effort cleanup; never expose path/token through error detail.
       }
     }
     if (error instanceof CalibrationOperatorCliError) {
