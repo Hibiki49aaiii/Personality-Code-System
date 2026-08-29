@@ -120,7 +120,11 @@ const requiredFragments = [
   ['calibration record parent-only delete guard', /CREATE TRIGGER\s+calibration_records_delete_guard/i],
   ['calibration finalize security definer', /CREATE OR REPLACE FUNCTION\s+public\.pcs_finalize_calibration_record[\s\S]*SECURITY DEFINER[\s\S]*SET search_path = pg_catalog/i],
   ['calibration finalize public execute revoked', /REVOKE ALL ON FUNCTION\s+public\.pcs_finalize_calibration_record\(uuid\) FROM PUBLIC/i],
-  ['calibration exact 147 response completion', /expected_count\s*<>\s*147/i]
+  ['calibration exact 147 response completion', /expected_count\s*<>\s*147/i],
+  ['beta model item mapping immutability', /items belonging to a beta assessment model are immutable/i],
+  ['calibration consent row serialization', /FOR UPDATE OF c/i],
+  ['calibration response release tuple recheck', /calibration response release tuple mismatch/i],
+  ['calibration finalize release tuple recheck', /calibration record completion release tuple mismatch/i]
 ];
 
 for (const [label, pattern] of requiredFragments) {
