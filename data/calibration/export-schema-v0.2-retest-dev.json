@@ -6,7 +6,6 @@
   "materializer_enabled": false,
   "third_party_auto_upload_allowed": false,
   "consent_required": true,
-  "consent_version": "calibration-retest-consent-ja-v0.1-dev",
   "wave_id": "beta-ja-wave-01-draft",
   "row_fields": [
     "schemaVersion",
@@ -75,5 +74,12 @@
   "baseline_schema_compatibility": {
     "v0_1_ref": "data/calibration/export-schema-v0.1-dev.json",
     "v0_1_is_modified_by_this_candidate": false
+  },
+  "consent_contract": {
+    "baseline_consent_version": "calibration-consent-ja-v0.1-dev",
+    "baseline_purpose_id": "psychometric-calibration-v0.1",
+    "retest_consent_version": "calibration-retest-consent-ja-v0.1-dev",
+    "retest_purpose_id": "psychometric-calibration-retest-v0.1",
+    "measurement_occasion_must_match_consent_purpose": true
   }
 }
