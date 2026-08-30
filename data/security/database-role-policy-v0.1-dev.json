@@ -80,7 +80,8 @@
     "calibration_record_links": [],
     "calibration_deletion_events": [],
     "calibration_records": [],
-    "calibration_item_responses": []
+    "calibration_item_responses": [],
+    "calibration_retest_linkages": []
   },
   "prohibited_runtime_capabilities": [
     "CREATE-on-public-schema",
@@ -93,7 +94,8 @@
     "WRITE-versioned-definition-tables",
     "WRITE-calibration-consent-before-activation",
     "READ-WRITE-calibration-operator-plane",
-    "READ-WRITE-calibration-answer-storage-before-activation"
+    "READ-WRITE-calibration-answer-storage-before-activation",
+    "READ-WRITE-calibration-retest-linkage-before-activation"
   ],
   "ci_contract_tested": true,
   "production_role_evidence_complete": false,
@@ -113,6 +115,7 @@
     "calibration_record_links",
     "calibration_deletion_events",
     "calibration_records",
-    "calibration_item_responses"
+    "calibration_item_responses",
+    "calibration_retest_linkages"
   ]
 }
