@@ -426,6 +426,15 @@ BEGIN
     RAISE EXCEPTION 'calibration authorization failed';
   END IF;
 
+  IF EXISTS (
+    SELECT 1
+    FROM public.calibration_privacy_purge_requests q
+    WHERE q.purge_request_id = p_purge_request_id
+      AND q.requester_operator_id = v_reviewer_operator_id
+  ) THEN
+    RAISE EXCEPTION 'calibration privacy purge self review forbidden';
+  END IF;
+
   RETURN QUERY
   SELECT
     q.purge_request_id,
