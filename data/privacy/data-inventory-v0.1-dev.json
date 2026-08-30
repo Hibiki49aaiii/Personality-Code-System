@@ -124,15 +124,20 @@
     {
       "id": "calibration-withdrawal-deletion-control",
       "personal_data": true,
-      "purpose": "Maintain a pseudonymous calibration-record deletion target while consent is active and retain bounded append-only withdrawal/deletion events after the active link disappears.",
-      "retention": "active-record-link-owner-consent-bound; deletion-journal-retained-as-privacy-control-evidence-under-calibration-governance-policy",
+      "purpose": "Maintain pseudonymous calibration deletion targets, append-only withdrawal/deletion evidence, and bounded two-person row-purge governance records without retaining private session capabilities.",
+      "retention": "active-record-link-owner-consent-bound; deletion-journal and purge-governance records retained as bounded privacy-control evidence under calibration-governance-policy",
       "public_by_default": false,
       "third_party_export_default": false,
       "collection_enabled": false,
       "tables": [
         "calibration_record_links",
-        "calibration_deletion_events"
-      ]
+        "calibration_deletion_events",
+        "calibration_privacy_purge_requests",
+        "calibration_privacy_purge_request_targets"
+      ],
+      "row_level_purge_executor_implemented": true,
+      "artifact_purge_executor_implemented": false,
+      "privacy_purge_policy_ref": "data/calibration/privacy-purge-policy-v0.1-dev.json"
     },
     {
       "id": "calibration-answer-storage",
