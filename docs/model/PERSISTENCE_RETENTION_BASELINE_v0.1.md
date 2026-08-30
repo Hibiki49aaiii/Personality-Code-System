@@ -23,7 +23,7 @@
 | Database backups | 35 days | Subject to deployment-provider recovery design. |
 | Calibration consent receipt | Owner-session-bound engineering behavior | Storage-only schema exists for a future explicit purpose/version receipt; runtime role has zero access until activation. If present through controlled testing/future activation, withdrawal is recorded and owner-session deletion cascades the receipt. Final legal retention promise remains pending. |
 | Calibration row-level research artifact | Max 180 days after wave close (engineering candidate) | Not created by default. Withdrawal/self-deletion overrides time retention; active offline artifacts must be purged/regenerated before further use. Final legal approval and implementation remain pending. |
-| Calibration operator audit metadata | 365 days (engineering candidate) | Append-only bounded accountability storage now exists; raw responses/participant diagnostic payload are prohibited. Offline operator auth tooling exists; production provisioning and materialization tooling remain disabled. |
+| Calibration operator audit metadata | 365 days (engineering candidate) | Append-only bounded accountability storage now exists; raw responses/participant diagnostic payload are prohibited. Offline operator auth tooling exists; production provisioning and materialization tooling remain disabled; two-person row-level privacy purge is repository-implemented. |
 | Public share result | Until revoked / source privacy deletion / later public policy | Phase 4 creates explicit sanitized snapshots. User revocation disables active links; bearer-owned full diagnostic deletion physically deletes shares derived from the private result. |
 
 ## Cleanup behavior
@@ -67,7 +67,7 @@ Key rules:
 - operator audit metadata is bounded and may not contain raw participant/diagnostic payload;
 - operator audit metadata uses a 365-day engineering baseline.
 
-These values are not final legal/public promises. Operator authentication, audit storage and targeted deletion linkage are repository-implemented, but production operator provisioning, raw export materialization and offline purge remain absent, so collection/export activation stays blocked.
+These values are not final legal/public promises. Operator authentication, audit storage and targeted deletion linkage are repository-implemented, but production operator provisioning and raw export materialization remain absent; row-level purge is implemented, while artifact purge/regeneration remains coupled to any future materializer, so collection/export activation stays blocked.
 
 ## Logging exclusions
 
