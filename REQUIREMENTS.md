@@ -2,7 +2,7 @@
 
 > Status: authoritative development contract
 > Version: 0.11.7
-> Last updated: 2026-08-29
+> Last updated: 2026-08-30
 
 This file is the single top-level source of truth for PCS scope and delivery status. Detailed requirements live under `docs/requirements/`.
 
