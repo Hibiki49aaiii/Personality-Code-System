@@ -63,7 +63,11 @@
     "attrition_rule": "Analyze all eligible linked retests completed within the 14–21 day window under the exact same wave/model. Report completion/attrition counts. If completed retest N < 150, treat stability estimates as descriptive/low-precision and do not use them to support stable-model promotion.",
     "context_change_recording_rule": "Before retest activation, add only a bounded, separately reviewed context-change indicator if justified; no free text. If no approved context-change field exists, report that limitation explicitly rather than inferring unchanged context.",
     "exact_model_version_required": true,
-    "linkage_status": "planned-not-implemented-requires-reviewed-schema-and-consent"
+    "linkage_status": "engineering-foundation-implemented-runtime-disabled",
+    "linkage_policy_ref": "data/calibration/retest-linkage-policy-v0.1-dev.json",
+    "candidate_export_schema_ref": "data/calibration/export-schema-v0.2-retest-dev.json",
+    "draft_consent_ref": "data/calibration/retest-consent-purpose-v0.1-dev.json",
+    "runtime_issue_or_claim_api_enabled": false
   },
   "analysis_modules": [
     "item-distributions-floor-ceiling",
@@ -111,7 +115,8 @@
     "production-environment-separation-evidence",
     "calibration-retention-deletion-policy",
     "operator-production-provisioning-evidence",
-    "retest-linkage-schema-and-consent"
+    "retest-consent-final-approval",
+    "runtime-retest-issue-and-claim-surface"
   ],
   "notes": [
     "This is a registration-ready candidate, not an externally preregistered study.",
@@ -120,7 +125,8 @@
     "Wave 01 does not collect demographics and therefore does not support DIF/invariance inference.",
     "Any post-registration change to sample, exclusion, holdout, retest or version scope requires a documented amendment/new wave decision.",
     "Operator authentication/role-management tooling is repository-implemented, but production operator provisioning evidence remains absent.",
-    "Repository candidate version scope is frozen by SHA-256 identity manifest; this is not external preregistration."
+    "Repository candidate version scope is frozen by SHA-256 identity manifest; this is not external preregistration.",
+    "Privacy-preserving retest linkage persistence/schema/credential foundation is implemented, but runtime issue/claim and final retest consent approval remain disabled/pending."
   ],
   "registration_ready": true,
   "analysis_decision_policy": {
