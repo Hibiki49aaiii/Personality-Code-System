@@ -263,10 +263,15 @@ Methodological background:
 
 ### Linkage / context boundary
 
-Current calibration export v0.1 has no retest-linkage field.
+Baseline calibration export v0.1 intentionally remains unchanged and has no retest-linkage field.
 
-Therefore retest collection must not activate until a separately reviewed:
-- pseudonymous linkage design;
+The repository now contains a separately reviewed **candidate-only** retest foundation:
+- pseudonymous `retestPairId` linkage between completed `calibration_records`;
+- one-time hash-only retest claim credential;
+- candidate `calibration-export-record-v0.2-retest-dev` with baseline/retest occasion;
+- separate draft `calibration-retest-consent-ja-v0.1-dev`.
+
+This is engineering preparation only. Retest collection must not activate until the remaining runtime/final-review gates are satisfied, including:
 - export schema;
 - consent wording;
 - deletion/rotation behavior
@@ -369,7 +374,7 @@ This draft remains blocked on:
 - production environment separation evidence;
 - calibration retention/deletion policy;
 - production operator provisioning evidence;
-- retest linkage schema/consent if retest is activated;
+- final retest consent approval and a reviewed runtime retest issue/claim surface;
 - repository-frozen version scope identity (satisfied in repository; external preregistration still pending).
 
 Until those are resolved:
