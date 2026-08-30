@@ -550,6 +550,50 @@ CREATE TRIGGER calibration_retest_linkages_update_guard
 BEFORE UPDATE ON public.calibration_retest_linkages
 FOR EACH ROW EXECUTE FUNCTION public.pcs_validate_calibration_retest_linkage_update();
 
+CREATE OR REPLACE FUNCTION public.pcs_validate_calibration_retest_linkage_delete()
+RETURNS trigger
+LANGUAGE plpgsql
+SET search_path = pg_catalog
+AS $
+DECLARE
+  baseline_parent_exists boolean;
+  retest_parent_exists boolean;
+BEGIN
+  SELECT EXISTS (
+    SELECT 1
+    FROM public.calibration_records r
+    WHERE r.calibration_record_id = OLD.baseline_calibration_record_id
+  )
+  INTO baseline_parent_exists;
+
+  IF OLD.retest_calibration_record_id IS NULL THEN
+    retest_parent_exists := true;
+  ELSE
+    SELECT EXISTS (
+      SELECT 1
+      FROM public.calibration_records r
+      WHERE r.calibration_record_id = OLD.retest_calibration_record_id
+    )
+    INTO retest_parent_exists;
+  END IF;
+
+  -- ON DELETE CASCADE from a linked calibration record runs after that parent row
+  -- is gone. Direct linkage deletion while all linked parent records still exist
+  -- is forbidden so the pair cannot disappear outside the privacy lineage.
+  IF baseline_parent_exists IS TRUE AND retest_parent_exists IS TRUE THEN
+    RAISE EXCEPTION 'calibration retest linkage may only delete through calibration record cascade';
+  END IF;
+
+  RETURN OLD;
+END;
+$;
+
+REVOKE ALL ON FUNCTION public.pcs_validate_calibration_retest_linkage_delete() FROM PUBLIC;
+
+CREATE TRIGGER calibration_retest_linkages_delete_guard
+BEFORE DELETE ON public.calibration_retest_linkages
+FOR EACH ROW EXECUTE FUNCTION public.pcs_validate_calibration_retest_linkage_delete();
+
 CREATE OR REPLACE FUNCTION public.pcs_invalidate_calibration_retest_on_consent_withdrawal()
 RETURNS trigger
 LANGUAGE plpgsql
