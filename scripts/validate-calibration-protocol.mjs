@@ -94,7 +94,7 @@ const expectedPrerequisiteStatus = {
   'versioned-consent-purpose': 'draft-contract-ready-not-approved',
   'legal-privacy-approval': 'pending-external',
   'production-environment-separation': 'pending-external',
-  'retention-deletion-policy': 'policy-and-deletion-journal-ready-purge-executor-pending',
+  'retention-deletion-policy': 'row-purge-executor-ready-artifact-purge-coupled-to-future-materializer',
   'operator-authorization-audit': 'control-workflow-implemented-runtime-disabled-production-provisioning-pending',
   'pre-registered-sample-plan': 'registration-ready-candidate-not-preregistered',
   'frozen-analysis-version-scope': 'repository-frozen-not-preregistered'
@@ -169,7 +169,10 @@ if (protocol.governance_policy_foundation?.retest_candidate_export_schema_implem
 }
 if (protocol.governance_policy_foundation?.raw_export_materializer_implemented !== false) errors.push('raw export materializer must remain pending');
 if (protocol.governance_policy_foundation?.targeted_calibration_record_linkage_and_journal_implemented !== true) errors.push('targeted record linkage/deletion journal foundation missing');
-if (protocol.governance_policy_foundation?.targeted_calibration_record_deletion_implemented !== false) errors.push('offline artifact purge executor must remain pending');
+if (protocol.governance_policy_foundation?.targeted_calibration_record_deletion_implemented !== true) errors.push('row-level targeted purge executor implementation missing');
+if (protocol.governance_policy_foundation?.row_level_purge_executor_implemented !== true) errors.push('row-level purge executor marker missing');
+if (protocol.governance_policy_foundation?.artifact_purge_executor_implemented !== false) errors.push('artifact purge executor must remain pending');
+if (protocol.governance_policy_foundation?.privacy_purge_policy_ref !== 'data/calibration/privacy-purge-policy-v0.1-dev.json') errors.push('privacy purge policy reference missing from protocol foundation');
 
 if (protocol.consent_storage_foundation?.table !== 'calibration_consent_receipts') errors.push('calibration consent storage table status missing');
 if (protocol.consent_storage_foundation?.runtime_role_access_allowed !== false) errors.push('runtime consent access must remain disabled');
@@ -286,4 +289,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log('Beta calibration protocol validation passed: consent and fail-closed answer-storage schemas exist while runtime ingest/collection/export remain disabled; consent/legal/sample/operator-provisioning/environment prerequisites and analysis/version rules stay fail-closed.');
+console.log('Beta calibration protocol validation passed: consent and fail-closed answer-storage schemas exist while runtime ingest/collection/export remain disabled; consent/legal/sample/operator-provisioning/environment prerequisites and analysis/version rules stay fail-closed; row-level purge is ready while any future materializer remains coupled to artifact purge.');
