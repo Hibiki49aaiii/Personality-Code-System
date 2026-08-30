@@ -45,6 +45,8 @@ const expectedCalibrationNoAccess=[
   "calibration_operator_audit_events",
   "calibration_operator_roles",
   "calibration_operators",
+  "calibration_privacy_purge_request_targets",
+  "calibration_privacy_purge_requests",
   "calibration_record_links",
   "calibration_records",
   "calibration_retest_linkages"
@@ -87,4 +89,4 @@ if (errors.length) {
   for (const error of errors) console.error(`- ${error}`);
   process.exit(1);
 }
-console.log(`Database runtime-role policy validation passed: ${policyTables.length} tables are explicitly classified, including fail-closed zero runtime access to calibration consent/operator/answer-storage/retest-linkage tables before activation; production role evidence remains pending.`);
+console.log(`Database runtime-role policy validation passed: ${policyTables.length} tables are explicitly classified, including fail-closed zero runtime access to calibration consent/operator/answer-storage/retest-linkage/privacy-purge tables before activation; production role evidence remains pending.`);
