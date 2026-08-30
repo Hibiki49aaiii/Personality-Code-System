@@ -82,28 +82,21 @@ async function createCompletedCalibrationRecord({
       )
   `;
 
-  const modelItems=await sql`
-    SELECT item_id,item_revision,locale
+  const inserted=await sql`
+    INSERT INTO calibration_item_responses
+      (calibration_record_id,item_id,item_revision,locale,value)
+    SELECT
+      ${link.calibration_record_id},
+      item_id,
+      item_revision,
+      locale,
+      3
     FROM assessment_model_items
     WHERE model_version='assessment-dev-v0.3'
     ORDER BY position
+    RETURNING item_id
   `;
-  assert.equal(modelItems.length,147);
-
-  for (const item of modelItems) {
-    await sql`
-      INSERT INTO calibration_item_responses
-        (calibration_record_id,item_id,item_revision,locale,value)
-      VALUES
-        (
-          ${link.calibration_record_id},
-          ${item.item_id},
-          ${item.item_revision},
-          ${item.locale},
-          3
-        )
-    `;
-  }
+  assert.equal(inserted.length,147);
 
   const [record]=await sql`
     UPDATE calibration_records
