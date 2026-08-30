@@ -1,0 +1,85 @@
+{
+  "export_schema_version": "calibration-export-record-v0.2-retest-dev",
+  "status": "candidate-schema-only-runtime-export-disabled",
+  "candidate_only": true,
+  "runtime_export_enabled": false,
+  "materializer_enabled": false,
+  "third_party_auto_upload_allowed": false,
+  "consent_required": true,
+  "wave_id": "beta-ja-wave-01-draft",
+  "row_fields": [
+    "schemaVersion",
+    "calibrationRecordId",
+    "waveId",
+    "consentVersion",
+    "purposeId",
+    "assessmentModelVersion",
+    "itemBankVersion",
+    "scoringVersion",
+    "traitDictionaryVersion",
+    "locale",
+    "measurementOccasion",
+    "retestPairId",
+    "responses"
+  ],
+  "response_fields": [
+    "itemId",
+    "itemRevision",
+    "value"
+  ],
+  "response_value_range": [
+    1,
+    5
+  ],
+  "max_responses_per_record": 500,
+  "measurement_occasion_values": [
+    "baseline",
+    "retest"
+  ],
+  "pair_contract": {
+    "exactly_two_records_per_complete_pair": true,
+    "one_baseline_one_retest": true,
+    "pair_scope_must_match": true,
+    "pair_id_kind": "random-uuid"
+  },
+  "forbidden_fields": [
+    "sessionId",
+    "privateToken",
+    "accessToken",
+    "accessTokenHash",
+    "publicToken",
+    "publicTokenHash",
+    "retestClaimToken",
+    "retestClaimTokenHash",
+    "operatorToken",
+    "operatorTokenHash",
+    "operatorId",
+    "ipAddress",
+    "preciseLocation",
+    "email",
+    "phone",
+    "realName",
+    "traitScores",
+    "traitVector",
+    "coreCode",
+    "extendedCode",
+    "responseQuality",
+    "interactionActiveIds",
+    "resultProse",
+    "productAnalytics",
+    "operationalLogs",
+    "freeText",
+    "demographics"
+  ],
+  "baseline_schema_compatibility": {
+    "v0_1_ref": "data/calibration/export-schema-v0.1-dev.json",
+    "v0_1_is_modified_by_this_candidate": false
+  },
+  "consent_contract": {
+    "baseline_consent_version": "calibration-consent-ja-v0.1-dev",
+    "baseline_purpose_id": "psychometric-calibration-v0.1",
+    "retest_consent_version": "calibration-retest-consent-ja-v0.1-dev",
+    "retest_purpose_id": "psychometric-calibration-retest-v0.1",
+    "measurement_occasion_must_match_consent_purpose": true
+  }
+}
