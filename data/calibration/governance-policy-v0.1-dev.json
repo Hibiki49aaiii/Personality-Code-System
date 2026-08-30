@@ -49,7 +49,9 @@
     "operator_auth_policy_ref": "data/calibration/operator-auth-policy-v0.1-dev.json",
     "operator_db_role_policy_ref": "data/security/calibration-operator-db-role-policy-v0.1-dev.json",
     "export_control_surface": "offline-cli-execute-only-db-api",
-    "export_control_policy_ref": "data/calibration/export-control-policy-v0.1-dev.json"
+    "export_control_policy_ref": "data/calibration/export-control-policy-v0.1-dev.json",
+    "privacy_purge_surface": "offline-cli-execute-only-db-api",
+    "privacy_purge_policy_ref": "data/calibration/privacy-purge-policy-v0.1-dev.json"
   },
   "audit_contract": {
     "storage_implemented": true,
@@ -97,14 +99,18 @@
     "free_form_participant_data_allowed": false
   },
   "withdrawal_and_deletion": {
-    "deletion_queue_implemented": false,
+    "deletion_queue_implemented": true,
     "export_regeneration_or_purge_required": true,
     "active_analysis_use_blocked_until_purge": true,
     "owner_session_deletion_must_remove_consent_receipt": true,
     "future_row_level_linkage_must_support_targeted_deletion": true,
     "restore_must_not_reactivate_withdrawn_records": true,
     "record_linkage_and_deletion_journal_implemented": true,
-    "retest_pair_invalidation_journal_implemented": true
+    "retest_pair_invalidation_journal_implemented": true,
+    "row_level_purge_request_workflow_implemented": true,
+    "row_level_purge_executor_implemented": true,
+    "artifact_purge_executor_implemented": false,
+    "future_materializer_requires_artifact_lineage_and_purge": true
   },
   "implementation_status": {
     "retention_policy_ready": true,
@@ -112,7 +118,7 @@
     "operator_authentication_implemented": true,
     "operator_audit_storage_implemented": true,
     "raw_export_materializer_implemented": false,
-    "targeted_calibration_record_deletion_implemented": false,
+    "targeted_calibration_record_deletion_implemented": true,
     "targeted_calibration_record_linkage_and_journal_implemented": true,
     "production_operator_provisioning_complete": false,
     "export_control_workflow_implemented": true,
@@ -121,14 +127,16 @@
     "retest_linkage_foundation_implemented": true,
     "runtime_retest_issue_claim_surface_implemented": false,
     "retest_consent_draft_implemented": true,
-    "retest_candidate_export_schema_implemented": true
+    "retest_candidate_export_schema_implemented": true,
+    "row_level_purge_executor_implemented": true,
+    "artifact_purge_executor_implemented": false
   },
   "activation_blockers": [
     "final-legal-privacy-approval",
     "raw-export-materializer",
+    "raw-materializer-artifact-lineage-and-purge-coupling",
     "production-environment-separation",
     "external-preregistration-record",
-    "withdrawal-offline-artifact-purge-executor",
     "operator-production-provisioning-evidence",
     "runtime-retest-issue-and-claim-surface"
   ],
@@ -142,7 +150,10 @@
     "Wave JA-01 candidate version scope is repository-frozen by SHA-256 identities, without claiming external preregistration.",
     "Offline export request/review/approve/reject control is implemented through execute-only SECURITY DEFINER functions; no raw materializer exists.",
     "Dedicated calibration record/item-response tables are repository-implemented with exact Wave JA-01 DB constraints, but no runtime/ingest role can write them.",
-    "Retest linkage is repository-implemented on completed calibration records with hash-only claim identity and pair-level deletion journaling; no runtime issue/claim surface exists."
+    "Retest linkage is repository-implemented on completed calibration records with hash-only claim identity and pair-level deletion journaling; no runtime issue/claim surface exists.",
+    "Offline two-person row-level calibration purge is repository-implemented for records already carrying a qualifying privacy deletion event.",
+    "Row-level purge does not claim offline artifact purge support because no raw materializer/artifact store exists.",
+    "Any future raw materializer must add artifact lineage plus purge/regeneration before activation."
   ],
   "version_scope_freeze": {
     "implemented": true,
