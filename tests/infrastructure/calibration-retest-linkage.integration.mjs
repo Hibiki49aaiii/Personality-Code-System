@@ -172,6 +172,15 @@ try {
     7*24*60*60*1000
   );
 
+  await expectDbFailure(
+    'issued pair direct delete',
+    ()=>sql`
+      DELETE FROM calibration_retest_linkages
+      WHERE retest_pair_id=${pair.retest_pair_id}
+    `,
+    /may only delete through calibration record cascade/i
+  );
+
   const rawTokenBaseline=await createBaseline('baseline-raw-token',-15);
   await expectDbFailure(
     'raw claim token persistence',
@@ -283,6 +292,15 @@ try {
   `;
   assert.equal(claimed.status,'claimed');
   assert.equal(claimed.retest_calibration_record_id,retest.calibrationRecordId);
+
+  await expectDbFailure(
+    'claimed pair direct delete',
+    ()=>sql`
+      DELETE FROM calibration_retest_linkages
+      WHERE retest_pair_id=${pair.retest_pair_id}
+    `,
+    /may only delete through calibration record cascade/i
+  );
   assert.ok(claimed.claimed_at);
 
   await expectDbFailure(
