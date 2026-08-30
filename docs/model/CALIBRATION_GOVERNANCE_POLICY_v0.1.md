@@ -76,7 +76,7 @@ After withdrawal/self-deletion:
 3. the next analysis/export materialization must exclude them;
 4. restored backups must not reactivate them into active research use without withdrawal/deletion replay.
 
-The repository now implements pseudonymous record linkage, normalized fail-closed calibration record/item-response tables, plus an append-only withdrawal/session-deletion journal. The answer-storage tables have no runtime ingest role or API. Raw calibration export remains blocked even though offline operator credential/authentication and execute-only request/review/approve/reject control now exist, because production operator provisioning, raw export materialization/artifact handling and offline artifact purge/regeneration remain absent.
+The repository now implements pseudonymous record linkage, normalized fail-closed calibration record/item-response tables, a completed-record retest-pair foundation, plus append-only withdrawal/session/retest-pair deletion journals. The answer-storage tables have no runtime ingest role or API. Raw calibration export remains blocked even though offline operator credential/authentication and execute-only request/review/approve/reject control now exist, because production operator provisioning, raw export materialization/artifact handling and offline artifact purge/regeneration remain absent.
 
 ## 6. Aggregate / reproducibility artifacts
 
@@ -196,6 +196,7 @@ Implemented repository foundations:
 - append-only bounded operator audit storage;
 - pseudonymous calibration-record links bound to consent receipts;
 - normalized `calibration_records` / `calibration_item_responses` with exact Wave JA-01/model/item guards and 147-response finalization;
+- `calibration_retest_linkages` with completed-record-only baseline/retest members, exact 14–21 day eligibility, hash-only claim credential, distinct baseline/retest consent purposes and pair-level invalidation journaling;
 - append-only withdrawal/owner-session deletion journal that survives active-link deletion;
 - offline operator credential issuance/authentication/role-management/revocation CLI;
 - execute-only `pcs_calibration_auth` and `pcs_calibration_export_control` DB role contracts plus narrowly writable `pcs_calibration_admin`;
@@ -225,7 +226,7 @@ Calibration collection/export still cannot activate until the wider Phase 5A gat
 Wave JA-01 currently plans:
 - N=1000 target / N=800 structural minimum;
 - deterministic 70/30 holdout;
-- 14–21 day retest plan;
+- 14–21 day retest plan plus repository linkage foundation; *(runtime issue/claim and final retest consent approval remain pending)*
 - no demographic/DIF inference in export v0.1.
 
 This governance policy does not change those research decisions.
