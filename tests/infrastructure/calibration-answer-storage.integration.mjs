@@ -394,7 +394,7 @@ try {
       (SELECT count(*)::int FROM calibration_records WHERE calibration_record_id=${primary.calibrationRecordId}) AS record_count,
       (SELECT count(*)::int FROM calibration_item_responses WHERE calibration_record_id=${primary.calibrationRecordId}) AS response_count
   `;
-  assert.equal(stillStored.record_count,1,'withdrawal must journal deletion but not pretend offline purge exists');
+  assert.equal(stillStored.record_count,1,'withdrawal must journal deletion without silently auto-purging before the reviewed purge workflow');
   assert.equal(stillStored.response_count,147);
 
   const journalAuthorizedDelete=await sql`
@@ -405,7 +405,7 @@ try {
   assert.equal(
     journalAuthorizedDelete.length,
     1,
-    'privacy journal must permit a future controlled purge to remove the record'
+    'privacy journal must remain sufficient for the controlled purge path to remove the record'
   );
   const [afterJournalDelete]=await sql`
     SELECT count(*)::int AS response_count
