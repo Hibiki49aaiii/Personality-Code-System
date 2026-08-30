@@ -63,6 +63,16 @@ if (
 ) {
   errors.push('retest measurement-record source contract drift');
 }
+if (
+  policy.withdrawal?.either_member_invalidates_pair!==true
+  || policy.withdrawal?.both_linked_record_ids_journaled_for_future_purge!==true
+  || policy.withdrawal?.private_session_capability_retained_for_purge!==false
+  || policy.withdrawal?.row_level_purge_executor_implemented!==true
+  || policy.withdrawal?.privacy_purge_policy_ref!=='data/calibration/privacy-purge-policy-v0.1-dev.json'
+  || policy.withdrawal?.artifact_purge_executor_implemented!==false
+) {
+  errors.push('retest withdrawal/purge contract drift');
+}
 
 const expectedScope={
   assessment_model_version:'assessment-dev-v0.3',
