@@ -137,13 +137,16 @@
       ],
       "row_level_purge_executor_implemented": true,
       "artifact_purge_executor_implemented": false,
-      "privacy_purge_policy_ref": "data/calibration/privacy-purge-policy-v0.1-dev.json"
+      "privacy_purge_policy_ref": "data/calibration/privacy-purge-policy-v0.1-dev.json",
+      "runtime_access_allowed": false,
+      "direct_identity_or_contact_stored": false,
+      "raw_response_payload_stored": false
     },
     {
       "id": "calibration-answer-storage",
       "personal_data": true,
       "purpose": "Store purpose-separated pseudonymous raw item responses for the exact frozen closed-beta calibration wave after future activation, independently from ordinary diagnostic/session storage.",
-      "retention": "engineering-candidate-max-180-days-after-wave-close-with-earlier-withdrawal-or-owner-deletion-precedence; offline purge executor still required before collection activation",
+      "retention": "engineering-candidate-max-180-days-after-wave-close-with-earlier-withdrawal-or-owner-deletion-precedence; two-person row-level purge executor implemented; future exported artifacts require separate lineage/purge-regeneration coupling",
       "public_by_default": false,
       "third_party_export_default": false,
       "collection_enabled": false,
@@ -159,7 +162,7 @@
       "id": "calibration-retest-linkage",
       "personal_data": true,
       "purpose": "Pair one completed baseline calibration record with one completed retest calibration record using a random pseudonymous pair identity and hash-only one-time claim credential after future activation.",
-      "retention": "pair-state-owner-calibration-record-bound; invalidation journals both pseudonymous record IDs for future purge under calibration governance",
+      "retention": "pair-state-owner-calibration-record-bound; invalidation journals both pseudonymous record IDs for the implemented two-person row purge workflow",
       "public_by_default": false,
       "third_party_export_default": false,
       "collection_enabled": false,
