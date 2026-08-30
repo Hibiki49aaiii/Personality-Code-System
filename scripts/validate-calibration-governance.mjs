@@ -66,6 +66,7 @@ if (audit?.free_form_participant_data_allowed !== false) errors.push('free-form 
 const withdrawal=policy.withdrawal_and_deletion;
 if (withdrawal?.deletion_queue_implemented !== false) errors.push('offline artifact deletion/purge executor must remain unimplemented');
 if (withdrawal?.record_linkage_and_deletion_journal_implemented !== true) errors.push('pseudonymous calibration record linkage/deletion journal must be implemented');
+if (withdrawal?.retest_pair_invalidation_journal_implemented !== true) errors.push('retest pair invalidation journal must be implemented');
 if (withdrawal?.export_regeneration_or_purge_required !== true) errors.push('withdrawal must require export purge/regeneration');
 if (withdrawal?.active_analysis_use_blocked_until_purge !== true) errors.push('active analysis use must block until withdrawal purge');
 if (withdrawal?.owner_session_deletion_must_remove_consent_receipt !== true) errors.push('owner deletion must remove consent receipt');
@@ -80,6 +81,10 @@ if (impl?.operator_audit_storage_implemented !== true) errors.push('append-only 
 if (impl?.export_control_workflow_implemented !== true) errors.push('offline export control workflow implementation missing');
 if (impl?.answer_level_calibration_storage_schema_implemented !== true) errors.push('answer-level calibration storage schema implementation missing');
 if (impl?.calibration_ingest_surface_implemented !== false) errors.push('calibration ingest surface must remain disabled');
+if (impl?.retest_linkage_foundation_implemented !== true) errors.push('retest linkage foundation implementation missing');
+if (impl?.runtime_retest_issue_claim_surface_implemented !== false) errors.push('runtime retest issue/claim surface must remain disabled');
+if (impl?.retest_consent_draft_implemented !== true) errors.push('retest consent draft implementation marker missing');
+if (impl?.retest_candidate_export_schema_implemented !== true) errors.push('retest candidate export schema implementation marker missing');
 if (impl?.raw_export_materializer_implemented !== false) errors.push('raw export materializer must remain pending');
 if (impl?.targeted_calibration_record_linkage_and_journal_implemented !== true) errors.push('targeted calibration record linkage/deletion journal foundation missing');
 if (impl?.targeted_calibration_record_deletion_implemented !== false) errors.push('offline artifact targeted purge executor must remain pending');
@@ -125,6 +130,18 @@ if (policy.version_scope_freeze?.implemented !== true
 if (policy.activation_blockers?.includes('frozen-version-scope')) {
   errors.push('satisfied governance scope-freeze blocker must be removed');
 }
+if (!policy.activation_blockers?.includes('runtime-retest-issue-and-claim-surface')) {
+  errors.push('runtime retest issue/claim activation blocker missing');
+}
+if (
+  policy.retest_linkage?.policy_ref !== 'data/calibration/retest-linkage-policy-v0.1-dev.json'
+  || policy.retest_linkage?.candidate_export_schema_ref !== 'data/calibration/export-schema-v0.2-retest-dev.json'
+  || policy.retest_linkage?.draft_consent_ref !== 'data/calibration/retest-consent-purpose-v0.1-dev.json'
+  || policy.retest_linkage?.runtime_enabled !== false
+  || policy.retest_linkage?.production_provisioning_complete !== false
+) {
+  errors.push('retest linkage governance contract drift');
+}
 const operatorPlaneTables=[
   'calibration_consent_receipts',
   'calibration_operators',
@@ -134,7 +151,8 @@ const operatorPlaneTables=[
   'calibration_record_links',
   'calibration_deletion_events',
   'calibration_records',
-  'calibration_item_responses'
+  'calibration_item_responses',
+  'calibration_retest_linkages'
 ];
 for (const table of operatorPlaneTables) {
   if (dbRole.runtime_no_access_tables?.includes(table) !== true) errors.push(`runtime role no-access classification missing for ${table}`);
