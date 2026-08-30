@@ -64,10 +64,14 @@ for (const field of requiredForbidden) if (!audit?.forbidden_fields?.includes(fi
 if (audit?.free_form_participant_data_allowed !== false) errors.push('free-form participant data must not enter audit');
 
 const withdrawal=policy.withdrawal_and_deletion;
-if (withdrawal?.deletion_queue_implemented !== false) errors.push('offline artifact deletion/purge executor must remain unimplemented');
+if (withdrawal?.deletion_queue_implemented !== true) errors.push('row-level privacy purge request workflow must be implemented');
+if (withdrawal?.row_level_purge_request_workflow_implemented !== true) errors.push('row-level purge request workflow marker missing');
+if (withdrawal?.row_level_purge_executor_implemented !== true) errors.push('row-level purge executor marker missing from withdrawal policy');
+if (withdrawal?.artifact_purge_executor_implemented !== false) errors.push('artifact purge executor must remain unimplemented until a materializer exists');
+if (withdrawal?.future_materializer_requires_artifact_lineage_and_purge !== true) errors.push('future materializer must require artifact lineage and purge/regeneration');
 if (withdrawal?.record_linkage_and_deletion_journal_implemented !== true) errors.push('pseudonymous calibration record linkage/deletion journal must be implemented');
 if (withdrawal?.retest_pair_invalidation_journal_implemented !== true) errors.push('retest pair invalidation journal must be implemented');
-if (withdrawal?.export_regeneration_or_purge_required !== true) errors.push('withdrawal must require export purge/regeneration');
+if (withdrawal?.export_regeneration_or_purge_required !== true) errors.push('withdrawal must require export purge/regeneration when artifacts exist');
 if (withdrawal?.active_analysis_use_blocked_until_purge !== true) errors.push('active analysis use must block until withdrawal purge');
 if (withdrawal?.owner_session_deletion_must_remove_consent_receipt !== true) errors.push('owner deletion must remove consent receipt');
 if (withdrawal?.future_row_level_linkage_must_support_targeted_deletion !== true) errors.push('future row-level linkage must support targeted deletion');
