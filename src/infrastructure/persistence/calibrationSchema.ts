@@ -185,7 +185,7 @@ export const calibrationOperatorAuditEvents = pgTable(
     index('calibration_operator_audit_events_occurred_idx').on(table.occurredAt),
     check(
       'calibration_operator_audit_action_chk',
-      sql`${table.action} in ('export-approved','export-rejected','privacy-purge-requested','privacy-purge-confirmed')`
+      sql`${table.action} in ('export-approved','export-rejected','privacy-purge-requested','privacy-purge-confirmed','privacy-purge-rejected')`
     ),
     check(
       'calibration_operator_audit_distinct_operators_chk',
@@ -364,6 +364,71 @@ export const calibrationDeletionEvents = pgTable(
     check(
       'calibration_deletion_event_reason_chk',
       sql`${table.reason} in ('consent-withdrawn','owner-session-deleted','privacy-operator-purge','retest-pair-invalidated')`
+    )
+  ]
+);
+
+
+export const calibrationPrivacyPurgeRequests = pgTable(
+  'calibration_privacy_purge_requests',
+  {
+    purgeRequestId: uuid('purge_request_id').primaryKey().defaultRandom(),
+    requesterOperatorId: uuid('requester_operator_id')
+      .notNull()
+      .references(() => calibrationOperators.operatorId, { onDelete: 'restrict' }),
+    reviewerOperatorId: uuid('reviewer_operator_id')
+      .references(() => calibrationOperators.operatorId, { onDelete: 'restrict' }),
+    status: text('status').notNull().default('requested'),
+    targetCount: integer('target_count').notNull(),
+    requestedAt: timestamp('requested_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow(),
+    decidedAt: timestamp('decided_at', { withTimezone: true, mode: 'date' })
+  },
+  (table) => [
+    index('calibration_privacy_purge_requests_status_requested_idx').on(table.status, table.requestedAt),
+    check('calibration_privacy_purge_request_status_chk', sql`${table.status} in ('requested','confirmed','rejected')`),
+    check('calibration_privacy_purge_request_target_count_chk', sql`${table.targetCount} >= 1`),
+    check(
+      'calibration_privacy_purge_request_distinct_operators_chk',
+      sql`${table.reviewerOperatorId} is null or ${table.reviewerOperatorId} <> ${table.requesterOperatorId}`
+    ),
+    check(
+      'calibration_privacy_purge_request_decision_chk',
+      sql`(
+        (
+          ${table.status} = 'requested'
+          and ${table.reviewerOperatorId} is null
+          and ${table.decidedAt} is null
+        )
+        or
+        (
+          ${table.status} in ('confirmed','rejected')
+          and ${table.reviewerOperatorId} is not null
+          and ${table.decidedAt} is not null
+        )
+      )`
+    )
+  ]
+);
+
+export const calibrationPrivacyPurgeRequestTargets = pgTable(
+  'calibration_privacy_purge_request_targets',
+  {
+    purgeRequestId: uuid('purge_request_id')
+      .notNull()
+      .references(() => calibrationPrivacyPurgeRequests.purgeRequestId, { onDelete: 'restrict' }),
+    calibrationRecordId: uuid('calibration_record_id').notNull(),
+    qualifyingDeletionEventId: uuid('qualifying_deletion_event_id')
+      .notNull()
+      .references(() => calibrationDeletionEvents.deletionEventId, { onDelete: 'restrict' }),
+    qualifyingReason: text('qualifying_reason').notNull(),
+    createdAt: createdAt()
+  },
+  (table) => [
+    primaryKey({ columns: [table.purgeRequestId, table.calibrationRecordId] }),
+    index('calibration_privacy_purge_targets_record_idx').on(table.calibrationRecordId),
+    check(
+      'calibration_privacy_purge_target_reason_chk',
+      sql`${table.qualifyingReason} in ('consent-withdrawn','owner-session-deleted','retest-pair-invalidated')`
     )
   ]
 );
