@@ -87,9 +87,11 @@ if (impl?.retest_consent_draft_implemented !== true) errors.push('retest consent
 if (impl?.retest_candidate_export_schema_implemented !== true) errors.push('retest candidate export schema implementation marker missing');
 if (impl?.raw_export_materializer_implemented !== false) errors.push('raw export materializer must remain pending');
 if (impl?.targeted_calibration_record_linkage_and_journal_implemented !== true) errors.push('targeted calibration record linkage/deletion journal foundation missing');
-if (impl?.targeted_calibration_record_deletion_implemented !== false) errors.push('offline artifact targeted purge executor must remain pending');
+if (impl?.targeted_calibration_record_deletion_implemented !== true) errors.push('row-level targeted calibration purge executor implementation missing');
+if (impl?.row_level_purge_executor_implemented !== true) errors.push('row-level purge executor marker missing');
+if (impl?.artifact_purge_executor_implemented !== false) errors.push('artifact purge executor must remain pending until a materializer exists');
 
-if (protocol.prerequisite_engineering_status?.['retention-deletion-policy'] !== 'policy-and-deletion-journal-ready-purge-executor-pending') {
+if (protocol.prerequisite_engineering_status?.['retention-deletion-policy'] !== 'row-purge-executor-ready-artifact-purge-coupled-to-future-materializer') {
   errors.push('beta protocol retention/deletion prerequisite status drift');
 }
 if (protocol.prerequisite_engineering_status?.['operator-authorization-audit'] !== 'control-workflow-implemented-runtime-disabled-production-provisioning-pending') {
@@ -115,6 +117,23 @@ if (policy.authorization?.export_control_surface !== 'offline-cli-execute-only-d
 }
 if (policy.authorization?.export_control_policy_ref !== 'data/calibration/export-control-policy-v0.1-dev.json') {
   errors.push('calibration export control policy reference missing');
+}
+if (policy.authorization?.privacy_purge_surface !== 'offline-cli-execute-only-db-api') {
+  errors.push('calibration privacy purge surface drift');
+}
+if (policy.authorization?.privacy_purge_policy_ref !== 'data/calibration/privacy-purge-policy-v0.1-dev.json') {
+  errors.push('calibration privacy purge policy reference missing');
+}
+if (policy.withdrawal_and_deletion?.row_level_purge_executor_implemented !== true
+  || policy.withdrawal_and_deletion?.artifact_purge_executor_implemented !== false
+  || policy.withdrawal_and_deletion?.future_materializer_requires_artifact_lineage_and_purge !== true) {
+  errors.push('calibration row/artifact purge governance boundary drift');
+}
+if (!policy.activation_blockers?.includes('raw-materializer-artifact-lineage-and-purge-coupling')) {
+  errors.push('future materializer artifact-lineage/purge coupling blocker missing');
+}
+if (policy.activation_blockers?.includes('withdrawal-offline-artifact-purge-executor')) {
+  errors.push('obsolete pre-row-purge blocker must be removed');
 }
 if (policy.activation_blockers?.includes('operator-authentication-command-and-role-binding')) {
   errors.push('obsolete operator authentication implementation blocker must be removed');
@@ -152,7 +171,9 @@ const operatorPlaneTables=[
   'calibration_deletion_events',
   'calibration_records',
   'calibration_item_responses',
-  'calibration_retest_linkages'
+  'calibration_retest_linkages',
+  'calibration_privacy_purge_requests',
+  'calibration_privacy_purge_request_targets'
 ];
 for (const table of operatorPlaneTables) {
   if (dbRole.runtime_no_access_tables?.includes(table) !== true) errors.push(`runtime role no-access classification missing for ${table}`);
@@ -167,4 +188,4 @@ if (errors.length) {
   for (const error of errors) console.error(`- ${error}`);
   process.exit(1);
 }
-console.log('Calibration governance validation passed: retention/deletion, fail-closed answer storage, operator authentication and offline two-person export-control/audit are implemented, while runtime ingest, legal approval, production operator provisioning, raw export materialization and offline artifact purge remain fail-closed.');
+console.log('Calibration governance validation passed: retention/deletion, fail-closed answer storage, operator authentication and offline two-person export-control/audit are implemented, while runtime ingest, legal approval, production operator provisioning, raw export materialization and future materializer artifact purge remain fail-closed.');
