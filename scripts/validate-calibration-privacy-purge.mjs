@@ -92,7 +92,6 @@ for (const fragment of [
   'calibration privacy purge self review forbidden',
   'calibration privacy purge request already decided',
   'FOR UPDATE',
-  "e.reason IN (\n        'consent-withdrawn',\n        'owner-session-deleted',\n        'retest-pair-invalidated'",
   "'privacy-operator-purge'",
   'DELETE FROM public.calibration_records',
   "'privacy-purge-confirmed'",
@@ -122,6 +121,9 @@ const requestFunctionEnd=migration.indexOf('REVOKE ALL ON FUNCTION public.pcs_re
 const requestFunction=migration.slice(requestFunctionStart,requestFunctionEnd);
 if (requestFunction.includes("e.reason IN (\n        'privacy-operator-purge'")) {
   errors.push('privacy-operator-purge must never be an initial purge eligibility reason');
+}
+for (const reason of ['consent-withdrawn','owner-session-deleted','retest-pair-invalidated']) {
+  if (!requestFunction.includes(`'${reason}'`)) errors.push(`purge request missing qualifying reason ${reason}`);
 }
 if (!requestFunction.includes("'retest-pair-invalidated'")) errors.push('purge request must understand retest pair invalidation');
 if (!requestFunction.includes('FROM public.calibration_retest_linkages')) errors.push('purge request must expand current retest linkage');
