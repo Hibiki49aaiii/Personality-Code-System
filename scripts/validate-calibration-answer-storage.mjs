@@ -172,8 +172,14 @@ if (
 if (governance.implementation_status?.raw_export_materializer_implemented!==false) {
   errors.push('raw export materializer must remain absent');
 }
-if (governance.implementation_status?.targeted_calibration_record_deletion_implemented!==false) {
-  errors.push('targeted purge executor must remain absent');
+if (governance.implementation_status?.targeted_calibration_record_deletion_implemented!==true) {
+  errors.push('row-level targeted purge executor must be implemented');
+}
+if (governance.implementation_status?.row_level_purge_executor_implemented!==true) {
+  errors.push('row-level purge executor implementation marker missing');
+}
+if (governance.implementation_status?.artifact_purge_executor_implemented!==false) {
+  errors.push('artifact purge executor must remain absent until a raw materializer exists');
 }
 
 if (fs.existsSync(path.join('src','app','api','calibration'))) {
@@ -196,4 +202,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log('Calibration answer storage validation passed: normalized exact-Wave schema serializes consent, freezes beta item mappings, rechecks release tuples, keeps operator/runtime access closed, and does not enable collection/export.');
+console.log('Calibration answer storage validation passed: normalized exact-Wave schema serializes consent, freezes beta item mappings, rechecks release tuples, keeps operator/runtime access closed, supports controlled row-level privacy purge, and does not enable collection/export or raw materialization.');
