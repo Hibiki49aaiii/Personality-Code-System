@@ -89,6 +89,21 @@ if (
 ) {
   errors.push('retest foundation must bind repository-frozen but unregistered Wave JA-01');
 }
+if (
+  wave.retest_plan?.linkage_status!=='engineering-foundation-implemented-runtime-disabled'
+  || wave.retest_plan?.linkage_policy_ref!=='data/calibration/retest-linkage-policy-v0.1-dev.json'
+  || wave.retest_plan?.candidate_export_schema_ref!=='data/calibration/export-schema-v0.2-retest-dev.json'
+  || wave.retest_plan?.draft_consent_ref!=='data/calibration/retest-consent-purpose-v0.1-dev.json'
+  || wave.retest_plan?.runtime_issue_or_claim_api_enabled!==false
+) {
+  errors.push('Wave retest linkage implementation/non-activation state drift');
+}
+if (wave.activation_blockers?.includes('retest-linkage-schema-and-consent')) {
+  errors.push('obsolete retest linkage foundation blocker must be removed');
+}
+for (const blocker of ['retest-consent-final-approval','runtime-retest-issue-and-claim-surface']) {
+  if (!wave.activation_blockers?.includes(blocker)) errors.push(`Wave retest activation blocker missing ${blocker}`);
+}
 
 if (
   consent.consent_contract_version!=='calibration-retest-consent-contract-v0.1-dev'
@@ -256,6 +271,24 @@ if (
 if (governance.collection_enabled!==false || governance.export_enabled!==false) {
   errors.push('calibration governance collection/export must remain disabled');
 }
+if (
+  governance.implementation_status?.retest_linkage_foundation_implemented!==true
+  || governance.implementation_status?.runtime_retest_issue_claim_surface_implemented!==false
+  || governance.implementation_status?.retest_consent_draft_implemented!==true
+  || governance.implementation_status?.retest_candidate_export_schema_implemented!==true
+  || governance.withdrawal_and_deletion?.retest_pair_invalidation_journal_implemented!==true
+) {
+  errors.push('calibration governance retest implementation/non-activation state drift');
+}
+if (
+  governance.retest_linkage?.policy_ref!=='data/calibration/retest-linkage-policy-v0.1-dev.json'
+  || governance.retest_linkage?.candidate_export_schema_ref!=='data/calibration/export-schema-v0.2-retest-dev.json'
+  || governance.retest_linkage?.draft_consent_ref!=='data/calibration/retest-consent-purpose-v0.1-dev.json'
+  || governance.retest_linkage?.runtime_enabled!==false
+  || governance.retest_linkage?.production_provisioning_complete!==false
+) {
+  errors.push('calibration governance retest linkage references drift');
+}
 if (wave.collection_enabled!==false || wave.export_enabled!==false || wave.collection_start_allowed!==false) {
   errors.push('Wave collection/export/start must remain disabled');
 }
@@ -269,10 +302,10 @@ if (fs.existsSync(path.join('src','app','api','calibration'))) {
 if (pkg.scripts?.['validate:calibration-retest-linkage']!=='node scripts/validate-calibration-retest-linkage.mjs') {
   errors.push('retest linkage validator npm command missing');
 }
-if (!pkg.scripts?.['test:domain']?.includes('tests/domain/calibration-retest-export-record.test.ts')) {
+if (!pkg.scripts?.['test:domain']?.includes('.tmp-tests/tests/domain/calibration-retest-export-record.test.js')) {
   errors.push('retest export unit test not wired');
 }
-if (!pkg.scripts?.['test:domain']?.includes('tests/infrastructure/calibration-retest-credential.test.ts')) {
+if (!pkg.scripts?.['test:domain']?.includes('.tmp-tests/tests/infrastructure/calibration-retest-credential.test.js')) {
   errors.push('retest credential unit test not wired');
 }
 if (pkg.scripts?.['test:calibration-retest-linkage:integration']!=='node tests/infrastructure/calibration-retest-linkage.integration.mjs') {
