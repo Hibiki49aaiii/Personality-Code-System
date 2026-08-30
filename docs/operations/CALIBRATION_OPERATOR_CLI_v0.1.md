@@ -16,7 +16,7 @@ It does **not**:
 
 ## Trust boundaries
 
-Three database credentials remain separate:
+Five database credentials remain separate:
 
 1. ordinary application runtime — `pcs_runtime`
 2. calibration authentication — `pcs_calibration_auth`
