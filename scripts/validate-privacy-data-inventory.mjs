@@ -60,6 +60,31 @@ if (!calibrationRetestClass) {
   }
 }
 
+const calibrationPurgeClass = inventory.classes.find((entry) => entry.id === 'calibration-withdrawal-deletion-control');
+if (!calibrationPurgeClass) {
+  errors.push('calibration withdrawal/deletion-control privacy class missing');
+} else {
+  for (const table of [
+    'calibration_record_links',
+    'calibration_deletion_events',
+    'calibration_privacy_purge_requests',
+    'calibration_privacy_purge_request_targets'
+  ]) {
+    if (!calibrationPurgeClass.tables?.includes(table)) {
+      errors.push(`calibration withdrawal/deletion-control class missing ${table}`);
+    }
+  }
+  if (calibrationPurgeClass.row_level_purge_executor_implemented !== true) {
+    errors.push('calibration withdrawal/deletion-control class must record row-level purge implementation');
+  }
+  if (calibrationPurgeClass.artifact_purge_executor_implemented !== false) {
+    errors.push('calibration withdrawal/deletion-control class must keep artifact purge pending');
+  }
+  if (calibrationPurgeClass.privacy_purge_policy_ref !== 'data/calibration/privacy-purge-policy-v0.1-dev.json') {
+    errors.push('calibration withdrawal/deletion-control purge policy reference drift');
+  }
+}
+
 const calibrationStorageClass = inventory.classes.find((entry) => entry.id === 'calibration-answer-storage');
 if (!calibrationStorageClass) {
   errors.push('calibration answer-storage privacy class missing');
