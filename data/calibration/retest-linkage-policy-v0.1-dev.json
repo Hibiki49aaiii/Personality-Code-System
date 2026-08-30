@@ -49,6 +49,16 @@
   "notes": [
     "This policy defines a pseudonymous retest linkage foundation only.",
     "A retest pair ID is an analysis identifier, not a bearer credential or real-world identity.",
-    "No runtime issue/claim endpoint or raw calibration materializer exists."
-  ]
+    "No runtime issue/claim endpoint or raw calibration materializer exists.",
+    "Baseline/retest timing and exact scope are read from completed purpose-separated calibration_records, not ordinary diagnostic session completion."
+  ],
+  "measurement_record_source": {
+    "table": "calibration_records",
+    "baseline_status_required": "complete",
+    "retest_status_required": "complete",
+    "completion_timestamp_source": "calibration_records.completed_at",
+    "parent_lineage": "calibration_record_links -> calibration_consent_receipts"
+  },
+  "answer_storage_migration_ref": "drizzle/0011_calibration_answer_storage.sql",
+  "retest_linkage_migration_ref": "drizzle/0012_calibration_retest_linkage.sql"
 }
