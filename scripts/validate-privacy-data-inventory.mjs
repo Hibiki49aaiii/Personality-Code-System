@@ -80,6 +80,15 @@ if (!calibrationPurgeClass) {
   if (calibrationPurgeClass.artifact_purge_executor_implemented !== false) {
     errors.push('calibration withdrawal/deletion-control class must keep artifact purge pending');
   }
+  if (calibrationPurgeClass.runtime_access_allowed !== false) {
+    errors.push('calibration withdrawal/deletion-control class must remain runtime-inaccessible');
+  }
+  if (calibrationPurgeClass.direct_identity_or_contact_stored !== false) {
+    errors.push('calibration withdrawal/deletion-control must not store direct identity/contact');
+  }
+  if (calibrationPurgeClass.raw_response_payload_stored !== false) {
+    errors.push('calibration withdrawal/deletion-control must not store raw response payloads');
+  }
   if (calibrationPurgeClass.privacy_purge_policy_ref !== 'data/calibration/privacy-purge-policy-v0.1-dev.json') {
     errors.push('calibration withdrawal/deletion-control purge policy reference drift');
   }
