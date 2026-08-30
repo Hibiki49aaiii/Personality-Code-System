@@ -166,6 +166,15 @@ if (JSON.stringify(schema.row_fields)!==JSON.stringify(expectedRowFields)) error
 if (JSON.stringify(schema.measurement_occasion_values)!==JSON.stringify(['baseline','retest'])) {
   errors.push('candidate measurement occasion allowlist drift');
 }
+if (
+  schema.pair_contract?.pair_id_kind!=='random-uuid-v4'
+  || schema.pair_contract?.exact_frozen_scope_required!==true
+  || schema.pair_contract?.exactly_two_records_per_complete_pair!==true
+  || schema.pair_contract?.one_baseline_one_retest!==true
+  || schema.pair_contract?.pair_scope_must_match!==true
+) {
+  errors.push('candidate retest pair contract drift');
+}
 for (const forbidden of [
   'sessionId','privateToken','accessToken','accessTokenHash','publicToken','publicTokenHash',
   'retestClaimToken','retestClaimTokenHash','operatorToken','operatorTokenHash','operatorId',
@@ -182,6 +191,9 @@ for (const fragment of [
   "CHECK (claim_token_hash ~ '^[a-f0-9]{64}$')",
   'calibration_retest_linkages_baseline_uq',
   'calibration_retest_linkages_retest_uq',
+  'CREATE OR REPLACE FUNCTION public.pcs_validate_calibration_retest_linkage_delete()',
+  'calibration_retest_linkages_delete_guard',
+  'calibration retest linkage may only delete through calibration record cascade',
   "status IN ('issued','claimed','invalidated')",
   "eligible_until = eligible_from + interval '7 days'",
   "NEW.eligible_from <> baseline_completed_at + interval '14 days'",
@@ -236,6 +248,9 @@ for (const fragment of [
   "'calibration-export-record-v0.2-retest-dev'",
   "'measurementOccasion'",
   "'retestPairId'",
+  'RANDOM_UUID_V4_RE',
+  'FROZEN_RETEST_SCOPE',
+  "'FROZEN_SCOPE_MISMATCH'",
   'buildCalibrationRetestPairV02',
   'PAIR_OCCASIONS',
   'MIXED_RETEST_PAIR',
