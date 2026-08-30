@@ -40,7 +40,8 @@
     "exactly_two_records_per_complete_pair": true,
     "one_baseline_one_retest": true,
     "pair_scope_must_match": true,
-    "pair_id_kind": "random-uuid"
+    "pair_id_kind": "random-uuid-v4",
+    "exact_frozen_scope_required": true
   },
   "forbidden_fields": [
     "sessionId",
