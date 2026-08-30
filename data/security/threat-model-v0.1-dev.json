@@ -386,7 +386,14 @@
         "exact Wave JA-01/model/item/revision/locale constraints at the database boundary",
         "ordinary runtime/auth/admin/export-control roles have zero direct calibration answer-table privileges",
         "calibration answer rows cannot finalize without all 147 exact-model responses and granted consent",
-        "individual calibration responses are immutable and privacy deletion cascades only through pseudonymous calibration_record_links"
+        "individual calibration responses are immutable and privacy deletion cascades only through pseudonymous calibration_record_links",
+        "retest linkage references completed purpose-separated calibration_records rather than diagnostic session capability",
+        "dedicated random retest pair ID with independent 32-byte claim credential stored only as SHA-256",
+        "separate baseline and retest consent version/purpose identities",
+        "database-enforced 14–21 day retest window from calibration_records.completed_at",
+        "either linked consent withdrawal invalidates the pair and journals both pseudonymous calibration record IDs",
+        "ordinary runtime role has zero access to calibration_retest_linkages",
+        "candidate retest export schema forbids session/operator/retest credential material, direct identity, demographics and derived results"
       ],
       "evidence": [
         "calibration protocol validator",
@@ -409,9 +416,15 @@
         "calibration answer storage validator",
         "calibration answer storage PostgreSQL integration",
         "147-response finalization and off-model/revision/value adversarial tests",
-        "runtime/operator all-table least-privilege regressions"
+        "runtime/operator all-table least-privilege regressions",
+        "calibration retest credential unit tests",
+        "candidate retest export-schema adversarial domain tests",
+        "calibration retest linkage PostgreSQL integration",
+        "completed-record 14–21 day claim and distinct-consent tests",
+        "retest pair withdrawal two-record deletion-journal test",
+        "runtime retest-linkage zero-access validation"
       ],
-      "residual": "Consent, pseudonymous answer-storage schema, deletion journal, execute-only operator authentication/export-control tooling and repository-frozen Wave JA-01 scope exist, but runtime answer ingest/collection and raw materialization are not authorized. Production operator/control-role provisioning, offline purge, external preregistration, legal/privacy approval and deployed-environment prerequisites remain unresolved.",
+      "residual": "Consent, pseudonymous answer storage, completed-record retest-linkage/deletion-journal, execute-only operator authentication/export-control tooling and repository-frozen Wave JA-01 scope exist, but runtime baseline ingest/retest issue-or-claim and raw materialization are not authorized. Production operator/control provisioning, offline purge, external preregistration, final baseline/retest consent/legal/privacy approval and deployed-environment prerequisites remain unresolved.",
       "external_evidence_ids": [
         "phase5-beta-calibration"
       ]
