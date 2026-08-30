@@ -152,8 +152,8 @@ async function insertIssuedPair({baseline,label}) {
         'scoring-v0.1-dev',
         'trait-dictionary-v0.2',
         'ja-JP',
-        ${baseline.completedAt}::timestamptz+interval '14 days',
-        ${baseline.completedAt}::timestamptz+interval '21 days'
+        (SELECT completed_at + interval '14 days' FROM calibration_records WHERE calibration_record_id=${baseline.calibrationRecordId}),
+        (SELECT completed_at + interval '21 days' FROM calibration_records WHERE calibration_record_id=${baseline.calibrationRecordId})
       )
     RETURNING *
   `;
@@ -192,8 +192,8 @@ try {
           'scoring-v0.1-dev',
           'trait-dictionary-v0.2',
           'ja-JP',
-          ${rawTokenBaseline.completedAt}::timestamptz+interval '14 days',
-          ${rawTokenBaseline.completedAt}::timestamptz+interval '21 days'
+          (SELECT completed_at + interval '14 days' FROM calibration_records WHERE calibration_record_id=${rawTokenBaseline.calibrationRecordId}),
+          (SELECT completed_at + interval '21 days' FROM calibration_records WHERE calibration_record_id=${rawTokenBaseline.calibrationRecordId})
         )
     `,
     /calibration_retest_claim_token_hash_chk|check constraint/i
@@ -225,8 +225,8 @@ try {
           'scoring-v0.1-dev',
           'trait-dictionary-v0.2',
           'ja-JP',
-          ${wrongWindowBaseline.completedAt}::timestamptz+interval '13 days',
-          ${wrongWindowBaseline.completedAt}::timestamptz+interval '20 days'
+          (SELECT completed_at + interval '13 days' FROM calibration_records WHERE calibration_record_id=${wrongWindowBaseline.calibrationRecordId}),
+          (SELECT completed_at + interval '20 days' FROM calibration_records WHERE calibration_record_id=${wrongWindowBaseline.calibrationRecordId})
         )
     `,
     /eligibility window mismatch/i
@@ -252,8 +252,8 @@ try {
           'scoring-v0.1-dev',
           'trait-dictionary-v0.2',
           'ja-JP',
-          ${wrongScopeBaseline.completedAt}::timestamptz+interval '14 days',
-          ${wrongScopeBaseline.completedAt}::timestamptz+interval '21 days'
+          (SELECT completed_at + interval '14 days' FROM calibration_records WHERE calibration_record_id=${wrongScopeBaseline.calibrationRecordId}),
+          (SELECT completed_at + interval '21 days' FROM calibration_records WHERE calibration_record_id=${wrongScopeBaseline.calibrationRecordId})
         )
     `,
     /scope mismatch/i
