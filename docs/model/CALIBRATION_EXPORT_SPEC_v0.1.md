@@ -40,7 +40,7 @@ v0.1 permits only:
 
 The pure-domain validator rejects unknown fields instead of silently dropping them. A manifest builder also rejects records from mixed model/version/wave scopes.
 
-v0.1 deliberately excludes retest linkage, demographics, timing, derived Trait Scores/codes, result prose, session/public capabilities, IP/location, product analytics and logs. Adding any of those requires a new reviewed export-schema version and the relevant consent/governance justification.
+v0.1 deliberately excludes retest linkage, demographics, timing, derived Trait Scores/codes, result prose, session/public capabilities, IP/location, product analytics and logs. Retest therefore uses a separate candidate-only `calibration-export-record-v0.2-retest-dev` contract that adds only measurement occasion + random pseudonymous `retestPairId`; v0.1 itself is unchanged. Candidate-schema existence does not authorize materialization.
 
 This schema is **not** an export job, endpoint, authorization, or dataset.
 
@@ -68,7 +68,7 @@ A future version MAY include only consented records and fields such as:
 
 ## Retest linkage
 
-If retest reliability is studied, linkage must use a purpose-specific pseudonymous identifier. It must not expose the assessment session capability token and must be rotatable/deletable independently.
+If retest reliability is studied, linkage uses a purpose-specific pseudonymous identifier. The repository foundation now pairs completed `calibration_records` using random `retestPairId` plus an independent one-time claim credential stored only as SHA-256. It never exports the claim token/hash or assessment session capability. Either linked withdrawal invalidates the pair and journals both pseudonymous record IDs for future purge. Runtime issuance/claim remains disabled.
 
 ## Output and audit
 
