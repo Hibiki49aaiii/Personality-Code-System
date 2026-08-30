@@ -130,6 +130,19 @@ The repository now enforces the pre-legal diagnostic retention baseline as execu
 
 This materially closes the **engineering tooling** gap behind the stated retention baseline. It does not prove a production scheduler is running and does not define how provider backups behave after source deletion; those remain PCS-LEGAL-001 / OPS / release evidence.
 
+### Calibration row-level withdrawal purge
+
+The pre-collection calibration plane now has a separate offline destructive workflow for pseudonymous research rows:
+
+- a purge request is accepted only for a current `calibration_records` row already carrying `consent-withdrawn`, `owner-session-deleted`, or `retest-pair-invalidated`;
+- `privacy-operator-purge` is execution evidence and cannot create initial eligibility;
+- an active `calibration-privacy-operator` requests and a **different** active `calibration-reviewer` confirms or rejects;
+- `pcs_calibration_privacy_control` has zero direct table privileges and can only execute the bounded SECURITY DEFINER purge API;
+- retest pair invalidation expands only to still-present pair members that each carry qualifying deletion evidence;
+- confirmation deletes row-level calibration records and cascaded item responses while retaining bounded pseudonymous deletion/governance evidence.
+
+This is not a claim that exported files are purgeable: no raw materializer or artifact store exists. Any future materializer must add artifact lineage and purge/regeneration before activation.
+
 ## User controls
 
 Where data is persisted beyond a short anonymous session, the product MUST define how users can:
