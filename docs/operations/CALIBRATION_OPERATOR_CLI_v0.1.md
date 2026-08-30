@@ -22,6 +22,7 @@ Three database credentials remain separate:
 2. calibration authentication — `pcs_calibration_auth`
 3. calibration credential administration — `pcs_calibration_admin`
 4. calibration export control — `pcs_calibration_export_control`
+5. calibration privacy purge control — `pcs_calibration_privacy_control`
 
 The migration/admin owner is only needed to create the fixed DB roles and apply the reviewed grant template. Normal operator credential lifecycle commands use the narrower calibration roles.
 
@@ -167,6 +168,21 @@ Denied:
 
 See `docs/operations/CALIBRATION_EXPORT_CONTROL_CLI_v0.1.md`.
 
+### pcs_calibration_privacy_control
+
+Allowed:
+- schema `USAGE`;
+- EXECUTE only on bounded authentication and privacy-purge request/review/decision functions.
+
+Denied:
+- all direct table privileges;
+- arbitrary calibration-record deletion;
+- operator hash enumeration;
+- raw answer/session/result data;
+- schema CREATE / DDL.
+
+See `docs/operations/CALIBRATION_PRIVACY_PURGE_CLI_v0.1.md`.
+
 ### pcs_calibration_admin
 
 Allowed:
@@ -190,6 +206,7 @@ Before calibration activation, capture inspectable deployment evidence for:
 - actual `pcs_calibration_auth` equivalent identity;
 - actual `pcs_calibration_admin` equivalent identity;
 - actual `pcs_calibration_export_control` equivalent identity;
+- actual `pcs_calibration_privacy_control` equivalent identity;
 - actual grants;
 - operator credential provisioning/revocation procedure;
 - production environment separation.
@@ -204,6 +221,6 @@ CI covers:
 - exclusive `0600` credential file creation;
 - raw-token/hash stdout/stderr leak checks;
 - real PostgreSQL `issue → whoami → grant → revoke-role → revoke-credential` lifecycle;
-- exact auth/admin/control privilege and function-EXECUTE matrix across all application objects;
+- exact auth/admin/export-control/privacy-control privilege and function-EXECUTE matrix across all application objects;
 - DDL denial;
 - calibration governance still fail-closed for raw export and collection.
