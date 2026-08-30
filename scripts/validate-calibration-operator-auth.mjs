@@ -137,19 +137,38 @@ if (JSON.stringify(dbPolicy.roles?.pcs_calibration_auth?.function_execute)!==JSO
 if (Object.keys(dbPolicy.roles?.pcs_calibration_export_control?.table_privileges ?? {}).length!==0) {
   errors.push('export control DB role must have zero direct table privileges');
 }
+if (Object.keys(dbPolicy.roles?.pcs_calibration_privacy_control?.table_privileges ?? {}).length!==0) {
+  errors.push('privacy control DB role must have zero direct table privileges');
+}
+if (JSON.stringify(dbPolicy.roles?.pcs_calibration_privacy_control?.function_execute)!==JSON.stringify([
+  'public.pcs_authenticate_calibration_operator(text)',
+  'public.pcs_request_calibration_privacy_purge(text,uuid)',
+  'public.pcs_review_calibration_privacy_purge(text,uuid)',
+  'public.pcs_decide_calibration_privacy_purge(text,uuid,text)'
+])) {
+  errors.push('privacy control DB function execute allowlist drift');
+}
+if (dbPolicy.roles?.pcs_calibration_privacy_control?.schema_create_allowed!==false) {
+  errors.push('privacy control DB role schema CREATE must remain denied');
+}
 
 for (const fragment of [
   'REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM pcs_calibration_auth',
   'REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM pcs_calibration_admin',
   'REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM pcs_calibration_export_control',
+  'REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM pcs_calibration_privacy_control',
   'GRANT EXECUTE ON FUNCTION public.pcs_authenticate_calibration_operator(text)',
+  'GRANT EXECUTE ON FUNCTION public.pcs_request_calibration_privacy_purge(text,uuid)',
+  'GRANT EXECUTE ON FUNCTION public.pcs_review_calibration_privacy_purge(text,uuid)',
+  'GRANT EXECUTE ON FUNCTION public.pcs_decide_calibration_privacy_purge(text,uuid,text)',
   'TO pcs_calibration_auth',
   'GRANT SELECT, INSERT, UPDATE ON TABLE',
   'calibration_operators',
   'TO pcs_calibration_admin',
   'GRANT SELECT, INSERT, DELETE ON TABLE',
   'calibration_operator_roles',
-  'TO pcs_calibration_export_control'
+  'TO pcs_calibration_export_control',
+  'TO pcs_calibration_privacy_control'
 ]) {
   if (!grants.includes(fragment)) errors.push(`calibration operator grant template missing ${fragment}`);
 }
