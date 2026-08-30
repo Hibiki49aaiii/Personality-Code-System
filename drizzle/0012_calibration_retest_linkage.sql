@@ -554,7 +554,7 @@ CREATE OR REPLACE FUNCTION public.pcs_validate_calibration_retest_linkage_delete
 RETURNS trigger
 LANGUAGE plpgsql
 SET search_path = pg_catalog
-AS $
+AS $$
 DECLARE
   baseline_parent_exists boolean;
   retest_parent_exists boolean;
@@ -586,7 +586,7 @@ BEGIN
 
   RETURN OLD;
 END;
-$;
+$$;
 
 REVOKE ALL ON FUNCTION public.pcs_validate_calibration_retest_linkage_delete() FROM PUBLIC;
 
