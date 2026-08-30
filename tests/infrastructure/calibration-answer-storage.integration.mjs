@@ -289,18 +289,20 @@ try {
 
       await expectDbFailure(
         'retired assessment model mapping mutation',
-        ()=>tx`
+        ()=>tx.savepoint((sp)=>sp`
           UPDATE assessment_model_items
           SET weight_milli=weight_milli+1
           WHERE model_version='assessment-dev-v0.3'
             AND position=1
-        `,
+        `),
         /items belonging to a retired assessment model are immutable/i
       );
 
       await expectDbFailure(
         'finalize after beta release retirement',
-        ()=>tx`SELECT public.pcs_finalize_calibration_record(${primary.calibrationRecordId})`,
+        ()=>tx.savepoint((sp)=>sp`
+          SELECT public.pcs_finalize_calibration_record(${primary.calibrationRecordId})
+        `),
         /completion release tuple mismatch/i
       );
 
