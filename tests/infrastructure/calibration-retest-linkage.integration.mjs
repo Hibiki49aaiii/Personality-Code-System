@@ -266,19 +266,6 @@ try {
     /scope mismatch/i
   );
 
-  const draftBaseline=await createBaseline('baseline-draft-fixture',-15);
-  const [draftLink]=await sql`
-    INSERT INTO calibration_record_links (consent_receipt_id)
-    SELECT consent_receipt_id
-    FROM calibration_consent_receipts
-    WHERE session_id=(
-      SELECT session_id FROM anonymous_sessions
-      WHERE access_token_hash=${tokenHash('session:baseline-draft-fixture-shadow')}
-    )
-    LIMIT 1
-  `.catch(()=>[]);
-  void draftLink;
-
   await expectDbFailure(
     'same baseline and retest record',
     ()=>sql`
