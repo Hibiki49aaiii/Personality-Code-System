@@ -5,6 +5,10 @@ const consent = JSON.parse(fs.readFileSync('data/calibration/consent-purpose-v0.
 const dbRole = JSON.parse(fs.readFileSync('data/security/database-role-policy-v0.1-dev.json', 'utf8'));
 const migration = fs.readFileSync('drizzle/0008_calibration_consent_receipts.sql','utf8');
 const answerStorageMigration = fs.readFileSync('drizzle/0011_calibration_answer_storage.sql','utf8');
+const retestMigration = fs.readFileSync('drizzle/0012_calibration_retest_linkage.sql','utf8');
+const retestPolicy = JSON.parse(fs.readFileSync('data/calibration/retest-linkage-policy-v0.1-dev.json','utf8'));
+const retestConsent = JSON.parse(fs.readFileSync('data/calibration/retest-consent-purpose-v0.1-dev.json','utf8'));
+const retestSchema = JSON.parse(fs.readFileSync('data/calibration/export-schema-v0.2-retest-dev.json','utf8'));
 const errors = [];
 
 if (protocol.protocol_version !== 'beta-calibration-protocol-v0.1-dev') errors.push('unexpected protocol version');
@@ -58,7 +62,8 @@ const expectedCalibrationNoAccess=[
   'calibration_record_links',
   'calibration_deletion_events',
   'calibration_records',
-  'calibration_item_responses'
+  'calibration_item_responses',
+  'calibration_retest_linkages'
 ];
 for (const table of expectedCalibrationNoAccess) {
   if (!(dbRole.runtime_no_access_tables ?? []).includes(table)) {
@@ -150,6 +155,18 @@ if (protocol.governance_policy_foundation?.answer_level_calibration_storage_sche
 if (protocol.governance_policy_foundation?.calibration_ingest_surface_implemented !== false) {
   errors.push('calibration ingest surface must remain disabled');
 }
+if (protocol.governance_policy_foundation?.retest_linkage_foundation_implemented !== true) {
+  errors.push('retest linkage engineering foundation missing');
+}
+if (protocol.governance_policy_foundation?.runtime_retest_issue_claim_surface_implemented !== false) {
+  errors.push('runtime retest issue/claim surface must remain disabled');
+}
+if (protocol.governance_policy_foundation?.retest_consent_draft_implemented !== true) {
+  errors.push('retest consent draft foundation missing');
+}
+if (protocol.governance_policy_foundation?.retest_candidate_export_schema_implemented !== true) {
+  errors.push('candidate retest export schema foundation missing');
+}
 if (protocol.governance_policy_foundation?.raw_export_materializer_implemented !== false) errors.push('raw export materializer must remain pending');
 if (protocol.governance_policy_foundation?.targeted_calibration_record_linkage_and_journal_implemented !== true) errors.push('targeted record linkage/deletion journal foundation missing');
 if (protocol.governance_policy_foundation?.targeted_calibration_record_deletion_implemented !== false) errors.push('offline artifact purge executor must remain pending');
@@ -180,6 +197,43 @@ if (protocol.export_schema_foundation?.strict_allowlist !== true || protocol.exp
 for (const key of ['retest_linkage_included','demographic_fields_included','timing_fields_included','derived_scores_or_codes_included']) {
   if (protocol.export_schema_foundation?.[key] !== false) errors.push(`calibration export v0.1 must keep ${key}=false`);
 }
+const retestExport=protocol.retest_candidate_export_schema_foundation;
+if (
+  retestExport?.export_schema_version !== 'calibration-export-record-v0.2-retest-dev'
+  || retestExport?.candidate_only !== true
+  || retestExport?.runtime_export_enabled !== false
+  || retestExport?.materializer_enabled !== false
+  || retestExport?.measurement_occasion_field !== true
+  || retestExport?.pseudonymous_retest_pair_id !== true
+  || retestExport?.token_or_hash_export_allowed !== false
+  || retestExport?.demographics_included !== false
+  || retestExport?.derived_scores_or_codes_included !== false
+) {
+  errors.push('candidate retest export schema foundation drift');
+}
+if (
+  retestPolicy.runtime_issue_or_claim_api_enabled !== false
+  || retestPolicy.collection_enabled !== false
+  || retestPolicy.export_enabled !== false
+  || retestPolicy.materializer_enabled !== false
+  || retestConsent.legal_approved !== false
+  || retestConsent.collection_authorized !== false
+  || retestConsent.export_authorized !== false
+  || retestSchema.runtime_export_enabled !== false
+  || retestSchema.materializer_enabled !== false
+) {
+  errors.push('retest foundation must remain fail-closed');
+}
+for (const fragment of [
+  'CREATE TABLE public.calibration_retest_linkages',
+  'REFERENCES public.calibration_records(calibration_record_id) ON DELETE CASCADE',
+  "baseline_completed_at + interval '14 days'",
+  "baseline_completed_at + interval '21 days'",
+  "retest_status IS DISTINCT FROM 'complete'",
+  'calibration_retest_consent_withdrawal_invalidation'
+]) {
+  if (!retestMigration.includes(fragment)) errors.push(`retest migration missing ${fragment}`);
+}
 
 const requiredAnalyses = [
   'item-distributions-floor-ceiling',
@@ -208,7 +262,12 @@ if (protocol.retest_plan.status !== 'registration-ready-candidate-not-activated'
   || protocol.retest_plan.candidate_interval_days_max !== 21
   || protocol.retest_plan.candidate_target_completed_n !== 200
   || protocol.retest_plan.candidate_minimum_interpretable_n !== 150
-  || protocol.retest_plan.linkage_implemented !== false) {
+  || protocol.retest_plan.linkage_implemented !== true
+  || protocol.retest_plan.linkage_policy_ref !== 'data/calibration/retest-linkage-policy-v0.1-dev.json'
+  || protocol.retest_plan.candidate_export_schema_version !== 'calibration-export-record-v0.2-retest-dev'
+  || protocol.retest_plan.draft_consent_version !== 'calibration-retest-consent-ja-v0.1-dev'
+  || protocol.retest_plan.runtime_issue_or_claim_enabled !== false
+  || protocol.retest_plan.measurement_record_source !== 'calibration_records.completed_at') {
   errors.push('registration-ready Wave 01 retest-plan summary drift');
 }
 if (protocol.decision_policy.single_statistic_can_promote_stage !== false) {
