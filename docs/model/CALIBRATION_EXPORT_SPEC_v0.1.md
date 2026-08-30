@@ -26,7 +26,7 @@ No calibration export may execute until all of these exist:
 
 Until then, the correct runtime behavior is: **no calibration export endpoint/job exists**.
 
-Consent receipt infrastructure now exists separately from answer-level research data, and a machine-validated engineering governance policy plus operator-plane persistence foundation now define candidate retention/deletion, role, request, audit and deletion-journal rules. This still does not satisfy activation by itself. The ordinary runtime role is intentionally denied all access to every calibration consent/operator-plane table, the consent copy remains draft/not legally approved, offline operator authentication and request/review/approve/reject control are implemented, but production operator provisioning and raw materialization/purge tooling are not implemented. Purpose-separated `calibration_records` / `calibration_item_responses` tables now exist as a zero-runtime-access schema foundation, but no runtime ingest path, collected calibration rows or export materializer exists.
+Consent receipt infrastructure now exists separately from answer-level research data, and a machine-validated engineering governance policy plus operator-plane persistence foundation now define candidate retention/deletion, role, request, audit and deletion-journal rules. This still does not satisfy activation by itself. The ordinary runtime role is intentionally denied all access to every calibration consent/operator-plane table, the consent copy remains draft/not legally approved, offline operator authentication and request/review/approve/reject control are implemented, but production operator provisioning and raw materialization/artifact tooling are not implemented; row-level database purge is implemented for pre-journaled privacy targets. Purpose-separated `calibration_records` / `calibration_item_responses` tables now exist as a zero-runtime-access schema foundation, but no runtime ingest path, collected calibration rows or export materializer exists.
 
 ## Current offline schema foundation
 
@@ -84,7 +84,7 @@ A future export job must comply with `CALIBRATION_GOVERNANCE_POLICY_v0.1.md` and
 - support targeted deletion plus artifact purge/re-generation when consent is withdrawn where legally/technically required;
 - enforce the engineering 180-day row-level artifact ceiling unless a later reviewed policy version changes it.
 
-Append-only operator audit storage, pseudonymous targeted-deletion linkage/journal, and an execute-only offline request/review/approve/reject workflow are implemented at the repository persistence layer. Raw export remains blocked because production operator provisioning, raw materialization/artifact handling and offline purge/regeneration tooling are intentionally absent.
+Append-only operator audit storage, pseudonymous targeted-deletion linkage/journal, and an execute-only offline request/review/approve/reject workflow are implemented at the repository persistence layer. Raw export remains blocked because production operator provisioning, raw materialization/artifact handling and artifact purge/regeneration tooling is intentionally absent until a raw materializer exists; row-level database purge is already implemented.
 
 ## Current decision
 
