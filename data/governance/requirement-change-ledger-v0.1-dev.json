@@ -657,6 +657,40 @@
         "withdrawal pair invalidation/two-record journal test",
         "runtime no-access and full CI/CodeQL"
       ]
+    },
+    {
+      "change_id": "2026-08-31-calibration-row-purge-executor",
+      "date": "2026-08-31",
+      "requirements_version_after": "0.11.7",
+      "affected_requirement_ids": [
+        "PCS-ANA-003",
+        "PCS-SEC-001",
+        "PCS-QA-007"
+      ],
+      "change": "Add an offline two-person calibration row purge workflow for pseudonymous records that already carry a qualifying consent-withdrawn, owner-session-deleted, or retest-pair-invalidated event; add an execute-only zero-table-privilege privacy-control DB role.",
+      "rationale": "The repository already journals withdrawal/invalidation targets but had no controlled executor. Direct DELETE privileges would create arbitrary participant-data deletion capability, so eligibility and two-person authorization are enforced inside SECURITY DEFINER functions. Artifact purge remains coupled to any future raw materializer because no artifact store exists yet.",
+      "impacted_files": [
+        "drizzle/0013_calibration_privacy_purge.sql",
+        "src/infrastructure/persistence/calibrationSchema.ts",
+        "data/calibration/privacy-purge-policy-v0.1-dev.json",
+        "ops/sql/calibration-operator-role-grants.sql",
+        "scripts/calibration-privacy-purge.mjs",
+        "scripts/lib/calibration-privacy-purge-cli.mjs",
+        "tests/infrastructure/calibration-privacy-purge.integration.mjs"
+      ],
+      "assessment_model_impact": "none-assessment-dev-v0.3 remains frozen beta and collection/export remain disabled",
+      "code_schema_impact": "none-C01D remains public_use=false",
+      "content_impact": "none",
+      "data_migration_impact": "0013 adds bounded purge request/target governance tables and execute-only purge functions; confirmed purge deletes only already-journaled calibration_records and cascaded responses",
+      "compatibility_impact": "ordinary runtime remains zero-access; export control remains separate; future raw materializer cannot activate without artifact lineage plus purge/regeneration",
+      "evidence": [
+        "calibration privacy purge policy validator",
+        "purge CLI unit tests",
+        "real PostgreSQL request/review/reject/confirm integration",
+        "no-event/self-review/revoked/unknown/repeat-decision adversarial tests",
+        "retest-pair atomic row purge proof",
+        "CodeQL"
+      ]
     }
   ]
 }
