@@ -43,7 +43,8 @@ async function applyMigrations() {
     '0009_calibration_operator_plane.sql',
     '0010_calibration_export_control.sql',
     '0011_calibration_answer_storage.sql',
-    '0012_calibration_retest_linkage.sql'
+    '0012_calibration_retest_linkage.sql',
+    '0013_calibration_privacy_purge.sql'
   ]);
 
   for (const file of files) {
