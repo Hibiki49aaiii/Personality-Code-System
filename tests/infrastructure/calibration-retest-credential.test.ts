@@ -6,7 +6,7 @@ import {
   calibrationRetestTokenMatchesHash,
   createCalibrationRetestCredential,
   hashCalibrationRetestToken
-} from '../../src/infrastructure/persistence/calibrationRetestCredential.ts';
+} from '../../src/infrastructure/persistence/calibrationRetestCredential';
 
 test('creates canonical 256-bit base64url retest credential and SHA-256 hash',()=>{
   const credential=createCalibrationRetestCredential();
