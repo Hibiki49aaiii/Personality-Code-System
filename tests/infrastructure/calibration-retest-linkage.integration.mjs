@@ -377,7 +377,7 @@ try {
           'ja-JP'
         )
     `,
-    /matching granted calibration\/retest consent/i
+    /matching granted consent/i
   );
 
   await sql`
