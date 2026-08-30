@@ -6,6 +6,7 @@ const governance=JSON.parse(fs.readFileSync('data/calibration/governance-policy-
 const dbRole=JSON.parse(fs.readFileSync('data/security/database-role-policy-v0.1-dev.json','utf8'));
 const inventory=JSON.parse(fs.readFileSync('data/privacy/data-inventory-v0.1-dev.json','utf8'));
 const migration=fs.readFileSync('drizzle/0011_calibration_answer_storage.sql','utf8');
+const retestMigration=fs.readFileSync('drizzle/0012_calibration_retest_linkage.sql','utf8');
 const drizzleSchema=fs.readFileSync('src/infrastructure/persistence/calibrationSchema.ts','utf8');
 const runtimeGrants=fs.readFileSync('ops/sql/runtime-role-grants.sql','utf8');
 const operatorGrants=fs.readFileSync('ops/sql/calibration-operator-role-grants.sql','utf8');
@@ -57,6 +58,20 @@ for (const fragment of [
 const consentLockCount=(migration.match(/FOR UPDATE OF c/g) ?? []).length;
 if (consentLockCount!==3) {
   errors.push(`answer-storage consent-dependent writes must lock the consent row in exactly three paths; found ${consentLockCount}`);
+}
+for (const fragment of [
+  'CREATE OR REPLACE FUNCTION public.pcs_validate_calibration_record_insert()',
+  'CREATE OR REPLACE FUNCTION public.pcs_assert_calibration_record_ready_to_complete(',
+  "consent_version = 'calibration-consent-ja-v0.1-dev'",
+  "consent_purpose = 'psychometric-calibration-v0.1'",
+  "consent_version = 'calibration-retest-consent-ja-v0.1-dev'",
+  "consent_purpose = 'psychometric-calibration-retest-v0.1'",
+  'FOR UPDATE OF c'
+]) {
+  if (!retestMigration.includes(fragment)) errors.push(`retest migration must preserve/extend answer-storage consent invariant: ${fragment}`);
+}
+if ((retestMigration.match(/FOR UPDATE OF c/g) ?? []).length < 4) {
+  errors.push('retest effective consent paths must remain serialized with consent withdrawal');
 }
 
 for (const [label,pattern] of [
