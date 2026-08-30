@@ -20,6 +20,7 @@ The pack records:
 - calibration export-control and operator DB-role policy identities, so privileged research-control permissions are tied to the same CI evidence pack;
 - calibration answer-storage migration plus runtime DB-role/privacy-inventory identities, so pre-collection row-storage constraints and zero-runtime-access policy are inspectable;
 - retest linkage migration/policy/draft-consent/candidate-schema identities, so pseudonymous 14–21 day pairing and its non-activation boundary are tied to the same CI evidence pack;
+- calibration privacy-purge policy and migration identities, so the two-person pre-journaled row-purge boundary and its separation from future artifact purge are tied to the same CI evidence pack;
 - code-schema public-use state;
 - public-launch / production-activation state;
 - canonical pending production evidence IDs and pending/complete counts;
