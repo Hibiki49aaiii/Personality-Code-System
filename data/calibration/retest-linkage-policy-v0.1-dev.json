@@ -1,0 +1,54 @@
+{
+  "retest_linkage_policy_version": "calibration-retest-linkage-policy-v0.1-dev",
+  "status": "engineering-foundation-runtime-disabled",
+  "wave_id": "beta-ja-wave-01-draft",
+  "locale": "ja-JP",
+  "runtime_issue_or_claim_api_enabled": false,
+  "collection_enabled": false,
+  "export_enabled": false,
+  "materializer_enabled": false,
+  "external_preregistered": false,
+  "final_consent_approved": false,
+  "token": {
+    "entropy_bytes": 32,
+    "encoding": "base64url",
+    "canonical_length": 43,
+    "hash_algorithm": "sha256",
+    "raw_token_database_storage_allowed": false,
+    "raw_token_argv_allowed": false,
+    "raw_token_stdout_allowed": false,
+    "token_hash_export_allowed": false
+  },
+  "pair": {
+    "id_kind": "random-uuid",
+    "baseline_required": true,
+    "retest_optional_until_claim": true,
+    "baseline_retest_must_differ": true,
+    "baseline_unique": true,
+    "retest_unique_when_claimed": true,
+    "eligible_interval_days_min": 14,
+    "eligible_interval_days_max": 21,
+    "exact_same_wave_model_scope_required": true
+  },
+  "exact_scope": {
+    "assessment_model_version": "assessment-dev-v0.3",
+    "item_bank_version": "item-bank-v0.2",
+    "scoring_version": "scoring-v0.1-dev",
+    "trait_dictionary_version": "trait-dictionary-v0.2",
+    "locale": "ja-JP"
+  },
+  "candidate_export_schema_ref": "data/calibration/export-schema-v0.2-retest-dev.json",
+  "draft_consent_ref": "data/calibration/retest-consent-purpose-v0.1-dev.json",
+  "scope_freeze_ref": "data/calibration/beta-wave-ja-01-scope-freeze-v0.1-dev.json",
+  "withdrawal": {
+    "either_member_invalidates_pair": true,
+    "both_linked_record_ids_journaled_for_future_purge": true,
+    "private_session_capability_retained_for_purge": false
+  },
+  "production_provisioning_complete": false,
+  "notes": [
+    "This policy defines a pseudonymous retest linkage foundation only.",
+    "A retest pair ID is an analysis identifier, not a bearer credential or real-world identity.",
+    "No runtime issue/claim endpoint or raw calibration materializer exists."
+  ]
+}
