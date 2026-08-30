@@ -393,7 +393,12 @@
         "database-enforced 14–21 day retest window from calibration_records.completed_at",
         "either linked consent withdrawal invalidates the pair and journals both pseudonymous calibration record IDs",
         "ordinary runtime role has zero access to calibration_retest_linkages",
-        "candidate retest export schema forbids session/operator/retest credential material, direct identity, demographics and derived results"
+        "candidate retest export schema forbids session/operator/retest credential material, direct identity, demographics and derived results",
+        "two-person execute-only calibration row purge restricted to pre-existing privacy deletion events",
+        "privacy-operator-purge marker cannot create initial purge eligibility",
+        "retest pair purge expands only still-present members carrying qualifying pair invalidation evidence",
+        "dedicated pcs_calibration_privacy_control has zero direct table privileges",
+        "future raw materializer activation is coupled to artifact lineage and purge/regeneration"
       ],
       "evidence": [
         "calibration protocol validator",
@@ -422,9 +427,14 @@
         "calibration retest linkage PostgreSQL integration",
         "completed-record 14–21 day claim and distinct-consent tests",
         "retest pair withdrawal two-record deletion-journal test",
-        "runtime retest-linkage zero-access validation"
+        "runtime retest-linkage zero-access validation",
+        "calibration privacy purge policy validator",
+        "calibration privacy purge CLI unit tests",
+        "calibration privacy purge PostgreSQL adversarial integration",
+        "privacy-control exact table/function privilege matrix",
+        "retest-pair two-record purge and retained deletion-journal assertions"
       ],
-      "residual": "Consent, pseudonymous answer storage, completed-record retest-linkage/deletion-journal, execute-only operator authentication/export-control tooling and repository-frozen Wave JA-01 scope exist, but runtime baseline ingest/retest issue-or-claim and raw materialization are not authorized. Production operator/control provisioning, offline purge, external preregistration, final baseline/retest consent/legal/privacy approval and deployed-environment prerequisites remain unresolved.",
+      "residual": "Consent, answer storage, retest linkage, operator/export control and two-person row-level privacy purge are repository-implemented while runtime collection/export remain disabled. Production operator/privacy-control provisioning, raw materialization with artifact lineage/purge, external preregistration, legal/privacy approval and deployed-environment prerequisites remain unresolved.",
       "external_evidence_ids": [
         "phase5-beta-calibration"
       ]
