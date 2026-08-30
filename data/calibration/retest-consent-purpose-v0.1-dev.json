@@ -49,7 +49,7 @@
     "operator-production-provisioning-evidence",
     "runtime-retest-issue-and-claim-surface",
     "raw-export-materializer",
-    "withdrawal-offline-artifact-purge-executor"
+    "raw-materializer-artifact-lineage-and-purge-coupling"
   ],
   "linkage_policy_ref": "data/calibration/retest-linkage-policy-v0.1-dev.json",
   "governance_policy_ref": "data/calibration/governance-policy-v0.1-dev.json"
