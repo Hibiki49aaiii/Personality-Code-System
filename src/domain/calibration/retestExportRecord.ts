@@ -32,8 +32,17 @@ export class CalibrationRetestExportValidationError extends Error {
   }
 }
 
-const UUID_RE =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const RANDOM_UUID_V4_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+const FROZEN_RETEST_SCOPE = Object.freeze({
+  waveId: 'beta-ja-wave-01-draft',
+  assessmentModelVersion: 'assessment-dev-v0.3',
+  itemBankVersion: 'item-bank-v0.2',
+  scoringVersion: 'scoring-v0.1-dev',
+  traitDictionaryVersion: 'trait-dictionary-v0.2',
+  locale: 'ja-JP'
+});
 
 const TOP_LEVEL_KEYS = new Set([
   'schemaVersion',
@@ -123,11 +132,20 @@ export function validateCalibrationRetestExportRecordV02(
     );
   }
 
-  if (typeof value.retestPairId !== 'string' || !UUID_RE.test(value.retestPairId)) {
+  if (typeof value.retestPairId !== 'string' || !RANDOM_UUID_V4_RE.test(value.retestPairId)) {
     throw new CalibrationRetestExportValidationError(
       'INVALID_RETEST_PAIR_ID',
-      'retestPairId must be a random UUID'
+      'retestPairId must be a random UUIDv4'
     );
+  }
+
+  for (const [key, expected] of Object.entries(FROZEN_RETEST_SCOPE)) {
+    if (value[key] !== expected) {
+      throw new CalibrationRetestExportValidationError(
+        'FROZEN_SCOPE_MISMATCH',
+        `calibration retest export record is outside frozen Wave JA-01 scope: ${key}`
+      );
+    }
   }
 
   const expectedConsent =
