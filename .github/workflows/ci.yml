@@ -178,6 +178,9 @@ jobs:
       - name: Calibration answer storage integration
         run: npm run test:calibration-answer-storage:integration
 
+      - name: Calibration retest linkage integration
+        run: npm run test:calibration-retest-linkage:integration
+
       - name: Calibration operator authentication integration
         run: npm run test:calibration-operator-auth:integration
 
