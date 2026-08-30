@@ -46,7 +46,8 @@ const requiredTables = [
   'calibration_record_links',
   'calibration_deletion_events',
   'calibration_records',
-  'calibration_item_responses'
+  'calibration_item_responses',
+  'calibration_retest_linkages'
 ];
 
 for (const table of requiredTables) {
@@ -127,7 +128,16 @@ const requiredFragments = [
   ['beta release no draft demotion', /beta assessment_model_releases may only transition to published or retired/i],
   ['calibration consent row serialization', /FOR UPDATE OF c/i],
   ['calibration response release tuple recheck', /calibration response release tuple mismatch/i],
-  ['calibration finalize release tuple recheck', /calibration record completion release tuple mismatch/i]
+  ['calibration finalize release tuple recheck', /calibration record completion release tuple mismatch/i],
+  ['calibration retest linkage table', /CREATE TABLE\s+public\.calibration_retest_linkages/i],
+  ['calibration retest completed-record FK', /REFERENCES\s+public\.calibration_records\(calibration_record_id\)\s+ON DELETE CASCADE/i],
+  ['calibration retest hash-only claim check', /calibration_retest_claim_token_hash_chk/i],
+  ['calibration retest insert guard', /CREATE TRIGGER\s+calibration_retest_linkages_insert_guard/i],
+  ['calibration retest update guard', /CREATE TRIGGER\s+calibration_retest_linkages_update_guard/i],
+  ['calibration retest withdrawal invalidation', /CREATE TRIGGER\s+calibration_retest_consent_withdrawal_invalidation/i],
+  ['calibration retest record-delete journal', /CREATE TRIGGER\s+calibration_retest_record_delete_journal/i],
+  ['calibration retest 14-day boundary', /baseline_completed_at\s*\+\s*interval\s*'14 days'/i],
+  ['calibration retest 21-day boundary', /baseline_completed_at\s*\+\s*interval\s*'21 days'/i]
 ];
 
 for (const [label, pattern] of requiredFragments) {

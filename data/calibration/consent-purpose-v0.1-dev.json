@@ -45,5 +45,7 @@
   ],
   "governance_policy_ref": "data/calibration/governance-policy-v0.1-dev.json",
   "operator_auth_policy_ref": "data/calibration/operator-auth-policy-v0.1-dev.json",
-  "scope_freeze_ref": "data/calibration/beta-wave-ja-01-scope-freeze-v0.1-dev.json"
+  "scope_freeze_ref": "data/calibration/beta-wave-ja-01-scope-freeze-v0.1-dev.json",
+  "retest_linkage_policy_ref": "data/calibration/retest-linkage-policy-v0.1-dev.json",
+  "retest_consent_contract_ref": "data/calibration/retest-consent-purpose-v0.1-dev.json"
 }

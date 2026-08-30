@@ -331,6 +331,7 @@ Calibration export is intentionally not implemented before consent/governance pr
 - [x] machine prerequisite-status ledger keeps collection/export/public validation claims fail-closed;
 - [ ] final consent text/legal/privacy approval;
 - [x] calibration retention/deletion engineering policy + normalized fail-closed answer-storage schema + hash-only operator/role/request + append-only audit/deletion-journal persistence foundation + offline credential issuance/authentication/revocation and execute-only request/review/approve/reject control CLIs with dedicated least-privilege DB roles; *(production operator provisioning, raw materializer and offline purge executor remain pending)*
+- [x] privacy-preserving retest-linkage engineering foundation: completed calibration-record pairing, 14–21 day DB window, hash-only one-time claim credential, separate draft retest consent and candidate v0.2 retest export schema; *(runtime issue/claim, final consent approval and actual retest collection remain pending)*
 - [x] exact Wave JA-01 repository candidate version scope frozen by ordered SHA-256 file identities;
 - [ ] external preregistration record for the reviewed sample/analysis plan;
 - [ ] varied beta sample;
@@ -338,7 +339,7 @@ Calibration export is intentionally not implemented before consent/governance pr
 - [ ] retest subset;
 - [ ] ambiguity feedback.
 
-No checked item above means calibration data are being collected. Dedicated answer-storage tables now exist, but there is still no runtime calibration API/ingest path/export job, no collected calibration rows and no raw materializer; operator authentication/export control are offline CLI + execute-only DB APIs and production operator provisioning remains pending.
+No checked item above means calibration data are being collected. Dedicated answer-storage/retest-linkage tables now exist, but there is still no runtime calibration API/ingest/retest issue-or-claim path/export job, no collected calibration rows and no raw materializer; operator authentication/export control are offline CLI + execute-only DB APIs and production operator provisioning remains pending.
 
 ### 5B Statistical review — PENDING
 - [ ] item distributions;

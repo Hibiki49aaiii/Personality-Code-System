@@ -54,7 +54,12 @@
     "candidate_interval_days_max": 21,
     "candidate_target_completed_n": 200,
     "candidate_minimum_interpretable_n": 150,
-    "linkage_implemented": false
+    "linkage_implemented": true,
+    "linkage_policy_ref": "data/calibration/retest-linkage-policy-v0.1-dev.json",
+    "candidate_export_schema_version": "calibration-export-record-v0.2-retest-dev",
+    "draft_consent_version": "calibration-retest-consent-ja-v0.1-dev",
+    "runtime_issue_or_claim_enabled": false,
+    "measurement_record_source": "calibration_records.completed_at"
   },
   "decision_policy": {
     "single_statistic_can_promote_stage": false,
@@ -132,6 +137,21 @@
     "export_control_workflow_implemented": true,
     "export_control_policy_ref": "data/calibration/export-control-policy-v0.1-dev.json",
     "answer_level_calibration_storage_schema_implemented": true,
-    "calibration_ingest_surface_implemented": false
+    "calibration_ingest_surface_implemented": false,
+    "retest_linkage_foundation_implemented": true,
+    "runtime_retest_issue_claim_surface_implemented": false,
+    "retest_consent_draft_implemented": true,
+    "retest_candidate_export_schema_implemented": true
+  },
+  "retest_candidate_export_schema_foundation": {
+    "export_schema_version": "calibration-export-record-v0.2-retest-dev",
+    "candidate_only": true,
+    "runtime_export_enabled": false,
+    "materializer_enabled": false,
+    "measurement_occasion_field": true,
+    "pseudonymous_retest_pair_id": true,
+    "token_or_hash_export_allowed": false,
+    "demographics_included": false,
+    "derived_scores_or_codes_included": false
   }
 }

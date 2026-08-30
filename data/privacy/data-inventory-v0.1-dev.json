@@ -149,6 +149,23 @@
         "calibration_item_responses"
       ],
       "governance_policy_ref": "data/calibration/governance-policy-v0.1-dev.json"
+    },
+    {
+      "id": "calibration-retest-linkage",
+      "personal_data": true,
+      "purpose": "Pair one completed baseline calibration record with one completed retest calibration record using a random pseudonymous pair identity and hash-only one-time claim credential after future activation.",
+      "retention": "pair-state-owner-calibration-record-bound; invalidation journals both pseudonymous record IDs for future purge under calibration governance",
+      "public_by_default": false,
+      "third_party_export_default": false,
+      "collection_enabled": false,
+      "runtime_access_allowed": false,
+      "direct_identity_or_contact_stored": false,
+      "raw_claim_token_stored": false,
+      "tables": [
+        "calibration_retest_linkages"
+      ],
+      "governance_policy_ref": "data/calibration/governance-policy-v0.1-dev.json",
+      "linkage_policy_ref": "data/calibration/retest-linkage-policy-v0.1-dev.json"
     }
   ],
   "prohibited_default_collection": [

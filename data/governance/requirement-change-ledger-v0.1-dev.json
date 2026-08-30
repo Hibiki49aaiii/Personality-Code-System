@@ -622,6 +622,41 @@
         "runtime/auth/admin/control zero-access privilege tests",
         "CodeQL"
       ]
+    },
+    {
+      "change_id": "2026-08-30-calibration-retest-linkage-foundation",
+      "date": "2026-08-30",
+      "requirements_version_after": "0.11.7",
+      "affected_requirement_ids": [
+        "PCS-ANA-003",
+        "PCS-SEC-001",
+        "PCS-LEGAL-001",
+        "PCS-QA-007"
+      ],
+      "change": "Add a fail-closed privacy-preserving test-retest linkage foundation on completed calibration_records with random pair IDs, hash-only one-time claim credentials, distinct baseline/retest consent identities, exact 14–21 day DB enforcement and pair-level withdrawal/deletion journaling.",
+      "rationale": "Wave JA-01 requires test-retest evidence, but reusing account/email or diagnostic session bearers would expand identity/capability exposure. The linkage must be purpose-separated, pseudonymous, scope-bound and purge-addressable before any runtime retest flow is authorized.",
+      "impacted_files": [
+        "drizzle/0012_calibration_retest_linkage.sql",
+        "data/calibration/retest-linkage-policy-v0.1-dev.json",
+        "data/calibration/retest-consent-purpose-v0.1-dev.json",
+        "data/calibration/export-schema-v0.2-retest-dev.json",
+        "src/domain/calibration/retestExportRecord.ts",
+        "src/infrastructure/persistence/calibrationRetestCredential.ts",
+        "tests/infrastructure/calibration-retest-linkage.integration.mjs"
+      ],
+      "assessment_model_impact": "none-assessment-dev-v0.3 remains beta and repository-frozen; retest pairs require that exact completed calibration-record scope",
+      "code_schema_impact": "none-C01D remains public_use=false and derived codes are forbidden from candidate retest export",
+      "content_impact": "none-diagnostic result content unchanged",
+      "data_migration_impact": "0012 adds calibration_retest_linkages, dual baseline/retest consent support for the existing answer-storage guards, and pair invalidation/deletion-journal triggers; no runtime grants are added",
+      "compatibility_impact": "baseline export v0.1 remains unchanged; retest uses candidate-only v0.2 schema; runtime issue/claim/materialization remain disabled",
+      "evidence": [
+        "calibration retest linkage validator",
+        "retest credential hash/no-leak unit tests",
+        "candidate retest export allowlist tests",
+        "real PostgreSQL completed-record 14–21 day linkage integration",
+        "withdrawal pair invalidation/two-record journal test",
+        "runtime no-access and full CI/CodeQL"
+      ]
     }
   ]
 }

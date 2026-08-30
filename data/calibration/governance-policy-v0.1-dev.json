@@ -103,7 +103,8 @@
     "owner_session_deletion_must_remove_consent_receipt": true,
     "future_row_level_linkage_must_support_targeted_deletion": true,
     "restore_must_not_reactivate_withdrawn_records": true,
-    "record_linkage_and_deletion_journal_implemented": true
+    "record_linkage_and_deletion_journal_implemented": true,
+    "retest_pair_invalidation_journal_implemented": true
   },
   "implementation_status": {
     "retention_policy_ready": true,
@@ -116,7 +117,11 @@
     "production_operator_provisioning_complete": false,
     "export_control_workflow_implemented": true,
     "answer_level_calibration_storage_schema_implemented": true,
-    "calibration_ingest_surface_implemented": false
+    "calibration_ingest_surface_implemented": false,
+    "retest_linkage_foundation_implemented": true,
+    "runtime_retest_issue_claim_surface_implemented": false,
+    "retest_consent_draft_implemented": true,
+    "retest_candidate_export_schema_implemented": true
   },
   "activation_blockers": [
     "final-legal-privacy-approval",
@@ -124,7 +129,8 @@
     "production-environment-separation",
     "external-preregistration-record",
     "withdrawal-offline-artifact-purge-executor",
-    "operator-production-provisioning-evidence"
+    "operator-production-provisioning-evidence",
+    "runtime-retest-issue-and-claim-surface"
   ],
   "notes": [
     "This is an engineering governance baseline, not a final legal/privacy promise.",
@@ -135,11 +141,19 @@
     "Actual production operator DB roles and credentials are not provisioned; production provisioning evidence remains an activation blocker.",
     "Wave JA-01 candidate version scope is repository-frozen by SHA-256 identities, without claiming external preregistration.",
     "Offline export request/review/approve/reject control is implemented through execute-only SECURITY DEFINER functions; no raw materializer exists.",
-    "Dedicated calibration record/item-response tables are repository-implemented with exact Wave JA-01 DB constraints, but no runtime/ingest role can write them."
+    "Dedicated calibration record/item-response tables are repository-implemented with exact Wave JA-01 DB constraints, but no runtime/ingest role can write them.",
+    "Retest linkage is repository-implemented on completed calibration records with hash-only claim identity and pair-level deletion journaling; no runtime issue/claim surface exists."
   ],
   "version_scope_freeze": {
     "implemented": true,
     "ref": "data/calibration/beta-wave-ja-01-scope-freeze-v0.1-dev.json",
     "external_preregistration_complete": false
+  },
+  "retest_linkage": {
+    "policy_ref": "data/calibration/retest-linkage-policy-v0.1-dev.json",
+    "candidate_export_schema_ref": "data/calibration/export-schema-v0.2-retest-dev.json",
+    "draft_consent_ref": "data/calibration/retest-consent-purpose-v0.1-dev.json",
+    "runtime_enabled": false,
+    "production_provisioning_complete": false
   }
 }

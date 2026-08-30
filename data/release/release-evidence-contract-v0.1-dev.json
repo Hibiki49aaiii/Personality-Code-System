@@ -25,7 +25,11 @@
     "data/type-catalog/v0.1-dev/editorial-review-ledger.ja.json",
     "drizzle/0011_calibration_answer_storage.sql",
     "data/security/database-role-policy-v0.1-dev.json",
-    "data/privacy/data-inventory-v0.1-dev.json"
+    "data/privacy/data-inventory-v0.1-dev.json",
+    "data/calibration/retest-linkage-policy-v0.1-dev.json",
+    "data/calibration/retest-consent-purpose-v0.1-dev.json",
+    "data/calibration/export-schema-v0.2-retest-dev.json",
+    "drizzle/0012_calibration_retest_linkage.sql"
   ],
   "migration_glob": "drizzle/*.sql",
   "required_summary_fields": [

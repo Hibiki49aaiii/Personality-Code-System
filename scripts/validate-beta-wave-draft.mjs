@@ -90,8 +90,20 @@ if (typeof retest?.attrition_rule !== 'string' || !retest.attrition_rule.include
 if (typeof retest?.context_change_recording_rule !== 'string' || !retest.context_change_recording_rule.includes('no free text')) {
   errors.push('retest context-change privacy rule missing');
 }
-if (retest?.linkage_status !== 'planned-not-implemented-requires-reviewed-schema-and-consent') {
-  errors.push('retest linkage must remain planned/not implemented');
+if (retest?.linkage_status !== 'engineering-foundation-implemented-runtime-disabled') {
+  errors.push('retest linkage engineering foundation status drift');
+}
+if (retest?.linkage_policy_ref !== 'data/calibration/retest-linkage-policy-v0.1-dev.json') {
+  errors.push('retest linkage policy reference drift');
+}
+if (retest?.candidate_export_schema_ref !== 'data/calibration/export-schema-v0.2-retest-dev.json') {
+  errors.push('retest candidate export schema reference drift');
+}
+if (retest?.draft_consent_ref !== 'data/calibration/retest-consent-purpose-v0.1-dev.json') {
+  errors.push('retest draft consent reference drift');
+}
+if (retest?.runtime_issue_or_claim_api_enabled !== false) {
+  errors.push('runtime retest issue/claim API must remain disabled');
 }
 
 const exclusion=plan.exclusion_plan;
@@ -155,7 +167,8 @@ const requiredBlockers=[
   'production-environment-separation-evidence',
   'calibration-retention-deletion-policy',
   'operator-production-provisioning-evidence',
-  'retest-linkage-schema-and-consent'
+  'retest-consent-final-approval',
+  'runtime-retest-issue-and-claim-surface'
 ];
 for (const blocker of requiredBlockers) {
   if (!plan.activation_blockers?.includes(blocker)) errors.push(`missing beta activation blocker ${blocker}`);
@@ -165,6 +178,9 @@ if (plan.activation_blockers?.includes('operator-authorization-audit')) {
 }
 if (plan.activation_blockers?.includes('frozen-version-scope')) {
   errors.push('satisfied repository scope-freeze blocker must be removed');
+}
+if (plan.activation_blockers?.includes('retest-linkage-schema-and-consent')) {
+  errors.push('satisfied retest linkage schema/consent-foundation blocker must be removed');
 }
 
 const forbiddenDataKeys=new Set([

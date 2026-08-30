@@ -47,6 +47,19 @@ const calibrationClass = inventory.classes.find((entry) => entry.id === 'calibra
 if (!calibrationClass) errors.push('calibration consent privacy class missing');
 else if (calibrationClass.collection_enabled !== false) errors.push('calibration consent collection must remain disabled before activation');
 
+const calibrationRetestClass = inventory.classes.find((entry) => entry.id === 'calibration-retest-linkage');
+if (!calibrationRetestClass) {
+  errors.push('calibration retest-linkage privacy class missing');
+} else {
+  if (calibrationRetestClass.collection_enabled !== false) errors.push('calibration retest collection must remain disabled');
+  if (calibrationRetestClass.runtime_access_allowed !== false) errors.push('calibration retest linkage must remain runtime-inaccessible');
+  if (calibrationRetestClass.direct_identity_or_contact_stored !== false) errors.push('calibration retest linkage must not store direct identity/contact');
+  if (calibrationRetestClass.raw_claim_token_stored !== false) errors.push('calibration retest linkage must not store raw claim token');
+  if (JSON.stringify(calibrationRetestClass.tables) !== JSON.stringify(['calibration_retest_linkages'])) {
+    errors.push('calibration retest-linkage privacy table mapping drift');
+  }
+}
+
 const calibrationStorageClass = inventory.classes.find((entry) => entry.id === 'calibration-answer-storage');
 if (!calibrationStorageClass) {
   errors.push('calibration answer-storage privacy class missing');

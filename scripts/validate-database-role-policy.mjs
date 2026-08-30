@@ -46,7 +46,8 @@ const expectedCalibrationNoAccess=[
   "calibration_operator_roles",
   "calibration_operators",
   "calibration_record_links",
-  "calibration_records"
+  "calibration_records",
+  "calibration_retest_linkages"
 ];
 if (JSON.stringify([...noAccessTables].sort()) !== JSON.stringify(expectedCalibrationNoAccess)) {
   errors.push(`runtime no-access table set drift: ${[...noAccessTables].sort().join(',')}`);
@@ -86,4 +87,4 @@ if (errors.length) {
   for (const error of errors) console.error(`- ${error}`);
   process.exit(1);
 }
-console.log(`Database runtime-role policy validation passed: ${policyTables.length} tables are explicitly classified, including fail-closed zero runtime access to calibration consent/operator/answer-storage tables before activation; production role evidence remains pending.`);
+console.log(`Database runtime-role policy validation passed: ${policyTables.length} tables are explicitly classified, including fail-closed zero runtime access to calibration consent/operator/answer-storage/retest-linkage tables before activation; production role evidence remains pending.`);

@@ -118,18 +118,22 @@ Review:
 
 ### Retest
 
-Before collection begins, freeze:
+Wave JA-01 retains the preregistration candidate:
+- 14–21 day interval;
+- target completed retests: 200;
+- low-precision/descriptive downgrade below N=150;
+- exact same frozen Wave/model scope.
 
-- retest interval;
-- attrition/exclusion handling;
-- major context/life-change recording;
-- exact model linkage.
+The repository now implements the **fail-closed linkage foundation**:
+- `calibration_retest_linkages` pairs one completed baseline `calibration_record` with at most one completed retest record;
+- baseline/retest timing is derived from `calibration_records.completed_at`, not from a diagnostic session capability;
+- one-time retest claim credentials are 32-byte base64url values whose database identity is SHA-256 only;
+- baseline and retest use distinct purpose-specific consent identities;
+- either linked consent withdrawal invalidates the pair and journals both pseudonymous calibration record IDs for a future purge executor;
+- the candidate retest export schema `calibration-export-record-v0.2-retest-dev` adds only `measurementOccasion` and random `retestPairId` beyond the minimum answer-level shape.
 
-Report both rank-order stability and systematic score shifts where appropriate.
+This does **not** activate retest participation. There is still no runtime issue/claim endpoint, reminder/contact service, raw materializer, final retest consent approval or collected retest cohort.
 
-### DIF / invariance
-
-DIF and measurement-invariance work is conditional on adequate subgroup sample size and ethically justified demographic collection. It is not a reason to collect unnecessary demographics by default.
 
 ## Sample-size rule
 
@@ -182,7 +186,7 @@ A stable-model review requires the outputs already listed in `VALIDATION_GATES_v
 
 `product_events` remains product analytics and is not psychometric calibration data. Funnel events cannot be reverse-engineered into an answer dataset.
 
-Answer-level calibration storage schema now exists, but actual row collection/use still requires the separately gated consented runtime path defined by `CALIBRATION_EXPORT_SPEC_v0.1.md`.
+Answer-level calibration storage and retest-linkage schemas now exist, but actual baseline/retest row collection/use still requires separately gated consented runtime issue/ingest/claim paths; `CALIBRATION_EXPORT_SPEC_v0.1.md` remains the raw-materialization boundary.
 
 ## Public claims
 
