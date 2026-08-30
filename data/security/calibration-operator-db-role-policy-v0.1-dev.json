@@ -45,6 +45,19 @@
         "public.pcs_review_calibration_export_request(text,uuid)",
         "public.pcs_decide_calibration_export_request(text,uuid,text)"
       ]
+    },
+    "pcs_calibration_privacy_control": {
+      "schema_privileges": [
+        "USAGE"
+      ],
+      "schema_create_allowed": false,
+      "table_privileges": {},
+      "function_execute": [
+        "public.pcs_authenticate_calibration_operator(text)",
+        "public.pcs_request_calibration_privacy_purge(text,uuid)",
+        "public.pcs_review_calibration_privacy_purge(text,uuid)",
+        "public.pcs_decide_calibration_privacy_purge(text,uuid,text)"
+      ]
     }
   },
   "prohibited_capabilities": [
@@ -59,7 +72,8 @@
     "deletion-journal-read-write",
     "raw-export-materialization",
     "direct-export-request-table-access",
-    "direct-operator-hash-read-by-auth-or-control"
+    "direct-operator-hash-read-by-auth-or-control",
+    "direct-privacy-purge-table-access"
   ],
   "external_evidence_required": [
     "production-calibration-auth-role-identity",
@@ -67,6 +81,7 @@
     "production-calibration-role-grant-dump",
     "production-operator-credential-provisioning-record",
     "production-operator-credential-revocation-procedure",
-    "production-calibration-export-control-role-identity"
+    "production-calibration-export-control-role-identity",
+    "production-calibration-privacy-control-role-identity"
   ]
 }
