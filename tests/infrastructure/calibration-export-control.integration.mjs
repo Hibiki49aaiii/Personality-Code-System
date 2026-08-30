@@ -18,9 +18,11 @@ const owner=postgres(databaseUrl,{max:1,connect_timeout:10,idle_timeout:5});
 const AUTH_ROLE='pcs_calibration_auth';
 const ADMIN_ROLE='pcs_calibration_admin';
 const CONTROL_ROLE='pcs_calibration_export_control';
+const PRIVACY_ROLE='pcs_calibration_privacy_control';
 const AUTH_PASSWORD='pcs-export-auth-ci-only';
 const ADMIN_PASSWORD='pcs-export-admin-ci-only';
 const CONTROL_PASSWORD='pcs-export-control-ci-only';
+const PRIVACY_PASSWORD='pcs-export-privacy-ci-only';
 const ADMIN_ACK='calibration-operator-admin-v0.1-dev';
 
 function roleDatabaseUrl(role,password) {
@@ -32,6 +34,7 @@ function roleDatabaseUrl(role,password) {
 const authDatabaseUrl=roleDatabaseUrl(AUTH_ROLE,AUTH_PASSWORD);
 const adminDatabaseUrl=roleDatabaseUrl(ADMIN_ROLE,ADMIN_PASSWORD);
 const controlDatabaseUrl=roleDatabaseUrl(CONTROL_ROLE,CONTROL_PASSWORD);
+const privacyDatabaseUrl=roleDatabaseUrl(PRIVACY_ROLE,PRIVACY_PASSWORD);
 
 async function roleExists(role) {
   const rows=await owner`SELECT 1 FROM pg_roles WHERE rolname=${role}`;
@@ -70,6 +73,7 @@ function cleanEnv(extra={}) {
     'PCS_CALIBRATION_OPERATOR_ADMIN_ACK',
     'PCS_CALIBRATION_AUTH_DATABASE_URL',
     'PCS_CALIBRATION_EXPORT_CONTROL_DATABASE_URL',
+    'PCS_CALIBRATION_PRIVACY_CONTROL_DATABASE_URL',
     'PCS_CALIBRATION_OPERATOR_TOKEN'
   ]) delete env[key];
   return {...env,...extra};
@@ -105,10 +109,11 @@ function assertNoLeak(result,secrets) {
 }
 
 async function createRolesAndGrants() {
-  for (const role of [AUTH_ROLE,ADMIN_ROLE,CONTROL_ROLE]) await dropRoleIfExists(role);
+  for (const role of [AUTH_ROLE,ADMIN_ROLE,CONTROL_ROLE,PRIVACY_ROLE]) await dropRoleIfExists(role);
   await owner.unsafe(`CREATE ROLE ${AUTH_ROLE} LOGIN PASSWORD '${AUTH_PASSWORD}'`);
   await owner.unsafe(`CREATE ROLE ${ADMIN_ROLE} LOGIN PASSWORD '${ADMIN_PASSWORD}'`);
   await owner.unsafe(`CREATE ROLE ${CONTROL_ROLE} LOGIN PASSWORD '${CONTROL_PASSWORD}'`);
+  await owner.unsafe(`CREATE ROLE ${PRIVACY_ROLE} LOGIN PASSWORD '${PRIVACY_PASSWORD}'`);
 
   const dbName=decodeURIComponent(new URL(databaseUrl).pathname.replace(/^\//,''));
   assert.match(dbName,/^[A-Za-z0-9_]+$/);
@@ -129,7 +134,7 @@ function issueCredential(dir,label,roles) {
   const issued=success(result);
   const token=readFileSync(path,'utf8').trim();
   const hash=createHash('sha256').update(token,'utf8').digest('hex');
-  assertNoLeak(result,[token,hash,AUTH_PASSWORD,ADMIN_PASSWORD,CONTROL_PASSWORD]);
+  assertNoLeak(result,[token,hash,AUTH_PASSWORD,ADMIN_PASSWORD,CONTROL_PASSWORD,PRIVACY_PASSWORD]);
   return {issued,token,hash,path};
 }
 
@@ -157,6 +162,7 @@ try {
   for (const [role,expected] of [
     [AUTH_ROLE,{}],
     [CONTROL_ROLE,{}],
+    [PRIVACY_ROLE,{}],
     [ADMIN_ROLE,expectedAdmin]
   ]) {
     for (const table of tableNames) {
@@ -191,7 +197,8 @@ try {
   for (const [role,allowed] of [
     [AUTH_ROLE,new Set(['auth'])],
     [CONTROL_ROLE,new Set(['auth','request','review','decide'])],
-    [ADMIN_ROLE,new Set()]
+    [ADMIN_ROLE,new Set()],
+    [PRIVACY_ROLE,new Set(['auth'])]
   ]) {
     for (const [name,signature] of Object.entries(signatures)) {
       const [row]=await owner`
@@ -416,6 +423,6 @@ try {
 
   console.log('Calibration export control integration passed: execute-only auth/control DB roles have zero direct table access, frozen-scope requests require requester tokens, review/decision roles are enforced, self/repeat decisions fail, and approve/reject write one bounded audit event without raw materialization.');
 } finally {
-  for (const role of [AUTH_ROLE,ADMIN_ROLE,CONTROL_ROLE]) await dropRoleIfExists(role);
+  for (const role of [AUTH_ROLE,ADMIN_ROLE,CONTROL_ROLE,PRIVACY_ROLE]) await dropRoleIfExists(role);
   await owner.end({timeout:5});
 }
