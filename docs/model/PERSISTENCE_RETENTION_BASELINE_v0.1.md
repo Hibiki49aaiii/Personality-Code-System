@@ -22,7 +22,7 @@
 | Operational application logs | 30 days | Raw answers, full Trait vectors and bearer tokens excluded by default. |
 | Database backups | 35 days | Subject to deployment-provider recovery design. |
 | Calibration consent receipt | Owner-session-bound engineering behavior | Storage-only schema exists for a future explicit purpose/version receipt; runtime role has zero access until activation. If present through controlled testing/future activation, withdrawal is recorded and owner-session deletion cascades the receipt. Final legal retention promise remains pending. |
-| Calibration row-level research artifact | Max 180 days after wave close (engineering candidate) | Not created by default. Withdrawal/self-deletion overrides time retention; active offline artifacts must be purged/regenerated before further use. Final legal approval and implementation remain pending. |
+| Calibration row-level database records | Max 180 days after wave close (engineering candidate) | Not created by default. Withdrawal/self-deletion overrides time retention. Two-person row-level purge is repository-implemented for pre-journaled privacy targets; final legal approval/production scheduling remain pending. |
 | Calibration operator audit metadata | 365 days (engineering candidate) | Append-only bounded accountability storage now exists; raw responses/participant diagnostic payload are prohibited. Offline operator auth tooling exists; production provisioning and materialization tooling remain disabled; two-person row-level privacy purge is repository-implemented. |
 | Public share result | Until revoked / source privacy deletion / later public policy | Phase 4 creates explicit sanitized snapshots. User revocation disables active links; bearer-owned full diagnostic deletion physically deletes shares derived from the private result. |
 
@@ -57,12 +57,12 @@ This is repository execution tooling, not proof that a production scheduler is a
 
 ## Calibration governance
 
-`data/calibration/governance-policy-v0.1-dev.json` defines the current engineering candidate before any research export implementation exists.
+`data/calibration/governance-policy-v0.1-dev.json` defines the current engineering candidate before any raw research materializer/export artifact exists.
 
 Key rules:
 - row-level calibration artifacts have a 180-day maximum after wave close;
 - consent withdrawal or bearer-owned self-deletion takes precedence over the clock;
-- any offline artifact containing a withdrawn record must be purged or regenerated before further analysis;
+- row-level database records carrying qualifying privacy events can be removed through the two-person purge control; any future exported artifact containing a withdrawn record must be purged or regenerated before further analysis;
 - raw calibration export requires requester + different approver;
 - operator audit metadata is bounded and may not contain raw participant/diagnostic payload;
 - operator audit metadata uses a 365-day engineering baseline.
