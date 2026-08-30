@@ -78,7 +78,7 @@ BEGIN
          AND consent_purpose = 'psychometric-calibration-retest-v0.1'
        )
      ) THEN
-    RAISE EXCEPTION 'calibration record requires matching granted calibration/retest consent';
+    RAISE EXCEPTION 'calibration record requires matching granted consent for calibration/retest purpose';
   END IF;
 
   SELECT
