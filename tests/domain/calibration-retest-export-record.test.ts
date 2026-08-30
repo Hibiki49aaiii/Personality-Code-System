@@ -60,6 +60,13 @@ test('rejects unknown sensitive/capability fields and malformed pair identity',(
     ()=>validateCalibrationRetestExportRecordV02(record({retestPairId:'not-a-uuid'})),
     (error)=>error instanceof CalibrationRetestExportValidationError && error.code==='INVALID_RETEST_PAIR_ID'
   );
+
+  assert.throws(
+    ()=>validateCalibrationRetestExportRecordV02(record({
+      retestPairId:'123e4567-e89b-12d3-a456-426614174000'
+    })),
+    (error)=>error instanceof CalibrationRetestExportValidationError && error.code==='INVALID_RETEST_PAIR_ID'
+  );
 });
 
 test('requires exactly one baseline and one retest under one exact scope',()=>{
@@ -91,7 +98,7 @@ test('requires exactly one baseline and one retest under one exact scope',()=>{
       purposeId:'psychometric-calibration-retest-v0.1',
       scoringVersion:'scoring-v999'
     })]),
-    (error)=>error instanceof CalibrationRetestExportValidationError && error.code==='MIXED_EXPORT_SCOPE'
+    (error)=>error instanceof CalibrationRetestExportValidationError && error.code==='FROZEN_SCOPE_MISMATCH'
   );
 
   assert.throws(
@@ -102,6 +109,22 @@ test('requires exactly one baseline and one retest under one exact scope',()=>{
       purposeId:'psychometric-calibration-retest-v0.1'
     })]),
     (error)=>error instanceof CalibrationRetestExportValidationError && error.code==='PAIR_RECORD_ID_COLLISION'
+  );
+});
+
+test('rejects consistently mislabeled pairs outside the frozen Wave JA-01 scope',()=>{
+  const wrongBaseline=record({waveId:'other-wave'});
+  const wrongRetest=record({
+    calibrationRecordId:retestId,
+    waveId:'other-wave',
+    measurementOccasion:'retest',
+    consentVersion:'calibration-retest-consent-ja-v0.1-dev',
+    purposeId:'psychometric-calibration-retest-v0.1'
+  });
+
+  assert.throws(
+    ()=>buildCalibrationRetestPairV02([wrongBaseline,wrongRetest]),
+    (error)=>error instanceof CalibrationRetestExportValidationError && error.code==='FROZEN_SCOPE_MISMATCH'
   );
 });
 
