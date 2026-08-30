@@ -83,7 +83,7 @@
     "versioned-consent-purpose": "draft-contract-ready-not-approved",
     "legal-privacy-approval": "pending-external",
     "production-environment-separation": "pending-external",
-    "retention-deletion-policy": "policy-and-deletion-journal-ready-purge-executor-pending",
+    "retention-deletion-policy": "row-purge-executor-ready-artifact-purge-coupled-to-future-materializer",
     "operator-authorization-audit": "control-workflow-implemented-runtime-disabled-production-provisioning-pending",
     "pre-registered-sample-plan": "registration-ready-candidate-not-preregistered",
     "frozen-analysis-version-scope": "repository-frozen-not-preregistered"
@@ -130,7 +130,7 @@
     "operator_authentication_implemented": true,
     "operator_audit_storage_implemented": true,
     "raw_export_materializer_implemented": false,
-    "targeted_calibration_record_deletion_implemented": false,
+    "targeted_calibration_record_deletion_implemented": true,
     "targeted_calibration_record_linkage_and_journal_implemented": true,
     "production_operator_provisioning_complete": false,
     "operator_auth_policy_ref": "data/calibration/operator-auth-policy-v0.1-dev.json",
@@ -141,7 +141,10 @@
     "retest_linkage_foundation_implemented": true,
     "runtime_retest_issue_claim_surface_implemented": false,
     "retest_consent_draft_implemented": true,
-    "retest_candidate_export_schema_implemented": true
+    "retest_candidate_export_schema_implemented": true,
+    "row_level_purge_executor_implemented": true,
+    "artifact_purge_executor_implemented": false,
+    "privacy_purge_policy_ref": "data/calibration/privacy-purge-policy-v0.1-dev.json"
   },
   "retest_candidate_export_schema_foundation": {
     "export_schema_version": "calibration-export-record-v0.2-retest-dev",
