@@ -76,7 +76,7 @@ After withdrawal/self-deletion:
 3. the next analysis/export materialization must exclude them;
 4. restored backups must not reactivate them into active research use without withdrawal/deletion replay.
 
-The repository now implements pseudonymous record linkage, normalized fail-closed calibration record/item-response tables, a completed-record retest-pair foundation, plus append-only withdrawal/session/retest-pair deletion journals. The answer-storage tables have no runtime ingest role or API. Raw calibration export remains blocked even though offline operator credential/authentication and execute-only request/review/approve/reject control now exist, because production operator provisioning, raw export materialization/artifact handling and offline artifact purge/regeneration remain absent.
+The repository now implements pseudonymous record linkage, normalized fail-closed calibration record/item-response tables, a completed-record retest-pair foundation, plus append-only withdrawal/session/retest-pair deletion journals. The answer-storage tables have no runtime ingest role or API. Raw calibration export remains blocked even though offline operator credential/authentication and execute-only request/review/approve/reject control now exist, because production operator provisioning and raw export materialization/artifact handling remain absent. Row-level database purge for pre-journaled privacy targets is implemented; artifact purge/regeneration remains mandatory when a future materializer is introduced.
 
 ## 6. Aggregate / reproducibility artifacts
 
@@ -242,3 +242,17 @@ Changing:
 - withdrawal/deletion semantics
 
 requires a versioned policy change and review. Existing historical evidence must not be silently rewritten.
+
+
+## Row-level privacy purge implementation
+
+The repository implements an offline two-person row purge workflow documented in `docs/operations/CALIBRATION_PRIVACY_PURGE_CLI_v0.1.md`.
+
+- request requires an active calibration privacy operator;
+- review/confirm/reject requires a distinct active reviewer;
+- initial eligibility requires an existing consent-withdrawn, owner-session-deleted, or retest-pair-invalidated journal event;
+- the dedicated privacy-control DB role has zero direct table privileges;
+- confirmation removes row-level calibration records/responses while retaining pseudonymous deletion/governance evidence;
+- this does not claim purge of exported artifacts because no raw materializer/artifact store exists.
+
+Any future materializer must add artifact lineage plus purge/regeneration before activation.
