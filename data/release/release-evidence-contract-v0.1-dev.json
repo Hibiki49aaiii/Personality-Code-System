@@ -29,7 +29,9 @@
     "data/calibration/retest-linkage-policy-v0.1-dev.json",
     "data/calibration/retest-consent-purpose-v0.1-dev.json",
     "data/calibration/export-schema-v0.2-retest-dev.json",
-    "drizzle/0012_calibration_retest_linkage.sql"
+    "drizzle/0012_calibration_retest_linkage.sql",
+    "data/calibration/privacy-purge-policy-v0.1-dev.json",
+    "drizzle/0013_calibration_privacy_purge.sql"
   ],
   "migration_glob": "drizzle/*.sql",
   "required_summary_fields": [
