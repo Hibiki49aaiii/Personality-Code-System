@@ -47,7 +47,9 @@ const requiredTables = [
   'calibration_deletion_events',
   'calibration_records',
   'calibration_item_responses',
-  'calibration_retest_linkages'
+  'calibration_retest_linkages',
+  'calibration_privacy_purge_requests',
+  'calibration_privacy_purge_request_targets'
 ];
 
 for (const table of requiredTables) {
@@ -111,6 +113,17 @@ const requiredFragments = [
   ['calibration export review security definer function', /CREATE OR REPLACE FUNCTION\s+public\.pcs_review_calibration_export_request[\s\S]*SECURITY DEFINER[\s\S]*SET search_path = pg_catalog/i],
   ['calibration export decision security definer function', /CREATE OR REPLACE FUNCTION\s+public\.pcs_decide_calibration_export_request[\s\S]*SECURITY DEFINER[\s\S]*SET search_path = pg_catalog/i],
   ['calibration control function public execute revoked', /REVOKE ALL ON FUNCTION\s+public\.pcs_decide_calibration_export_request\(text,uuid,text\) FROM PUBLIC/i],
+  ['calibration privacy purge request table', /CREATE TABLE\s+public\.calibration_privacy_purge_requests/i],
+  ['calibration privacy purge target table', /CREATE TABLE\s+public\.calibration_privacy_purge_request_targets/i],
+  ['calibration privacy purge request insert role guard', /CREATE TRIGGER\s+calibration_privacy_purge_requests_insert_guard/i],
+  ['calibration privacy purge request decision guard', /CREATE TRIGGER\s+calibration_privacy_purge_requests_update_guard/i],
+  ['calibration privacy purge request retained guard', /CREATE TRIGGER\s+calibration_privacy_purge_requests_delete_guard/i],
+  ['calibration privacy purge target immutable guard', /CREATE TRIGGER\s+calibration_privacy_purge_targets_immutable/i],
+  ['calibration privacy purge request function', /CREATE OR REPLACE FUNCTION\s+public\.pcs_request_calibration_privacy_purge[\s\S]*SECURITY DEFINER[\s\S]*SET search_path = pg_catalog/i],
+  ['calibration privacy purge review function', /CREATE OR REPLACE FUNCTION\s+public\.pcs_review_calibration_privacy_purge[\s\S]*SECURITY DEFINER[\s\S]*SET search_path = pg_catalog/i],
+  ['calibration privacy purge decision function', /CREATE OR REPLACE FUNCTION\s+public\.pcs_decide_calibration_privacy_purge[\s\S]*SECURITY DEFINER[\s\S]*SET search_path = pg_catalog/i],
+  ['calibration privacy purge decision public execute revoked', /REVOKE ALL ON FUNCTION\s+public\.pcs_decide_calibration_privacy_purge\(text,uuid,text\) FROM PUBLIC/i],
+  ['calibration privacy purge rejected audit action', /privacy-purge-rejected/i],
   ['calibration answer record table', /CREATE TABLE\s+public\.calibration_records/i],
   ['calibration item response table', /CREATE TABLE\s+public\.calibration_item_responses/i],
   ['calibration record exact-scope insert guard', /CREATE TRIGGER\s+calibration_records_insert_guard/i],
