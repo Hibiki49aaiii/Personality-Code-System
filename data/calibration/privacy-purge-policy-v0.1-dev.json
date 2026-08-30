@@ -1,0 +1,57 @@
+{
+  "privacy_purge_policy_version": "privacy-purge-policy-v0.1-dev",
+  "status": "engineering-row-purge-runtime-disabled",
+  "runtime_api_enabled": false,
+  "collection_enabled": false,
+  "export_enabled": false,
+  "raw_materializer_enabled": false,
+  "artifact_purge_supported": false,
+  "database_role": "pcs_calibration_privacy_control",
+  "environments": {
+    "database_url": "PCS_CALIBRATION_PRIVACY_CONTROL_DATABASE_URL",
+    "operator_token": "PCS_CALIBRATION_OPERATOR_TOKEN"
+  },
+  "commands": [
+    "request",
+    "review",
+    "confirm",
+    "reject"
+  ],
+  "request_role": "calibration-privacy-operator",
+  "reviewer_role": "calibration-reviewer",
+  "requester_may_review_own_request": false,
+  "direct_table_access_allowed": false,
+  "qualifying_reasons": [
+    "consent-withdrawn",
+    "owner-session-deleted",
+    "retest-pair-invalidated"
+  ],
+  "privacy_operator_purge_is_initial_eligibility": false,
+  "pair_expansion": {
+    "enabled": true,
+    "requires_each_member_qualifying_event": true,
+    "purge_all_still_present_eligible_members_atomically": true
+  },
+  "confirmation": {
+    "revalidate_qualifying_event": true,
+    "insert_execution_marker": "privacy-operator-purge",
+    "delete_row_level_calibration_records": true,
+    "retain_deletion_journal": true,
+    "bounded_audit_action": "privacy-purge-confirmed"
+  },
+  "rejection": {
+    "delete_rows": false,
+    "bounded_audit_action": "privacy-purge-rejected"
+  },
+  "future_materializer_coupling": {
+    "materializer_activation_allowed_without_artifact_lineage": false,
+    "materializer_activation_allowed_without_artifact_purge_regeneration": false,
+    "artifact_registry_required_when_materializer_added": true
+  },
+  "production_provisioning_complete": false,
+  "notes": [
+    "This policy implements database row purge only for records that already carry a qualifying privacy deletion event.",
+    "No raw export artifact exists, so artifact purge/regeneration is intentionally not claimed.",
+    "Any future raw materializer must add artifact lineage and purge/regeneration before activation."
+  ]
+}
