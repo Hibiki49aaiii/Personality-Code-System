@@ -66,4 +66,4 @@ if (errors.length) {
   for (const error of errors) console.error(`- ${error}`);
   process.exit(1);
 }
-console.log('Anonymous diagnostic deletion validation passed: bearer-owned destructive path, CSRF/rate-limit/cookie clearing, public-share cleanup and session cascade now also removes active calibration consent/record links while preserving the pseudonymous append-only deletion journal needed for offline purge; launch blockers remain explicit.');
+console.log('Anonymous diagnostic deletion validation passed: bearer-owned destructive path, CSRF/rate-limit/cookie clearing, public-share cleanup and session cascade now also removes active calibration consent/record links while preserving the pseudonymous append-only deletion journal consumed by the two-person row purge workflow; launch blockers remain explicit.');
