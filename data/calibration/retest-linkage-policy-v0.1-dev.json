@@ -43,14 +43,18 @@
   "withdrawal": {
     "either_member_invalidates_pair": true,
     "both_linked_record_ids_journaled_for_future_purge": true,
-    "private_session_capability_retained_for_purge": false
+    "private_session_capability_retained_for_purge": false,
+    "row_level_purge_executor_implemented": true,
+    "privacy_purge_policy_ref": "data/calibration/privacy-purge-policy-v0.1-dev.json",
+    "artifact_purge_executor_implemented": false
   },
   "production_provisioning_complete": false,
   "notes": [
     "This policy defines a pseudonymous retest linkage foundation only.",
     "A retest pair ID is an analysis identifier, not a bearer credential or real-world identity.",
     "No runtime issue/claim endpoint or raw calibration materializer exists.",
-    "Baseline/retest timing and exact scope are read from completed purpose-separated calibration_records, not ordinary diagnostic session completion."
+    "Baseline/retest timing and exact scope are read from completed purpose-separated calibration_records, not ordinary diagnostic session completion.",
+    "The linked-record deletion journal now feeds an implemented two-person row-level purge workflow; artifact purge remains coupled to any future raw materializer."
   ],
   "measurement_record_source": {
     "table": "calibration_records",
