@@ -59,7 +59,7 @@ Current engineering decisions:
 
 Repository persistence implements hash-only operator identities, explicit role bindings, two-person export-request state, append-only bounded audit storage, pseudonymous calibration-record links and withdrawal/session-deletion events. Offline operator issuance/authentication/role-management/revocation plus request/review/approve/reject control tooling is implemented. `pcs_calibration_auth` and `pcs_calibration_export_control` are execute-only with zero direct table privileges; `pcs_calibration_admin` remains narrowly writable for credential/role lifecycle. The ordinary application runtime role still has zero privileges on all calibration operator-plane tables.
 
-The remaining operator-plane blockers are production operator provisioning evidence, raw export materialization/artifact handling and offline purge/regeneration; request/approval control itself is repository-implemented. Collection/export therefore stay disabled. The 180/365-day values are engineering baselines, not final legal promises.
+The remaining operator-plane blockers are production operator provisioning evidence and raw export materialization/artifact handling. Request/approval control and two-person row-level privacy purge are repository-implemented; artifact purge/regeneration remains a mandatory future-materializer coupling. Collection/export therefore stay disabled. The 180/365-day values are engineering baselines, not final legal promises.
 
 ## Version scope
 
