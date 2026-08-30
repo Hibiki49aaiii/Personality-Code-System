@@ -446,9 +446,9 @@ try {
     FROM calibration_records
     WHERE calibration_record_id=${retest.calibrationRecordId}
   `;
-  assert.equal(retestStillPresent.count,1,'partner record remains until a future authorized purge processes the pair journal');
+  assert.equal(retestStillPresent.count,1,'partner record remains after owner-session cascade until the separate authorized row-purge workflow processes the pair journal');
 
-  console.log('Calibration retest linkage integration passed: completed purpose-separated calibration records, exact frozen scope, 14–21 day window, hash-only token storage, distinct consent identities, unique/different pair membership and pair-level withdrawal/deletion journaling are enforced while runtime collection/export remain absent.');
+  console.log('Calibration retest linkage integration passed: completed purpose-separated calibration records, exact frozen scope, 14–21 day window, hash-only token storage, distinct consent identities, unique/different pair membership and pair-level withdrawal/deletion journaling feeds the separate two-person row-purge workflow while runtime collection/export remain absent.');
 } finally {
   await sql.end({timeout:5});
 }
