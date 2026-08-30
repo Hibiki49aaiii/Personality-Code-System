@@ -78,7 +78,9 @@
     "calibration_export_requests": [],
     "calibration_operator_audit_events": [],
     "calibration_record_links": [],
-    "calibration_deletion_events": []
+    "calibration_deletion_events": [],
+    "calibration_records": [],
+    "calibration_item_responses": []
   },
   "prohibited_runtime_capabilities": [
     "CREATE-on-public-schema",
@@ -90,7 +92,8 @@
     "CREATE-EXTENSION",
     "WRITE-versioned-definition-tables",
     "WRITE-calibration-consent-before-activation",
-    "READ-WRITE-calibration-operator-plane"
+    "READ-WRITE-calibration-operator-plane",
+    "READ-WRITE-calibration-answer-storage-before-activation"
   ],
   "ci_contract_tested": true,
   "production_role_evidence_complete": false,
@@ -108,6 +111,8 @@
     "calibration_export_requests",
     "calibration_operator_audit_events",
     "calibration_record_links",
-    "calibration_deletion_events"
+    "calibration_deletion_events",
+    "calibration_records",
+    "calibration_item_responses"
   ]
 }

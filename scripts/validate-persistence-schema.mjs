@@ -44,11 +44,13 @@ const requiredTables = [
   'calibration_export_requests',
   'calibration_operator_audit_events',
   'calibration_record_links',
-  'calibration_deletion_events'
+  'calibration_deletion_events',
+  'calibration_records',
+  'calibration_item_responses'
 ];
 
 for (const table of requiredTables) {
-  if (!new RegExp(`CREATE TABLE\\s+${table}\\b`, 'i').test(sqlText)) {
+  if (!new RegExp(`CREATE TABLE\\s+(?:public\\.)?${table}\\b`, 'i').test(sqlText)) {
     errors.push(`missing required table ${table}`);
   }
 }
@@ -107,7 +109,25 @@ const requiredFragments = [
   ['calibration export request security definer function', /CREATE OR REPLACE FUNCTION\s+public\.pcs_request_calibration_export[\s\S]*SECURITY DEFINER[\s\S]*SET search_path = pg_catalog/i],
   ['calibration export review security definer function', /CREATE OR REPLACE FUNCTION\s+public\.pcs_review_calibration_export_request[\s\S]*SECURITY DEFINER[\s\S]*SET search_path = pg_catalog/i],
   ['calibration export decision security definer function', /CREATE OR REPLACE FUNCTION\s+public\.pcs_decide_calibration_export_request[\s\S]*SECURITY DEFINER[\s\S]*SET search_path = pg_catalog/i],
-  ['calibration control function public execute revoked', /REVOKE ALL ON FUNCTION\s+public\.pcs_decide_calibration_export_request\(text,uuid,text\) FROM PUBLIC/i]
+  ['calibration control function public execute revoked', /REVOKE ALL ON FUNCTION\s+public\.pcs_decide_calibration_export_request\(text,uuid,text\) FROM PUBLIC/i],
+  ['calibration answer record table', /CREATE TABLE\s+public\.calibration_records/i],
+  ['calibration item response table', /CREATE TABLE\s+public\.calibration_item_responses/i],
+  ['calibration record exact-scope insert guard', /CREATE TRIGGER\s+calibration_records_insert_guard/i],
+  ['calibration item model-binding insert guard', /CREATE TRIGGER\s+calibration_item_responses_insert_guard/i],
+  ['calibration answer value guard', /calibration_item_response_value_chk/i],
+  ['calibration answer immutable update guard', /CREATE TRIGGER\s+calibration_item_responses_update_guard/i],
+  ['calibration answer parent-only delete guard', /CREATE TRIGGER\s+calibration_item_responses_delete_guard/i],
+  ['calibration record parent-only delete guard', /CREATE TRIGGER\s+calibration_records_delete_guard/i],
+  ['calibration finalize security definer', /CREATE OR REPLACE FUNCTION\s+public\.pcs_finalize_calibration_record[\s\S]*SECURITY DEFINER[\s\S]*SET search_path = pg_catalog/i],
+  ['calibration finalize public execute revoked', /REVOKE ALL ON FUNCTION\s+public\.pcs_finalize_calibration_record\(uuid\) FROM PUBLIC/i],
+  ['calibration exact 147 response completion', /expected_count\s*<>\s*147/i],
+  ['beta model item mapping immutability', /items belonging to a beta assessment model are immutable/i],
+  ['retired model item mapping immutability', /items belonging to a retired assessment model are immutable/i],
+  ['irreversible beta model release tuple', /beta assessment_model_releases have an immutable version tuple/i],
+  ['beta release no draft demotion', /beta assessment_model_releases may only transition to published or retired/i],
+  ['calibration consent row serialization', /FOR UPDATE OF c/i],
+  ['calibration response release tuple recheck', /calibration response release tuple mismatch/i],
+  ['calibration finalize release tuple recheck', /calibration record completion release tuple mismatch/i]
 ];
 
 for (const [label, pattern] of requiredFragments) {
@@ -129,6 +149,28 @@ if (/\bpublic_token\b(?!_hash)/i.test(sqlText)) {
 }
 if (/public_share_snapshots_active_source_uq/i.test(sqlText)) {
   errors.push('public share migration must not force one active link per result when raw public tokens are hash-only');
+}
+
+const calibrationStorageMigration = migrationEntries.find(
+  (entry) => entry.file === '0011_calibration_answer_storage.sql'
+)?.text ?? '';
+for (const forbidden of [
+  /\bsession_id\b/i,
+  /\baccess_token(?:_hash)?\b/i,
+  /\bpublic_token(?:_hash)?\b/i,
+  /\bip_address\b/i,
+  /\bprecise_location\b/i,
+  /\bemail\b/i,
+  /\breal_name\b/i,
+  /\btrait_scores?\b/i,
+  /\bcore_code\b/i,
+  /\bextended_code\b/i,
+  /\bresult_prose\b/i,
+  /\bfree_text\b/i
+]) {
+  if (forbidden.test(calibrationStorageMigration)) {
+    errors.push(`calibration answer storage contains forbidden identity/derived field pattern ${forbidden}`);
+  }
 }
 
 for (const entry of migrationEntries) {

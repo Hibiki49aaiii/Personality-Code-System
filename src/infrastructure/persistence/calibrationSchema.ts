@@ -2,6 +2,7 @@ import { sql } from 'drizzle-orm';
 import {
   char,
   check,
+  foreignKey,
   index,
   integer,
   pgTable,
@@ -11,7 +12,11 @@ import {
   uniqueIndex,
   uuid
 } from 'drizzle-orm/pg-core';
-import { anonymousSessions, assessmentModelReleases } from './schema';
+import {
+  anonymousSessions,
+  assessmentItemRevisions,
+  assessmentModelReleases
+} from './schema';
 
 const createdAt = () =>
   timestamp('created_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow();
@@ -210,6 +215,65 @@ export const calibrationRecordLinks = pgTable(
   },
   (table) => [
     uniqueIndex('calibration_record_links_consent_receipt_uq').on(table.consentReceiptId)
+  ]
+);
+
+export const calibrationRecords = pgTable(
+  'calibration_records',
+  {
+    calibrationRecordId: uuid('calibration_record_id')
+      .primaryKey()
+      .references(() => calibrationRecordLinks.calibrationRecordId, { onDelete: 'cascade' }),
+    waveId: text('wave_id').notNull(),
+    assessmentModelVersion: text('assessment_model_version')
+      .notNull()
+      .references(() => assessmentModelReleases.modelVersion, { onDelete: 'restrict' }),
+    itemBankVersion: text('item_bank_version').notNull(),
+    scoringVersion: text('scoring_version').notNull(),
+    traitDictionaryVersion: text('trait_dictionary_version').notNull(),
+    locale: text('locale').notNull(),
+    status: text('status').notNull().default('draft'),
+    completedAt: timestamp('completed_at', { withTimezone: true, mode: 'date' }),
+    createdAt: createdAt()
+  },
+  (table) => [
+    index('calibration_records_model_status_idx').on(table.assessmentModelVersion, table.status),
+    check('calibration_record_status_chk', sql`${table.status} in ('draft','complete')`),
+    check(
+      'calibration_record_completion_chk',
+      sql`(
+        (${table.status} = 'draft' and ${table.completedAt} is null)
+        or
+        (${table.status} = 'complete' and ${table.completedAt} is not null)
+      )`
+    )
+  ]
+);
+
+export const calibrationItemResponses = pgTable(
+  'calibration_item_responses',
+  {
+    calibrationRecordId: uuid('calibration_record_id')
+      .notNull()
+      .references(() => calibrationRecords.calibrationRecordId, { onDelete: 'cascade' }),
+    itemId: text('item_id').notNull(),
+    itemRevision: text('item_revision').notNull(),
+    locale: text('locale').notNull(),
+    value: integer('value').notNull(),
+    createdAt: createdAt()
+  },
+  (table) => [
+    primaryKey({ columns: [table.calibrationRecordId, table.itemId] }),
+    index('calibration_item_responses_item_idx').on(table.itemId, table.itemRevision),
+    foreignKey({
+      columns: [table.itemId, table.itemRevision, table.locale],
+      foreignColumns: [
+        assessmentItemRevisions.itemId,
+        assessmentItemRevisions.revision,
+        assessmentItemRevisions.locale
+      ]
+    }).onDelete('restrict'),
+    check('calibration_item_response_value_chk', sql`${table.value} between 1 and 5`)
   ]
 );
 

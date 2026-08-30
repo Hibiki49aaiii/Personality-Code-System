@@ -29,7 +29,7 @@
     "validate:privacy-data": "node scripts/validate-privacy-data-inventory.mjs",
     "validate:landing-claims": "node scripts/validate-landing-claims.mjs",
     "audit:performance-build": "node scripts/audit-performance-build.mjs",
-    "validate:calibration": "node scripts/validate-calibration-protocol.mjs && node scripts/validate-calibration-export-schema.mjs && node scripts/validate-beta-wave-draft.mjs && node scripts/validate-calibration-governance.mjs && node scripts/validate-calibration-operator-auth.mjs && node scripts/validate-beta-wave-scope-freeze.mjs && node scripts/validate-calibration-export-control.mjs",
+    "validate:calibration": "node scripts/validate-calibration-protocol.mjs && node scripts/validate-calibration-export-schema.mjs && node scripts/validate-beta-wave-draft.mjs && node scripts/validate-calibration-governance.mjs && node scripts/validate-calibration-operator-auth.mjs && node scripts/validate-beta-wave-scope-freeze.mjs && node scripts/validate-calibration-export-control.mjs && node scripts/validate-calibration-answer-storage.mjs",
     "validate:release-operations": "node scripts/validate-release-operations.mjs",
     "validate:environment": "node scripts/validate-environment-contract.mjs",
     "validate:launch-gate": "node scripts/validate-public-launch-gate.mjs",
@@ -67,7 +67,8 @@
     "operator:calibration": "node scripts/calibration-operator.mjs",
     "test:calibration-operator-auth:integration": "node tests/infrastructure/calibration-operator-auth.integration.mjs",
     "operator:calibration-export-control": "node scripts/calibration-export-control.mjs",
-    "test:calibration-export-control:integration": "node tests/infrastructure/calibration-export-control.integration.mjs"
+    "test:calibration-export-control:integration": "node tests/infrastructure/calibration-export-control.integration.mjs",
+    "test:calibration-answer-storage:integration": "node tests/infrastructure/calibration-answer-storage.integration.mjs"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",

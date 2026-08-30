@@ -114,7 +114,9 @@
     "targeted_calibration_record_deletion_implemented": false,
     "targeted_calibration_record_linkage_and_journal_implemented": true,
     "production_operator_provisioning_complete": false,
-    "export_control_workflow_implemented": true
+    "export_control_workflow_implemented": true,
+    "answer_level_calibration_storage_schema_implemented": true,
+    "calibration_ingest_surface_implemented": false
   },
   "activation_blockers": [
     "final-legal-privacy-approval",
@@ -132,7 +134,8 @@
     "Offline operator credential issuance/authentication/revocation and role-management tooling is implemented with separate least-privilege auth/admin DB role contracts.",
     "Actual production operator DB roles and credentials are not provisioned; production provisioning evidence remains an activation blocker.",
     "Wave JA-01 candidate version scope is repository-frozen by SHA-256 identities, without claiming external preregistration.",
-    "Offline export request/review/approve/reject control is implemented through execute-only SECURITY DEFINER functions; no raw materializer exists."
+    "Offline export request/review/approve/reject control is implemented through execute-only SECURITY DEFINER functions; no raw materializer exists.",
+    "Dedicated calibration record/item-response tables are repository-implemented with exact Wave JA-01 DB constraints, but no runtime/ingest role can write them."
   ],
   "version_scope_freeze": {
     "implemented": true,

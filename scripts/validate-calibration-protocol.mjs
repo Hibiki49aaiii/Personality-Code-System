@@ -4,6 +4,7 @@ const protocol = JSON.parse(fs.readFileSync('data/calibration/beta-protocol-v0.1
 const consent = JSON.parse(fs.readFileSync('data/calibration/consent-purpose-v0.1-dev.json', 'utf8'));
 const dbRole = JSON.parse(fs.readFileSync('data/security/database-role-policy-v0.1-dev.json', 'utf8'));
 const migration = fs.readFileSync('drizzle/0008_calibration_consent_receipts.sql','utf8');
+const answerStorageMigration = fs.readFileSync('drizzle/0011_calibration_answer_storage.sql','utf8');
 const errors = [];
 
 if (protocol.protocol_version !== 'beta-calibration-protocol-v0.1-dev') errors.push('unexpected protocol version');
@@ -37,6 +38,16 @@ if (!migration.includes('CREATE TABLE calibration_consent_receipts')) errors.pus
 if (!migration.includes('calibration consent receipt model/locale must match owning session')) errors.push('calibration receipt model/locale binding guard missing');
 if (!migration.includes('calibration consent receipt identity is immutable')) errors.push('calibration receipt immutable identity guard missing');
 if (!migration.includes('update may only withdraw consent')) errors.push('calibration receipt withdrawal-only update guard missing');
+for (const fragment of [
+  'CREATE TABLE public.calibration_records',
+  'CREATE TABLE public.calibration_item_responses',
+  'calibration_records_insert_guard',
+  'calibration_item_responses_insert_guard',
+  'pcs_finalize_calibration_record',
+  'REVOKE ALL ON FUNCTION public.pcs_finalize_calibration_record(uuid) FROM PUBLIC'
+]) {
+  if (!answerStorageMigration.includes(fragment)) errors.push(`calibration answer storage migration missing ${fragment}`);
+}
 
 const expectedCalibrationNoAccess=[
   'calibration_consent_receipts',
@@ -45,7 +56,9 @@ const expectedCalibrationNoAccess=[
   'calibration_export_requests',
   'calibration_operator_audit_events',
   'calibration_record_links',
-  'calibration_deletion_events'
+  'calibration_deletion_events',
+  'calibration_records',
+  'calibration_item_responses'
 ];
 for (const table of expectedCalibrationNoAccess) {
   if (!(dbRole.runtime_no_access_tables ?? []).includes(table)) {
@@ -131,6 +144,12 @@ if (protocol.governance_policy_foundation?.operator_auth_policy_ref !== 'data/ca
 if (protocol.governance_policy_foundation?.operator_audit_storage_implemented !== true) errors.push('operator audit storage foundation missing');
 if (protocol.governance_policy_foundation?.export_control_workflow_implemented !== true) errors.push('offline export control workflow foundation missing');
 if (protocol.governance_policy_foundation?.export_control_policy_ref !== 'data/calibration/export-control-policy-v0.1-dev.json') errors.push('export control policy reference missing from protocol foundation');
+if (protocol.governance_policy_foundation?.answer_level_calibration_storage_schema_implemented !== true) {
+  errors.push('answer-level calibration storage schema foundation missing');
+}
+if (protocol.governance_policy_foundation?.calibration_ingest_surface_implemented !== false) {
+  errors.push('calibration ingest surface must remain disabled');
+}
 if (protocol.governance_policy_foundation?.raw_export_materializer_implemented !== false) errors.push('raw export materializer must remain pending');
 if (protocol.governance_policy_foundation?.targeted_calibration_record_linkage_and_journal_implemented !== true) errors.push('targeted record linkage/deletion journal foundation missing');
 if (protocol.governance_policy_foundation?.targeted_calibration_record_deletion_implemented !== false) errors.push('offline artifact purge executor must remain pending');
@@ -138,6 +157,21 @@ if (protocol.governance_policy_foundation?.targeted_calibration_record_deletion_
 if (protocol.consent_storage_foundation?.table !== 'calibration_consent_receipts') errors.push('calibration consent storage table status missing');
 if (protocol.consent_storage_foundation?.runtime_role_access_allowed !== false) errors.push('runtime consent access must remain disabled');
 if (protocol.consent_storage_foundation?.owner_session_cascade_delete !== true) errors.push('consent receipt must remain owner-session deletable');
+if (protocol.consent_storage_foundation?.answer_level_calibration_storage_schema_implemented !== true) {
+  errors.push('answer-level calibration storage schema must be implemented');
+}
+if (JSON.stringify(protocol.consent_storage_foundation?.answer_storage_tables)!==JSON.stringify([
+  'calibration_records',
+  'calibration_item_responses'
+])) {
+  errors.push('answer-level calibration storage table contract drift');
+}
+if (protocol.consent_storage_foundation?.finalize_function !== 'pcs_finalize_calibration_record') {
+  errors.push('calibration finalize function contract drift');
+}
+if (protocol.consent_storage_foundation?.runtime_answer_ingest_enabled !== false) {
+  errors.push('runtime calibration answer ingest must remain disabled');
+}
 if (protocol.consent_storage_foundation?.answer_level_calibration_rows_exist !== false) errors.push('answer-level calibration dataset must not exist before activation');
 
 if (protocol.export_schema_foundation?.export_schema_version !== 'calibration-export-record-v0.1-dev') errors.push('offline calibration export schema foundation missing');
@@ -193,4 +227,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log('Beta calibration protocol validation passed: separate consent receipt persistence exists but runtime access/collection/export remain disabled; consent/legal/sample/operator-provisioning/environment prerequisites and analysis/version rules stay fail-closed.');
+console.log('Beta calibration protocol validation passed: consent and fail-closed answer-storage schemas exist while runtime ingest/collection/export remain disabled; consent/legal/sample/operator-provisioning/environment prerequisites and analysis/version rules stay fail-closed.');

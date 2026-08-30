@@ -133,6 +133,22 @@
         "calibration_record_links",
         "calibration_deletion_events"
       ]
+    },
+    {
+      "id": "calibration-answer-storage",
+      "personal_data": true,
+      "purpose": "Store purpose-separated pseudonymous raw item responses for the exact frozen closed-beta calibration wave after future activation, independently from ordinary diagnostic/session storage.",
+      "retention": "engineering-candidate-max-180-days-after-wave-close-with-earlier-withdrawal-or-owner-deletion-precedence; offline purge executor still required before collection activation",
+      "public_by_default": false,
+      "third_party_export_default": false,
+      "collection_enabled": false,
+      "runtime_access_allowed": false,
+      "derived_scores_or_codes_stored": false,
+      "tables": [
+        "calibration_records",
+        "calibration_item_responses"
+      ],
+      "governance_policy_ref": "data/calibration/governance-policy-v0.1-dev.json"
     }
   ],
   "prohibited_default_collection": [

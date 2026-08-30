@@ -24,7 +24,7 @@ const sqlText = migrationFiles
   .map((file) => fs.readFileSync(path.join(migrationDir, file), 'utf8'))
   .join('\n');
 
-const actualTables = [...sqlText.matchAll(/CREATE TABLE\s+([a-z_][a-z0-9_]*)\b/gi)]
+const actualTables = [...sqlText.matchAll(/CREATE TABLE\s+(?:public\.)?([a-z_][a-z0-9_]*)\b/gi)]
   .map((match) => match[1])
   .sort();
 const inventoriedTables = inventory.classes
@@ -46,6 +46,27 @@ for (const table of inventoriedTables) {
 const calibrationClass = inventory.classes.find((entry) => entry.id === 'calibration-consent-receipts');
 if (!calibrationClass) errors.push('calibration consent privacy class missing');
 else if (calibrationClass.collection_enabled !== false) errors.push('calibration consent collection must remain disabled before activation');
+
+const calibrationStorageClass = inventory.classes.find((entry) => entry.id === 'calibration-answer-storage');
+if (!calibrationStorageClass) {
+  errors.push('calibration answer-storage privacy class missing');
+} else {
+  if (calibrationStorageClass.collection_enabled !== false) {
+    errors.push('calibration answer collection must remain disabled before activation');
+  }
+  if (calibrationStorageClass.runtime_access_allowed !== false) {
+    errors.push('calibration answer storage must remain inaccessible to runtime before activation');
+  }
+  if (calibrationStorageClass.derived_scores_or_codes_stored !== false) {
+    errors.push('calibration answer storage must not persist derived scores/codes');
+  }
+  if (JSON.stringify(calibrationStorageClass.tables) !== JSON.stringify([
+    'calibration_records',
+    'calibration_item_responses'
+  ])) {
+    errors.push('calibration answer-storage privacy table mapping drift');
+  }
+}
 
 for (const entry of inventory.classes ?? []) {
   if (!entry.id || !entry.purpose || !entry.retention) {

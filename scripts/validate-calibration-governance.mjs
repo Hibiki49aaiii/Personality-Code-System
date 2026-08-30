@@ -78,6 +78,8 @@ if (impl?.operator_authentication_implemented !== true) errors.push('offline ope
 if (impl?.production_operator_provisioning_complete !== false) errors.push('production operator provisioning must remain pending');
 if (impl?.operator_audit_storage_implemented !== true) errors.push('append-only operator audit storage implementation missing');
 if (impl?.export_control_workflow_implemented !== true) errors.push('offline export control workflow implementation missing');
+if (impl?.answer_level_calibration_storage_schema_implemented !== true) errors.push('answer-level calibration storage schema implementation missing');
+if (impl?.calibration_ingest_surface_implemented !== false) errors.push('calibration ingest surface must remain disabled');
 if (impl?.raw_export_materializer_implemented !== false) errors.push('raw export materializer must remain pending');
 if (impl?.targeted_calibration_record_linkage_and_journal_implemented !== true) errors.push('targeted calibration record linkage/deletion journal foundation missing');
 if (impl?.targeted_calibration_record_deletion_implemented !== false) errors.push('offline artifact targeted purge executor must remain pending');
@@ -130,7 +132,9 @@ const operatorPlaneTables=[
   'calibration_export_requests',
   'calibration_operator_audit_events',
   'calibration_record_links',
-  'calibration_deletion_events'
+  'calibration_deletion_events',
+  'calibration_records',
+  'calibration_item_responses'
 ];
 for (const table of operatorPlaneTables) {
   if (dbRole.runtime_no_access_tables?.includes(table) !== true) errors.push(`runtime role no-access classification missing for ${table}`);
@@ -145,4 +149,4 @@ if (errors.length) {
   for (const error of errors) console.error(`- ${error}`);
   process.exit(1);
 }
-console.log('Calibration governance validation passed: retention/deletion, operator authentication and offline two-person export-control/audit are implemented, while legal approval, production operator provisioning, raw export materialization and offline artifact purge remain fail-closed.');
+console.log('Calibration governance validation passed: retention/deletion, fail-closed answer storage, operator authentication and offline two-person export-control/audit are implemented, while runtime ingest, legal approval, production operator provisioning, raw export materialization and offline artifact purge remain fail-closed.');

@@ -31,12 +31,13 @@ Until then, `collection_enabled=false` and `export_enabled=false` are machine-en
 The repository now contains a **storage-only** consent receipt foundation without activating collection:
 
 - `data/calibration/consent-purpose-v0.1-dev.json` defines one versioned draft purpose/consent identity and explicitly keeps legal/collection/export authorization false;
-- `calibration_consent_receipts` stores only purpose/version/model/locale/status/timestamps, not answer-level calibration data;
+- `calibration_consent_receipts` stores only purpose/version/model/locale/status/timestamps;
+- `calibration_records` / `calibration_item_responses` define the future purpose-separated answer-storage shape with exact Wave JA-01/model/item constraints, while no runtime role/API can ingest rows;
 - the receipt is bound by PostgreSQL trigger to the owning session's exact model + locale;
 - receipt identity is immutable; the only supported update is `granted -> withdrawn`;
 - owner-session deletion cascades the receipt;
 - the normal application runtime database role has **zero SELECT/INSERT/UPDATE/DELETE privileges** on the table before activation;
-- no `/api/calibration` runtime route and no calibration export job exist.
+- no `/api/calibration` runtime route, no calibration ingest role/path and no calibration export job exist.
 
 This completes engineering groundwork for a future explicit consent state while deliberately refusing to collect anything yet.
 
@@ -181,7 +182,7 @@ A stable-model review requires the outputs already listed in `VALIDATION_GATES_v
 
 `product_events` remains product analytics and is not psychometric calibration data. Funnel events cannot be reverse-engineered into an answer dataset.
 
-Answer-level calibration use requires the separately gated consented path defined by `CALIBRATION_EXPORT_SPEC_v0.1.md`.
+Answer-level calibration storage schema now exists, but actual row collection/use still requires the separately gated consented runtime path defined by `CALIBRATION_EXPORT_SPEC_v0.1.md`.
 
 ## Public claims
 

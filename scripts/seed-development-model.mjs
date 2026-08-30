@@ -160,12 +160,13 @@ try {
       }
 
       const existingModel = await tx`SELECT * FROM assessment_model_releases WHERE model_version = ${release.modelVersion}`;
-      if (existingModel.length === 0) {
+      const createdDraftModel = existingModel.length === 0;
+      if (createdDraftModel) {
         await tx`
           INSERT INTO assessment_model_releases
             (model_version, status, locale, trait_dictionary_version, item_bank_version, scoring_version, code_schema_version, interaction_version, content_version)
           VALUES
-            (${release.modelVersion}, 'beta', ${LOCALE}, ${DICTIONARY_VERSION}, ${ITEM_BANK_VERSION}, ${SCORING_VERSION}, ${CODE_SCHEMA_VERSION}, ${INTERACTION_VERSION}, ${content.content_version})
+            (${release.modelVersion}, 'draft', ${LOCALE}, ${DICTIONARY_VERSION}, ${ITEM_BANK_VERSION}, ${SCORING_VERSION}, ${CODE_SCHEMA_VERSION}, ${INTERACTION_VERSION}, ${content.content_version})
         `;
       } else {
         const model = existingModel[0];
@@ -205,6 +206,18 @@ try {
           assertSame(`${release.modelVersion}/${index + 1} weight`, mapping.weight_milli, Math.round(item.weight * 1000));
           assertSame(`${release.modelVersion}/${index + 1} required`, mapping.required, true);
         });
+      }
+
+      if (createdDraftModel) {
+        const promoted=await tx`
+          UPDATE assessment_model_releases
+          SET status='beta'
+          WHERE model_version=${release.modelVersion}
+            AND status='draft'
+          RETURNING status
+        `;
+        assert.equal(promoted.length,1,`${release.modelVersion} draft→beta promotion`);
+        assert.equal(promoted[0].status,'beta');
       }
     }
 
