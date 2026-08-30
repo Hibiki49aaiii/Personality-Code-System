@@ -306,24 +306,12 @@ export const calibrationRetestLinkages = pgTable(
     uniqueIndex('calibration_retest_linkages_baseline_uq').on(table.baselineCalibrationRecordId),
     uniqueIndex('calibration_retest_linkages_retest_uq').on(table.retestCalibrationRecordId),
     uniqueIndex('calibration_retest_linkages_claim_token_hash_uq').on(table.claimTokenHash),
-    index('calibration_retest_linkages_status_window_idx').on(table.status, table.eligibleFrom, table.eligibleUntil),
-    check('calibration_retest_claim_token_hash_chk', sql`${table.claimTokenHash} ~ '^[a-f0-9]{64}
-  {
-    deletionEventId: uuid('deletion_event_id').primaryKey().defaultRandom(),
-    calibrationRecordId: uuid('calibration_record_id').notNull(),
-    reason: text('reason').notNull(),
-    occurredAt: timestamp('occurred_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow()
-  },
-  (table) => [
-    uniqueIndex('calibration_deletion_events_record_reason_uq').on(table.calibrationRecordId, table.reason),
-    index('calibration_deletion_events_occurred_idx').on(table.occurredAt),
-    check(
-      'calibration_deletion_event_reason_chk',
-      sql`${table.reason} in ('consent-withdrawn','owner-session-deleted','privacy-operator-purge','retest-pair-invalidated')`
-    )
-  ]
-);
-`),
+    index('calibration_retest_linkages_status_window_idx').on(
+      table.status,
+      table.eligibleFrom,
+      table.eligibleUntil
+    ),
+    check('calibration_retest_claim_token_hash_chk', sql`${table.claimTokenHash} ~ '^[a-f0-9]{64}$'`),
     check('calibration_retest_status_chk', sql`${table.status} in ('issued','claimed','invalidated')`),
     check(
       'calibration_retest_distinct_records_chk',
@@ -368,11 +356,14 @@ export const calibrationDeletionEvents = pgTable(
     occurredAt: timestamp('occurred_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow()
   },
   (table) => [
-    uniqueIndex('calibration_deletion_events_record_reason_uq').on(table.calibrationRecordId, table.reason),
+    uniqueIndex('calibration_deletion_events_record_reason_uq').on(
+      table.calibrationRecordId,
+      table.reason
+    ),
     index('calibration_deletion_events_occurred_idx').on(table.occurredAt),
     check(
       'calibration_deletion_event_reason_chk',
-      sql`${table.reason} in ('consent-withdrawn','owner-session-deleted','privacy-operator-purge')`
+      sql`${table.reason} in ('consent-withdrawn','owner-session-deleted','privacy-operator-purge','retest-pair-invalidated')`
     )
   ]
 );
