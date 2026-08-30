@@ -81,7 +81,9 @@
     "calibration_deletion_events": [],
     "calibration_records": [],
     "calibration_item_responses": [],
-    "calibration_retest_linkages": []
+    "calibration_retest_linkages": [],
+    "calibration_privacy_purge_requests": [],
+    "calibration_privacy_purge_request_targets": []
   },
   "prohibited_runtime_capabilities": [
     "CREATE-on-public-schema",
@@ -95,7 +97,8 @@
     "WRITE-calibration-consent-before-activation",
     "READ-WRITE-calibration-operator-plane",
     "READ-WRITE-calibration-answer-storage-before-activation",
-    "READ-WRITE-calibration-retest-linkage-before-activation"
+    "READ-WRITE-calibration-retest-linkage-before-activation",
+    "READ-WRITE-calibration-privacy-purge-control"
   ],
   "ci_contract_tested": true,
   "production_role_evidence_complete": false,
@@ -116,6 +119,8 @@
     "calibration_deletion_events",
     "calibration_records",
     "calibration_item_responses",
-    "calibration_retest_linkages"
+    "calibration_retest_linkages",
+    "calibration_privacy_purge_requests",
+    "calibration_privacy_purge_request_targets"
   ]
 }
