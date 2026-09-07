@@ -4,11 +4,17 @@
   "brief_system_version": "illustration-brief-system-v0.1-dev",
   "catalog_version": "type-catalog-v0.1-dev",
   "code_schema_version": "core-code-v0.1-dev",
-  "status": "owner-review-pending",
+  "status": "rejected-superseded",
   "public_use": false,
   "runtime_generation": false,
   "production_registry_mutated": false,
-  "purpose": "Phase 3B-1 art-direction gate only. These files are reference prototypes, not production masters or approved Core Type assets.",
+  "purpose": "Historical Phase 3B-1 SVG reference prototypes only. This direction was rejected by the repository owner and must not be used as the production visual baseline.",
+  "superseded_by": "illustration-art-direction-reference-v0.2-dev",
+  "rejection": {
+    "reason": "The SVG/vector prototypes were judged too diagrammatic, template-like and AI-adjacent rather than convincing character-led editorial artwork.",
+    "decision": "Do not expand this direction to the 64-type production set.",
+    "owner_feedback_date": "2026-09-08"
+  },
   "palette": {
     "paper": "#f4efe5",
     "paper_panel": "#efe8dc",
@@ -29,10 +35,7 @@
     "result_portrait_aspect": "4:5",
     "share_portrait_aspect": "4:5",
     "og_landscape_aspect": "1.91:1",
-    "og_central_safe_y": [
-      581,
-      1419
-    ]
+    "og_central_safe_y": [581, 1419]
   },
   "entries": [
     {
@@ -47,14 +50,10 @@
       "sha256": "532248a4a1d3b51991b01043dd2d2e2eb9b3129bb4dae4ca555d0a0db3735add",
       "representation_variant": "androgynous-young-adult-a",
       "representation_basis": "catalog-index-rotation-only",
-      "motif_coverage": {
-        "role": "LTG",
-        "action": "PF",
-        "relationship": "B"
-      },
+      "motif_coverage": {"role":"LTG","action":"PF","relationship":"B"},
       "production_method": "assistant-authored-static-vector-development-prototype",
       "creator_or_source": "OpenAI ChatGPT under repository owner direction",
-      "license_or_usage_basis": "Project development reference; owner approval pending; not released as a production asset.",
+      "license_or_usage_basis": "Historical development reference only; rejected as production art direction.",
       "human_owner_approved": false,
       "assistant_visual_review": {
         "motif_mapping": true,
@@ -67,7 +66,7 @@
         "share_crop": true,
         "license_source_provenance": true
       },
-      "review_note": "Calibration dial, aligned markers and balanced objects remain inside the central crop-safe region; broad relationship treatment is represented by distributed lightweight anchors."
+      "review_note": "Technically valid prototype, but rejected aesthetically by the owner."
     },
     {
       "core_code": "SVAEND",
@@ -81,14 +80,10 @@
       "sha256": "43fb30fda4e20282a2a863c0dd88e75bd6a95f30d0924806738abd6dbed5d49c",
       "representation_variant": "hearing-device-neutral",
       "representation_basis": "catalog-index-rotation-only",
-      "motif_coverage": {
-        "role": "SVA",
-        "action": "EN",
-        "relationship": "D"
-      },
+      "motif_coverage": {"role":"SVA","action":"EN","relationship":"D"},
       "production_method": "assistant-authored-static-vector-development-prototype",
       "creator_or_source": "OpenAI ChatGPT under repository owner direction",
-      "license_or_usage_basis": "Project development reference; owner approval pending; not released as a production asset.",
+      "license_or_usage_basis": "Historical development reference only; rejected as production art direction.",
       "human_owner_approved": false,
       "assistant_visual_review": {
         "motif_mapping": true,
@@ -101,7 +96,7 @@
         "share_crop": true,
         "license_source_provenance": true
       },
-      "review_note": "Blueprint, compass and branching/threshold cues remain central. Deep relationship treatment uses two strong anchor connections. Hearing-device representation follows catalog-index rotation only and is not inferred from the Core Code."
+      "review_note": "Technically valid prototype, but rejected aesthetically by the owner."
     }
   ],
   "owner_gate": {
@@ -109,6 +104,6 @@
     "approved": false,
     "approved_by": null,
     "approved_at": null,
-    "decision_notes": null
+    "decision_notes": "Rejected and superseded by Art Direction v0.2."
   }
 }
