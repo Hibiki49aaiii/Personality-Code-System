@@ -1,0 +1,114 @@
+{
+  "reference_set_version": "illustration-art-direction-reference-v0.1-dev",
+  "illustration_system_version": "illustration-system-v0.1-dev",
+  "brief_system_version": "illustration-brief-system-v0.1-dev",
+  "catalog_version": "type-catalog-v0.1-dev",
+  "code_schema_version": "core-code-v0.1-dev",
+  "status": "owner-review-pending",
+  "public_use": false,
+  "runtime_generation": false,
+  "production_registry_mutated": false,
+  "purpose": "Phase 3B-1 art-direction gate only. These files are reference prototypes, not production masters or approved Core Type assets.",
+  "palette": {
+    "paper": "#f4efe5",
+    "paper_panel": "#efe8dc",
+    "surface": "#d6c9b8",
+    "ink": "#1c2521",
+    "accent": "#b74631",
+    "secondary": "#8e9d91"
+  },
+  "palette_review": {
+    "ink_on_paper_contrast_ratio": 13.72,
+    "accent_on_paper_contrast_ratio": 4.66,
+    "secondary_on_paper_contrast_ratio": 2.48,
+    "secondary_usage_rule": "Non-text/background support only; critical geometry uses ink or accent."
+  },
+  "crop_model": {
+    "master_width": 1600,
+    "master_height": 2000,
+    "result_portrait_aspect": "4:5",
+    "share_portrait_aspect": "4:5",
+    "og_landscape_aspect": "1.91:1",
+    "og_central_safe_y": [
+      581,
+      1419
+    ]
+  },
+  "entries": [
+    {
+      "core_code": "LTGPFB",
+      "production_asset_id": "ILL-C01D-LTGPFB-HERO-v01",
+      "reference_id": "REF-C01D-LTGPFB-ARTDIR-v01",
+      "reference_only": true,
+      "path": "artwork/illustration/references/phase-3b-1/LTGPFB-reference-v01.svg",
+      "media_type": "image/svg+xml",
+      "width": 1600,
+      "height": 2000,
+      "sha256": "532248a4a1d3b51991b01043dd2d2e2eb9b3129bb4dae4ca555d0a0db3735add",
+      "representation_variant": "androgynous-young-adult-a",
+      "representation_basis": "catalog-index-rotation-only",
+      "motif_coverage": {
+        "role": "LTG",
+        "action": "PF",
+        "relationship": "B"
+      },
+      "production_method": "assistant-authored-static-vector-development-prototype",
+      "creator_or_source": "OpenAI ChatGPT under repository owner direction",
+      "license_or_usage_basis": "Project development reference; owner approval pending; not released as a production asset.",
+      "human_owner_approved": false,
+      "assistant_visual_review": {
+        "motif_mapping": true,
+        "style_consistency": true,
+        "anatomy_geometry": true,
+        "no_prestige_hierarchy": true,
+        "no_diagnostic_stereotype": true,
+        "result_crop": true,
+        "og_crop": true,
+        "share_crop": true,
+        "license_source_provenance": true
+      },
+      "review_note": "Calibration dial, aligned markers and balanced objects remain inside the central crop-safe region; broad relationship treatment is represented by distributed lightweight anchors."
+    },
+    {
+      "core_code": "SVAEND",
+      "production_asset_id": "ILL-C01D-SVAEND-HERO-v01",
+      "reference_id": "REF-C01D-SVAEND-ARTDIR-v01",
+      "reference_only": true,
+      "path": "artwork/illustration/references/phase-3b-1/SVAEND-reference-v01.svg",
+      "media_type": "image/svg+xml",
+      "width": 1600,
+      "height": 2000,
+      "sha256": "43fb30fda4e20282a2a863c0dd88e75bd6a95f30d0924806738abd6dbed5d49c",
+      "representation_variant": "hearing-device-neutral",
+      "representation_basis": "catalog-index-rotation-only",
+      "motif_coverage": {
+        "role": "SVA",
+        "action": "EN",
+        "relationship": "D"
+      },
+      "production_method": "assistant-authored-static-vector-development-prototype",
+      "creator_or_source": "OpenAI ChatGPT under repository owner direction",
+      "license_or_usage_basis": "Project development reference; owner approval pending; not released as a production asset.",
+      "human_owner_approved": false,
+      "assistant_visual_review": {
+        "motif_mapping": true,
+        "style_consistency": true,
+        "anatomy_geometry": true,
+        "no_prestige_hierarchy": true,
+        "no_diagnostic_stereotype": true,
+        "result_crop": true,
+        "og_crop": true,
+        "share_crop": true,
+        "license_source_provenance": true
+      },
+      "review_note": "Blueprint, compass and branching/threshold cues remain central. Deep relationship treatment uses two strong anchor connections. Hearing-device representation follows catalog-index rotation only and is not inferred from the Core Code."
+    }
+  ],
+  "owner_gate": {
+    "required_before_canonical_64_batch": true,
+    "approved": false,
+    "approved_by": null,
+    "approved_at": null,
+    "decision_notes": null
+  }
+}

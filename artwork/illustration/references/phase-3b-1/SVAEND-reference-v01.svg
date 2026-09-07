@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="2000" viewBox="0 0 1600 2000">
+
+<defs>
+  <pattern id="paper" width="48" height="48" patternUnits="userSpaceOnUse">
+    <rect width="48" height="48" fill="#f4efe5"/>
+    <path d="M3 11h10M29 7h7M9 31h5M34 35h9M20 19h4" stroke="#d8cec0" stroke-width="1" opacity=".28"/>
+    <circle cx="16" cy="6" r="1" fill="#c8bcad" opacity=".25"/>
+    <circle cx="41" cy="24" r="1" fill="#c8bcad" opacity=".2"/>
+  </pattern>
+  <pattern id="hatch" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(18)">
+    <path d="M0 9h18" stroke="#1c2521" stroke-width="1" opacity=".1"/>
+  </pattern>
+</defs>
+
+<rect width="1600" height="2000" fill="url(#paper)"/>
+<rect x="90" y="90" width="1420" height="1820" rx="34" fill="#efe8dc" stroke="#1c2521" stroke-width="5"/>
+<rect x="140" y="140" width="1320" height="1720" rx="26" fill="none" stroke="#b8ab99" stroke-width="3"/>
+
+<!-- architectural grid and threshold -->
+<g stroke="#b8ab99" stroke-width="3" opacity=".65">
+  <path d="M320 570H1280M320 720H1280M320 870H1280M320 1020H1280M320 1170H1280M320 1320H1280"/>
+  <path d="M420 500V1410M620 500V1410M820 500V1410M1020 500V1410M1220 500V1410"/>
+</g>
+<path d="M520 1460V740Q520 650 610 650H990Q1080 650 1080 740V1460" fill="none" stroke="#1c2521" stroke-width="14"/>
+<path d="M560 1460L800 1230L1040 1460" fill="#d6c9b8" stroke="#1c2521" stroke-width="8"/>
+<path d="M800 1230L800 870" stroke="#b74631" stroke-width="12" stroke-linecap="round"/>
+<path d="M800 870L720 950M800 870L900 945M800 870L830 760" stroke="#b74631" stroke-width="10" stroke-linecap="round"/>
+
+<!-- blueprint board and branching rebuilt model -->
+<g>
+  <rect x="350" y="810" width="900" height="560" rx="24" fill="#f4efe5" stroke="#1c2521" stroke-width="8"/>
+  <path d="M430 900H720V1130H430ZM880 900H1170V1030H880ZM880 1100H1170V1280H880Z" fill="none" stroke="#8e9d91" stroke-width="7"/>
+  <path d="M720 1015H800M800 1015V965M800 1015V1190M800 965H880M800 1190H880" fill="none" stroke="#b74631" stroke-width="9" stroke-linecap="round"/>
+  <circle cx="800" cy="1015" r="28" fill="#1c2521"/>
+</g>
+
+<!-- stylized forward-moving figure -->
+<g stroke="#1c2521" stroke-linejoin="round" stroke-linecap="round">
+  <circle cx="800" cy="680" r="106" fill="#e7dfd2" stroke-width="7"/>
+  <path d="M728 648Q800 595 872 648" fill="none" stroke-width="9"/>
+  <path d="M748 705Q800 728 852 705" fill="none" stroke-width="6"/>
+  <!-- neutral hearing device as editorial rotation slot, not type-derived -->
+  <path d="M895 654Q930 670 916 715Q902 742 879 736" fill="none" stroke="#b74631" stroke-width="10"/>
+  <circle cx="880" cy="738" r="10" fill="#b74631" stroke="none"/>
+  <path d="M700 845Q800 775 900 845L955 1080H645Z" fill="#8e9d91" stroke-width="8"/>
+  <path d="M685 915L560 1050" stroke-width="18"/>
+  <path d="M915 915L1040 1005" stroke-width="18"/>
+  <circle cx="548" cy="1062" r="24" fill="#e7dfd2" stroke-width="6"/>
+  <circle cx="1054" cy="1015" r="24" fill="#e7dfd2" stroke-width="6"/>
+  <path d="M742 1080L690 1265M858 1080L920 1240" stroke-width="22"/>
+</g>
+
+<!-- compass -->
+<g transform="translate(1090 1180)" stroke="#1c2521" fill="none" stroke-linecap="round">
+  <circle r="76" fill="#efe8dc" stroke-width="7"/>
+  <path d="M0-52L20 0L0 52L-20 0Z" fill="#b74631" stroke-width="5"/>
+  <path d="M-50 0H50M0-50V50" stroke-width="4" opacity=".8"/>
+</g>
+
+<!-- few strong D anchors -->
+<g fill="#f4efe5" stroke="#1c2521">
+  <circle cx="290" cy="1080" r="34" stroke-width="7"/>
+  <circle cx="1310" cy="1125" r="34" stroke-width="7"/>
+</g>
+<g stroke="#b74631" stroke-width="12" fill="none" stroke-linecap="round">
+  <path d="M324 1080C430 1080 485 1070 560 1050"/>
+  <path d="M1276 1125C1188 1110 1120 1080 1058 1020"/>
+</g>
+<g stroke="#8e9d91" stroke-width="5" fill="none" opacity=".7">
+  <path d="M290 1118C430 1220 560 1310 690 1340"/>
+  <path d="M1310 1163C1180 1248 1040 1320 910 1340"/>
+</g>
+
+<!-- expanding path -->
+<path d="M800 1445C770 1535 690 1630 560 1730M800 1445C830 1535 910 1630 1040 1730" stroke="#1c2521" stroke-width="10" fill="none"/>
+<path d="M800 1455V1760" stroke="#b74631" stroke-width="8" fill="none" stroke-dasharray="26 22"/>
+<path d="M520 1740Q800 1685 1080 1740" stroke="#b8ab99" stroke-width="5" fill="none"/>
+</svg>

@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="2000" viewBox="0 0 1600 2000">
+
+<defs>
+  <pattern id="paper" width="48" height="48" patternUnits="userSpaceOnUse">
+    <rect width="48" height="48" fill="#f4efe5"/>
+    <path d="M3 11h10M29 7h7M9 31h5M34 35h9M20 19h4" stroke="#d8cec0" stroke-width="1" opacity=".28"/>
+    <circle cx="16" cy="6" r="1" fill="#c8bcad" opacity=".25"/>
+    <circle cx="41" cy="24" r="1" fill="#c8bcad" opacity=".2"/>
+  </pattern>
+  <pattern id="hatch" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(18)">
+    <path d="M0 9h18" stroke="#1c2521" stroke-width="1" opacity=".1"/>
+  </pattern>
+</defs>
+
+<rect width="1600" height="2000" fill="url(#paper)"/>
+<rect x="90" y="90" width="1420" height="1820" rx="34" fill="#efe8dc" stroke="#1c2521" stroke-width="5"/>
+<rect x="140" y="140" width="1320" height="1720" rx="26" fill="none" stroke="#b8ab99" stroke-width="3"/>
+
+<!-- broad relation field: many lightweight anchors, none treated as people -->
+<g fill="#f4efe5" stroke="#1c2521" stroke-width="4">
+  <circle cx="250" cy="610" r="25"/><circle cx="420" cy="490" r="20"/>
+  <circle cx="1225" cy="505" r="22"/><circle cx="1360" cy="720" r="20"/>
+  <circle cx="260" cy="1330" r="21"/><circle cx="430" cy="1485" r="23"/>
+  <circle cx="1230" cy="1450" r="23"/><circle cx="1370" cy="1210" r="20"/>
+</g>
+<g stroke="#8e9d91" stroke-width="6" opacity=".5" fill="none" stroke-linecap="round">
+  <path d="M274 618C390 665 455 735 520 835"/>
+  <path d="M436 503C510 590 535 665 560 780"/>
+  <path d="M1206 520C1115 610 1060 690 1015 820"/>
+  <path d="M1340 730C1210 770 1130 820 1060 900"/>
+  <path d="M281 1322C405 1282 478 1220 540 1130"/>
+  <path d="M450 1468C530 1350 570 1280 600 1180"/>
+  <path d="M1209 1435C1110 1355 1060 1280 1030 1185"/>
+  <path d="M1350 1202C1230 1190 1155 1160 1085 1110"/>
+</g>
+
+<!-- stable work table -->
+<path d="M310 1240Q800 1180 1290 1240L1225 1515Q800 1570 375 1515Z" fill="#d6c9b8" stroke="#1c2521" stroke-width="8"/>
+<path d="M390 1320Q800 1270 1210 1320" stroke="#b74631" stroke-width="7" fill="none"/>
+
+<!-- stable seated figure -->
+<g stroke="#1c2521" stroke-linejoin="round" stroke-linecap="round">
+  <circle cx="610" cy="720" r="110" fill="#e7dfd2" stroke-width="7"/>
+  <path d="M540 686Q610 628 680 686" fill="none" stroke-width="9"/>
+  <path d="M560 747Q610 770 660 747" fill="none" stroke-width="6"/>
+  <path d="M505 902Q610 824 715 902L755 1155H465Z" fill="#8e9d91" stroke-width="8"/>
+  <path d="M500 965L405 1100" stroke-width="18"/>
+  <path d="M720 965L812 1040" stroke-width="18"/>
+  <circle cx="392" cy="1114" r="24" fill="#e7dfd2" stroke-width="6"/>
+  <circle cx="828" cy="1052" r="24" fill="#e7dfd2" stroke-width="6"/>
+  <path d="M555 1155L525 1380M665 1155L700 1380" stroke-width="22"/>
+</g>
+
+<!-- primary calibration dial kept inside OG-safe center -->
+<g>
+  <circle cx="1000" cy="1030" r="205" fill="#f4efe5" stroke="#1c2521" stroke-width="10"/>
+  <circle cx="1000" cy="1030" r="154" fill="url(#hatch)" stroke="#b74631" stroke-width="9"/>
+  <circle cx="1000" cy="1030" r="50" fill="#1c2521"/>
+  <path d="M1000 1030L1095 940" stroke="#f4efe5" stroke-width="17" stroke-linecap="round"/>
+  <g stroke="#1c2521" stroke-width="7" stroke-linecap="round">
+    <path d="M1000 844v32"/><path d="M1132 898l-22 22"/><path d="M1186 1030h-32"/>
+    <path d="M1132 1162l-22-22"/><path d="M1000 1216v-32"/><path d="M868 1162l22-22"/>
+    <path d="M814 1030h32"/><path d="M868 898l22 22"/>
+  </g>
+</g>
+
+<!-- aligned markers and balanced objects under the working hand -->
+<g stroke="#1c2521" stroke-width="5">
+  <rect x="350" y="1300" width="82" height="70" rx="12" fill="#f4efe5"/>
+  <rect x="455" y="1280" width="82" height="90" rx="12" fill="#f4efe5"/>
+  <rect x="560" y="1300" width="82" height="70" rx="12" fill="#f4efe5"/>
+  <path d="M391 1270v-34M496 1250v-34M601 1270v-34" stroke="#b74631" stroke-width="8"/>
+  <path d="M338 1410H655" stroke="#1c2521" stroke-width="5"/>
+  <path d="M430 1388L500 1410L570 1388" fill="none" stroke="#8e9d91" stroke-width="6"/>
+</g>
+
+<!-- layered refinement rings -->
+<g fill="none" stroke="#b8ab99" stroke-width="4" opacity=".9">
+  <ellipse cx="800" cy="1030" rx="510" ry="360"/>
+  <ellipse cx="800" cy="1030" rx="600" ry="430"/>
+</g>
+<path d="M220 1030H330M1270 1030H1380" stroke="#b74631" stroke-width="6" opacity=".65"/>
+</svg>
