@@ -1,0 +1,78 @@
+{
+  "reference_set_version": "illustration-art-direction-reference-v0.2-dev",
+  "illustration_system_version": "illustration-system-v0.1-dev",
+  "brief_system_version": "illustration-brief-system-v0.1-dev",
+  "catalog_version": "type-catalog-v0.1-dev",
+  "code_schema_version": "core-code-v0.1-dev",
+  "status": "owner-approved-art-direction",
+  "public_use": false,
+  "runtime_generation": false,
+  "production_registry_mutated": false,
+  "purpose": "Owner-approved Phase 3B visual baseline for subsequent development-only type artwork production. Approval applies to the art direction, not to unseen individual type assets and not to C01D public activation.",
+  "approval": {
+    "approved": true,
+    "approved_by": "repository-owner",
+    "approved_at": "2026-09-08",
+    "scope": "art-direction-only",
+    "individual_asset_approval_required": true,
+    "public_taxonomy_approval": false
+  },
+  "reference": {
+    "core_code": "LTGPFB",
+    "display_name_ja": "深化の調律師〈広縁〉",
+    "role": "LTG",
+    "action": "PF",
+    "relationship": "B",
+    "committed_preview": {
+      "path": "artwork/illustration/references/phase-3b-1-v02/LTGPFB-art-direction-v02-reference.jpg",
+      "media_type": "image/jpeg",
+      "width": 320,
+      "height": 427,
+      "sha256": "d128afae7ff5216e66be0193f4a2047f1afac6b5cdf1cfa038951d7c75730b9f",
+      "git_blob_sha": "d79c7137292d4d7acd7f89ee5e6d496d9832a533"
+    },
+    "owner_reviewed_source": {
+      "media_type": "image/png",
+      "width": 1086,
+      "height": 1448,
+      "sha256": "c4ac1daeab34b332885ed0ff003d3b18967390c4ce3251c12f9103025a7bcfd8",
+      "note": "The exact owner-reviewed source was generated during the design review session. The repository commits a reduced archival reference preview; production masters must be generated/exported separately at contract dimensions and undergo per-asset review."
+    }
+  },
+  "visual_direction": {
+    "character_priority": "A believable person in a specific lived-in situation is the primary visual identity; decorative props are secondary.",
+    "environment": "Naturalistic, imperfect, inhabited spaces with plausible object placement and ordinary wear. Avoid stage-like fantasy ateliers, symmetrical prop walls and exhibition-display clutter.",
+    "composition": "Editorial photograph/illustration sensibility with asymmetry, incidental occlusion, practical camera height and negative space. Avoid centered hero posing, beauty-shot framing and generic cinematic poster composition.",
+    "character_rendering": "Commercial-quality 2D/naturalistic illustration or photographic-editorial realism, with restrained retouching, ordinary body language and non-performative expressions.",
+    "lighting": "Available-light or motivated practical-light feeling; avoid golden magical haze, rim-light overload, neon glow and glossy synthetic skin.",
+    "props": "Use only a few scene-credible objects that support the motif. Do not literalize every code component as an icon array.",
+    "texture": "Real material texture, paper, fabric, wood, metal and environmental wear; avoid AI-like micro-detail noise and decorative overpopulation.",
+    "text_in_production_master": false,
+    "reference_mockup_text_allowed": true,
+    "series_consistency_rule": "Consistency comes from editorial treatment, tonal discipline, crop behavior and motif logic—not from reusing the same room, pose, face archetype or prop layout."
+  },
+  "anti_ai_artifact_rules": [
+    "no generic wistful beauty portrait as default pose",
+    "no repeated chin-in-hand pose across the catalog",
+    "no fantasy scholar atelier as a universal background",
+    "no excessive books-plants-dried-flowers-instruments clutter bundle",
+    "no symmetrical explanatory prop arrangement",
+    "no cinematic golden-hour glow as a universal look",
+    "no hyper-detailed texture noise used to simulate quality",
+    "no identical face template across types",
+    "no visible text or pseudo-writing inside final production master art",
+    "no impossible hands, duplicate objects, fused accessories or inconsistent reflections",
+    "no personality-to-gender-ethnicity-age-disability-attractiveness mapping",
+    "no prestige hierarchy by type"
+  ],
+  "production_rules": {
+    "runtime_generation": false,
+    "development_generation_allowed": true,
+    "human_curation_required": true,
+    "final_master_minimum_dimensions_follow_asset_ingest_contract": true,
+    "required_variants_follow_asset_ingest_contract": true,
+    "registry_status_after_batch_ingest": "review-required",
+    "approved_status_requires_separate_human_review": true,
+    "public_use_remains_false": true
+  }
+}
