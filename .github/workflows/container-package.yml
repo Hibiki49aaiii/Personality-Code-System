@@ -85,7 +85,7 @@ jobs:
           EOF
 
       - name: Upload package metadata
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: pcs-container-package-${{ github.sha }}
           path: artifacts/container-package/image-metadata.json

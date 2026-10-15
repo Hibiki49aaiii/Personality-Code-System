@@ -73,7 +73,7 @@ jobs:
         run: npx playwright test -c playwright.performance.config.ts
 
       - name: Upload performance evidence
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: pcs-performance-lab-${{ matrix.profile }}
           path: artifacts/performance-lab/
